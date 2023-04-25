@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import './login.scss';
+import './index.scss';
 
 const Home = () => {
   return (

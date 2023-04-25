@@ -1,9 +1,19 @@
 import React from 'react';
-import routes from '@/router/router';
-import { RouterProvider } from 'react-router-dom';
+import { Button, Layout, Toast } from '@douyinfe/semi-ui';
+import Header from '@/components/layout/header';
+import Footer from '@/components/layout/footer';
+import Main from '@/components/layout/main';
 
 function App() {
-  return <RouterProvider router={routes} />;
+  return (
+    <div className="app">
+      <Layout>
+        <Header />
+        <Main />
+        <Footer />
+      </Layout>
+    </div>
+  );
 }
 
 export default App;

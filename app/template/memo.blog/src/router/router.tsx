@@ -2,8 +2,8 @@ import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
 // 懒加载
-const Home = lazy(() => import('@/pages/home/home'));
-const Login = lazy(() => import('@/pages/login/login'));
+const Home = lazy(() => import('@/pages/home'));
+const Login = lazy(() => import('@/pages/login'));
 
 let routers = createBrowserRouter([
   {
