@@ -1,0 +1,9 @@
+@import '@/styles/base.scss';
+
+.header {
+  display: 'flex';
+  height: $headerHeight;
+  justify-content: 'space-between';
+  color: 'var(--semi-color-text-2)';
+  background-color: 'rgba(var(--semi-grey-0), 1)';
+}
