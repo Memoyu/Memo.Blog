@@ -6,8 +6,17 @@ const { Header } = Layout;
 
 const Index: FC = () => {
   return (
-    <Header className={s.header}>
-      <h3>Header</h3>
+    <Header className={s.headerTop}>
+      <div className={s.headerLeftMenu}>
+        <a>文章</a>
+        <a>文章</a>
+        <a>文章</a>
+      </div>
+      <div className={s.headerRightMenu}>
+        <div className={s.blogTool}>
+          <span>MEMOYU BLOG</span>
+        </div>
+      </div>
     </Header>
   );
 };

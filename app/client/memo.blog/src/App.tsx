@@ -3,6 +3,7 @@ import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import BackTop from '@/components/layout/backTop';
 import Main from '@/components/layout/main';
+import './App.scss';
 
 function App() {
   return (
