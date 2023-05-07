@@ -11,6 +11,7 @@ type Item = {
 
 const links: Array<Item> = [
   { name: 'Memoyu Github', to: 'https://github.com/Memoyu' },
+  { name: 'Memoyu Gitee', to: 'https://gitee.com/Memoy' },
   { name: 'Memoyu Cnblog', to: 'https://www.cnblogs.com/memoyu' }
 ];
 
@@ -19,7 +20,7 @@ const records: Array<Item> = [
   { name: 'About Me', to: '/link' }
 ];
 
-const Index: FC = () => {
+const CustFooter: FC = () => {
   return (
     <Footer className={s.footer}>
       <Row>
@@ -42,7 +43,7 @@ const Index: FC = () => {
         <Col span={10}>
           <div className={s.link}>
             {links.map((link, index) => (
-              <div className={s.text}>
+              <div className={s.text} key={index}>
                 <a target="_blank" href={link.to}>
                   {link.name}
                 </a>
@@ -53,7 +54,7 @@ const Index: FC = () => {
         <Col span={7}>
           <div className={s.link}>
             {records.map((record, index) => (
-              <div className={s.text}>
+              <div className={s.text} key={index}>
                 <a target="_blank" href={record.to}>
                   {record.name}
                 </a>
@@ -66,4 +67,4 @@ const Index: FC = () => {
   );
 };
 
-export default Index;
+export default CustFooter;

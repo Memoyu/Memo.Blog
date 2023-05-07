@@ -3,6 +3,9 @@ import { useRoutes } from 'react-router-dom';
 
 // 懒加载
 const Home = lazy(() => import('@/pages/home'));
+const TimeLine = lazy(() => import('@/pages/timeline'));
+const Link = lazy(() => import('@/pages/link'));
+const About = lazy(() => import('@/pages/about'));
 const Login = lazy(() => import('@/pages/login'));
 
 interface Router {
@@ -21,6 +24,18 @@ let routes: Array<Router> = [
       // { path: "/pending", element: <Pending /> },
       // { path: "/complete", element: <Complete /> },
     ]
+  },
+  {
+    path: '/timeline',
+    element: <TimeLine />
+  },
+  {
+    path: '/link',
+    element: <Link />
+  },
+  {
+    path: '/about',
+    element: <About />
   },
   {
     path: '/login',

@@ -3,7 +3,7 @@ import { BackTop } from '@douyinfe/semi-ui';
 import { IconArrowUp } from '@douyinfe/semi-icons';
 import s from './index.scss';
 
-const Index: FC = () => {
+const CustBackTop: FC = () => {
   const style = {
     display: 'flex',
     alignItems: 'center',
@@ -23,4 +23,4 @@ const Index: FC = () => {
   );
 };
 
-export default Index;
+export default CustBackTop;

@@ -9,7 +9,8 @@ const Main: React.FC = () => {
   return (
     <main className={s.main}>
       <div className={s.center}>
-        <Suspense fallback={<FallbackLoading message="正在加载中" />}>{elements}</Suspense>
+        {/* fallback={<FallbackLoading message="正在加载中" />} */}
+        <Suspense>{elements}</Suspense>
       </div>
     </main>
   );

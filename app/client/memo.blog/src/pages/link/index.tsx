@@ -2,12 +2,12 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import s from './index.module.scss';
 
-const Login = () => {
+const Link = () => {
   return (
     <div className="test-style">
-      <h1>Login</h1>
+      <h1>Link</h1>
     </div>
   );
 };
 
-export default Login;
+export default Link;

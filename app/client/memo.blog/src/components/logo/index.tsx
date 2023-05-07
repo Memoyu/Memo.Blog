@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import s from './index.module.scss';
 
-const Index: FC = () => {
+const Logo: FC = () => {
   return (
     <div className={s.logo}>
       <span>
@@ -12,4 +12,4 @@ const Index: FC = () => {
   );
 };
 
-export default Index;
+export default Logo;
