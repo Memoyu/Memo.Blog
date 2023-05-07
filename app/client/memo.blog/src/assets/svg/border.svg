@@ -12,8 +12,8 @@
     </filter>
   </defs>
 
-  <rect width="100%" height="100%" style="fill: rgba(255,255,255, 0.95)" ry="20" filter="url(#blur)"/>
-  <rect width="100%" height="100%" ry="20" style=" 
+  <rect width="100%" height="100%" style="fill: rgba(255,255,255, 0.95)" filter="url(#blur)"/>
+  <rect width="100%" height="100%" ry="24" style=" 
                 --stroke: 5px;
                 stroke: url(#gradient); 
                 stroke-width: var(--stroke); 

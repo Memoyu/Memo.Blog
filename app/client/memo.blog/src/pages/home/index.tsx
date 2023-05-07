@@ -2,17 +2,9 @@ import s from './index.module.scss';
 
 const Home = () => {
   return (
-    <div className={s.divTest}>
-      <div style={{ height: 300, textAlign: 'center' }}>baozheng</div>
-      <div style={{ height: 300 }}></div>
-      <div style={{ height: 300 }}></div>
-      <div style={{ height: 300 }}></div>
-      <div style={{ height: 300 }}></div>
-      <div style={{ height: 300 }}></div>
-      <div style={{ height: 300 }}></div>
-      <div style={{ height: 300 }}></div>
-      <div style={{ height: 300 }}></div>
-      <div style={{ height: 300 }}></div>
+    <div className={s.home}>
+      Home
+      <div className={s.test}></div>
     </div>
   );
 };
