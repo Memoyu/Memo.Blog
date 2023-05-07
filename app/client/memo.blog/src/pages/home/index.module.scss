@@ -1,6 +1,51 @@
+@import '@/styles/base.scss';
+
 .home {
-  .test {
-    height: 1300px;
-    background: ghostwhite;
+  height: calc(100vh - #{$footerHeight + $headerHeight});
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    .topPost {
+      width: 50%;
+      height: 90%;
+      display: flex;
+      align-items: center;
+      .list {
+        width: 100%;
+        .topForward {
+          width: auto;
+          height: 130px;
+          margin: 10px;
+          padding: 15px;
+          background: $secondaryColor;
+          border-radius: 20px;
+        }
+        .topBack {
+          width: auto;
+          height: 100px;
+          margin: 10px;
+          padding: 10px;
+          background: $secondaryColor;
+          border-radius: 20px;
+        }
+      }
+    }
+    .show {
+      width: 50%;
+      height: 90%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .image {
+        height: 90%;
+        width: 100%;
+        border-radius: 20px;
+        margin: 10px;
+        background: $primaryColor;
+      }
+    }
   }
 }
