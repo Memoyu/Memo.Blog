@@ -1,14 +1,28 @@
 @import '@/styles/base.scss';
 
 .footer {
-  display: 'flex';
-  justify-content: 'space-between';
-  padding: '20px';
-  color: 'var(--semi-color-text-2)';
-  background-color: 'rgba(var(--semi-grey-0), 1)';
+  color: rgba(11, 15, 33, 0.65);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 100px;
   height: $footerHeight;
+
   .author {
-    display: 'flex';
-    align-items: 'center';
+    .logo {
+      width: 150px;
+    }
+    .github {
+      a {
+        text-decoration: none;
+      }
+    }
+  }
+  .link {
+    .text {
+      margin-bottom: 10px;
+      a {
+        text-decoration: none;
+      }
+    }
   }
 }

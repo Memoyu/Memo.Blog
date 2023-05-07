@@ -24,15 +24,15 @@ const Index: FC = () => {
   if (pathname === '/404' || pathname === '/_not-found') pathname = '/';
   console.log('p', pathname);
   return (
-    <Header className={s.headerTop}>
+    <Header className={s.header}>
       <div className={s.headerNav}>
-        <div className={s.navContent}>
+        <div className={s.container}>
           {items.map((item, index) => (
             <NavLink to={item.to} key={index}>
               {item.name}
               {item.to === pathname && (
                 <motion.div
-                  className={s.bar}
+                  className={s.active}
                   layoutId="bar"
                   aria-hidden={true}
                   transition={{ type: 'spring', stiffness: 350, damping: 30 }}

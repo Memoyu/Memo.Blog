@@ -1,4 +1,40 @@
+@font-face {
+  font-family: 'Euclid Circular B';
+  font-display: auto;
+  src: url(./fonts/ECB-Bold.ttf);
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: 'Euclid Circular B';
+  font-display: auto;
+  src: url(./fonts/ECB-SemiBold.ttf);
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Euclid Circular B';
+  font-display: auto;
+  src: url(./fonts/ECB-Medium.ttf);
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Euclid Circular B';
+  font-display: auto;
+  src: url(./fonts/ECB-Regular.ttf);
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Euclid Circular B';
+  font-display: auto;
+  src: url(./fonts/ECB-Light.ttf);
+  font-weight: 300;
+}
+
 body {
+  font-family: 'Euclid Circular B';
   margin: 0;
   background: linear-gradient(270deg, #f7f7f7 0%, #fff 50%, #f7f7f7 100%);
 }
