@@ -23,46 +23,48 @@ const records: Array<Item> = [
 const CustFooter: FC = () => {
   return (
     <Footer className={s.footer}>
-      <Row>
-        <Col span={7}>
-          <div className={s.author}>
-            <div className={s.logo}>
-              <Logo />
-            </div>
-            <div className={s.github}>
-              2022 - 2023 ©&nbsp;
-              <a target="_blank" href="https://github.com/Memoyu" title="Memoyu">
-                Memoyu
-              </a>
-            </div>
-            <small className={s.info}>
-              Made with ❤️ on .NET 6 & React <br /> Updated on 2023, 5月4日 06:40
-            </small>
-          </div>
-        </Col>
-        <Col span={10}>
-          <div className={s.link}>
-            {links.map((link, index) => (
-              <div className={s.text} key={index}>
-                <a target="_blank" href={link.to}>
-                  {link.name}
+      <div className={s.container}>
+        <Row>
+          <Col span={7}>
+            <div className={s.author}>
+              <div className={s.logo}>
+                <Logo />
+              </div>
+              <div className={s.github}>
+                2022 - 2023 ©&nbsp;
+                <a target="_blank" href="https://github.com/Memoyu" title="Memoyu">
+                  Memoyu
                 </a>
               </div>
-            ))}
-          </div>
-        </Col>
-        <Col span={7}>
-          <div className={s.link}>
-            {records.map((record, index) => (
-              <div className={s.text} key={index}>
-                <a target="_blank" href={record.to}>
-                  {record.name}
-                </a>
-              </div>
-            ))}
-          </div>
-        </Col>
-      </Row>
+              <small className={s.info}>
+                Made with ❤️ on .NET 6 & React <br /> Updated on 2023, 5月4日 06:40
+              </small>
+            </div>
+          </Col>
+          <Col span={10}>
+            <div className={s.link}>
+              {links.map((link, index) => (
+                <div className={s.text} key={index}>
+                  <a target="_blank" href={link.to}>
+                    {link.name}
+                  </a>
+                </div>
+              ))}
+            </div>
+          </Col>
+          <Col span={7}>
+            <div className={s.link}>
+              {records.map((record, index) => (
+                <div className={s.text} key={index}>
+                  <a target="_blank" href={record.to}>
+                    {record.name}
+                  </a>
+                </div>
+              ))}
+            </div>
+          </Col>
+        </Row>
+      </div>
     </Footer>
   );
 };
