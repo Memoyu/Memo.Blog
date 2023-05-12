@@ -7,6 +7,7 @@ const TimeLine = lazy(() => import('@/pages/timeline'));
 const Link = lazy(() => import('@/pages/link'));
 const About = lazy(() => import('@/pages/about'));
 const Login = lazy(() => import('@/pages/login'));
+const PostDetail = lazy(() => import('@/pages/post/detail'));
 
 interface Router {
   name?: string;
@@ -40,6 +41,10 @@ let routes: Array<Router> = [
   {
     path: '/login',
     element: <Login />
+  },
+  {
+    path: '/post/detail/:id',
+    element: <PostDetail />
   }
 ];
 

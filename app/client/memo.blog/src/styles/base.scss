@@ -8,3 +8,14 @@ $space: 20px;
 // 颜色
 $primaryColor: #b84297;
 $secondaryColor: #b84297b0;
+
+$codeOther: #c9d1d9;
+$codeBg: var(--codeBg, rgb(37, 43, 48));
+$themeColor1: var(--themeColor1, rgb(22, 54, 51));
+$themeColor2: var(--themeColor2, rgb(39, 95, 89));
+$inlineCode: var(--inlineCode, rgb(29, 71, 67));
+$textColor: var(--textColor, rgb(255, 255, 255));
+$hoverColor: var(--hoverColor, rgb(98, 164, 218));
+.trans {
+  transition: all 0.3s !important;
+}
