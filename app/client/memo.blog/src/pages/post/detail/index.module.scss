@@ -1,0 +1,24 @@
+.postDetail {
+  margin: auto;
+  width: 1000px;
+}
+.postTitle {
+  font-size: 46px;
+  font-weight: 700;
+  text-shadow: 4px 4px 10px azure;
+}
+
+.postDesc {
+  margin: 18px 0;
+  // font-size: 20px;
+}
+
+.markDown {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 20px;
+  line-height: 1.6em;
+  user-select: text;
+  word-break: break-all;
+  background-color: beige;
+}
