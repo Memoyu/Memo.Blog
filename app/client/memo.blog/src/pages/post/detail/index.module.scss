@@ -1,24 +1,37 @@
-.postDetail {
-  margin: auto;
-  width: 1000px;
-}
-.postTitle {
-  font-size: 46px;
-  font-weight: 700;
-  text-shadow: 4px 4px 10px azure;
-}
+@import '@/styles/base.scss';
+.postContainer {
+  padding-top: 1.5rem;
+  .postHeader {
+    border-radius: 12px;
+    position: relative;
+    margin-bottom: -80px;
+    background-color: $secondaryColor;
+    padding: 80px 60px;
 
-.postDesc {
-  margin: 18px 0;
-  // font-size: 20px;
-}
+    .postTitle {
+      font-size: 46px;
+      font-weight: 700;
+      text-shadow: 4px 4px 10px azure;
+    }
 
-.markDown {
-  margin-top: 20px;
-  padding: 20px;
-  border-radius: 20px;
-  line-height: 1.6em;
-  user-select: text;
-  word-break: break-all;
-  background-color: beige;
+    .postDesc {
+      margin: 18px 0;
+      // font-size: 20px;
+    }
+  }
+  .postContent {
+    position: relative;
+    margin: auto;
+    width: 1000px;
+
+    .markDown {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 20px;
+      line-height: 1.6em;
+      user-select: text;
+      word-break: break-all;
+      background-color: beige;
+    }
+  }
 }
