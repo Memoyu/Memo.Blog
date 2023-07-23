@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import MarkDown from '../components/markdown';
 import Navigation from '../components/navigation';
+import Comment from '../components/comment';
 import s from './index.module.scss';
 import MarkDownFile from '@/assets/md/test-code.md';
 import { Tag, Space } from '@douyinfe/semi-ui';
@@ -48,6 +49,7 @@ const PostDetail = () => {
           <MarkDown content={md} />
           <Navigation content={md} />
         </div>
+        <Comment content={md} />
       </div>
     </div>
   );
