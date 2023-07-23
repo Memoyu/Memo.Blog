@@ -3,9 +3,9 @@ import hljs from 'highlight.js';
 import { marked } from 'marked';
 import React from 'react';
 
-//import './hljs.custom.scss';
-import 'highlight.js/styles/atom-one-light.css';
-// import s from './index.module.scss';
+import './hljs.custom.scss';
+//import 'highlight.js/styles/atom-one-light.css';
+import s from './index.module.scss';
 
 interface Props {
   content?: string;
@@ -15,7 +15,7 @@ interface Props {
 const MarkDown: React.FC<Props> = ({ content, className }) => {
   hljs.configure({
     classPrefix: 'hljs-',
-    languages: ['CSS', 'HTML', 'JavaScript', 'TypeScript', 'Markdown']
+    languages: ['C#', 'JSON', 'CSS', 'HTML', 'JavaScript', 'TypeScript', 'Markdown']
   });
   marked.setOptions({
     renderer: new marked.Renderer(),
@@ -26,7 +26,7 @@ const MarkDown: React.FC<Props> = ({ content, className }) => {
 
   return (
     <div
-      //className={classNames(s.marked, className)}
+      className={classNames(s.marked, className)}
       dangerouslySetInnerHTML={{
         __html: marked(content || '').replace(/<pre>/g, "<pre id='hljs'>")
       }}

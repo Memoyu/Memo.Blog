@@ -9,6 +9,7 @@
     padding: 80px 60px;
 
     .postTitle {
+      padding-bottom: 1.5rem;
       font-size: 46px;
       font-weight: 700;
       text-shadow: 4px 4px 10px azure;
@@ -28,10 +29,7 @@
       margin-top: 20px;
       padding: 20px;
       border-radius: 20px;
-      line-height: 1.6em;
-      user-select: text;
-      word-break: break-all;
-      background-color: beige;
+      background-color: #ffffff;
     }
   }
 }

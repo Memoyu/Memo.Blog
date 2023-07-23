@@ -2,6 +2,7 @@
 
 .marked {
   word-break: break-all;
+  font-size: 1rem;
 
   h2,
   h3,
@@ -13,16 +14,22 @@
     font-weight: 700;
   }
   h5 {
-    font-size: 22px;
+    font-size: 0.75rem;
   }
   h4 {
-    font-size: 24px;
+    font-size: 1rem;
   }
   h3 {
-    font-size: 26px;
+    font-size: 1.25rem;
   }
   h2 {
-    font-size: 28px;
+    font-size: 1.5rem;
+  }
+  h1 {
+    font-size: 1.75rem;
+  }
+  h1:before {
+    content: '🖊️';
   }
   h2:before {
     content: '✒️';
@@ -44,12 +51,17 @@
   strong {
     color: $hoverColor;
   }
-  code {
-    background-color: $inlineCode;
-    font-family: 'dengxian';
-    padding: 3px 8px;
-    border-radius: 8px;
-    margin: 0 2px;
+
+  p code {
+    font-size: 0.875em;
+    color: #d63384;
+    word-wrap: break-word;
+  }
+
+  p a {
+    color: #6457c1;
+    font-weight: bold;
+    text-decoration: underline !important;
   }
 
   p img {
@@ -60,14 +72,16 @@
   }
 
   blockquote {
-    background-color: $themeColor1;
-    padding: 14px 40px;
-    font-size: 18px;
-    border-radius: 20px;
-    border: 2px $hoverColor dashed;
+    border-radius: 2px;
+    padding: 5px 0 5px 15px !important;
+    margin: 20px 0 !important;
+    border-left: 3px solid #3e9fcb;
   }
+
   blockquote p {
-    margin: 0;
+    font-style: italic;
+    font-weight: 300;
+    color: #587b8b;
   }
 
   table {
@@ -88,7 +102,6 @@
     text-decoration: underline !important;
     margin: 0 4px;
     color: $hoverColor;
-    @extend .trans;
   }
   a:hover {
     color: red;

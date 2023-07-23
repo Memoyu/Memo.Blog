@@ -1,190 +1,269 @@
-**关键词：uni-app；ECharts；**
+# Welcome to Leanote! 欢迎来到 Leanote!
 
-认知尚浅，如有高见，愿闻其详。
+## 1. 排版
 
-&ensp;
+**粗体** _斜体_
 
-**&emsp;&emsp;前言：**本次的教程与上次的[基于 WePY 2.x 平台下使用 ECharts](https://www.cnblogs.com/memoyu/p/14360278.html)方式基本一致，毕竟目标平台都是微信小程序而已（别的平台未测试），只是就是多了一个参数而已。
+~~这是一段错误的文本。~~
 
-&emsp;&emsp;本次使用的是仍然是[echarts-for-weixin](https://github.com/ecomfe/echarts-for-weixin)组件，其对小程序进行了兼容适配，我们进行直接下载项目的组件文件，然后引入就能使用了。其次，还有一种方式，就是去 uni-app 插件市场进行 echarts 搜索，是有人已经做了适配的，同样是在此项目的基础上改的，只不过他的方式是通过 ec 参数传入 options，进行数据赋值。废话不多说，开干。
+引用:
 
-&ensp;
+> 引用 Leanote 官方的话, 为什么要做 Leanote, 原因是...
 
-## 步骤
+有充列表:
 
-1. 先下载开源项目[echarts-for-weixin](https://github.com/ecomfe/echarts-for-weixin)，把开源项目中 ec-canvas 文件夹中的文件拷到自己的项目中**（千万别下 Release，好像还是老版本....）**
+1.  支持 Vim
+2.  支持 Emacs
 
-![](https://img2020.cnblogs.com/blog/1667295/202102/1667295-20210202121022694-60271341.png)
+无序列表:
 
-2. 对引入组件中的`ec-canvas.js`文件进行一点点的修改（**重要**）
+- 项目 1
+- 项目 2
 
-   > 本步骤主要是为了解决引入后使用中点击无效果与 echart 初始化问题，具体问题于文章底部详述。
+## 2. 图片与链接
 
-![](https://img2020.cnblogs.com/blog/1667295/202103/1667295-20210318180740068-1014450640.png)
+图片:
+![leanote](http://leanote.com/images/logo/leanote_icon_blue.png)
+链接:
 
-3. 在需要在`pages.json`下的`globalStyle`引入`ec-canvas`组件
+[这是去往 Leanote 官方博客的链接](http://leanote.leanote.com)
 
-   > ①-全局引入`ec-canvas`组件，用于承载统计图表
+## 3. 标题
 
-   ```json
-    "globalStyle": {
-     ...
-     "usingComponents": {//引入全局ec-canvas组件
-     	"ec-canvas": "/static/plugin/echart/ec-canvas"//根据自己放的路径改变
-     }
-    },
-   ```
+以下是各级标题, 最多支持 5 级标题
 
-4. 进行`Page`或`Component`下的` template`节点构建以及`style`样式引入，
+# h1
 
-   > ①-构建节点
+## h2
 
-   ```vue
-   <template>
-     <view class="container">
-       <view class="main">
-         <ec-canvas
-           id="month-trend-bar-dom"
-           class="month-trend"
-           canvas-id="month-trend-bar"
-           @init="echartBarInit"
-           :ec="ec"
-         >
-         </ec-canvas>
-       </view>
-     </view>
-   </template>
-   ```
+### h3
 
-   > ②-引入样式&emsp;&emsp;&emsp; **注意修改`lang`，本教程中使用的是`scss`**
+#### h4
 
-   ```css
-   <style lang="scss">
-   .container{
-     margin-top: 30px;
-     min-height: 100%;
-     .main{
-       width: 750rpx;
-       .month-trend{
-         display: block;
-         width: 750rpx;
-         height: 500rpx;
-       }
-     }
-   }
-   </style>
-   ```
+##### h4
 
-5. 声明`data`中的`ec`以及定义`echartBarInit`初始化方法
+###### h5
 
-   > ①-声明 `ec`
+## 4. 代码
 
-   ```js
-   data: {
-       // 有需要的可进行一些配置
-       ec: {
-       }
-   },
-   ```
+示例:
 
-   > ②-定义`echarts`初始胡方法`echartBarInit`
+    function get(key) {
+        return m[key];
+    }
 
-   ```js
-   methods: {
-       echartBarInit({ detail }) {
-         // 初始化方法
-         this.initChart(
-           detail.echart,//ec-canvas传回的echart参数
-           detail.canvas,
-           detail.width,
-           detail.height,
-           detail.dpr,
-           detail.wxNode//ec-canvas传回的this
-         );
-       },
-       initChart(echart, canvas, width, height, dpr, wxNode) {
-         let chart = echart.init(canvas, null, {//进行chart初始化
-           width: width,
-           height: height,
-           devicePixelRatio: dpr,
-         });
-         canvas.setChart(chart);
-         var option = {
-           color: [
-             "#37A2DA",
-             "#32C5E9",
-             "#67E0E3",
-             "#91F2DE",
-             "#FFDB5C",
-             "#FF9F7F",
-           ],
-           legend: {
-             data: ["直接访问", "邮件营销", "联盟广告"],
-           },
-           xAxis: [
-             {
-               type: "category",
-               data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-               axisTick: {
-                 alignWithLabel: true,
-               },
-             },
-           ],
-           yAxis: [
-             {
-               type: "value",
-             },
-           ],
-           series: [
-             {
-               name: "直接访问",
-               type: "bar",
-               barWidth: "60%",
-               data: [10, 52, 200, 334, 390, 330, 220],
-             },
-             {
-               name: "邮件营销",
-               type: "bar",
-               stack: "总量",
-               label: {
-                 normal: {
-                   show: true,
-                   position: "insideRight",
-                 },
-               },
-               data: [120, 132, 101, 134, 90, 230, 210],
-             },
-             {
-               name: "联盟广告",
-               type: "bar",
-               stack: "总量",
-               label: {
-                 normal: {
-                   show: true,
-                   position: "insideRight",
-                 },
-               },
-               data: [220, 182, 191, 234, 290, 330, 310],
-             },
-           ],
-         };
-         chart.setOption(option);//赋值option
-         wxNode.chart = chart;//赋值ec-canvas中的chart参数，达到监听效果实现
-       },
-     }
-   ```
+代码高亮示例:
 
-**至此，整个教程已经结束了，不出问题，你就可以看到效果了。**
-**完整代码请移步至我的开源项目：**[Memoyu/mbill_wechat_app: 基于 uni-app 搭建个人记账小程序](https://github.com/Memoyu/mbill_wechat_app)
+```javascript
+/**
+ * nth element in the fibonacci series.
+ * @param n >= 0
+ * @return the nth element, >= 0.
+ */
+function fib(n) {
+  var a = 1,
+    b = 1;
+  var tmp;
+  while (--n >= 0) {
+    tmp = a;
+    a += b;
+    b = tmp;
+  }
+  return a;
+}
 
-&ensp;
+document.write(fib(10));
+```
 
-## 点击无效果问题
+```python
+class Employee:
+   empCount = 0
 
-请参考此文底部：[WePY 2.x 下使用 ECharts - Memoyu - 博客园 (cnblogs.com)](https://www.cnblogs.com/memoyu/p/14360278.html)
+   def __init__(self, name, salary):
+        self.name = name
+        self.salary = salary
+        Employee.empCount += 1
+```
 
-&ensp;
+```c#
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Volo.Abp.BlobStoring;
+using Volo.Abp.Imaging;
 
-## 效果
+namespace ImageManipulationDemo.Controllers
+{
+    [Controller]
+    [Route("api/image")]
+    public class ImageController : ImageManipulationDemoController
+    {
+        private readonly IBlobContainer<ImageManipulationContainer> _blobContainer;
 
-![](https://img2020.cnblogs.com/blog/1667295/202103/1667295-20210318180539315-1020042920.gif)
+        public ImageController(IBlobContainer<ImageManipulationContainer> blobContainer)
+        {
+            _blobContainer = blobContainer;
+        }
+
+        [HttpPost("upload")]
+        [CompressImage]
+        [ResizeImage(width: 200, height: 200)]
+        public async Task<IActionResult> UploadAsync(IFormFile file)
+        {
+            var fileBytes = await file.GetAllBytesAsync();
+            var blobName = file.FileName;
+
+            await _blobContainer.SaveAsync(blobName, fileBytes, overrideExisting: true);
+
+            return Ok();
+        }
+
+        [HttpGet("")]
+        public async Task<byte[]> GetImageAsync(string fileName)
+        {
+            return await _blobContainer.GetAllBytesAsync(fileName);
+        }
+    }
+}
+```
+
+# 5. Markdown 扩展
+
+Markdown 扩展支持:
+
+- 表格
+- 定义型列表
+- Html 标签
+- 脚注
+- 目录
+- 时序图与流程图
+- MathJax 公式
+
+## 5.1 表格
+
+| Item     | Value  |
+| -------- | ------ |
+| Computer | \$1600 |
+| Phone    | \$12   |
+| Pipe     | \$1    |
+
+可以指定对齐方式, 如 Item 列左对齐, Value 列右对齐, Qty 列居中对齐
+
+| Item     |  Value | Qty |
+| :------- | -----: | :-: |
+| Computer | \$1600 |  5  |
+| Phone    |   \$12 | 12  |
+| Pipe     |    \$1 | 234 |
+
+## 5.2 定义型列表
+
+名词 1
+: 定义 1（左侧有一个可见的冒号和四个不可见的空格）
+
+代码块 2
+: 这是代码块的定义（左侧有一个可见的冒号和四个不可见的空格）
+
+        代码块（左侧有八个不可见的空格）
+
+## 5.3 Html 标签
+
+支持在 Markdown 语法中嵌套 Html 标签，譬如，你可以用 Html 写一个纵跨两行的表格：
+
+    <table>
+        <tr>
+            <th rowspan="2">值班人员</th>
+            <th>星期一</th>
+            <th>星期二</th>
+            <th>星期三</th>
+        </tr>
+        <tr>
+            <td>李强</td>
+            <td>张明</td>
+            <td>王平</td>
+        </tr>
+    </table>
+
+<table>
+    <tr>
+        <th rowspan="2">值班人员</th>
+        <th>星期一</th>
+        <th>星期二</th>
+        <th>星期三</th>
+    </tr>
+    <tr>
+        <td>李强</td>
+        <td>张明</td>
+        <td>王平</td>
+    </tr>
+</table>
+
+**提示**, 如果想对图片的宽度和高度进行控制, 你也可以通过 img 标签, 如:
+
+<img src="http://leanote.com/images/logo/leanote_icon_blue.png" width="50px" />
+
+## 5.4 脚注
+
+Leanote[^footnote]来创建一个脚注
+[^footnote]: Leanote 是一款强大的开源云笔记产品.
+
+## 5.5 目录
+
+通过 `[TOC]` 在文档中插入目录, 如:
+
+[TOC]
+
+## 5.6 时序图与流程图
+
+```sequence
+Alice->Bob: Hello Bob, how are you?
+Note right of Bob: Bob thinks
+Bob-->Alice: I am good thanks!
+```
+
+流程图:
+
+```flow
+st=>start: Start
+e=>end
+op=>operation: My Operation
+cond=>condition: Yes or No?
+
+st->op->cond
+cond(yes)->e
+cond(no)->op
+```
+
+> **提示:** 更多关于时序图与流程图的语法请参考:
+
+> - [时序图语法](http://bramp.github.io/js-sequence-diagrams/)
+> - [流程图语法](http://adrai.github.io/flowchart.js)
+
+## 5.7 MathJax 公式
+
+$ 表示行内公式：
+
+质能守恒方程可以用一个很简洁的方程式 $E=mc^2$ 来表达。
+
+$$
+表示整行公式：
+
+$$\sum_{i=1}^n a_i=0$$
+
+$$f(x_1,x_x,\ldots,x_n) = x_1^2 + x_2^2 + \cdots + x_n^2 $$
+
+$$\sum^{j-1}_{k=0}{\widehat{\gamma}_{kj} z_k}$$
+
+更复杂的公式:
+$$
+
+\begin{eqnarray}
+\vec\nabla \times (\vec\nabla f) & = & 0 \cdots\cdots 梯度场必是无旋场\\
+\vec\nabla \cdot(\vec\nabla \times \vec F) & = & 0\cdots\cdots 旋度场必是无散场\\
+\vec\nabla \cdot (\vec\nabla f) & = & {\vec\nabla}^2f\\
+\vec\nabla \times(\vec\nabla \times \vec F) & = & \vec\nabla(\vec\nabla \cdot \vec F) - {\vec\nabla}^2 \vec F\\
+\end{eqnarray}
+
+$$
+
+访问 [MathJax](http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference) 参考更多使用方法。
+$$
