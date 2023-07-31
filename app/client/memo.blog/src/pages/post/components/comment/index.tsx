@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import s from './index.module.scss';
 import CommentList from './commentList';
+import type { CommentType } from '../../data.d';
 
-interface Props {
-  content?: string;
-}
+type Props = {
+  comments?: Array<CommentType>;
+};
 
-const Comment: React.FC<Props> = ({ content }) => {
+const Comment: React.FC<Props> = ({ comments }) => {
   return (
     <div>
       <div className={s.divider} />
-      <CommentList />
+      <CommentList comments={comments} />
     </div>
   );
 };

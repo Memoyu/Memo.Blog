@@ -1,15 +1,20 @@
 import React from 'react';
 import s from './index.module.scss';
+import type { CommentType } from '../../../data.d';
 import CommentItem from './commentItem';
 
-interface Props {
-  avatar?: string;
-}
+type Props = {
+  comments?: Array<CommentType>;
+};
 
-const CommentList: React.FC<Props> = ({ avatar }) => {
+const CommentList: React.FC<Props> = ({ comments }) => {
   return (
     <div className={s.commentList}>
-      <div></div>
+      <div>
+        {comments?.map((comment: CommentType) => {
+          return <CommentItem comment={comment} />;
+        })}
+      </div>
     </div>
   );
 };
