@@ -9,14 +9,14 @@ type Props = {
 
 const CommentItem: React.FC<Props> = ({ comment }) => {
   return (
-    <div className={classNames(s.commentItem, { [s.reverseCommentItem]: comment.isAutor })}>
+    <div className={classNames([s.commentItem, comment.isAutor ? s.rightCommentItem : s.leftCommentItem])}>
       <div className={s.avatarBox}>
         <img className={s.avatar} src={comment.avatar} />
       </div>
       <div className={s.commentBox}>
         <div className={s.commentInfo}>
           <div>#{comment.sort}楼</div>
-          <div>{comment.name}</div>
+          <div className={s.name}>{comment.name}</div>
           <div>{comment.date}</div>
         </div>
         <div className={s.commentContent}>

@@ -2,7 +2,6 @@ $avatarSize: 50px;
 
 .commentItem {
   display: flex;
-
   .avatarBox {
     flex-shrink: 0;
     width: $avatarSize;
@@ -14,11 +13,13 @@ $avatarSize: 50px;
       height: 100%;
     }
   }
-
   .commentBox {
     margin: 10px;
     .commentInfo {
       display: flex;
+      .name {
+        margin: 0 15px;
+      }
     }
     .commentContent {
       word-break: break-word;
@@ -29,7 +30,6 @@ $avatarSize: 50px;
       margin: 10px 0 0 0;
       max-width: 72%;
       border-radius: 4px;
-      font-size: 14px;
       line-height: 1.6;
       padding: 6px 10px;
       box-shadow: 0 4px 8px #0003;
@@ -37,9 +37,25 @@ $avatarSize: 50px;
   }
 }
 
-.reverseCommentItem {
+.leftCommentItem {
+  .commentBox {
+    margin: 10px;
+    .commentInfo {
+    }
+    .commentContent {
+    }
+  }
+}
+
+.rightCommentItem {
   flex-direction: row-reverse;
   .commentBox {
-    flex-direction: row-reverse;
+    margin: 10px;
+    .commentInfo {
+      flex-direction: row-reverse;
+    }
+    .commentContent {
+      float: right;
+    }
   }
 }
