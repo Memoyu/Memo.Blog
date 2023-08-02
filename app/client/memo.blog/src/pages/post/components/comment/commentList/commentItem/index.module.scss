@@ -22,6 +22,7 @@ $avatarSize: 50px;
       }
     }
     .commentContent {
+      background-color: #f2f3f5;
       word-break: break-word;
       line-height: 1.75;
       font-weight: 400;
@@ -39,10 +40,26 @@ $avatarSize: 50px;
 
 .leftCommentItem {
   .commentBox {
-    margin: 10px;
     .commentInfo {
     }
     .commentContent {
+      &:before {
+        // content: '';
+        // position: absolute;
+        // top: 0;
+        // right: 100%;
+        // border: 8px solid transparent;
+        // border-right: 8px solid #ffffff;
+        content: '';
+        position: absolute;
+        left: -14px;
+        top: 6px;
+        width: 6px;
+        height: 0;
+        border-right: solid 12px #f2f3f5;
+        border-top: solid 8px rgba(0, 0, 0, 0);
+        border-bottom: solid 8px rgba(0, 0, 0, 0);
+      }
     }
   }
 }
@@ -50,12 +67,29 @@ $avatarSize: 50px;
 .rightCommentItem {
   flex-direction: row-reverse;
   .commentBox {
-    margin: 10px;
     .commentInfo {
       flex-direction: row-reverse;
     }
     .commentContent {
       float: right;
+      &:before {
+        // content: '';
+        // position: absolute;
+        // top: 0;
+        // left: 100%;
+        // // margin-top: -15px;
+        // border: 8px solid transparent;
+        // border-left: 8px solid #ffffff;
+        content: '';
+        position: absolute;
+        right: -14px;
+        top: 6px;
+        width: 6px;
+        height: 0;
+        border-left: solid 12px #f2f3f5;
+        border-top: solid 8px rgba(0, 0, 0, 0);
+        border-bottom: solid 8px rgba(0, 0, 0, 0);
+      }
     }
   }
 }
