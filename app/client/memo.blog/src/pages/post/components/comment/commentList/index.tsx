@@ -12,7 +12,11 @@ const CommentList: React.FC<Props> = ({ comments }) => {
     <div className={s.commentList}>
       <div>
         {comments?.map((comment: CommentType) => {
-          return <CommentItem comment={comment} />;
+          return (
+            <div key={comment.id}>
+              <CommentItem comment={comment} />
+            </div>
+          );
         })}
       </div>
     </div>

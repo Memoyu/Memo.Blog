@@ -26,6 +26,7 @@ const PostDetail = () => {
 
   const comments: Array<CommentType> = [
     {
+      id: 1,
       isAutor: false,
       name: '小明',
       avatar: 'https://q1.qlogo.cn/g?b=qq&nk=904703311&s=100',
@@ -35,6 +36,7 @@ const PostDetail = () => {
       sort: 1
     },
     {
+      id: 2,
       isAutor: true,
       name: '小红',
       avatar: 'https://q1.qlogo.cn/g?b=qq&nk=904703312&s=100',
@@ -43,6 +45,7 @@ const PostDetail = () => {
       sort: 2
     },
     {
+      id: 3,
       isAutor: false,
       name: '小刚',
       avatar: 'https://q1.qlogo.cn/g?b=qq&nk=904703317&s=100',
