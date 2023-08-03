@@ -1,3 +1,5 @@
+@import '@/styles/base.scss';
+
 $avatarSize: 50px;
 
 .commentItem {
@@ -17,23 +19,29 @@ $avatarSize: 50px;
     margin: 10px;
     .commentInfo {
       display: flex;
+      align-items: center;
+      justify-content: baseline;
       .name {
+        margin: 0 15px;
+      }
+      .iconAt {
         margin: 0 15px;
       }
     }
     .commentContent {
+      position: relative;
       background-color: #f2f3f5;
       word-break: break-word;
       line-height: 1.75;
       font-weight: 400;
       font-size: 15px;
-      position: relative;
       margin: 10px 0 0 0;
       max-width: 72%;
       border-radius: 4px;
       line-height: 1.6;
       padding: 6px 10px;
       box-shadow: 0 4px 8px #0003;
+      z-index: -1; // 解决评论覆盖目录问题
     }
   }
 }
@@ -44,12 +52,6 @@ $avatarSize: 50px;
     }
     .commentContent {
       &:before {
-        // content: '';
-        // position: absolute;
-        // top: 0;
-        // right: 100%;
-        // border: 8px solid transparent;
-        // border-right: 8px solid #ffffff;
         content: '';
         position: absolute;
         left: -14px;
@@ -73,13 +75,6 @@ $avatarSize: 50px;
     .commentContent {
       float: right;
       &:before {
-        // content: '';
-        // position: absolute;
-        // top: 0;
-        // left: 100%;
-        // // margin-top: -15px;
-        // border: 8px solid transparent;
-        // border-left: 8px solid #ffffff;
         content: '';
         position: absolute;
         right: -14px;

@@ -1,2 +1,7 @@
+@import '@/styles/base.scss';
+
 .commentList {
+  border-radius: 7px;
+  border: 3px dashed $secondaryColor;
+  padding: 8px;
 }

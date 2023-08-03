@@ -28,7 +28,7 @@ const PostDetail = () => {
     {
       isAutor: false,
       name: '小明',
-      avatar: 'https://p.qqan.com/up/2018-2/15196227794487028.jpg',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=904703311&s=100',
       content:
         '这是回复这是回复这是回复这是回复这是回复这是回复这是回复这是回复这是回复这是回复这是回复这是回复这是回复这是回复这是回复这是回复这是回复这是回复这是回复这是回复这是回复这是回复',
       date: '2023-07-31 23:19',
@@ -37,10 +37,18 @@ const PostDetail = () => {
     {
       isAutor: true,
       name: '小红',
-      avatar: 'https://pic3.zhimg.com/v2-d68cda5a8b3c9e27abacb71ea5274600_r.jpg',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=904703312&s=100',
       content: '这是回复红这是回复这是回复这是回复这是回复这是回复这是回复',
       date: '2023-07-31 23:19',
       sort: 2
+    },
+    {
+      isAutor: false,
+      name: '小刚',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=904703317&s=100',
+      content: '这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚',
+      date: '2023-07-31 23:19',
+      sort: 3
     }
   ];
 

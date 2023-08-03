@@ -21,7 +21,7 @@ $title-level-margin: 18px;
   position: absolute;
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.6);
-  color: rgb(255, 115, 0);
+  color: $secondaryColor;
   font-size: 15px;
   line-height: 30px;
   padding: 0 8px;
@@ -32,6 +32,6 @@ $title-level-margin: 18px;
 }
 
 .toggleBtn:active {
-  background-color: rgb(255, 115, 0);
+  background-color: $secondaryColor;
   color: #fff;
 }

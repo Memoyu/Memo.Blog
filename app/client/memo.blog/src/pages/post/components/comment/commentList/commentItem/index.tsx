@@ -1,4 +1,6 @@
 import React from 'react';
+import { Tooltip } from '@douyinfe/semi-ui';
+import { IconAt, IconComment } from '@douyinfe/semi-icons';
 import classNames from 'classnames';
 import s from './index.module.scss';
 import type { CommentType } from '../../../../data.d';
@@ -18,6 +20,12 @@ const CommentItem: React.FC<Props> = ({ comment }) => {
           <div>#{comment.sort}楼</div>
           <div className={s.name}>{comment.name}</div>
           <div>{comment.date}</div>
+          <Tooltip content={'回复'}>
+            <IconAt className={s.iconAt} />
+          </Tooltip>
+          <Tooltip content={'引用'}>
+            <IconComment />
+          </Tooltip>
         </div>
         <div className={s.commentContent}>
           <div>{comment.content}</div>

@@ -1,0 +1,51 @@
+@import '@/styles/base.scss';
+
+$avatarSize: 40px;
+
+.commentEdit {
+  margin: 10px 0;
+  border-radius: 7px;
+  border: 3px dashed $secondaryColor;
+  padding: 8px;
+  .commentUser {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    .avatarBox {
+      flex-shrink: 0;
+      width: $avatarSize;
+      height: $avatarSize;
+      border-radius: 50%;
+      overflow: hidden;
+      background-color: #e2e4e4;
+      .avatar {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .inputInfo {
+      width: 300px;
+      margin-left: 10px;
+    }
+  }
+  .commentTextArea {
+  }
+  .commentBtns {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 7px;
+    margin-top: 5px;
+    background-color: #e2e4e4;
+    padding: 5px;
+    .functionBtns {
+      margin: 0 10px;
+    }
+    .operateBtns {
+      margin: 0 10px;
+      .itemBtn {
+        margin-right: 10px;
+      }
+    }
+  }
+}
