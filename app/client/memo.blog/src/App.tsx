@@ -1,4 +1,4 @@
-import { Layout } from '@douyinfe/semi-ui';
+import { Layout } from 'antd';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import BackTop from '@/components/layout/backTop';

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Tooltip, Input, TextArea, Button } from '@douyinfe/semi-ui';
-import { IconEmoji, IconBrackets, IconSend } from '@douyinfe/semi-icons';
+import { Tooltip, Input, Button } from 'antd';
+import { SmileOutlined, FireOutlined, MessageOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
-//import defaultAvatar from '@/assets/images/avatar/default.png';
 import s from './index.module.scss';
+
+const { TextArea } = Input;
 
 const CommentEdit: React.FC = () => {
   const [avatar, setAvatar] = useState(require('@/assets/images/avatar/default.png'));
@@ -15,7 +16,7 @@ const CommentEdit: React.FC = () => {
     setAvatarSelectVisible(false);
   };
 
-  const onQqInputEnterPress = () => {
+  const onQqInputPressEnter = () => {
     setQqAvatar();
     setAvatarSelectVisible(false);
   };
@@ -34,17 +35,16 @@ const CommentEdit: React.FC = () => {
           <div className={s.avatarBox}>
             <Tooltip
               style={{ backgroundColor: 'white' }}
-              trigger="custom"
-              visible={avatarSelectVisible}
-              content={
+              trigger="click"
+              open={avatarSelectVisible}
+              title={
                 <div>
                   <Input
                     prefix="QQ头像："
-                    showClear
                     value={qq}
-                    onChange={(e) => setQq(e)}
+                    onChange={(e) => setQq(e.target.value)}
                     onBlur={(e) => onQqInputBlur(e)}
-                    onEnterPress={onQqInputEnterPress}></Input>
+                    onPressEnter={onQqInputPressEnter}></Input>
                 </div>
               }>
               <img className={s.avatar} src={avatar} onClick={() => setAvatarSelectVisible(true)} />
@@ -53,16 +53,16 @@ const CommentEdit: React.FC = () => {
           <Input className={s.inputInfo} placeholder={'昵称'}></Input>
           <Input className={s.inputInfo} placeholder={'邮箱(选填)'}></Input>
         </div>
-        <TextArea className={s.commentTextArea} maxCount={100} showClear />
+        <TextArea className={s.commentTextArea} maxLength={100} />
         <div className={s.commentBtns}>
           <div className={s.functionBtns}>
-            <Button icon={<IconEmoji />} aria-label="emoji" />
+            <Button icon={<SmileOutlined />} aria-label="emoji" />
           </div>
           <div className={s.operateBtns}>
-            <Button icon={<IconBrackets />} className={s.itemBtn} aria-label="emoji">
+            <Button icon={<FireOutlined />} className={s.itemBtn} aria-label="emoji">
               预览
             </Button>
-            <Button icon={<IconSend />} className={s.itemBtn} aria-label="emoji">
+            <Button icon={<MessageOutlined />} className={s.itemBtn} aria-label="emoji">
               发送
             </Button>
           </div>

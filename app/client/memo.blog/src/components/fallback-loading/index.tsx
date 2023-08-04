@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Spin, Banner } from '@douyinfe/semi-ui';
+import { Spin } from 'antd';
 
 interface FallbackMessageProps {
   message: string;
@@ -9,14 +9,14 @@ interface FallbackMessageProps {
 const SuspendFallbackLoading: FC<FallbackMessageProps> = ({ message, description }) => {
   return (
     <Spin tip="正在加载中...">
-      <Banner
+      {/* <Banner
         fullMode={false}
         type="info"
         bordered
         icon={null}
         closeIcon={null}
         description={<div>{description}</div>}
-      />
+      /> */}
     </Spin>
   );
 };

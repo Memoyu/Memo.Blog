@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Layout, Col, Row } from '@douyinfe/semi-ui';
+import { Layout, Col, Row } from 'antd';
 import s from './index.module.scss';
 import Logo from '@/components/logo';
 

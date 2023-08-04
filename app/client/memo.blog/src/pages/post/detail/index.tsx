@@ -5,7 +5,7 @@ import Navigation from '../components/navigation';
 import Comment from '../components/comment';
 import s from './index.module.scss';
 import MarkDownFile from '@/assets/md/test-code.md';
-import { Tag, Space } from '@douyinfe/semi-ui';
+import { Tag, Space } from 'antd';
 import { CommentType } from '../data';
 
 const PostDetail = () => {
@@ -60,19 +60,15 @@ const PostDetail = () => {
       <div className={s.postHeader}>
         <div className={s.postTitle}>{data.title}</div>
         <Space wrap>
-          <Tag color="indigo" size="large">
-            作者：{data.author}
-          </Tag>
-          <Tag color="indigo" size="large">
-            时间：{data.date}
-          </Tag>
+          <Tag color="indigo">作者：{data.author}</Tag>
+          <Tag color="indigo">时间：{data.date}</Tag>
         </Space>
         <div className={s.postDesc}>{data.desc}</div>
       </div>
       <div className={s.postContent}>
         <Space wrap>
           {data.tags.map((item) => (
-            <Tag color="light-green" key={item} size="large">
+            <Tag color="light-green" key={item}>
               {item}
             </Tag>
           ))}

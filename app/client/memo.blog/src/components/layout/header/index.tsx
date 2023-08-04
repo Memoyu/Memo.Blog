@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Layout } from '@douyinfe/semi-ui';
+import { Layout } from 'antd';
 import { motion } from 'framer-motion';
 import s from './index.module.scss';
 
@@ -24,7 +24,7 @@ const CustHeader: FC = () => {
   if (pathname === '/404' || pathname === '/_not-found') pathname = '/';
   // console.log('p', pathname);
   return (
-    <Header className={s.header}>
+    <Header style={{ background: 'none' }} className={s.header}>
       <div className={s.headerNav}>
         {items.map((item, index) => (
           <NavLink to={item.to} key={index}>

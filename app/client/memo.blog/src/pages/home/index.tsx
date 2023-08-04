@@ -1,4 +1,4 @@
-import { Image } from '@douyinfe/semi-ui';
+import { Image } from 'antd';
 import { motion } from 'framer-motion';
 import s from './index.module.scss';
 
