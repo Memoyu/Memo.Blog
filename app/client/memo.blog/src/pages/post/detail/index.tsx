@@ -52,6 +52,78 @@ const PostDetail = () => {
       content: '这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚',
       date: '2023-07-31 23:19',
       sort: 3
+    },
+    {
+      id: 4,
+      isAutor: true,
+      name: '小红',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=904703312&s=100',
+      content: '这是回复红这是回复这是回复这是回复这是回复这是回复这是回复',
+      date: '2023-07-31 23:19',
+      sort: 4
+    },
+    {
+      id: 5,
+      isAutor: false,
+      name: '小刚',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=904703317&s=100',
+      content: '这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚',
+      date: '2023-07-31 23:19',
+      sort: 5
+    },
+    {
+      id: 6,
+      isAutor: true,
+      name: '小红',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=904703312&s=100',
+      content: '这是回复红这是回复这是回复这是回复这是回复这是回复这是回复',
+      date: '2023-07-31 23:19',
+      sort: 6
+    },
+    {
+      id: 7,
+      isAutor: false,
+      name: '小刚',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=904703317&s=100',
+      content: '这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚',
+      date: '2023-07-31 23:19',
+      sort: 7
+    },
+    {
+      id: 8,
+      isAutor: true,
+      name: '小红',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=904703312&s=100',
+      content: '这是回复红这是回复这是回复这是回复这是回复这是回复这是回复',
+      date: '2023-07-31 23:19',
+      sort: 8
+    },
+    {
+      id: 9,
+      isAutor: false,
+      name: '小刚',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=904703317&s=100',
+      content: '这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚',
+      date: '2023-07-31 23:19',
+      sort: 9
+    },
+    {
+      id: 10,
+      isAutor: true,
+      name: '小红',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=904703312&s=100',
+      content: '这是回复红这是回复这是回复这是回复这是回复这是回复这是回复',
+      date: '2023-07-31 23:19',
+      sort: 10
+    },
+    {
+      id: 11,
+      isAutor: false,
+      name: '小刚',
+      avatar: 'https://q1.qlogo.cn/g?b=qq&nk=904703317&s=100',
+      content: '这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚这我是小刚',
+      date: '2023-07-31 23:19',
+      sort: 11
     }
   ];
 

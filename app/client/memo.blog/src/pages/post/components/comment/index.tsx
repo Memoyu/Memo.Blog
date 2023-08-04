@@ -11,9 +11,11 @@ type Props = {
 
 const Comment: React.FC<Props> = ({ comments }) => {
   return (
-    <div>
+    <div className={s.commentBox}>
       <div className={s.divider} />
-      <CommentList comments={comments} />
+      <div className={s.commentList}>
+        <CommentList comments={comments} />
+      </div>
       <CommentEdit />
     </div>
   );
