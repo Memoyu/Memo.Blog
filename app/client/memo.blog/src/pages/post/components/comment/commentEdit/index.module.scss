@@ -30,12 +30,13 @@ $avatarSize: 40px;
     }
   }
   .commentTextArea {
+    height: 120px;
   }
   .commentBtns {
     display: flex;
     justify-content: space-between;
     border-radius: 7px;
-    margin-top: 5px;
+    margin-top: 20px;
     background-color: #e2e4e4;
     padding: 5px;
     .functionBtns {

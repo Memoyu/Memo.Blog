@@ -58,12 +58,17 @@ const PostDetail = () => {
   return (
     <div className={s.postContainer}>
       <div className={s.postHeader}>
-        <div className={s.postTitle}>{data.title}</div>
-        <Space wrap>
-          <Tag color="indigo">作者：{data.author}</Tag>
-          <Tag color="indigo">时间：{data.date}</Tag>
-        </Space>
-        <div className={s.postDesc}>{data.desc}</div>
+        <div className={s.backgroundImg}>
+          <img src="https://images.unsplash.com/photo-1550613097-fe6c2c321cd3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80" />
+        </div>
+        <div className={s.content}>
+          <div className={s.title}>{data.title}</div>
+          <Space wrap>
+            <Tag color="indigo">作者：{data.author}</Tag>
+            <Tag color="indigo">时间：{data.date}</Tag>
+          </Space>
+          <div className={s.desc}>{data.desc}</div>
+        </div>
       </div>
       <div className={s.postContent}>
         <Space wrap>

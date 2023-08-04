@@ -6,14 +6,15 @@
   justify-content: center;
   position: -webkit-sticky;
   position: sticky;
-  top: 30px;
-  margin-top: 30px;
+  top: 0;
+  z-index: 999;
+  backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(15px);
   .headerNav {
     display: flex;
     align-items: center;
-    // background: url('~@/assets/svg/border.svg');
-    border-radius: 999px;
-    // box-shadow: 0 0 20px rgba(100, 87, 193, 0.2);
+    border-radius: 50%;
     a {
       position: relative;
       text-decoration: none;
@@ -21,7 +22,6 @@
       font-weight: bold;
       padding: 12px 25px;
       transition: 0.1s linear;
-      z-index: 2;
       color: #b84297;
       .active {
         position: absolute;

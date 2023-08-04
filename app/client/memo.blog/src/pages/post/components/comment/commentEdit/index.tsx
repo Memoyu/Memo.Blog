@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Tooltip, Input, Button } from 'antd';
+import React, { Ref, useState } from 'react';
+import { Tooltip, Input, Button, InputRef } from 'antd';
 import { SmileOutlined, FireOutlined, MessageOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import s from './index.module.scss';
@@ -7,9 +7,14 @@ import s from './index.module.scss';
 const { TextArea } = Input;
 
 const CommentEdit: React.FC = () => {
+  const qqInput = React.useRef<InputRef>(null);
   const [avatar, setAvatar] = useState(require('@/assets/images/avatar/default.png'));
   const [avatarSelectVisible, setAvatarSelectVisible] = useState(false);
   const [qq, setQq] = useState('');
+
+  const onAvatarClick = () => {
+    setAvatarSelectVisible(true);
+  };
 
   const onQqInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     setQqAvatar();
@@ -19,6 +24,10 @@ const CommentEdit: React.FC = () => {
   const onQqInputPressEnter = () => {
     setQqAvatar();
     setAvatarSelectVisible(false);
+  };
+
+  const onAvatarSelectOpenChange = () => {
+    qqInput.current?.focus();
   };
 
   const setQqAvatar = () => {
@@ -35,25 +44,28 @@ const CommentEdit: React.FC = () => {
           <div className={s.avatarBox}>
             <Tooltip
               style={{ backgroundColor: 'white' }}
-              trigger="click"
+              //trigger="click"
               open={avatarSelectVisible}
+              onOpenChange={onAvatarSelectOpenChange}
               title={
                 <div>
                   <Input
+                    ref={qqInput}
                     prefix="QQ头像："
+                    autoFocus
                     value={qq}
                     onChange={(e) => setQq(e.target.value)}
                     onBlur={(e) => onQqInputBlur(e)}
                     onPressEnter={onQqInputPressEnter}></Input>
                 </div>
               }>
-              <img className={s.avatar} src={avatar} onClick={() => setAvatarSelectVisible(true)} />
+              <img className={s.avatar} src={avatar} onClick={onAvatarClick} />
             </Tooltip>
           </div>
           <Input className={s.inputInfo} placeholder={'昵称'}></Input>
           <Input className={s.inputInfo} placeholder={'邮箱(选填)'}></Input>
         </div>
-        <TextArea className={s.commentTextArea} maxLength={100} />
+        <TextArea className={s.commentTextArea} maxLength={100} showCount style={{ resize: 'none' }} />
         <div className={s.commentBtns}>
           <div className={s.functionBtns}>
             <Button icon={<SmileOutlined />} aria-label="emoji" />

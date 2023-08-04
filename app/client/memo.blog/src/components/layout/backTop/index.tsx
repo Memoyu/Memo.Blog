@@ -10,12 +10,12 @@ const CustBackTop: FC = () => {
     // justifyContent: 'center',
     // height: 40,
     // width: 40,
-    background: 'linear-gradient(90deg,#6457c1,#b84297)'
+    // background: 'linear-gradient(90deg,#6457c1,#b84297)'
     // color: '#fff',
     // bottom: 80
   };
 
-  return <FloatButton.BackTop type="primary" style={style} visibilityHeight={0} />;
+  return <FloatButton.BackTop style={style} visibilityHeight={0} />;
 };
 
 export default CustBackTop;

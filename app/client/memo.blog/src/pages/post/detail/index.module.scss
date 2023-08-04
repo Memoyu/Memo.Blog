@@ -3,22 +3,36 @@
 .postContainer {
   padding-top: 1.5rem;
   .postHeader {
-    border-radius: 12px;
     position: relative;
-    margin-bottom: -80px;
-    background-color: $secondaryColor;
-    padding: 80px 60px;
-
-    .postTitle {
-      padding-bottom: 1.5rem;
-      font-size: 46px;
-      font-weight: 700;
-      text-shadow: 4px 4px 10px azure;
+    margin-bottom: -130px;
+    padding: 130px 60px;
+    .content {
+      position: relative;
+      .title {
+        padding-bottom: 1.5rem;
+        font-size: 46px;
+        font-weight: 700;
+        color: #ffffff;
+      }
+      .desc {
+        margin: 18px 0;
+        font-size: 17px;
+        color: #ffffff;
+      }
     }
-
-    .postDesc {
-      margin: 18px 0;
-      // font-size: 20px;
+    .backgroundImg {
+      position: absolute;
+      border-radius: 12px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
   }
   .postContent {
