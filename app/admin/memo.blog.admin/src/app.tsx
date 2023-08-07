@@ -1,4 +1,3 @@
-import Footer from '@/components/Footer';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
@@ -62,7 +61,9 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       
       content: initialState?.currentUser?.name,
     },*/
+    /* 关闭页脚
     footerRender: () => <Footer />,
+    */
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
