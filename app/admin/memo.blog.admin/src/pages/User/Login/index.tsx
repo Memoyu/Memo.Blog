@@ -16,11 +16,11 @@ import {
   ProFormText,
 } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { history, useModel, Helmet } from '@umijs/max';
+import { Helmet, history, useModel } from '@umijs/max';
 import { Alert, message, Tabs } from 'antd';
-import Settings from '../../../../config/defaultSettings';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
+import Settings from '../../../../config/defaultSettings';
 const ActionIcons = () => {
   const langClassName = useEmotionCss(({ token }) => {
     return {

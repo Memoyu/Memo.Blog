@@ -57,10 +57,11 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
     },
+    /* 关闭水印
     waterMarkProps: {
-      // 水印
-      //content: initialState?.currentUser?.name,
-    },
+      
+      content: initialState?.currentUser?.name,
+    },*/
     footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
@@ -89,6 +90,20 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       //   width: '331px',
       // },
     ],
+    /* 配置二级菜单图标显示（未能成功）
+    menuItemRender: (menuItemProps, defaultDom) => {
+      if (menuItemProps.isUrl || !menuItemProps.path) {
+        return defaultDom;
+      }
+      return (
+        <Link to={menuItemProps.path}>
+          {menuItemProps.pro_layout_parentKeys &&
+            menuItemProps.pro_layout_parentKeys.length > 0 &&
+            menuItemProps.icon}
+          {defaultDom}
+        </Link>
+      );
+    },*/
     menuHeaderRender: undefined,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,
