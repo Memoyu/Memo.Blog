@@ -1,16 +1,11 @@
-export type TableListItem = {
-  key: number;
-  disabled?: boolean;
-  href: string;
-  avatar: string;
-  name: string;
-  owner: string;
-  desc: string;
-  callNo: number;
-  status: string;
+export type PostItem = {
+  id: number;
+  title: string;
+  category: Category;
+  tags: Array<PostTag>;
+  status: number;
   updatedAt: Date;
   createdAt: Date;
-  progress: number;
 };
 
 export type TableListPagination = {
@@ -20,8 +15,18 @@ export type TableListPagination = {
 };
 
 export type TableListData = {
-  list: TableListItem[];
+  list: PostItem[];
   pagination: Partial<TableListPagination>;
+};
+
+export type Category = {
+  id: number;
+  Name: string;
+};
+
+export type PostTag = {
+  id: number;
+  Name: string;
 };
 
 export type TableListParams = {

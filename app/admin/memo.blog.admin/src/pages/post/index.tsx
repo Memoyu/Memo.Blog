@@ -7,10 +7,10 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
-import type { TableListItem, TableListPagination } from './data';
+import type { PostItem, TableListPagination } from './data';
 import { addRule, removeRule, rule, updateRule } from './service';
 
-const handleAdd = async (fields: TableListItem) => {
+const handleAdd = async (fields: PostItem) => {
   const hide = message.loading('正在添加');
 
   try {
@@ -30,7 +30,7 @@ const handleAdd = async (fields: TableListItem) => {
  * @param fields
  */
 
-const handleUpdate = async (fields: FormValueType, currentRow?: TableListItem) => {
+const handleUpdate = async (fields: FormValueType, currentRow?: PostItem) => {
   const hide = message.loading('正在配置');
 
   try {
@@ -53,7 +53,7 @@ const handleUpdate = async (fields: FormValueType, currentRow?: TableListItem) =
  * @param selectedRows
  */
 
-const handleRemove = async (selectedRows: TableListItem[]) => {
+const handleRemove = async (selectedRows: PostItem[]) => {
   const hide = message.loading('正在删除');
   if (!selectedRows) return true;
 
@@ -75,14 +75,13 @@ const Post: React.FC = () => {
   /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   /** 分布更新窗口的弹窗 */
-
   const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<TableListItem>();
-  const [selectedRowsState, setSelectedRows] = useState<TableListItem[]>([]);
+  const [currentRow, setCurrentRow] = useState<PostItem>();
+  const [selectedRowsState, setSelectedRows] = useState<PostItem[]>([]);
 
-  const columns: ProColumns<TableListItem>[] = [
+  const columns: ProColumns<PostItem>[] = [
     {
       title: '序号',
       dataIndex: 'id',
@@ -98,6 +97,10 @@ const Post: React.FC = () => {
     {
       title: '标签',
       dataIndex: 'desc',
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
     },
     {
       title: '创建时间',
@@ -128,7 +131,7 @@ const Post: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<TableListItem, TableListPagination>
+      <ProTable<PostItem, TableListPagination>
         headerTitle="文章列表"
         actionRef={actionRef}
         rowKey="key"
@@ -191,7 +194,7 @@ const Post: React.FC = () => {
         visible={createModalVisible}
         onVisibleChange={handleModalVisible}
         onFinish={async (value) => {
-          const success = await handleAdd(value as TableListItem);
+          const success = await handleAdd(value as PostItem);
           if (success) {
             handleModalVisible(false);
             if (actionRef.current) {
@@ -243,7 +246,7 @@ const Post: React.FC = () => {
         closable={false}
       >
         {currentRow?.name && (
-          <ProDescriptions<TableListItem>
+          <ProDescriptions<PostItem>
             column={2}
             title={currentRow?.name}
             request={async () => ({
@@ -252,7 +255,7 @@ const Post: React.FC = () => {
             params={{
               id: currentRow?.name,
             }}
-            columns={columns as ProDescriptionsItemProps<TableListItem>[]}
+            columns={columns as ProDescriptionsItemProps<PostItem>[]}
           />
         )}
       </Drawer>
