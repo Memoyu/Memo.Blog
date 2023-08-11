@@ -2,40 +2,27 @@ export type PostItem = {
   id: number;
   title: string;
   category: Category;
-  tags: Array<PostTag>;
+  tags: PostTag[];
   status: number;
   updatedAt: Date;
   createdAt: Date;
 };
 
-export type TableListPagination = {
-  total: number;
-  pageSize: number;
-  current: number;
-};
-
-export type TableListData = {
-  list: PostItem[];
-  pagination: Partial<TableListPagination>;
-};
-
 export type Category = {
   id: number;
-  Name: string;
+  name: string;
 };
 
 export type PostTag = {
   id: number;
-  Name: string;
+  name: string;
 };
 
-export type TableListParams = {
+export type PostListParams = {
+  title?: string;
+  category?: number;
+  tags?: number[];
   status?: string;
-  name?: string;
-  desc?: string;
-  key?: number;
-  pageSize?: number;
-  currentPage?: number;
-  filter?: Record<string, any[]>;
-  sorter?: Record<string, any>;
+  current?: number;
+  pageIndex?: number;
 };

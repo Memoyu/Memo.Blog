@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import s from './index.less';
 
 export const PostCategory: React.FC = () => {
-  const [title, setTitle] = useState<boolean>('分类管理');
+  const [title, setTitle] = useState<string>('分类管理');
   return (
     <div>
       {title}

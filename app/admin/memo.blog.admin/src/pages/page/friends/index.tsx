@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import s from './index.less';
 
 export const Friends: React.FC = () => {
-  const [title, setTitle] = useState<boolean>('友链管理');
+  const [title, setTitle] = useState<string>('友链管理');
   return (
     <div>
       {title}

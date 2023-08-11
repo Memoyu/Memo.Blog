@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 
 import s from './index.less';
 
-export const User: React.FC = () => {
-  const [title, setTitle] = useState<string>('用户管理');
+export const PostEdit: React.FC = () => {
+  const [title, setTitle] = useState<string>('文章编辑');
   return (
     <div>
       {title}
@@ -13,4 +13,4 @@ export const User: React.FC = () => {
   );
 };
 
-export default User;
+export default PostEdit;

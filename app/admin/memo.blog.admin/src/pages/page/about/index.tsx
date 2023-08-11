@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import s from './index.less';
 
 export const About: React.FC = () => {
-  const [title, setTitle] = useState<boolean>('关于信息');
+  const [title, setTitle] = useState<string>('关于信息');
   return (
     <div>
       {title}

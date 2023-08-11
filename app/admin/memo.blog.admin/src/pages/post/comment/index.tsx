@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import s from './index.less';
 
 export const PostComment: React.FC = () => {
-  const [title, setTitle] = useState<boolean>('评论管理');
+  const [title, setTitle] = useState<string>('评论管理');
   return (
     <div>
       {title}

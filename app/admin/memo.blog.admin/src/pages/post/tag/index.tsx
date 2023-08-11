@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import s from './index.less';
 
 export const PostTag: React.FC = () => {
-  const [title, setTitle] = useState<boolean>('标签管理');
+  const [title, setTitle] = useState<string>('标签管理');
   return (
     <div>
       {title}

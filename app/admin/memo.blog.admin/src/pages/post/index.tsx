@@ -5,16 +5,16 @@ import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Drawer, message } from 'antd';
+import { Button, Drawer, message, Space, Tag } from 'antd';
 import React, { useRef, useState } from 'react';
-import type { PostItem, TableListPagination } from './data';
-import { addRule, removeRule, rule, updateRule } from './service';
+import type { PostItem, PostTag } from './data';
+import { post } from './service';
 
 const handleAdd = async (fields: PostItem) => {
   const hide = message.loading('正在添加');
 
   try {
-    await addRule({ ...fields });
+    // await addRule({ ...fields });
     hide();
     message.success('添加成功');
     return true;
@@ -34,10 +34,10 @@ const handleUpdate = async (fields: FormValueType, currentRow?: PostItem) => {
   const hide = message.loading('正在配置');
 
   try {
-    await updateRule({
-      ...currentRow,
-      ...fields,
-    });
+    // await updateRule({
+    //   ...currentRow,
+    //   ...fields,
+    // });
     hide();
     message.success('配置成功');
     return true;
@@ -58,9 +58,9 @@ const handleRemove = async (selectedRows: PostItem[]) => {
   if (!selectedRows) return true;
 
   try {
-    await removeRule({
-      key: selectedRows.map((row) => row.key),
-    });
+    // await removeRule({
+    //   key: selectedRows.map((row) => row.key),
+    // });
     hide();
     message.success('删除成功，即将刷新');
     return true;
@@ -74,8 +74,6 @@ const handleRemove = async (selectedRows: PostItem[]) => {
 const Post: React.FC = () => {
   /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
-  /** 分布更新窗口的弹窗 */
-  const [updateModalVisible, handleUpdateModalVisible] = useState<boolean>(false);
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<PostItem>();
@@ -92,15 +90,39 @@ const Post: React.FC = () => {
     },
     {
       title: '分类',
-      dataIndex: 'desc',
+      dataIndex: 'category',
+      render: (_, post) => <div>{post.category.name}</div>,
     },
     {
       title: '标签',
-      dataIndex: 'desc',
+      dataIndex: 'tags',
+      render: (_, post) => (
+        <Space size={[1, 4]} wrap>
+          {post.tags.map((tag: PostTag) => (
+            <Tag key={tag.id}>{tag.name}</Tag>
+          ))}
+        </Space>
+      ),
     },
     {
       title: '状态',
       dataIndex: 'status',
+      valueType: 'select',
+      valueEnum: {
+        0: {
+          text: '草稿箱',
+          status: 'Processing',
+        },
+        1: {
+          text: '已发布',
+          status: 'Success',
+        },
+        2: {
+          text: '已删除',
+          status: 'Error',
+          disabled: true,
+        },
+      },
     },
     {
       title: '创建时间',
@@ -119,10 +141,16 @@ const Post: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, post) => [
-        <Button type="link" block>
+        <Button
+          key="edit"
+          type="link"
+          onClick={() => {
+            console.log(post);
+          }}
+        >
           编辑
         </Button>,
-        <Button type="link" danger>
+        <Button type="link" key="delete" danger>
           删除
         </Button>,
       ],
@@ -131,10 +159,10 @@ const Post: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<PostItem, TableListPagination>
+      <ProTable<PostItem>
         headerTitle="文章列表"
         actionRef={actionRef}
-        rowKey="key"
+        rowKey="id"
         search={{
           labelWidth: 120,
         }}
@@ -149,7 +177,7 @@ const Post: React.FC = () => {
             <PlusOutlined /> 新建
           </Button>,
         ]}
-        request={rule}
+        request={post}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
@@ -170,9 +198,7 @@ const Post: React.FC = () => {
                 {selectedRowsState.length}
               </a>{' '}
               项 &nbsp;&nbsp;
-              <span>
-                服务调用次数总计 {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)} 万
-              </span>
+              <span>服务调用次数总计</span>
             </div>
           }
         >
@@ -215,27 +241,6 @@ const Post: React.FC = () => {
         />
         <ProFormTextArea width="md" name="desc" />
       </ModalForm>
-      {/* <UpdateForm
-        onSubmit={async (value) => {
-          const success = await handleUpdate(value, currentRow);
-
-          if (success) {
-            handleUpdateModalVisible(false);
-            setCurrentRow(undefined);
-
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-        onCancel={() => {
-          handleUpdateModalVisible(false);
-          setCurrentRow(undefined);
-        }}
-        updateModalVisible={updateModalVisible}
-        values={currentRow || {}}
-      /> */}
-
       <Drawer
         width={600}
         visible={showDetail}
@@ -245,15 +250,15 @@ const Post: React.FC = () => {
         }}
         closable={false}
       >
-        {currentRow?.name && (
+        {currentRow?.title && (
           <ProDescriptions<PostItem>
             column={2}
-            title={currentRow?.name}
+            title={currentRow?.title}
             request={async () => ({
               data: currentRow || {},
             })}
             params={{
-              id: currentRow?.name,
+              id: currentRow?.title,
             }}
             columns={columns as ProDescriptionsItemProps<PostItem>[]}
           />
