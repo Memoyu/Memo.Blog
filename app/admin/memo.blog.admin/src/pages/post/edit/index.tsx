@@ -1,14 +1,17 @@
-import { Button } from 'antd';
+import { MdEditor } from 'md-editor-rt';
+import 'md-editor-rt/lib/style.css';
 import React, { useState } from 'react';
-
-import s from './index.less';
+import { useRequest } from 'umi';
+import { PostDetail } from './data';
+import { postDetail } from './service';
 
 export const PostEdit: React.FC = () => {
-  const [title, setTitle] = useState<string>('文章编辑');
+  const { data } = useRequest<{ data: PostDetail }>(postDetail);
+  const [content, setContent] = useState(data?.content || '');
+
   return (
     <div>
-      {title}
-      <Button className={s.styles}>按钮</Button>
+      <MdEditor modelValue={content} onChange={setContent} />
     </div>
   );
 };
