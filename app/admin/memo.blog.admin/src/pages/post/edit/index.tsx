@@ -6,12 +6,47 @@ import { PostDetail } from './data';
 import { postDetail } from './service';
 
 export const PostEdit: React.FC = () => {
-  const { data } = useRequest<{ data: PostDetail }>(postDetail);
-  const [content, setContent] = useState(data?.content || '');
+  const [content, setContent] = useState('');
+  const [toolbars] = useState([
+    'bold',
+    'underline',
+    'italic',
+    '-',
+    'strikeThrough',
+    'sub',
+    'sup',
+    'quote',
+    'unorderedList',
+    'orderedList',
+    'task',
+    '-',
+    'codeRow',
+    'code',
+    'link',
+    'image',
+    'table',
+    'mermaid',
+    'katex',
+    '-',
+    'revoke',
+    'next',
+    'save',
+    '=',
+    'pageFullscreen',
+    'fullscreen',
+    'preview',
+    'htmlPreview',
+    'catalog',
+  ]);
+  useRequest<{ data: PostDetail }>(postDetail, {
+    onSuccess: (data) => {
+      setContent(data.content);
+    },
+  });
 
   return (
     <div>
-      <MdEditor modelValue={content} onChange={setContent} />
+      <MdEditor modelValue={content} toolbars={toolbars} onChange={setContent} />
     </div>
   );
 };

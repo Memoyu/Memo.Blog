@@ -7,6 +7,7 @@ import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, Drawer, message, Space, Tag } from 'antd';
 import React, { useRef, useState } from 'react';
+import { history } from 'umi';
 import type { PostItem, PostTag } from './data';
 import { post } from './service';
 
@@ -145,7 +146,7 @@ const Post: React.FC = () => {
           key="edit"
           type="link"
           onClick={() => {
-            console.log(post);
+            history.push(`/post/edit/${post.id}`);
           }}
         >
           编辑

@@ -54,7 +54,7 @@
     "antd": "^5.2.2",
     "classnames": "^2.3.2",
     "lodash": "^4.17.21",
-    "md-editor-rt": "^4.2.2",
+    "md-editor-rt": "^4.3.0",
     "moment": "^2.29.4",
     "omit.js": "^2.0.2",
     "rc-menu": "^9.8.2",
