@@ -33,8 +33,8 @@ export default [
     name: '日志管理',
     icon: 'crown',
     routes: [
-      { name: '系统日志', icon: 'smile', path: '/log/system', component: './log/system' },
-      { name: '访问日志', icon: 'smile', path: '/log/access', component: './log/access' },
+      { name: '系统日志', icon: 'smile', path: '/logger/system', component: './logger/system' },
+      { name: '访问日志', icon: 'smile', path: '/logger/access', component: './logger/access' },
     ],
   },
   { path: '/', redirect: '/dashboard' },
