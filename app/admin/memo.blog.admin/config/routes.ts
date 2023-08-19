@@ -23,10 +23,10 @@ export default [
     ],
   },
   {
-    path: '/user',
+    path: '/users',
     name: '用户管理',
     icon: 'crown',
-    routes: [{ name: '用户管理', icon: 'smile', path: '/user/list', component: './user' }],
+    routes: [{ name: '用户管理', icon: 'smile', path: '/users/list', component: './users' }],
   },
   {
     path: '/log',
@@ -38,6 +38,6 @@ export default [
     ],
   },
   { path: '/', redirect: '/dashboard' },
-  { name: '登录', layout: false, path: '/user/login', component: './user/login' },
+  { name: '登录', layout: false, path: '/users/login', component: './users/login' },
   { path: '*', layout: false, component: './noFound' },
 ];
