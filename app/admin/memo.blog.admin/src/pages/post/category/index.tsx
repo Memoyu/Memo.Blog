@@ -1,35 +1,62 @@
 import { PlusOutlined } from '@ant-design/icons';
-import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
-import ProDescriptions from '@ant-design/pro-descriptions';
-import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
+import { ModalForm, ProFormText } from '@ant-design/pro-form';
 import { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
-import type { ProColumns } from '@ant-design/pro-table';
+import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, Drawer, Space, Tag } from 'antd';
-import React, { useState } from 'react';
+import { Button, message } from 'antd';
+import React, { useRef, useState } from 'react';
+import { CategoryItem } from './data';
+import { category } from './service';
 
-import s from './index.less';
+const handleAdd = async (fields: CategoryItem) => {
+  const hide = message.loading('正在添加');
+
+  try {
+    // await addRule({ ...fields });
+    hide();
+    message.success('添加成功');
+    return true;
+  } catch (error) {
+    hide();
+    message.error('添加失败请重试！');
+    return false;
+  }
+};
+
+const handleRemove = async (selectedRows: CategoryItem[]) => {
+  const hide = message.loading('正在删除');
+  if (!selectedRows) return true;
+
+  try {
+    // await removeRule({
+    //   key: selectedRows.map((row) => row.key),
+    // });
+    hide();
+    message.success('删除成功，即将刷新');
+    return true;
+  } catch (error) {
+    hide();
+    message.error('删除失败，请重试');
+    return false;
+  }
+};
 
 export const PostCategory: React.FC = () => {
- /** 新建窗口的弹窗 */
- const [createModalVisible, handleModalVisible] = useState<boolean>(false);
- const actionRef = useRef<ActionType>();
+  /** 新建窗口的弹窗 */
+  const [createModalVisible, handleModalVisible] = useState<boolean>(false);
+  const actionRef = useRef<ActionType>();
+  const [showDetail, setShowDetail] = useState<boolean>(false);
+  const [currentRow, setCurrentRow] = useState<CategoryItem>();
+  const [selectedRowsState, setSelectedRows] = useState<CategoryItem[]>([]);
 
-  const [title, setTitle] = useState<string>('分类管理');
-
-  const columns: ProColumns<PostItem>[] = [
+  const columns: ProColumns<CategoryItem>[] = [
     {
       title: '序号',
       dataIndex: 'id',
     },
     {
-      title: '标题',
-      dataIndex: 'title',
-    },
-    {
-      title: '分类',
-      dataIndex: 'category',
-      render: (_, post) => <div>{post.category.name}</div>,
+      title: '名称',
+      dataIndex: 'name',
     },
     {
       title: '状态',
@@ -37,17 +64,13 @@ export const PostCategory: React.FC = () => {
       valueType: 'select',
       valueEnum: {
         0: {
-          text: '草稿箱',
-          status: 'Processing',
-        },
-        1: {
-          text: '已发布',
-          status: 'Success',
-        },
-        2: {
           text: '已删除',
           status: 'Error',
           disabled: true,
+        },
+        1: {
+          text: '使用中',
+          status: 'Success',
         },
       },
     },
@@ -67,11 +90,12 @@ export const PostCategory: React.FC = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, post) => [
+      render: (_, category) => [
         <Button
           key="edit"
           type="link"
           onClick={() => {
+            handleModalVisible(true);
           }}
         >
           编辑
@@ -84,13 +108,13 @@ export const PostCategory: React.FC = () => {
   ];
 
   return (
-       <PageContainer>
-      <ProTable<PostItem>
-        headerTitle="文章列表"
+    <PageContainer>
+      <ProTable<CategoryItem>
+        headerTitle="文章分类"
         actionRef={actionRef}
         rowKey="id"
         search={{
-          labelWidth: 120,
+          labelWidth: 80,
         }}
         toolBarRender={() => [
           <Button
@@ -103,7 +127,7 @@ export const PostCategory: React.FC = () => {
             <PlusOutlined /> 新建
           </Button>,
         ]}
-        request={post}
+        request={category}
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
@@ -137,16 +161,15 @@ export const PostCategory: React.FC = () => {
           >
             批量删除
           </Button>
-          <Button type="primary">批量审批</Button>
         </FooterToolbar>
       )}
       <ModalForm
-        title="新建规则"
+        title="新建分类"
         width="400px"
-        visible={createModalVisible}
-        onVisibleChange={handleModalVisible}
+        open={createModalVisible}
+        onOpenChange={handleModalVisible}
         onFinish={async (value) => {
-          const success = await handleAdd(value as PostItem);
+          const success = await handleAdd(value as CategoryItem);
           if (success) {
             handleModalVisible(false);
             if (actionRef.current) {
@@ -159,37 +182,13 @@ export const PostCategory: React.FC = () => {
           rules={[
             {
               required: true,
-              message: '规则名称为必填项',
+              message: '请输入分类名称',
             },
           ]}
           width="md"
           name="name"
         />
-        <ProFormTextArea width="md" name="desc" />
       </ModalForm>
-      <Drawer
-        width={600}
-        visible={showDetail}
-        onClose={() => {
-          setCurrentRow(undefined);
-          setShowDetail(false);
-        }}
-        closable={false}
-      >
-        {currentRow?.title && (
-          <ProDescriptions<PostItem>
-            column={2}
-            title={currentRow?.title}
-            request={async () => ({
-              data: currentRow || {},
-            })}
-            params={{
-              id: currentRow?.title,
-            }}
-            columns={columns as ProDescriptionsItemProps<PostItem>[]}
-          />
-        )}
-      </Drawer>
     </PageContainer>
   );
 };

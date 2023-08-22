@@ -58,7 +58,7 @@ module.exports = {
         createdAt: '2022-12-08T05:00:57.040Z',
       },
     ],
-    total: 1000,
+    total: 10,
     success: true,
     pageSize: 20,
     pageIndex: 1,

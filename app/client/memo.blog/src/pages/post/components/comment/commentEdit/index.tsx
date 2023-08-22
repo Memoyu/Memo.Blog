@@ -65,7 +65,7 @@ const CommentEdit: React.FC = () => {
           <Input className={s.inputInfo} placeholder={'昵称'}></Input>
           <Input className={s.inputInfo} placeholder={'邮箱(选填)'}></Input>
         </div>
-        <TextArea className={s.commentTextArea} maxLength={100} showCount style={{ resize: 'none' }} />
+        <TextArea bordered={false} className={s.commentTextArea} maxLength={100} showCount style={{ resize: 'none' }} />
         <div className={s.commentBtns}>
           <div className={s.functionBtns}>
             <Button icon={<SmileOutlined />} aria-label="emoji" />

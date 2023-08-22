@@ -5,7 +5,7 @@ import {
   ProFormTextArea,
   ProFormTreeSelect,
 } from '@ant-design/pro-form';
-import { FooterToolbar } from '@ant-design/pro-layout';
+import { FooterToolbar, PageContainer } from '@ant-design/pro-layout';
 import { Button, Card, Col, Row } from 'antd';
 import { MdEditor } from 'md-editor-rt';
 import 'md-editor-rt/lib/style.css';
@@ -63,7 +63,7 @@ export const PostEdit: React.FC = () => {
   });
 
   return (
-    <div>
+    <PageContainer>
       <ProForm
         layout="vertical"
         submitter={{
@@ -187,7 +187,7 @@ export const PostEdit: React.FC = () => {
           />
         </Card>
       </ProForm>
-    </div>
+    </PageContainer>
   );
 };
 
