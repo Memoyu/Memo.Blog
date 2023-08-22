@@ -5,18 +5,17 @@ export type CommentItem = {
   username: string;
   qq: string;
   github: string;
-  githubId: string;
   ip: string;
   link: string;
-  status: number;
-  post: Post;
+  page: RelationPage;
+  public: boolean;
   updatedAt: Date;
   createdAt: Date;
 };
 
-export type Post = {
-  id: number;
+export type RelationPage = {
   title: string;
+  url: string;
 };
 
 export type CommentListParams = {
