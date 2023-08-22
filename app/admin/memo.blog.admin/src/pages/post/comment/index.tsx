@@ -99,7 +99,7 @@ export const PostComment: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<CommentItem>
-        headerTitle="文章分类"
+        headerTitle="评论列表"
         actionRef={actionRef}
         rowKey="id"
         search={{

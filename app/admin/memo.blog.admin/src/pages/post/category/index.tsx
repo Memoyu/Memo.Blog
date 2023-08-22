@@ -42,7 +42,6 @@ const handleRemove = async (selectedRows: CategoryItem[]) => {
 };
 
 export const PostCategory: React.FC = () => {
-  /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [showDetail, setShowDetail] = useState<boolean>(false);
