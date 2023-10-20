@@ -27,41 +27,6 @@ module.exports = {
       phone: '0752-268888888',
     },
   },
-  // 'GET /api/post/list': {
-  //   data: [
-  //     {
-  //       id: 8213123140,
-  //       title: '这是后端文章的标题',
-  //       category: { id: 232444255, name: '后端开发' },
-  //       tags: [
-  //         { id: 24234234, name: '.NET' },
-  //         { id: 24234235, name: 'C#' },
-  //         { id: 24234236, name: '后端' },
-  //       ],
-  //       status: 2,
-  //       updatedAt: '2022-12-06T05:00:57.040Z',
-  //       createdAt: '2022-12-06T05:00:57.040Z',
-  //     },
-  //     {
-  //       id: 8213123140,
-  //       title: '这是前端文章的标题',
-  //       category: { id: 232444255, name: '前端开发' },
-  //       tags: [
-  //         { id: 24234234, name: 'React' },
-  //         { id: 24234234, name: 'Typescript' },
-  //         { id: 24234235, name: 'Javascript' },
-  //         { id: 24234236, name: '前端' },
-  //       ],
-  //       status: 1,
-  //       updatedAt: '2022-12-07T05:00:57.040Z',
-  //       createdAt: '2022-12-08T05:00:57.040Z',
-  //     },
-  //   ],
-  //   total: 100,
-  //   success: true,
-  //   pageSize: 20,
-  //   current: 1,
-  // },
   'POST /api/login/outLogin': { data: {}, success: true },
   'POST /api/login/account': {
     status: 'ok',

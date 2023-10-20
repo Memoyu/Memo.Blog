@@ -7,7 +7,7 @@ import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDrop
 import { errorConfig } from './requestErrorConfig';
 import { currentUser as queryCurrentUser } from './services/api';
 const isDev = process.env.NODE_ENV === 'development';
-const loginPath = '/user/login';
+const loginPath = '/account/login';
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
