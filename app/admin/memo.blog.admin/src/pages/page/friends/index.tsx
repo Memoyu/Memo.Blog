@@ -66,7 +66,11 @@ export const Friends: React.FC = () => {
       dataIndex: 'desc',
     },
     {
-      title: '描述',
+      title: '链接',
+      dataIndex: 'link',
+    },
+    {
+      title: '访问次数',
       dataIndex: 'views',
     },
 
