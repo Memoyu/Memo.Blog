@@ -20,7 +20,7 @@ jobs:
 
     steps:
     - name: Checkout client project
-    - uses: actions/checkout@v4
+      uses: actions/checkout@v4
       with:
         path: app/client/memo.blog
 
