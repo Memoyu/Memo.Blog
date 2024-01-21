@@ -22,7 +22,6 @@ jobs:
     - name: Checkout client project
       uses: actions/checkout@v4
       with:
-        path: app/client/memo.blog
         sparse-checkout: 'app/client/memo.blog'
         sparse-checkout-cone-mode: false
     - name: List files in the repository
