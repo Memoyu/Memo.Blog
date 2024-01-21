@@ -22,7 +22,7 @@ jobs:
     - name: Checkout client project
       uses: actions/checkout@v4
       with:
-        path: app/client/memo.blog
+        path: Memo.Blog/app/client/memo.blog
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
