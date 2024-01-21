@@ -24,16 +24,15 @@ jobs:
       with:
         sparse-checkout: 'app/client/memo.blog'
         sparse-checkout-cone-mode: false
-    - name: List files in the repository
+
+    - name: Move client app files to root
       run: |
-          pwd
-          ls
-          cd app
-          ls
-          cd client
-          ls
-          cd memo.blog
-          ls
+          ls -lah
+          shopt -s dotglob
+          mv app/client/memo.blog/* .
+          rm -rf app
+          ls -lah
+          
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
