@@ -28,6 +28,11 @@ jobs:
     - name: List files in the repository
       run: |
           ls
+          cd app
+          ls
+          cd client
+          ls
+          cd memo.blog
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
