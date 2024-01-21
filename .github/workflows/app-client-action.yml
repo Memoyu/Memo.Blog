@@ -22,7 +22,7 @@ jobs:
     - name: Checkout client project
       uses: actions/checkout@v4
       with:
-        sparse-checkout: 'app/client/memo.blog'
+        sparse-checkout: 'Memo.Blog/app/client/memo.blog'
         sparse-checkout-cone-mode: false
 
     - name: Use Node.js ${{ matrix.node-version }}
