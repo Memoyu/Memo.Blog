@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FreeSql.Provider.MySql" Version="3.2.810" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Memo.Blog.Application\Memo.Blog.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>
