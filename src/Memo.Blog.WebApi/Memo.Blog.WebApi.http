@@ -1,0 +1,6 @@
+@Memo.Blog.WebApi_HostAddress = http://localhost:5163
+
+GET {{Memo.Blog.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
