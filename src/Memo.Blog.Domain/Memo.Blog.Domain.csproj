@@ -8,10 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="FreeSql.DbContext" Version="3.2.810" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
     <Folder Include="Entities\" />
     <Folder Include="Enums\" />
     <Folder Include="Events\" />
