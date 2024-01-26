@@ -21,7 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Interfaces\Repositories\" />
+    <Folder Include="Common\Interfaces\Data\Repositories\" />
+    <Folder Include="Common\Interfaces\Data\" />
     <Folder Include="Common\Models\" />
     <Folder Include="Common\Security\" />
   </ItemGroup>

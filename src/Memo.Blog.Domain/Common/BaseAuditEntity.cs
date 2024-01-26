@@ -1,8 +1,5 @@
-﻿using System.ComponentModel;
+﻿namespace Memo.Blog.Domain.Common;
 
-namespace Memo.Blog.Domain.Common;
-
-[Index("index_on_sid", nameof(Sid), false)]
 public class BaseEntity
 {
     /// <summary>
@@ -11,14 +8,6 @@ public class BaseEntity
     [Column(IsPrimary = true, IsIdentity = true, Position = 1)]
     [Description("主键Id")]
     public long Id { get; set; }
-
-    /// <summary>
-    /// 业务Id(雪花Id)
-    /// </summary>
-    [Column(Position = 2)]
-    [Description("业务Id")]
-    [Snowflake]
-    public long Sid { get; set; }
 }
 
 public class BaseAuditEntity : BaseEntity

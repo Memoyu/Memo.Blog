@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
     <Folder Include="Enums\" />
     <Folder Include="Events\" />
     <Folder Include="ValueObjects\" />
