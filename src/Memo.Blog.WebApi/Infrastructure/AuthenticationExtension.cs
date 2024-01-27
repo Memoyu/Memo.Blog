@@ -1,92 +1,87 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.DependencyInjection;
+﻿using System.Text;
+using Memo.Blog.Domain.Enums;
+using Memo.Blog.Domain.Primitives;
+using Memo.Blog.Infrastructure.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Memo.Blog.Application.Common.Security;
+
 public static class JwtExtension
 {
-    public static void AddAuthenticationAndAuthorization(this IServiceCollection services)
+    public static void AddAuthenticationAndAuthorization(this IServiceCollection services, IConfiguration configuration)
     {
+        var jwtOptions = configuration.GetRequiredSection("JwtOptions").Get<JwtOptions>() ?? throw new ArgumentNullException("JwtOptions is not null");
+
         services.AddAuthentication(opts =>//认证方式
         {
             opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-       .AddCookie(options =>//Cookie
-       {
-           options.Cookie.SameSite = SameSiteMode.None;
-           options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-           options.Cookie.IsEssential = true;
-       })
-       .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>//配置JWT
-       {
-           options.TokenValidationParameters = new TokenValidationParameters
-           {
-               // 密钥必须匹配
-               ValidateIssuerSigningKey = true,
-               IssuerSigningKey = jsonWebTokenSetting.SecurityKey,
+        }).AddCookie(options =>//Cookie
+        {
+            options.Cookie.SameSite = SameSiteMode.None;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            options.Cookie.IsEssential = true;
+        }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>//配置JWT
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Secret)),
+                ValidateIssuer = true,
+                ValidIssuer = jwtOptions.Issuer,
+                ValidateAudience = true,
+                ValidAudience = jwtOptions.Audience,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
 
-               // 验证Issuer
-               ValidateIssuer = true,
-               ValidIssuer = jsonWebTokenSetting.Issuer,
+            options.Events = new JwtBearerEvents()
+            {
+                OnAuthenticationFailed = context =>
+                {
+                    //Token 过期
+                    if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                    {
+                        context.Response.Headers.Append("Token-Expired", "true");
+                    }
 
-               // 验证Audience
-               ValidateAudience = true,
-               ValidAudience = jsonWebTokenSetting.Audience,
+                    return Task.CompletedTask;
+                },
+                OnChallenge = async context =>
+                {
+                    context.HandleResponse();
 
-               // 验证过期时间
-               ValidateLifetime = true,
+                    string message;
+                    ResultCode code;
 
-               //偏移设置为了0s,用于测试过期策略,完全按照access_token的过期时间策略，默认原本为5分钟
-               ClockSkew = TimeSpan.Zero
-           };
+                    if (context.Error == "invalid_token"
+                        && !string.IsNullOrWhiteSpace(context.ErrorDescription)
+                        && context.ErrorDescription.StartsWith("The token expired at"))//Token过期
+                    {
+                        message = "令牌过期";
+                        code = ResultCode.TokenExpired;
+                    }
+                    else if (context.Error == "invalid_token"
+                        && context.ErrorDescription.IsNullOrEmpty())//Token失效
+                    {
+                        message = "令牌失效";
+                        code = ResultCode.TokenInvalidation;
+                    }
+                    else
+                    {
+                        message = "认证失败，请先登录！";
+                        code = ResultCode.AuthenticationFailure;
+                    }
 
+                    context.Response.ContentType = "application/json";
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    await context.Response.WriteAsync(Result.Failure(message, code).ToString()!);
 
-           //使用Authorize设置为需要登录时，返回json格式数据。
-           options.Events = new JwtBearerEvents()
-           {
-               OnAuthenticationFailed = context =>
-               {
-                   //Token 过期
-                   if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                   {
-                       context.Response.Headers.Append("Token-Expired", "true");
-                   }
-
-                   return Task.CompletedTask;
-               },
-               OnChallenge = async context =>
-               {
-                   //此处代码为终止.Net Core默认的返回类型和数据结果，这个很重要哦
-                   context.HandleResponse();
-
-                   string message;
-                   ServiceResultCode code;
-                   int statusCode = StatusCodes.Status401Unauthorized;
-
-                   if (context.Error == "invalid_token" && context.ErrorDescription.StartsWith("The token expired at"))//Token过期
-                   {
-                       message = "令牌过期";
-                       code = ServiceResultCode.TokenExpired;
-                       statusCode = StatusCodes.Status422UnprocessableEntity;
-                   }
-                   else if (context.Error == "invalid_token" && context.ErrorDescription.IsNullOrEmpty())//Token失效
-                   {
-                       message = "令牌失效";
-                       code = ServiceResultCode.TokenInvalidation;
-                   }
-                   else
-                   {
-                       message = "请先登录 ";
-                       code = ServiceResultCode.AuthenticationFailed;
-                   }
-
-                   context.Response.ContentType = "application/json";
-                   context.Response.StatusCode = statusCode;
-                   await context.Response.WriteAsync(new ServiceResult(code, message).ToString());
-
-               }
-           };
-       });
+                }
+            };
+        });
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Memo.Blog.Application.Common.Interfaces;
+using Memo.Blog.Application.Common.Security;
 using Memo.Blog.WebApi.Services;
 using NSwag;
 using NSwag.Generation.Processors.Security;
@@ -8,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddWebApiServices(this IServiceCollection services)
+    public static IServiceCollection AddWebApiServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<ICurrentUser, CurrentUser>();
 
@@ -18,9 +19,25 @@ public static class DependencyInjection
         {
             var validationRules = provider.GetService<IEnumerable<FluentValidationRule>>();
             var loggerFactory = provider.GetService<ILoggerFactory>();
-
             return new FluentValidationSchemaProcessor(provider, validationRules, loggerFactory);
         });
+
+        // 跨域配置
+        services.AddCors(options =>
+        {
+            var policyName = configuration.GetRequiredSection("CorsPolicy:Name").Get<string>();
+            var policyOrigins = configuration.GetRequiredSection("CorsPolicy:Origins").Get<string>() ?? string.Empty;
+            options.AddPolicy(policyName, builder =>
+            {
+                builder
+                    .WithOrigins(policyOrigins.Split(",", StringSplitOptions.RemoveEmptyEntries).ToArray())
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+        });
+
+        services.AddAuthenticationAndAuthorization(configuration);
 
         services.AddControllers();
         services.AddEndpointsApiExplorer();
