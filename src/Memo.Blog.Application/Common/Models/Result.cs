@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Memo.Blog.Domain.Enums;
 
-namespace Memo.Blog.Domain.Primitives;
+namespace Memo.Blog.Application.Common.Models;
 
 public class Result
 {

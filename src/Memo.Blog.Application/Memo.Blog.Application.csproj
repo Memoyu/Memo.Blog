@@ -20,11 +20,4 @@
     <ProjectReference Include="..\Memo.Blog.Domain\Memo.Blog.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Common\Interfaces\Data\Repositories\" />
-    <Folder Include="Common\Interfaces\Data\" />
-    <Folder Include="Common\Models\" />
-    <Folder Include="Common\Security\" />
-  </ItemGroup>
-
 </Project>

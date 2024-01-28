@@ -13,7 +13,7 @@ public class CurrentUser : ICurrentUser
         _currentPrincipal = httpContextAccessor.HttpContext?.User;
     }
 
-    public long? Id => GetClaimsPrincipalValue<long>();
+    public long? UserId => GetClaimsPrincipalValue<long>();
 
     private T? GetClaimsPrincipalValue<T>()
     {

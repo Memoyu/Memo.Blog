@@ -1,29 +1,25 @@
 ﻿using System.Text;
 using Memo.Blog.Domain.Enums;
-using Memo.Blog.Domain.Primitives;
+using Memo.Blog.Application.Common.Models;
 using Memo.Blog.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Memo.Blog.Application.Common.Interfaces.Identity;
 
 namespace Memo.Blog.Application.Common.Security;
 
 public static class JwtExtension
 {
-    public static void AddAuthenticationAndAuthorization(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services, IConfiguration configuration)
     {
-        var jwtOptions = configuration.GetRequiredSection("JwtOptions").Get<JwtOptions>() ?? throw new ArgumentNullException("JwtOptions is not null");
+        var jwtOptions = configuration.GetValue<JwtOptions>("JwtOptions") ?? throw new ArgumentNullException("JwtOptions is not null");
 
         services.AddAuthentication(opts =>//认证方式
         {
             opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddCookie(options =>//Cookie
-        {
-            options.Cookie.SameSite = SameSiteMode.None;
-            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-            options.Cookie.IsEssential = true;
         }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>//配置JWT
         {
             options.TokenValidationParameters = new TokenValidationParameters
@@ -83,5 +79,9 @@ public static class JwtExtension
                 }
             };
         });
+
+        services.AddScoped<IJwtService, JwtService>();
+
+        return services;
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Memo.Blog.Application.Common.Interfaces;
 
-public class ICurrentUser
+public interface ICurrentUser
 {
-    long? Sid { get; }
+    long? UserId { get; }
 }

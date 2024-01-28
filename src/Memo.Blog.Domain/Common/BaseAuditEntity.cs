@@ -13,11 +13,11 @@ public class BaseEntity
 public class BaseAuditEntity : BaseEntity
 {
     /// <summary>
-    /// 创建人Sid
+    /// 创建人UserId
     /// </summary>
     [Column(Position = -7)]
-    [Description("创建人Sid")]
-    public long CreateUserSid { get; set; }
+    [Description("创建人UserId")]
+    public long CreateUserId { get; set; }
 
     /// <summary>
     /// 创建时间
@@ -27,32 +27,32 @@ public class BaseAuditEntity : BaseEntity
     public DateTime CreateTime { get; set; }
 
     /// <summary>
-    /// 是否删除
+    /// 修改人UserId
     /// </summary>
     [Column(Position = -5)]
-    [Description("是否删除 0 未删除，1 已删除")]
-    public bool IsDeleted { get; set; }
-
-    /// <summary>
-    /// 修改人Sid
-    /// </summary>
-    [Column(Position = -4)]
-    [Description("修改人Sid")]
-    public long? UpdateUserSid { get; set; }
+    [Description("修改人UserId")]
+    public long? UpdateUserId { get; set; }
 
     /// <summary>
     /// 修改时间
     /// </summary>
-    [Column(Position = -3)]
+    [Column(Position = -4)]
     [Description("修改时间")]
     public DateTime? UpdateTime { get; set; }
 
     /// <summary>
-    /// 删除人Sid
+    /// 是否删除
+    /// </summary>
+    [Column(Position = -3)]
+    [Description("是否删除")]
+    public bool IsDeleted { get; set; }
+
+    /// <summary>
+    /// 删除人UserId
     /// </summary>
     [Column(Position = -2)]
-    [Description("删除人Sid")]
-    public long? DeleteUserSid { get; set; }
+    [Description("删除人UserId")]
+    public long? DeleteUserId { get; set; }
 
     /// <summary>
     /// 删除时间

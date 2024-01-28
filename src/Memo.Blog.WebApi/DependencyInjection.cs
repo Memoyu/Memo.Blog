@@ -1,5 +1,7 @@
 ﻿using Memo.Blog.Application.Common.Interfaces;
+using Memo.Blog.Application.Common.Models;
 using Memo.Blog.Application.Common.Security;
+using Memo.Blog.Domain.Constants;
 using Memo.Blog.WebApi.Services;
 using NSwag;
 using NSwag.Generation.Processors.Security;
@@ -11,6 +13,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddWebApiServices(this IServiceCollection services, IConfiguration configuration)
     {
+        // 注册应用配置信息
+        services.Configure<AppSettings>(configuration.GetSection(AppConst.AppSettingSection));
+
         services.AddScoped<ICurrentUser, CurrentUser>();
 
         services.AddHttpContextAccessor();
@@ -25,9 +30,8 @@ public static class DependencyInjection
         // 跨域配置
         services.AddCors(options =>
         {
-            var policyName = configuration.GetRequiredSection("CorsPolicy:Name").Get<string>();
-            var policyOrigins = configuration.GetRequiredSection("CorsPolicy:Origins").Get<string>() ?? string.Empty;
-            options.AddPolicy(policyName, builder =>
+            var policyOrigins = configuration.GetValue<string>("CorsOrigins") ?? string.Empty;
+            options.AddPolicy(AppConst.CorsPolicyName, builder =>
             {
                 builder
                     .WithOrigins(policyOrigins.Split(",", StringSplitOptions.RemoveEmptyEntries).ToArray())
@@ -37,10 +41,13 @@ public static class DependencyInjection
             });
         });
 
+        // 注册授权、认证
         services.AddAuthenticationAndAuthorization(configuration);
 
         services.AddControllers();
         services.AddEndpointsApiExplorer();
+
+        // 注册API文档
         services.AddOpenApiDocument((configure, sp) =>
         {
             configure.Title = "Memo.Blog API";

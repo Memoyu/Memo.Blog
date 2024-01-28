@@ -7,6 +7,8 @@ using Memo.Blog.Domain.Common;
 using FreeSql.DataAnnotations;
 using Memo.Blog.Infrastructure.Data.Orm;
 using Yitter.IdGenerator;
+using Memo.Blog.Application.Common.Interfaces.Identity;
+using Memo.Blog.Infrastructure.Identity;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -43,6 +45,12 @@ public static class DependencyInjection
                 //记录日志
                 //发送短信给负责人
             }
+        };
+
+        // 属性配置
+        fsql.Aop.ConfigEntityProperty += (s, e) => {
+            if (e.Property.PropertyType.IsEnum)
+                e.ModifyResult.MapType = typeof(int);
         };
 
         fsql.Aop.AuditValue += (s, e) =>

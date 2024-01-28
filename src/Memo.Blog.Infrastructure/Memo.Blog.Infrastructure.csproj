@@ -8,14 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="FreeSql.Provider.MySql" Version="3.2.810" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Memo.Blog.Application\Memo.Blog.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\Repositories\" />
   </ItemGroup>
 
 </Project>

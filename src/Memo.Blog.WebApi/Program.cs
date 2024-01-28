@@ -1,3 +1,4 @@
+using Memo.Blog.Domain.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ if (app.Environment.IsDevelopment())
     app.UseOpenApi();
     app.UseSwaggerUi();
 }
+
+app.UseCors(AppConst.CorsPolicyName);
 
 app.UseAuthorization();
 
