@@ -1,21 +1,20 @@
 ﻿using FreeSql;
 using System.Linq.Expressions;
-using Memo.Blog.Application.Common.Interfaces;
-using Memo.Blog.Application.Common.Interfaces.Data.Repositories;
+using Memo.Blog.Application.Common.Interfaces.Persistence.Repositories;
 using Memo.Blog.Domain.Common;
 
-namespace Memo.Blog.Infrastructure.Data.Repositories;
+namespace Memo.Blog.Infrastructure.Persistence.Repositories;
 
 public class BaseAuditRepository<TEntity> : DefaultRepository<TEntity, long>, IBaseAuditRepository<TEntity> where TEntity : class, new()
 {
     /// <summary>
     ///  当前登录人信息
     /// </summary>
-    protected readonly ICurrentUser CurrentUser;
+    protected readonly CurrentUser CurrentUser;
 
-    public BaseAuditRepository(UnitOfWorkManager unitOfWorkManager, ICurrentUser currentUser) : base(unitOfWorkManager?.Orm, unitOfWorkManager)
+    public BaseAuditRepository(UnitOfWorkManager unitOfWorkManager, ICurrentUserProvider currentUserProvider) : base(unitOfWorkManager?.Orm, unitOfWorkManager)
     {
-        CurrentUser = currentUser;
+        CurrentUser = currentUserProvider.GetCurrentUser();
     }
 
     protected void BeforeInsert(TEntity entity)
@@ -23,7 +22,7 @@ public class BaseAuditRepository<TEntity> : DefaultRepository<TEntity, long>, IB
         if (entity is BaseAuditEntity createAudit)
         {
             createAudit.CreateTime = DateTime.Now;
-            createAudit.CreateUserId = CurrentUser.UserId.HasValue ? CurrentUser.UserId.Value : 0;
+            createAudit.CreateUserId = CurrentUser.Id;
         }
 
         BeforeUpdate(entity);
@@ -34,7 +33,7 @@ public class BaseAuditRepository<TEntity> : DefaultRepository<TEntity, long>, IB
         if (entity is BaseAuditEntity updateAudit)
         {
             updateAudit.UpdateTime = DateTime.Now;
-            updateAudit.UpdateUserId = CurrentUser.UserId;
+            updateAudit.UpdateUserId = CurrentUser.Id;
         }
     }
 
@@ -43,7 +42,7 @@ public class BaseAuditRepository<TEntity> : DefaultRepository<TEntity, long>, IB
         if (entity is BaseAuditEntity deleteAudit)
         {
             deleteAudit.IsDeleted = true;
-            deleteAudit.DeleteUserId = CurrentUser.UserId;
+            deleteAudit.DeleteUserId = CurrentUser.Id;
             deleteAudit.DeleteTime = DateTime.Now;
         }
     }

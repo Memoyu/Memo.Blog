@@ -3,6 +3,6 @@
 namespace Memo.Blog.WebApi.Controllers;
 
 [ApiController]
-public abstract class ApiControllerBase : ControllerBase
+public abstract class ApiController : ControllerBase
 {
 }

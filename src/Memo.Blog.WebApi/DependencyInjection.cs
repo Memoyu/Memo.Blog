@@ -1,51 +1,36 @@
-﻿using Memo.Blog.Application.Common.Interfaces;
-using Memo.Blog.Application.Common.Models;
-using Memo.Blog.Application.Common.Security;
-using Memo.Blog.Domain.Constants;
-using Memo.Blog.WebApi.Services;
+﻿using Memo.Blog.Domain.Constants;
 using NSwag;
 using NSwag.Generation.Processors.Security;
 using ZymLabs.NSwag.FluentValidation;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Memo.Blog.WebApi;
 
 public static class DependencyInjection
 {
     public static IServiceCollection AddWebApiServices(this IServiceCollection services, IConfiguration configuration)
     {
-        // 注册应用配置信息
-        services.Configure<AppSettings>(configuration.GetSection(AppConst.AppSettingSection));
-
-        services.AddScoped<ICurrentUser, CurrentUser>();
-
         services.AddHttpContextAccessor();
 
+        // 跨域配置
+        services.AddCorsPolicy(configuration);
+
+        services.AddControllers();
+        services.AddEndpointsApiExplorer();
+
+        // Swagger 接口文档
+        services.AddOpenApiDoc();
+
+        return services;
+    }
+
+    private static IServiceCollection AddOpenApiDoc(this IServiceCollection services)
+    {
         services.AddScoped(provider =>
         {
             var validationRules = provider.GetService<IEnumerable<FluentValidationRule>>();
             var loggerFactory = provider.GetService<ILoggerFactory>();
             return new FluentValidationSchemaProcessor(provider, validationRules, loggerFactory);
         });
-
-        // 跨域配置
-        services.AddCors(options =>
-        {
-            var policyOrigins = configuration.GetValue<string>("CorsOrigins") ?? string.Empty;
-            options.AddPolicy(AppConst.CorsPolicyName, builder =>
-            {
-                builder
-                    .WithOrigins(policyOrigins.Split(",", StringSplitOptions.RemoveEmptyEntries).ToArray())
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-            });
-        });
-
-        // 注册授权、认证
-        services.AddAuthenticationAndAuthorization(configuration);
-
-        services.AddControllers();
-        services.AddEndpointsApiExplorer();
 
         // 注册API文档
         services.AddOpenApiDocument((configure, sp) =>
@@ -67,6 +52,24 @@ public static class DependencyInjection
             });
 
             configure.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+        });
+
+        return services;
+    }
+
+    private static IServiceCollection AddCorsPolicy(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddCors(options =>
+        {
+            var policyOrigins = configuration.GetValue<string>("CorsOrigins") ?? string.Empty;
+            options.AddPolicy(AppConst.CorsPolicyName, builder =>
+            {
+                builder
+                    .WithOrigins(policyOrigins.Split(",", StringSplitOptions.RemoveEmptyEntries).ToArray())
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
         });
 
         return services;

@@ -1,52 +1,40 @@
-﻿using Memo.Blog.Application.Common.Interfaces.Identity;
-using Memo.Blog.Application.Common.Security;
-using Memo.Blog.Domain.Entities;
-using Microsoft.Extensions.Configuration;
+﻿using System.IdentityModel.Tokens.Jwt;
+using Memo.Blog.Application.Security;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 
-namespace Memo.Blog.Infrastructure.Identity;
-public class JwtService : IJwtService
+namespace Memo.Blog.Infrastructure.Security.GenerateToken;
+
+public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions) : IJwtTokenGenerator
 {
-    private readonly IConfiguration _configuration;
+    private readonly JwtOptions _jwtOptions = jwtOptions.Value;
 
-    public JwtService(IConfiguration configuration)
+    public JwtTokenDto GenerateToken(User user)
     {
-        _configuration = configuration;
-    }
-
-    public JwtToken GenerateToken(User user)
-    {
-        var jwtOptions = _configuration.GetValue<JwtOptions>("JwtOptions") ?? throw new ArgumentNullException("JwtOptions is not null");
-
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Secret));
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Secret));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim>()
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Nickname),
-            new Claim(JwtRegisteredClaimNames.Jti, user.Username),
-            new Claim(ClaimTypes.Name, user.Username),
             new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+            new Claim(JwtRegisteredClaimNames.Name, user.Username),
+            new(JwtRegisteredClaimNames.Email, user.Email),
         };
 
         var securityToken = new JwtSecurityToken(
-            issuer: jwtOptions.Issuer,
-            audience: jwtOptions.Audience,
+            issuer: _jwtOptions.Issuer,
+            audience: _jwtOptions.Audience,
             claims: claims,
-            expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtOptions.ExpiryInMin)),
+            expires: DateTime.Now.AddMinutes(Convert.ToDouble(_jwtOptions.ExpiryInMin)),
             signingCredentials: signingCredentials);
 
         var accessToken = new JwtSecurityTokenHandler().WriteToken(securityToken);
         string refreshToken = GenerateRefreshToken();
 
-        return new JwtToken { AccessToken = accessToken, RefreshToken = refreshToken };
+        return new JwtTokenDto { AccessToken = accessToken, RefreshToken = refreshToken };
     }
 
-    public JwtToken RefreshToken(User user)
+    public JwtTokenDto RefreshToken(User user)
     {
         if (user is null)
             throw new ArgumentException("用户信息不能为空");

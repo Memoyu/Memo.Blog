@@ -1,6 +1,6 @@
-﻿namespace Memo.Blog.Application.Common.Security;
+﻿namespace Memo.Blog.Application.Security;
 
-public class JwtToken
+public class JwtTokenDto
 {
     public string AccessToken { get; set; } = string.Empty;
 

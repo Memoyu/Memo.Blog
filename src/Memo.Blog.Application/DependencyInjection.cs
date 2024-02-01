@@ -1,11 +1,9 @@
-﻿using FluentValidation;
-using MediatR;
-using Memo.Blog.Application.Common.Behaviours;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using Yitter.IdGenerator;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Memo.Blog.Application;
 
 public static class DependencyInjection
 {
@@ -16,12 +14,15 @@ public static class DependencyInjection
         {
             SeqBitLength = 10
         });
+ 
+        services.Configure<AppSettings>(configuration.GetSection(AppConst.AppSettingSection));
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnitOfWorkBehaviour<,>));

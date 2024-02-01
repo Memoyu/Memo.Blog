@@ -1,7 +1,9 @@
-namespace Memo.Blog.Infrastructure.Identity;
+namespace Memo.Blog.Infrastructure.Security.GenerateToken;
 
 public class JwtOptions
 {
+    public const string Section = "JwtOptions";
+
     /// <summary>
     /// 密钥
     /// </summary>

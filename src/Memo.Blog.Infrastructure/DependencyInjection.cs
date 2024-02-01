@@ -1,99 +1,88 @@
-﻿using FreeSql.Internal;
-using FreeSql;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using System.Reflection;
-using Memo.Blog.Domain.Common;
-using FreeSql.DataAnnotations;
-using Memo.Blog.Infrastructure.Data.Orm;
-using Yitter.IdGenerator;
-using Memo.Blog.Application.Common.Interfaces.Identity;
-using Memo.Blog.Infrastructure.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Memo.Blog.Infrastructure.Persistence;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Memo.Blog.Infrastructure;
 
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        AddFreeSql(services, configuration);
+        services
+            .AddAuthorization() // 注册认证
+            .AddAuthentication(configuration) // 注册授权
+            .AddPersistence(configuration); // 注册持久化组件（FreeSql）
 
         return services;
     }
 
-    private static IServiceCollection AddFreeSql(IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddAuthorization(this IServiceCollection services)
     {
-        IFreeSql fsql = new FreeSqlBuilder()
-          .UseMysqlConnectionString(configuration, true)
-          .UseNameConvert(NameConvertType.PascalCaseToUnderscoreWithLower)
-          .UseAutoSyncStructure(true)
-          .UseNoneCommandParameter(true)
-          .UseMonitorCommand(cmd =>
-          {
-              // Trace.WriteLine(cmd.CommandText + ";");
-          })
-          .Build()
-          .SetDbContextOptions(opt =>
-          {
-              opt.EnableCascadeSave = true;
-          });//联级保存功能开启（默认为关闭）
-
-        fsql.Aop.CurdAfter += (s, e) =>
-        {
-            if (e.ElapsedMilliseconds > 200)
-            {
-                //记录日志
-                //发送短信给负责人
-            }
-        };
-
-        // 属性配置
-        fsql.Aop.ConfigEntityProperty += (s, e) => {
-            if (e.Property.PropertyType.IsEnum)
-                e.ModifyResult.MapType = typeof(int);
-        };
-
-        fsql.Aop.AuditValue += (s, e) =>
-        {
-            if (e.Column.CsType == typeof(long) && e.Property.GetCustomAttribute<SnowflakeAttribute>(false) != null && e.Value?.ToString() == "0")
-                e.Value = YitIdHelper.NextId();
-        };
-
-        // fsql.GlobalFilter.Apply<IDeleteAduitEntity>("IsDeleted", a => a.IsDeleted == false); // 全局过滤字段
-
-        services.AddSingleton(fsql);
-        services.TryAddScoped<UnitOfWorkManager>();
-
-        //在运行时直接生成表结构
-        try
-        {
-            fsql.CodeFirst.SyncStructure(GetTypesByTableAttribute());
-        }
-        catch (Exception ex)
-        {
-            // 异常处理
-        }
+        services.AddScoped<IAuthorizationService, AuthorizationService>();
+        services.AddScoped<ICurrentUserProvider, CurrentUserProvider>();
+        // services.AddSingleton<IPolicyEnforcer, PolicyEnforcer>();
 
         return services;
     }
 
-    private static Type[] GetTypesByTableAttribute()
+    private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        List<Type> tableAssembies = new List<Type>();
-        var types = Assembly.GetAssembly(typeof(BaseEntity))?.GetExportedTypes() ?? [];
-        foreach (Type type in types)
-        {
-            foreach (Attribute attribute in type.GetCustomAttributes())
+        services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.Section));
+
+        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+
+        services
+            .ConfigureOptions<JwtBearerTokenValidationConfiguration>()
+            .AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>//配置JWT
             {
-                if (attribute is TableAttribute tableAttribute)
+                options.Events = new JwtBearerEvents()
                 {
-                    if (tableAttribute.DisableSyncStructure == false)
+                    OnAuthenticationFailed = context =>
                     {
-                        tableAssembies.Add(type);
+                        //Token 过期
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Append("Token-Expired", "true");
+                        }
+
+                        return Task.CompletedTask;
+                    },
+                    OnChallenge = async context =>
+                    {
+                        context.HandleResponse();
+
+                        string message;
+                        ResultCode code;
+
+                        if (context.Error == "invalid_token"
+                            && !string.IsNullOrWhiteSpace(context.ErrorDescription)
+                            && context.ErrorDescription.StartsWith("The token expired at"))//Token过期
+                        {
+                            message = "令牌过期";
+                            code = ResultCode.TokenExpired;
+                        }
+                        else if (context.Error == "invalid_token"
+                            && context.ErrorDescription.IsNullOrEmpty())//Token失效
+                        {
+                            message = "令牌失效";
+                            code = ResultCode.TokenInvalidation;
+                        }
+                        else
+                        {
+                            message = "认证失败，请先登录！";
+                            code = ResultCode.AuthenticationFailure;
+                        }
+
+                        context.Response.ContentType = "application/json";
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        await context.Response.WriteAsync(Result.Failure(message, code).ToString()!);
                     }
-                }
-            }
-        };
-        return tableAssembies.ToArray();
+                };
+            });
+
+        return services;
     }
 }

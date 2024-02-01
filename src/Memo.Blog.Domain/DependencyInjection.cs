@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Extensions.DependencyInjection;
+﻿namespace Memo.Blog.Domain;
 
 public static class DependencyInjection
 {
