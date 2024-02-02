@@ -1,7 +1,5 @@
 ﻿namespace Memo.Blog.Application.Tokens.Queries.Generate;
 
-public record GenerateTokenQuery(string Username, string Password) : IRequest<Result<GenerateTokenResult>>;
-
 public class GenerateTokenHandler(
     IBaseDefaultRepository<User> _userResp,
     IBaseDefaultRepository<UserIdentity> _userIdentityResp,
@@ -14,7 +12,7 @@ public class GenerateTokenHandler(
         if (user is null)
             return Result.Failure<GenerateTokenResult>("用户名或密码错误");
 
-        var identity = await _userIdentityResp.Where(u => u.UserId == user.UserId).FirstAsync() ;
+        var identity = await _userIdentityResp.Where(u => u.UserId == user.UserId).FirstAsync();
         if (identity is null)
             return Result.Failure<GenerateTokenResult>("用户名或密码错误");
 
@@ -25,4 +23,3 @@ public class GenerateTokenHandler(
         return Result.Success(new GenerateTokenResult(user.UserId, user.Username, token.AccessToken, token.RefreshToken));
     }
 }
-
