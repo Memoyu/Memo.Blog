@@ -60,8 +60,6 @@ public static class FreeSqlExtension
         services.TryAddScoped<UnitOfWorkManager>();
 
         // 批量注册复合主键的 Repository
-        //services.TryAddScoped(typeof(IBaseRepository<,,>), typeof(BaseAuditRepository<>));
-        //services.TryAddScoped(typeof(BaseRepository<,,>), typeof(BaseAuditRepository<>));
         services.TryAddScoped(typeof(IBaseDefaultRepository<>), typeof(BaseDefaultRepository<>));
 
         //在运行时直接生成表结构

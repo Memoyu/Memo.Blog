@@ -34,22 +34,22 @@ public static class DependencyInjection
 
     private static IServiceCollection AddOpenApiDoc(this IServiceCollection services)
     {
-        services.AddScoped(provider =>
-        {
-            var validationRules = provider.GetService<IEnumerable<FluentValidationRule>>();
-            var loggerFactory = provider.GetService<ILoggerFactory>();
-            return new FluentValidationSchemaProcessor(provider, validationRules, loggerFactory);
-        });
+        //services.AddScoped(provider =>
+        //{
+        //    var validationRules = provider.GetService<IEnumerable<FluentValidationRule>>();
+        //    var loggerFactory = provider.GetService<ILoggerFactory>();
+        //    return new FluentValidationSchemaProcessor(provider, validationRules, loggerFactory);
+        //});
 
         // 注册API文档
         services.AddOpenApiDocument((configure, sp) =>
         {
             configure.Title = "Memo.Blog API";
 
-            // Add the fluent validations schema processor
-            var fluentValidationSchemaProcessor =
-                sp.CreateScope().ServiceProvider.GetRequiredService<FluentValidationSchemaProcessor>();
-            configure.SchemaSettings.SchemaProcessors.Add(fluentValidationSchemaProcessor);
+            //// Add the fluent validations schema processor
+            //var fluentValidationSchemaProcessor =
+            //    sp.CreateScope().ServiceProvider.GetRequiredService<FluentValidationSchemaProcessor>();
+            //configure.SchemaSettings.SchemaProcessors.Add(fluentValidationSchemaProcessor);
 
             // Add JWT
             configure.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme

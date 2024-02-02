@@ -4,11 +4,17 @@ public record GenerateTokenQuery(string Username, string Password) : IRequest<Re
 
 public class GenerateTokenQueryValidator : AbstractValidator<GenerateTokenQuery>
 {
-    public GenerateTokenQueryValidator()
+    public GenerateTokenQueryValidator(
+        IBaseDefaultRepository<User> userResp,
+        IBaseDefaultRepository<UserIdentity> userIdentityResp)
     {
-        RuleFor(x => x.Username).NotEmpty().WithMessage("用户名不能为空");
+        RuleFor(x => x.Username)
+            .NotEmpty()
+            .WithMessage("用户名不能为空");
 
-        RuleFor(x => x.Password).NotEmpty().WithMessage("密码不能为空");
+        RuleFor(x => x.Password)
+            .NotEmpty()
+            .WithMessage("密码不能为空");
     }
 }
 
