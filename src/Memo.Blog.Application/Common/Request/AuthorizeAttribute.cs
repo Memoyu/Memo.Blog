@@ -1,4 +1,4 @@
-﻿namespace Memo.Blog.Application.Common.Security.Request;
+﻿namespace Memo.Blog.Application.Common.Request;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class AuthorizeAttribute : Attribute

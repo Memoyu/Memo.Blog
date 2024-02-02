@@ -1,4 +1,6 @@
-﻿namespace Memo.Blog.Application.Common.Interfaces.Security;
+﻿using Memo.Blog.Application.Common.Request;
+
+namespace Memo.Blog.Application.Common.Interfaces.Security;
 
 public interface IAuthorizationService
 {

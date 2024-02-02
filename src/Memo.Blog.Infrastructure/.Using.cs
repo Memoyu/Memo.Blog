@@ -10,7 +10,7 @@ global using Throw;
 global using Memo.Blog.Domain.Entities;
 global using Memo.Blog.Application.Common.Interfaces.Security;
 global using Memo.Blog.Application.Common.Models;
-global using Memo.Blog.Application.Common.Security.Request;
+global using Memo.Blog.Application.Common.Request;
 global using Memo.Blog.Infrastructure.Security.CurrentUserProvider;
 global using Memo.Blog.Infrastructure.Security.GenerateToken;
 global using Memo.Blog.Infrastructure.Persistence;

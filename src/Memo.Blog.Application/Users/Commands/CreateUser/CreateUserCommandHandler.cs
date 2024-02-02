@@ -6,6 +6,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
 {
     public async Task<Result<UserResult>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+
+
         return Result.Success(new UserResult());
     }
 }

@@ -1,9 +1,9 @@
 ﻿using FreeSql;
 using System.Data;
 
-namespace Memo.Blog.Application.Common.UnitOfWorks;
+namespace Memo.Blog.Application.Common.Request;
 
-[AttributeUsage(AttributeTargets.Method, Inherited = true)]
+[AttributeUsage(AttributeTargets.Class, Inherited = true)]
 public class TransactionalAttribute : Attribute
 {
     /// <summary>

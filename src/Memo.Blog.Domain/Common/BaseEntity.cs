@@ -9,6 +9,8 @@ public class BaseEntity
     [Description("主键Id")]
     public long Id { get; set; }
 
+    #region 领域事件
+
     private readonly List<IDomainEvent> _domainEvents = new();
 
     public IReadOnlyCollection<IDomainEvent> GetDomainEvents() => _domainEvents.AsReadOnly();
@@ -17,7 +19,9 @@ public class BaseEntity
 
     public void RemoveDomainEvent(IDomainEvent domainEvent) => _domainEvents.Remove(domainEvent);
 
-    public void ClearDomainEvents() => _domainEvents.Clear();
+    public void ClearDomainEvents() => _domainEvents.Clear(); 
+
+    #endregion
 }
 
 public class BaseAuditEntity : BaseEntity

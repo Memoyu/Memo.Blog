@@ -1,4 +1,4 @@
-﻿namespace Memo.Blog.Application.Common.Security.Request;
+﻿namespace Memo.Blog.Application.Common.Request;
 
 public interface IAuthorizeableRequest<T> : IRequest<T>
 {

@@ -1,4 +1,6 @@
-﻿namespace Memo.Blog.Infrastructure.Security;
+﻿using Memo.Blog.Application.Common.Request;
+
+namespace Memo.Blog.Infrastructure.Security;
 
 public class AuthorizationService(ICurrentUserProvider _currentUserProvider) : IAuthorizationService
 {

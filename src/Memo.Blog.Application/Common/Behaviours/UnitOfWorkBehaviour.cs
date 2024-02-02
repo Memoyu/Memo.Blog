@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using MediatR;
-using Memo.Blog.Application.Common.UnitOfWorks;
 using FreeSql;
 using Microsoft.Extensions.Logging;
+using Memo.Blog.Application.Common.Request;
 
 namespace Memo.Blog.Application.Common.Behaviours;
 
