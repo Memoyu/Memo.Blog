@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Memo.Blog.Application\Memo.Blog.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

@@ -3,12 +3,12 @@ using FreeSql;
 using FreeSql.DataAnnotations;
 using FreeSql.Internal;
 using Memo.Blog.Application.Common.Interfaces.Persistence.Repositories;
+using Memo.Blog.Application.Common.Utils;
 using Memo.Blog.Domain.Common;
 using Memo.Blog.Infrastructure.Persistence.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MySql.Data.MySqlClient;
-using Yitter.IdGenerator;
 
 namespace Memo.Blog.Infrastructure.Persistence;
 
@@ -50,7 +50,7 @@ public static class FreeSqlExtension
         fsql.Aop.AuditValue += (s, e) =>
         {
             if (e.Column.CsType == typeof(long) && e.Property.GetCustomAttribute<SnowflakeAttribute>(false) != null && e.Value?.ToString() == "0")
-                e.Value = YitIdHelper.NextId();
+                e.Value = SnowFlakeUtil.NextId();
         };
 
         // fsql.GlobalFilter.Apply<IDeleteAduitEntity>("IsDeleted", a => a.IsDeleted == false); // 全局过滤字段
@@ -62,7 +62,7 @@ public static class FreeSqlExtension
         // 批量注册复合主键的 Repository
         //services.TryAddScoped(typeof(IBaseRepository<,,>), typeof(BaseAuditRepository<>));
         //services.TryAddScoped(typeof(BaseRepository<,,>), typeof(BaseAuditRepository<>));
-        services.TryAddScoped(typeof(IBaseAuditRepository<>), typeof(BaseAuditRepository<>));
+        services.TryAddScoped(typeof(IBaseDefaultRepository<>), typeof(BaseDefaultRepository<>));
 
         //在运行时直接生成表结构
         try
@@ -109,7 +109,7 @@ public static class FreeSqlExtension
     private static Type[] GetTypesByTableAttribute()
     {
         List<Type> tableAssembies = new List<Type>();
-        var types = Assembly.GetAssembly(typeof(BaseEntity))?.GetExportedTypes() ?? [];
+        var types = Assembly.GetAssembly(typeof(BaseAuditEntity))?.GetExportedTypes() ?? [];
         foreach (Type type in types)
         {
             foreach (Attribute attribute in type.GetCustomAttributes())

@@ -8,6 +8,16 @@ public class BaseEntity
     [Column(IsPrimary = true, IsIdentity = true, Position = 1)]
     [Description("主键Id")]
     public long Id { get; set; }
+
+    private readonly List<IDomainEvent> _domainEvents = new();
+
+    public IReadOnlyCollection<IDomainEvent> GetDomainEvents() => _domainEvents.AsReadOnly();
+
+    public void AddDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
+
+    public void RemoveDomainEvent(IDomainEvent domainEvent) => _domainEvents.Remove(domainEvent);
+
+    public void ClearDomainEvents() => _domainEvents.Clear();
 }
 
 public class BaseAuditEntity : BaseEntity

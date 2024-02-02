@@ -21,4 +21,9 @@
     <ProjectReference Include="..\Memo.Blog.Domain\Memo.Blog.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\Interfaces\Services\" />
+    <Folder Include="Users\Events\" />
+  </ItemGroup>
+
 </Project>

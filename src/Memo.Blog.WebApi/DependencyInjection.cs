@@ -5,9 +5,18 @@ using ZymLabs.NSwag.FluentValidation;
 
 namespace Memo.Blog.WebApi;
 
+/// <summary>
+/// Web APA 依赖注入
+/// </summary>
 public static class DependencyInjection
 {
-    public static IServiceCollection AddWebApiServices(this IServiceCollection services, IConfiguration configuration)
+    /// <summary>
+    /// 接口服务依赖注入
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
+    public static IServiceCollection AddPresentation(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddHttpContextAccessor();
 

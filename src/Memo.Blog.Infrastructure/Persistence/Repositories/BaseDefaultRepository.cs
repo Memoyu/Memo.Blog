@@ -2,22 +2,26 @@
 using System.Linq.Expressions;
 using Memo.Blog.Application.Common.Interfaces.Persistence.Repositories;
 using Memo.Blog.Domain.Common;
+using MediatR;
 
 namespace Memo.Blog.Infrastructure.Persistence.Repositories;
 
-public class BaseAuditRepository<TEntity> : DefaultRepository<TEntity, long>, IBaseAuditRepository<TEntity> where TEntity : class, new()
+public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, IBaseDefaultRepository<TEntity> where TEntity : class, new()
 {
     /// <summary>
     ///  当前登录人信息
     /// </summary>
     protected readonly CurrentUser CurrentUser;
 
-    public BaseAuditRepository(UnitOfWorkManager unitOfWorkManager, ICurrentUserProvider currentUserProvider) : base(unitOfWorkManager?.Orm, unitOfWorkManager)
+    private readonly IPublisher _publisher;
+
+    public BaseDefaultRepository(UnitOfWorkManager unitOfWorkManager, ICurrentUserProvider currentUserProvider, IPublisher publisher) : base(unitOfWorkManager?.Orm, unitOfWorkManager)
     {
         CurrentUser = currentUserProvider.GetCurrentUser();
+        _publisher = publisher;
     }
 
-    protected void BeforeInsert(TEntity entity)
+    protected async Task BeforeInsertAsync(TEntity entity)
     {
         if (entity is BaseAuditEntity createAudit)
         {
@@ -25,19 +29,21 @@ public class BaseAuditRepository<TEntity> : DefaultRepository<TEntity, long>, IB
             createAudit.CreateUserId = CurrentUser.Id;
         }
 
-        BeforeUpdate(entity);
+        await BeforeUpdateAsync(entity);
     }
 
-    protected void BeforeUpdate(TEntity entity)
+    protected async Task BeforeUpdateAsync(TEntity entity)
     {
         if (entity is BaseAuditEntity updateAudit)
         {
             updateAudit.UpdateTime = DateTime.Now;
             updateAudit.UpdateUserId = CurrentUser.Id;
         }
+
+        await PublishDomainEventsAsync(entity);
     }
 
-    protected void BeforeDelete(TEntity entity)
+    protected async Task BeforeDeleteAsync(TEntity entity)
     {
         if (entity is BaseAuditEntity deleteAudit)
         {
@@ -45,40 +51,58 @@ public class BaseAuditRepository<TEntity> : DefaultRepository<TEntity, long>, IB
             deleteAudit.DeleteUserId = CurrentUser.Id;
             deleteAudit.DeleteTime = DateTime.Now;
         }
+
+        await PublishDomainEventsAsync(entity);
     }
+
+    #region 领域事件
+
+    private async Task PublishDomainEventsAsync(TEntity entity)
+    {
+        if (entity is not BaseEntity domainEntity) return;
+
+        var domainEvents = domainEntity.GetDomainEvents();
+
+        domainEntity.ClearDomainEvents();
+
+        foreach (var domainEvent in domainEvents)
+            await _publisher.Publish(domainEvent);
+    }
+
+    #endregion
 
     #region Insert
 
     public override TEntity Insert(TEntity entity)
     {
-        BeforeInsert(entity);
+        BeforeInsertAsync(entity).GetAwaiter().GetResult();
         return base.Insert(entity);
     }
 
-    public override Task<TEntity> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public override async Task<TEntity> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        BeforeInsert(entity);
-        return base.InsertAsync(entity, cancellationToken);
+        await BeforeInsertAsync(entity);
+        return await base.InsertAsync(entity, cancellationToken);
     }
 
     public override List<TEntity> Insert(IEnumerable<TEntity> entities)
     {
         foreach (TEntity entity in entities)
         {
-            BeforeInsert(entity);
+            BeforeInsertAsync(entity).GetAwaiter().GetResult();
         }
 
         return base.Insert(entities);
     }
 
-    public override Task<List<TEntity>> InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    public override async Task<List<TEntity>> InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
         foreach (TEntity entity in entities)
         {
-            BeforeInsert(entity);
+            await BeforeInsertAsync(entity);
         }
 
-        return base.InsertAsync(entities, cancellationToken);
+        return await base.InsertAsync(entities, cancellationToken);
     }
 
     #endregion
@@ -87,34 +111,34 @@ public class BaseAuditRepository<TEntity> : DefaultRepository<TEntity, long>, IB
 
     public override int Update(TEntity entity)
     {
-        BeforeUpdate(entity);
+        BeforeUpdateAsync(entity).GetAwaiter().GetResult();
         return base.Update(entity);
     }
 
-    public override Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public override async Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        BeforeUpdate(entity);
-        return base.UpdateAsync(entity, cancellationToken);
+        await BeforeUpdateAsync(entity);
+        return await base.UpdateAsync(entity, cancellationToken);
     }
 
     public override int Update(IEnumerable<TEntity> entities)
     {
         foreach (var entity in entities)
         {
-            BeforeUpdate(entity);
+            BeforeUpdateAsync(entity).GetAwaiter().GetResult();
         }
 
         return base.Update(entities);
     }
 
-    public override Task<int> UpdateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    public override async Task<int> UpdateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
         foreach (var entity in entities)
         {
-            BeforeUpdate(entity);
+            await BeforeUpdateAsync(entity);
         }
 
-        return base.UpdateAsync(entities, cancellationToken);
+        return await base.UpdateAsync(entities, cancellationToken);
     }
 
     #endregion
@@ -124,14 +148,14 @@ public class BaseAuditRepository<TEntity> : DefaultRepository<TEntity, long>, IB
     public override int Delete(long id)
     {
         TEntity entity = Get(id);
-        BeforeDelete(entity);
+        BeforeDeleteAsync(entity).GetAwaiter().GetResult();
         return base.Update(entity);
     }
 
     public override int Delete(TEntity entity)
     {
         base.Attach(entity);
-        BeforeDelete(entity);
+        BeforeDeleteAsync(entity).GetAwaiter().GetResult();
         return base.Update(entity);
     }
 
@@ -140,7 +164,7 @@ public class BaseAuditRepository<TEntity> : DefaultRepository<TEntity, long>, IB
         base.Attach(entities);
         foreach (TEntity entity in entities)
         {
-            BeforeDelete(entity);
+            BeforeDeleteAsync(entity).GetAwaiter().GetResult();
         }
         return base.Update(entities);
     }
@@ -148,26 +172,26 @@ public class BaseAuditRepository<TEntity> : DefaultRepository<TEntity, long>, IB
     public override async Task<int> DeleteAsync(long id, CancellationToken cancellationToken = default)
     {
         TEntity entity = await GetAsync(id, cancellationToken);
-        BeforeDelete(entity);
+        await BeforeDeleteAsync(entity);
         return await base.UpdateAsync(entity, cancellationToken);
     }
 
-    public override Task<int> DeleteAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+    public override async Task<int> DeleteAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
         Attach(entities);
         foreach (TEntity entity in entities)
         {
-            BeforeDelete(entity);
+            await BeforeDeleteAsync(entity);
         }
 
-        return base.UpdateAsync(entities, cancellationToken);
+        return await base.UpdateAsync(entities, cancellationToken);
     }
 
-    public override Task<int> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public override async Task<int> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         base.Attach(entity);
-        BeforeDelete(entity);
-        return base.UpdateAsync(entity, cancellationToken);
+        await BeforeDeleteAsync(entity);
+        return await base.UpdateAsync(entity, cancellationToken);
     }
 
     public override int Delete(Expression<Func<TEntity, bool>> predicate)
@@ -180,7 +204,7 @@ public class BaseAuditRepository<TEntity> : DefaultRepository<TEntity, long>, IB
 
         foreach (var entity in items)
         {
-            BeforeDelete(entity);
+            BeforeDeleteAsync(entity).GetAwaiter().GetResult();
         }
 
         return base.Update(items);
@@ -196,7 +220,7 @@ public class BaseAuditRepository<TEntity> : DefaultRepository<TEntity, long>, IB
 
         foreach (var entity in items)
         {
-            BeforeDelete(entity);
+            await BeforeDeleteAsync(entity);
         }
 
         return await base.UpdateAsync(items, cancellationToken);
@@ -207,13 +231,13 @@ public class BaseAuditRepository<TEntity> : DefaultRepository<TEntity, long>, IB
     #region InsertOrUpdate
     public override TEntity InsertOrUpdate(TEntity entity)
     {
-        BeforeInsert(entity);
+        BeforeInsertAsync(entity).GetAwaiter().GetResult();
         return base.InsertOrUpdate(entity);
     }
 
     public override async Task<TEntity> InsertOrUpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        BeforeInsert(entity);
+        await BeforeInsertAsync(entity);
         return await base.InsertOrUpdateAsync(entity, cancellationToken);
     }
 

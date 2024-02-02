@@ -2,10 +2,12 @@
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Memo.Blog.Infrastructure.Persistence;
 
 namespace Memo.Blog.Infrastructure;
 
+/// <summary>
+/// Infrastructure 依赖注入
+/// </summary>
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
