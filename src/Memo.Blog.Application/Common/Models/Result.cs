@@ -3,7 +3,6 @@ using Memo.Blog.Domain.Enums;
 
 namespace Memo.Blog.Application.Common.Models;
 
-
 public class Result
 {
     public bool IsSuccess { get; }
@@ -26,9 +25,9 @@ public class Result
         return new Result(ResultCode.Success, msg);
     }
 
-    public static Result<T> Success<T>(T value, string msg = "")
+    public static Result<T> Success<T>(T data, string msg = "")
     {
-        return new Result<T>(value, ResultCode.Success, msg);
+        return new Result<T>(data, ResultCode.Success, msg);
     }
 
     public static Result Failure(string msg, ResultCode code = ResultCode.Failure)
@@ -53,10 +52,10 @@ public class Result
 
 public class Result<T> : Result
 {
-    protected internal Result(T? value, ResultCode code, string msg) : base(code, msg)
+    protected internal Result(T? data, ResultCode code, string msg) : base(code, msg)
     {
-        Value = value;
+        Data = data;
     }
 
-    public T? Value { get; }
+    public T? Data { get; }
 }
