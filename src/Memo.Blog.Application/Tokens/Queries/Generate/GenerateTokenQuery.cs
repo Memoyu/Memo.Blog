@@ -1,12 +1,10 @@
 ﻿namespace Memo.Blog.Application.Tokens.Queries.Generate;
 
-public record GenerateTokenQuery(string Username, string Password) : IRequest<Result<GenerateTokenResult>>;
+public record GenerateTokenQuery(string Username, string Password) : IRequest<Result>;
 
 public class GenerateTokenQueryValidator : AbstractValidator<GenerateTokenQuery>
 {
-    public GenerateTokenQueryValidator(
-        IBaseDefaultRepository<User> userResp,
-        IBaseDefaultRepository<UserIdentity> userIdentityResp)
+    public GenerateTokenQueryValidator()
     {
         RuleFor(x => x.Username)
             .NotEmpty()

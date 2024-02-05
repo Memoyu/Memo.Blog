@@ -4,9 +4,9 @@ public class GenerateTokenHandler(
     IBaseDefaultRepository<User> _userResp,
     IBaseDefaultRepository<UserIdentity> _userIdentityResp,
     IJwtTokenGenerator _jwtTokenGenerator
-    ) : IRequestHandler<GenerateTokenQuery, Result<GenerateTokenResult>>
+    ) : IRequestHandler<GenerateTokenQuery, Result>
 {
-    public async Task<Result<GenerateTokenResult>> Handle(GenerateTokenQuery request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(GenerateTokenQuery request, CancellationToken cancellationToken)
     {
         var user = await _userResp.Where(u => u.Username.Equals(request.Username)).FirstAsync();
         if (user is null)

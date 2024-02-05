@@ -23,7 +23,10 @@ public static class DependencyInjection
         // 跨域配置
         services.AddCorsPolicy(configuration);
 
-        services.AddControllers();
+        services.AddControllers(options =>
+            // 禁用隐式的[Required]，为了统一响应模型
+            options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true
+        );
         services.AddEndpointsApiExplorer();
 
         // Swagger 接口文档
