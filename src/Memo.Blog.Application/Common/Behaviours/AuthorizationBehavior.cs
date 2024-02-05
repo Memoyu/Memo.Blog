@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Memo.Blog.Application.Common.Request;
 
 namespace Memo.Blog.Application.Common.Behaviours;
 public class AuthorizationBehavior<TRequest, TResponse>(IAuthorizationService _authorizationService) : IPipelineBehavior<TRequest, TResponse>

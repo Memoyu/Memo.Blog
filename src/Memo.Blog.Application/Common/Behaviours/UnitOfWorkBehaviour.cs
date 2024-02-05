@@ -1,12 +1,12 @@
 ﻿using System.Reflection;
-using MediatR;
 using FreeSql;
 using Microsoft.Extensions.Logging;
-using Memo.Blog.Application.Common.Request;
 
 namespace Memo.Blog.Application.Common.Behaviours;
 
-public class UnitOfWorkBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+public class UnitOfWorkBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : notnull
+    where TResponse : Result
 {
     private readonly ILogger _logger;
     private readonly UnitOfWorkManager _unitOfWorkManager;
@@ -40,7 +40,7 @@ public class UnitOfWorkBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
             {
                 unitOfWork.Rollback();
                 _logger.LogError(ex, "Request: 事务请求异常 请求：{Name}；参数：{@Request}", requestName, request);
-                throw;
+                throw new Exception("数据库事务异常", ex );
             }
             finally
             {

@@ -8,9 +8,9 @@ public class CreateUserCommandHandler(
     IBaseDefaultRepository<User> _userResp,
     IBaseDefaultRepository<UserIdentity> _userIdentityResp,
     IBaseDefaultRepository<UserRole> _userRoleResp
-    ) : IRequestHandler<CreateUserCommand, Result<UserResult>>
+    ) : IRequestHandler<CreateUserCommand, Result>
 {
-    public async Task<Result<UserResult>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         // 用户信息
         var user = _mapper.Map<User>(request);

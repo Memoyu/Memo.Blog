@@ -8,11 +8,11 @@ public record CreateUserCommand(
     string Username,
     string Nickname,
     string Password,
-    string Avatar,
-    string PhoneNumber,
-    string Email,
+    string? Avatar,
+    string? PhoneNumber,
+    string? Email,
     List<long> Roles
-    ) : IRequest<Result<UserResult>>;
+    ) : IRequest<Result>;
 
 public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
@@ -21,18 +21,18 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
         IBaseDefaultRepository<User> userResp)
     {
         RuleFor(x => x.Username)
-            .NotEmpty()
             .MinimumLength(1)
-            .MaximumLength(50);
+            .MaximumLength(50)
+            .WithMessage("用户名称长度在1-50个字符之间");
 
         RuleFor(x => x.Username)
             .MustAsync(async (x, ct) => !await userResp.Select.AnyAsync(u => x == u.Username, ct))
             .WithMessage("用户名称已存在");
 
         RuleFor(x => x.Nickname)
-            .NotEmpty()
             .MinimumLength(1)
-            .MaximumLength(50);
+            .MaximumLength(50)
+            .WithMessage("用户昵称长度在1-50个字符之间");
 
         RuleFor(x => x.Password)
             .NotEmpty()
@@ -41,6 +41,7 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 
         RuleFor(x => x.Email)
             .EmailAddress()
+            .WithMessage("邮箱格式有误")
             .When(x => !string.IsNullOrWhiteSpace(x.Email));
 
         RuleFor(x => x.Roles)
