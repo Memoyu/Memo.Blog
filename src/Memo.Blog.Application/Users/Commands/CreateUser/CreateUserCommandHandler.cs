@@ -28,8 +28,6 @@ public class CreateUserCommandHandler(
         };
         await _userIdentityResp.InsertAsync(identity);
 
-        throw new Exception("异常");
-
         // 用户角色
         var userRoles = new List<UserRole>();
         request.Roles.ForEach(id => userRoles.Add(new UserRole
