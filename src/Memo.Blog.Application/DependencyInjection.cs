@@ -1,6 +1,4 @@
 ﻿using Mapster;
-using MapsterMapper;
-using Memo.Blog.Application.Common.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -17,6 +15,7 @@ public static class DependencyInjection
         // 配置雪花ID生成
         SnowFlakeUtil.Init();
 
+        // 注册服务配置
         services.Configure<AppSettings>(configuration.GetSection(AppConst.AppSettingSection));
 
         // 注册Validators

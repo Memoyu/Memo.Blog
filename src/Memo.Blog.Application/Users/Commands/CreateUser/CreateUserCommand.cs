@@ -1,6 +1,4 @@
-﻿using Memo.Blog.Application.Users.Common;
-
-namespace Memo.Blog.Application.Users.Commands.CreateUser;
+﻿namespace Memo.Blog.Application.Users.Commands.CreateUser;
 
 [Authorize(Permissions = Permissions.User.Create)]
 [Transactional]

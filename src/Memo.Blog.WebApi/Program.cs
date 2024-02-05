@@ -1,6 +1,7 @@
-using Memo.Blog.Domain.Constants;
-
 var builder = WebApplication.CreateBuilder(args);
+
+// ≈‰÷√serilog
+builder.AddSerilog();
 
 // Add services to the container.
 builder.Services.AddApplicationServices(builder.Configuration);

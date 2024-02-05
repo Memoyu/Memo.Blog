@@ -1,20 +1,31 @@
-﻿using System.Reflection;
+﻿using System.Configuration;
+using System.Reflection;
 using FreeSql;
 using FreeSql.DataAnnotations;
 using FreeSql.Internal;
 using Memo.Blog.Application.Common.Interfaces.Persistence.Repositories;
+using Memo.Blog.Application.Common.Models;
 using Memo.Blog.Application.Common.Utils;
 using Memo.Blog.Domain.Common;
+using Memo.Blog.Domain.Constants;
 using Memo.Blog.Infrastructure.Persistence.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using MongoDB.Driver;
 using MySql.Data.MySqlClient;
+using Serilog;
 
 namespace Memo.Blog.Infrastructure.Persistence;
 
-public static class FreeSqlExtension
+public static class PersistenceExtension
 {
-    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
+    /// <summary>
+    /// 注册MySql数据持久化组件
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
+    public static IServiceCollection AddPersistenceForMyql(this IServiceCollection services, IConfiguration configuration)
     {
         IFreeSql fsql = new FreeSqlBuilder()
           .UseMysqlConnectionString(configuration, true)
@@ -69,7 +80,7 @@ public static class FreeSqlExtension
         }
         catch (Exception ex)
         {
-            // TODO：异常处理
+            Log.Logger.Error(ex, "生成表结构异常" + ex.Message);
         }
 
         return services;
@@ -86,6 +97,28 @@ public static class FreeSqlExtension
             CreateDatabaseIfNotExistsMySql(connectionString);
 
         return builder;
+    }
+
+    /// <summary>
+    /// 注册MongoDb持久化组件
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
+    public static IServiceCollection AddPersistenceForMongo(this IServiceCollection services, IConfiguration configuration)
+    {
+        // 注册MongoDb配置
+        var section = configuration.GetSection(AppConst.MongoSection) ?? throw new ConfigurationErrorsException(AppConst.MongoSection + " section is not null");
+        services.Configure<MongoOptions>(section);
+
+        var mongoOptions = section.Get<MongoOptions>() ?? throw new ConfigurationErrorsException(AppConst.MongoSection + " is not null");
+
+        services.AddSingleton(new MongoClient(mongoOptions.ConnectionString));
+
+        // 批量注册复合主键的 Repository
+        services.TryAddScoped(typeof(IBaseMongoRepository<>), typeof(BaseMongoRepository<>));
+
+        return services;
     }
 
     private static void CreateDatabaseIfNotExistsMySql(string connectionString)

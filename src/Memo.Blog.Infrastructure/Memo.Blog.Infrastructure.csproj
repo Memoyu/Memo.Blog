@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageReference Include="FreeSql.Provider.MySql" Version="3.2.810" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+    <PackageReference Include="Serilog.Sinks.MongoDB" Version="5.3.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Logger\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

@@ -5,6 +5,7 @@ global using MediatR;
 
 global using Memo.Blog.Application;
 global using Memo.Blog.Domain;
+global using Memo.Blog.Domain.Constants;
 global using Memo.Blog.Infrastructure;
 global using Memo.Blog.WebApi;
 global using Memo.Blog.Application.Common.Models;
