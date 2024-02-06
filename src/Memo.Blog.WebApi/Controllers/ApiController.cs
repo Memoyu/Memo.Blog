@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace Memo.Blog.WebApi.Controllers;
+﻿namespace Memo.Blog.WebApi.Controllers;
 
 /// <summary>
 /// API基类

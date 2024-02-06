@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Memo.Blog.Application.Friends.Commands.Create;
 
-namespace Memo.Blog.Application.Friends.Commands.Create;
-internal class CreateFriendCommand
-{
-}
+public class CreateFriendCommand(
+    ) : IRequest<Result>;
