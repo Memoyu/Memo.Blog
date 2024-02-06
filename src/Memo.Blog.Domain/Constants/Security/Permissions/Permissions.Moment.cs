@@ -1,4 +1,4 @@
-﻿namespace Memo.Blog.Application.Common.Security.Permissions;
+﻿namespace Memo.Blog.Domain.Constants.Security.Permissions;
 
 public static partial class Permissions
 {
