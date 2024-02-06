@@ -1,4 +1,4 @@
-﻿using Memo.Blog.Application.Users.Commands.CreateUser;
+﻿using Memo.Blog.Application.Users.Commands.Create;
 
 namespace Memo.Blog.WebApi.Controllers;
 

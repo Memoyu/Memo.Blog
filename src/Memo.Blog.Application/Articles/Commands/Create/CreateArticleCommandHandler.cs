@@ -1,7 +1,7 @@
 ﻿using Memo.Blog.Application.Articles.Common;
 using Memo.Blog.Domain.Entities.Mongo;
 
-namespace Memo.Blog.Application.Articles.Commands.CreateArticle;
+namespace Memo.Blog.Application.Articles.Commands.Create;
 
 public class CreateArticleCommandHandler(
     IMapper _mapper,

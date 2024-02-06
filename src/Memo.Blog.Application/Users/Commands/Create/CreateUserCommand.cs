@@ -1,6 +1,6 @@
-﻿namespace Memo.Blog.Application.Users.Commands.CreateUser;
+﻿namespace Memo.Blog.Application.Users.Commands.Create;
 
-[Authorize(Permissions = Permissions.User.Create)]
+[Authorize(Permissions = ApiPermission.User.Create)]
 [Transactional]
 public record CreateUserCommand(
     string Username,

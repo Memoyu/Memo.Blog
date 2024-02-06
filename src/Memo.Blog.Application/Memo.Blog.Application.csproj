@@ -23,7 +23,6 @@
   <ItemGroup>
     <Folder Include="Common\Interfaces\Services\" />
     <Folder Include="Common\Mappings\" />
-    <Folder Include="Users\Events\" />
   </ItemGroup>
 
 </Project>

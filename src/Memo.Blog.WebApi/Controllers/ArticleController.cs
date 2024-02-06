@@ -1,4 +1,4 @@
-﻿using Memo.Blog.Application.Articles.Commands.CreateArticle;
+﻿using Memo.Blog.Application.Articles.Commands.Create;
 
 namespace Memo.Blog.WebApi.Controllers;
 

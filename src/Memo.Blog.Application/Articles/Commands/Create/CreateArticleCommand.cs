@@ -1,6 +1,6 @@
-﻿namespace Memo.Blog.Application.Articles.Commands.CreateArticle;
+﻿namespace Memo.Blog.Application.Articles.Commands.Create;
 
-[Authorize(Permissions = Permissions.Article.Create)]
+[Authorize(Permissions = ApiPermission.Article.Create)]
 [Transactional]
 public record CreateArticleCommand(
     long CategoryId,

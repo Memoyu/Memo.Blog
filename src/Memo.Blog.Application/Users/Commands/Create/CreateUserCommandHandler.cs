@@ -1,7 +1,7 @@
 ﻿using Memo.Blog.Application.Users.Common;
 using Memo.Blog.Domain.Enums;
 
-namespace Memo.Blog.Application.Users.Commands.CreateUser;
+namespace Memo.Blog.Application.Users.Commands.Create;
 
 public class CreateUserCommandHandler(
     IMapper _mapper,

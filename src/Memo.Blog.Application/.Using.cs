@@ -14,3 +14,5 @@ global using Memo.Blog.Application.Common.Security;
 global using Memo.Blog.Domain.Entities;
 global using Memo.Blog.Application.Common.Request;
 global using Memo.Blog.Application.Common.Utils;
+
+global using ApiPermission = Memo.Blog.Application.Common.Security.Permissions.Permissions;
