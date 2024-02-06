@@ -17,14 +17,14 @@ public class User : BaseAuditEntity
     /// 用户名
     /// </summary>
     [Description("用户名")]
-    [Column(StringLength = 24)]
+    [Column(StringLength = 50)]
     public string Username { get; set; } = string.Empty;
 
     /// <summary>
     /// 昵称
     /// </summary>
     [Description("用户昵称")]
-    [Column(StringLength = 24)]
+    [Column(StringLength = 50)]
     public string Nickname { get; set; } = string.Empty;
 
     /// <summary>

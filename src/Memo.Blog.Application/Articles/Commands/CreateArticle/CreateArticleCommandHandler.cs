@@ -15,7 +15,8 @@ public class CreateArticleCommandHandler(
         article = await _articleResp.InsertAsync(article);
 
         var articleCollection = _mapper.Map<ArticleCollection>(article);
-        await _articleMongoResp.InsertOneAsync(articleCollection);
+        var mongoInsert = await _articleMongoResp.InsertOneAsync(articleCollection);
+        if (!mongoInsert) throw new Exception("写入mongodb失败");
 
         var result = _mapper.Map<ArticleResult>(article);
 
