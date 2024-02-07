@@ -24,6 +24,6 @@ public class Tag : BaseAuditEntity
     /// 标签颜色
     /// </summary>
     [Description("标签颜色")]
-    [Column(StringLength = 6)]
+    [Column(StringLength = 7)]
     public string Color { get; set; } = string.Empty;
 }

@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Articles\Commands\Delete\" />
     <Folder Include="Common\Interfaces\Services\" />
     <Folder Include="Common\Mappings\" />
   </ItemGroup>

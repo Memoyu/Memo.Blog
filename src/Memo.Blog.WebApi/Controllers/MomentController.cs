@@ -6,7 +6,7 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 动态管理
 /// </summary>
 [Route("api/moment")]
-[Authorize]
+
 public class MomentController(ISender _mediator) : ApiController
 {
     /// <summary>

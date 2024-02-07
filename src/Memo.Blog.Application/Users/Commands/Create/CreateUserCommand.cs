@@ -46,8 +46,8 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
             .NotEmpty()
             .WithMessage("角色不能为空");
 
-        RuleFor(x => x.Roles)
-           .MustAsync(async (x, ct) => await roleResp.Select.AnyAsync(r => x.Contains(r.RoleId), ct))
+        RuleForEach(x => x.Roles)
+           .MustAsync(async (x, ct) => x > 0 && await roleResp.Select.AnyAsync(r => x == r.RoleId, ct))
            .WithMessage("角色不存在");
     }
 }

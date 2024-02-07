@@ -1,10 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Memo.Blog.Application.Categories.Common;
 
 namespace Memo.Blog.Application.Categories.Commands.Create;
-internal class CreateCategoryCommandHandler
+public class CreateCategoryCommandHandler(
+    IMapper _mapper,
+    IBaseDefaultRepository<Category> _categoryResp
+    ) : IRequestHandler<CreateCategoryCommand, Result>
 {
+    public async Task<Result> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+    {
+        var category = new Category
+        {
+            Name = request.Name,
+        };
+
+        category = await _categoryResp.InsertAsync(category, cancellationToken);
+
+        var result = _mapper.Map<CategoryResult>(category);
+
+        return Result.Success(result);
+    }
 }

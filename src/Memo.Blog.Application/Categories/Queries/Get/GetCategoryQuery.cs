@@ -1,10 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Memo.Blog.Application.Categories.Queries.Get;
 
-namespace Memo.Blog.Application.Categories.Queries.Get;
-internal class GetCategoryQuery
+public record GetCategoryQuery(
+    long CategoryId
+    ) : IRequest<Result>;
+
+public class GetCategoryQueryValidator : AbstractValidator<GetCategoryQuery>
 {
+    public GetCategoryQueryValidator()
+    {
+        RuleFor(x => x.CategoryId)
+            .GreaterThan(0)
+            .WithMessage("Id必须大于0");
+    }
 }

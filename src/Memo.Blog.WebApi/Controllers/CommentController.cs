@@ -6,7 +6,7 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 评论管理
 /// </summary>
 [Route("api/comment")]
-[Authorize]
+
 public class CommentController(ISender _mediator) : ApiController
 {
     /// <summary>

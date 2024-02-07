@@ -12,10 +12,10 @@ public class CreateArticleCommandHandler(
     public async Task<Result> Handle(CreateArticleCommand request, CancellationToken cancellationToken)
     {
         var article = _mapper.Map<Article>(request);
-        article = await _articleResp.InsertAsync(article);
+        article = await _articleResp.InsertAsync(article, cancellationToken);
 
         var articleCollection = _mapper.Map<ArticleCollection>(article);
-        var mongoInsert = await _articleMongoResp.InsertOneAsync(articleCollection);
+        var mongoInsert = await _articleMongoResp.InsertOneAsync(articleCollection, null, cancellationToken);
         if (!mongoInsert) throw new Exception("写入mongodb失败");
 
         var result = _mapper.Map<ArticleResult>(article);

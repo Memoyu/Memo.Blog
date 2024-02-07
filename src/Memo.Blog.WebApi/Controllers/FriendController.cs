@@ -6,7 +6,7 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 友链管理
 /// </summary>
 [Route("api/friend")]
-[Authorize]
+
 public class FriendController(ISender _mediator) : ApiController
 {
     /// <summary>

@@ -1,10 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Memo.Blog.Application.Tags.Common;
 
 namespace Memo.Blog.Application.Tags.Commands.Create;
-internal class CreateTagCommandHandler
+public class CreateTagCommandHandler(
+    IMapper _mapper,
+    IBaseDefaultRepository<Tag> _tagResp
+    ) : IRequestHandler<CreateTagCommand, Result>
 {
+    public async Task<Result> Handle(CreateTagCommand request, CancellationToken cancellationToken)
+    {
+        var tag = new Tag
+        {
+            Name = request.Name,
+            Color = request.Color,
+        };
+
+        tag = await _tagResp.InsertAsync(tag, cancellationToken);
+
+        var result = _mapper.Map<TagResult>(tag);
+
+        return Result.Success(result);
+    }
 }

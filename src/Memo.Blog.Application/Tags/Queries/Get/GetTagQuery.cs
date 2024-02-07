@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Memo.Blog.Application.Tags.Queries.Get;
 
-namespace Memo.Blog.Application.Tags.Queries.Get;
-internal class GetTagQuery
+public record GetTagQuery(
+    long TagId
+    ) : IRequest<Result>;
+
+public class GetTagQueryValidator : AbstractValidator<GetTagQuery>
 {
+    public GetTagQueryValidator()
+    {
+        RuleFor(x => x.TagId)
+            .GreaterThan(0)
+            .WithMessage("Id必须大于0");
+    }
 }
+
+

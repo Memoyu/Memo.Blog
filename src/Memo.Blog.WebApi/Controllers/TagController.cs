@@ -1,4 +1,5 @@
 ﻿using Memo.Blog.Application.Tags.Commands.Create;
+using Memo.Blog.Application.Tags.Queries.Get;
 
 namespace Memo.Blog.WebApi.Controllers;
 
@@ -6,7 +7,7 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 文章标签管理
 /// </summary>
 [Route("api/tag")]
-[Authorize]
+
 public class TagController(ISender _mediator) : ApiController
 {
     /// <summary>
@@ -15,6 +16,26 @@ public class TagController(ISender _mediator) : ApiController
     /// <returns></returns>
     [HttpPost("create")]
     public async Task<Result> CreateAsync(CreateTagCommand request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 获取标签
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("get")]
+    public async Task<Result> GetAsync([FromQuery] GetTagQuery request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 标签列表
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("list")]
+    public async Task<Result> ListAsync([FromQuery] ListTagQuery request)
     {
         return await _mediator.Send(request);
     }
