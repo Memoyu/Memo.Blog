@@ -9,10 +9,10 @@ public class ListCategoryQueryHandler(
 {
     public async Task<Result> Handle(ListCategoryQuery request, CancellationToken cancellationToken)
     {
-        var tags = await _categoryResp.Select
+        var categories = await _categoryResp.Select
             .WhereIf(!string.IsNullOrWhiteSpace(request.Name), t => t.Name.Contains(request.Name))
             .ToListAsync(cancellationToken) ?? [];
 
-        return Result.Success(_mapper.Map<List<CategoryResult>>(tags));
+        return Result.Success(_mapper.Map<List<CategoryResult>>(categories));
     }
 }
