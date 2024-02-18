@@ -3,6 +3,7 @@
 global using FluentValidation;
 global using MediatR;
 global using MapsterMapper;
+global using Mapster;
 
 global using Memo.Blog.Application.Common.Interfaces.Security;
 global using Memo.Blog.Application.Common.Models;

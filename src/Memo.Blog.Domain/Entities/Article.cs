@@ -101,4 +101,9 @@ public class Article : BaseAuditEntity
     /// </summary>
     [Description("是否公开")]
     public bool Publicable { get; set; }
+
+    /// <summary>
+    /// 文章标签
+    /// </summary>
+    public virtual List<Tag> Tags { get; set; } = [];
 }
