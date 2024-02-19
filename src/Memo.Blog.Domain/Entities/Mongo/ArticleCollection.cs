@@ -18,7 +18,7 @@ public class ArticleCollection
     /// <summary>
     /// 所属分类
     /// </summary>
-    public ArticleCategoryBson Category { get; set; } = new();
+    public required ArticleCategoryBson Category { get; set; }
 
     /// <summary>
     /// 标题
@@ -88,17 +88,17 @@ public class ArticleCollection
     /// <summary>
     /// 关联标签
     /// </summary>
-    public List<ArticleTagBson> Tags { get; set; } = new();
+    public List<ArticleTagBson> Tags { get; set; } = [];
 
     /// <summary>
     /// 评论
     /// </summary>
-    public List<ArticleCommentBson> Comments { get; set; } = new();
+    public List<ArticleCommentBson> Comments { get; set; } = [];
 
     /// <summary>
     /// 作者
     /// </summary>
-    public ArticleAuthorBson Author { get; set; } = new();
+    public required ArticleAuthorBson Author { get; set; }
 }
 
 /// <summary>
@@ -213,14 +213,4 @@ public class ArticleAuthorBson
     /// 昵称
     /// </summary>
     public string Nickname { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 电子邮箱
-    /// </summary>
-    public string Email { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 手机号
-    /// </summary>
-    public string PhoneNumber { get; set; } = string.Empty;
 }

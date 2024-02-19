@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using Memo.Blog.Domain.Constants;
 using System.Configuration;
+using Memo.Blog.Application.Security;
 
 namespace Memo.Blog.Infrastructure;
 

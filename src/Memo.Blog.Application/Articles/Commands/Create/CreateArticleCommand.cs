@@ -25,7 +25,7 @@ public class CreateArticleCommandValidator : AbstractValidator<CreateArticleComm
         )
     {
         RuleFor(x => x.CategoryId)
-            .MustAsync(async (x, ct) => x > 0 && !await categoryResp.Select.AnyAsync(t => x == t.CategoryId, ct))
+            .MustAsync(async (x, ct) => x > 0 && await categoryResp.Select.AnyAsync(t => x == t.CategoryId, ct))
             .WithMessage("文章分类不存在");
 
         RuleFor(x => x.Tags)

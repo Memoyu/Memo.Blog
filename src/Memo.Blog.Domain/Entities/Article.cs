@@ -103,7 +103,17 @@ public class Article : BaseAuditEntity
     public bool Publicable { get; set; }
 
     /// <summary>
+    /// 文章分类
+    /// </summary>
+    public virtual Category Category { get; set; } = new();
+
+    /// <summary>
     /// 文章标签
     /// </summary>
     public virtual List<Tag> Tags { get; set; } = [];
+
+    /// <summary>
+    /// 文章作者
+    /// </summary>
+    public User Author { get; set; } = new();
 }

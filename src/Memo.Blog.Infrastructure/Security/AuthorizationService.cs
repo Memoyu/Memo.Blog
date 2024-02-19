@@ -1,4 +1,4 @@
-﻿using Memo.Blog.Application.Common.Request;
+﻿using Memo.Blog.Application.Security;
 
 namespace Memo.Blog.Infrastructure.Security;
 

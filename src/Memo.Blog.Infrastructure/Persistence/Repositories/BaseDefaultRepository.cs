@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using Memo.Blog.Application.Common.Interfaces.Persistence.Repositories;
 using Memo.Blog.Domain.Common;
 using MediatR;
+using Memo.Blog.Application.Security;
 
 namespace Memo.Blog.Infrastructure.Persistence.Repositories;
 

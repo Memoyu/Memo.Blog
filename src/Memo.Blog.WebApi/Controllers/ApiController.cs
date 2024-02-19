@@ -4,7 +4,7 @@
 /// API基类
 /// </summary>
 [ApiController]
-// [Authorize]
+[Authorize]
 public abstract class ApiController : ControllerBase
 {
 }

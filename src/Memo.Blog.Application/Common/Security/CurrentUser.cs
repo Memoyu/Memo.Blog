@@ -1,4 +1,4 @@
-﻿namespace Memo.Blog.Infrastructure.Security.CurrentUserProvider;
+﻿namespace Memo.Blog.Application.Security;
 
 public record CurrentUser(
     long Id,

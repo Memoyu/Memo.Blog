@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using Memo.Blog.Application.Security;
 using Microsoft.AspNetCore.Http;
 
 namespace Memo.Blog.Infrastructure.Security.CurrentUserProvider;

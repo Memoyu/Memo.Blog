@@ -16,10 +16,9 @@ public class CreateArticleCommandHandler(
         article = await _articleResp.InsertAsync(article, cancellationToken);
 
         var tagArticles = request.Tags.Select(t => new TagArticle { ArticleId = article.ArticleId, TagId = t }).ToList();
-        var articleCollection = _mapper.Map<ArticleCollection>(article);
-
         await _tagArticleResp.InsertAsync(tagArticles);
 
+        var articleCollection = _mapper.Map<ArticleCollection>(article);
         var mongoInsert = await _articleMongoResp.InsertOneAsync(articleCollection, null, cancellationToken);
         if (!mongoInsert) throw new Exception("写入mongodb失败");
 
