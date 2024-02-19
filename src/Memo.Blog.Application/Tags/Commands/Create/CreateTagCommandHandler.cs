@@ -3,7 +3,7 @@
 namespace Memo.Blog.Application.Tags.Commands.Create;
 public class CreateTagCommandHandler(
     IMapper _mapper,
-    IBaseDefaultRepository<Tag> _tagResp
+    IBaseDefaultRepository<Tag> tagResp
     ) : IRequestHandler<CreateTagCommand, Result>
 {
     public async Task<Result> Handle(CreateTagCommand request, CancellationToken cancellationToken)
@@ -14,7 +14,7 @@ public class CreateTagCommandHandler(
             Color = request.Color,
         };
 
-        tag = await _tagResp.InsertAsync(tag, cancellationToken);
+        tag = await tagResp.InsertAsync(tag, cancellationToken);
 
         var result = _mapper.Map<TagResult>(tag);
 

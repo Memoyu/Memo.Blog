@@ -62,7 +62,7 @@ public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, 
     {
         if (entity is not BaseEntity domainEntity) return;
 
-        var domainEvents = domainEntity.GetDomainEvents();
+        var domainEvents = domainEntity.GetDomainEvents().ToList();
 
         domainEntity.ClearDomainEvents();
 

@@ -1,5 +1,18 @@
-﻿namespace Memo.Blog.Application.Comments.Common;
+﻿using Memo.Blog.Domain.Enums;
 
-public class CommentResult
-{
-}
+namespace Memo.Blog.Application.Comments.Common;
+
+public record CommentResult (
+    long CommentId,
+    long ParentId,
+    long BelongId, 
+    CommentType CommentType, 
+    string Nickname,
+    string Email,
+    string Content,
+    string Avatar,
+    AvatarOriginType AvatarOriginType,
+    string AvatarOrigin,
+    string Ip,
+    bool Showable
+);

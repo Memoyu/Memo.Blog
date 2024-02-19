@@ -64,7 +64,7 @@ public static class PersistenceExtension
                 e.Value = SnowFlakeUtil.NextId();
         };
 
-        // fsql.GlobalFilter.Apply<IDeleteAduitEntity>("IsDeleted", a => a.IsDeleted == false); // 全局过滤字段
+        fsql.GlobalFilter.Apply<BaseAuditEntity>("IsDeleted", a => a.IsDeleted == false); // 全局过滤字段
 
         // 注册FreeSql and UnitOfWorkManager
         services.AddSingleton(fsql);

@@ -3,7 +3,7 @@
 namespace Memo.Blog.Application.Categories.Commands.Create;
 public class CreateCategoryCommandHandler(
     IMapper _mapper,
-    IBaseDefaultRepository<Category> _categoryResp
+    IBaseDefaultRepository<Category> categoryResp
     ) : IRequestHandler<CreateCategoryCommand, Result>
 {
     public async Task<Result> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
@@ -13,7 +13,7 @@ public class CreateCategoryCommandHandler(
             Name = request.Name,
         };
 
-        category = await _categoryResp.InsertAsync(category, cancellationToken);
+        category = await categoryResp.InsertAsync(category, cancellationToken);
 
         var result = _mapper.Map<CategoryResult>(category);
 

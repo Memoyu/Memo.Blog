@@ -17,6 +17,7 @@ public class Result
         if (!isSuccess && string.IsNullOrWhiteSpace(msg)) throw new InvalidOperationException();
 
         IsSuccess = isSuccess;
+        Code = code;
         Message = msg;
     }
 

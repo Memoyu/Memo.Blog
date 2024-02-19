@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Memo.Blog.Application.Articles.Queries.Get;
 
-namespace Memo.Blog.Application.Articles.Queries.Get;
-internal class GetArticleQuery
+public record GetArticleQuery(long ArticleId) : IRequest<Result>;
+
+public class GetArticleQueryValidator : AbstractValidator<GetArticleQuery>
 {
+    public GetArticleQueryValidator()
+    {
+        RuleFor(x => x.ArticleId)
+            .Must(x => x > 0)
+            .WithMessage("文章Id必须大于0");
+    }
 }
