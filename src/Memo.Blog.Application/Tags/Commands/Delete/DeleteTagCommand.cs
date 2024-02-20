@@ -1,5 +1,6 @@
 ﻿namespace Memo.Blog.Application.Tags.Commands.Delete;
 
+[Authorize(Permissions = ApiPermission.Tag.Delete)]
 [Transactional]
 public record DeleteTagCommand(long TagId) : IRequest<Result>;
 

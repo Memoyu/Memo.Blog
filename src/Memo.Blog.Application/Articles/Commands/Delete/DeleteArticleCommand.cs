@@ -1,5 +1,6 @@
 ﻿namespace Memo.Blog.Application.Articles.Commands.Delete;
 
+[Authorize(Permissions = ApiPermission.Article.Delete)]
 [Transactional]
 public record DeleteArticleCommand(long ArticleId) : IRequest<Result>;
 

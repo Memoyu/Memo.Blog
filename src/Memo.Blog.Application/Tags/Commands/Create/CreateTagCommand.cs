@@ -1,5 +1,6 @@
 ﻿namespace Memo.Blog.Application.Tags.Commands.Create;
 
+[Authorize(Permissions = ApiPermission.Tag.Create)]
 public record CreateTagCommand(
     string Name,
     string Color

@@ -3,6 +3,7 @@ using Memo.Blog.Domain.Events.Articles;
 using MongoDB.Driver;
 
 namespace Memo.Blog.Application.Articles.Events;
+
 public class ArticleDeleteEventHandler(
     IBaseMongoRepository<ArticleCollection> articleMongoResp,
     IBaseDefaultRepository<TagArticle> tagArticleRepo,
@@ -22,6 +23,7 @@ public class ArticleDeleteEventHandler(
         // 删除Mongo文章数据
         FilterDefinitionBuilder<ArticleCollection> buildFilter = Builders<ArticleCollection>.Filter;
         var filter = buildFilter.Eq(a => a.ArticleId, notification.ArticleId);
-        await articleMongoResp.DeleteOneAsync(filter, null, cancellationToken);
+        var deleteResult = await articleMongoResp.DeleteOneAsync(filter, null, cancellationToken);
+        if (deleteResult?.IsAcknowledged != true) throw new Exception();
     }
 }

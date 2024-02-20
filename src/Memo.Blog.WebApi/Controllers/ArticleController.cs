@@ -1,5 +1,6 @@
 ﻿using Memo.Blog.Application.Articles.Commands.Create;
 using Memo.Blog.Application.Articles.Commands.Delete;
+using Memo.Blog.Application.Articles.Commands.Publish;
 using Memo.Blog.Application.Articles.Queries.Get;
 
 namespace Memo.Blog.WebApi.Controllers;
@@ -37,6 +38,16 @@ public class ArticleController(ISender _mediator) : ApiController
     /// <returns></returns>
     [HttpGet("get")]
     public async Task<Result> GetAsync([FromQuery] GetArticleQuery request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 发布文章
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut("publish")]
+    public async Task<Result> PublishAsync(PublishArticleCommand request)
     {
         return await _mediator.Send(request);
     }

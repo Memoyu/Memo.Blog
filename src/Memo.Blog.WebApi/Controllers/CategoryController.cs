@@ -1,4 +1,5 @@
 ﻿using Memo.Blog.Application.Categories.Commands.Create;
+using Memo.Blog.Application.Categories.Commands.Delete;
 using Memo.Blog.Application.Categories.Queries.Get;
 
 namespace Memo.Blog.WebApi.Controllers;
@@ -15,6 +16,16 @@ public class CategoryController(ISender _mediator) : ApiController
     /// <returns></returns>
     [HttpPost("create")]
     public async Task<Result> CreateAsync(CreateCategoryCommand request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 删除分类
+    /// </summary>
+    /// <returns></returns>
+    [HttpDelete("delete")]
+    public async Task<Result> DeleteAsync(DeleteCategoryCommand request)
     {
         return await _mediator.Send(request);
     }

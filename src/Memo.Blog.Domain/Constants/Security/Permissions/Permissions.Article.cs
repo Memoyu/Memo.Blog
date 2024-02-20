@@ -8,5 +8,6 @@ public static partial class Permissions
         public const string Set = "set:article";
         public const string Get = "get:article";
         public const string Delete = "delete:article";
+        public const string Publish = "publish:article";
     }
 }
