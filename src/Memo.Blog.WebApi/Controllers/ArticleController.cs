@@ -1,6 +1,6 @@
 ﻿using Memo.Blog.Application.Articles.Commands.Create;
 using Memo.Blog.Application.Articles.Commands.Delete;
-using Memo.Blog.Application.Articles.Commands.Publish;
+using Memo.Blog.Application.Articles.Commands.Published;
 using Memo.Blog.Application.Articles.Queries.Get;
 
 namespace Memo.Blog.WebApi.Controllers;
