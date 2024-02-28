@@ -1,5 +1,6 @@
 ﻿using Memo.Blog.Application.Tags.Commands.Create;
 using Memo.Blog.Application.Tags.Commands.Delete;
+using Memo.Blog.Application.Tags.Commands.Update;
 using Memo.Blog.Application.Tags.Queries.Get;
 
 namespace Memo.Blog.WebApi.Controllers;
@@ -17,6 +18,16 @@ public class TagController(ISender _mediator) : ApiController
     /// <returns></returns>
     [HttpPost("create")]
     public async Task<Result> CreateAsync(CreateTagCommand request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 更新标签
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut("update")]
+    public async Task<Result> UpdateAsync(UpdateTagCommand request)
     {
         return await _mediator.Send(request);
     }

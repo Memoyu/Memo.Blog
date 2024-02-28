@@ -1,0 +1,21 @@
+﻿namespace Memo.Blog.Application.Tags.Commands.Update;
+
+public class UpdateCategoryCommandHandler(
+    IBaseDefaultRepository<Tag> tagRepo
+    ) : IRequestHandler<UpdateTagCommand, Result>
+{
+    public async Task<Result> Handle(UpdateTagCommand request, CancellationToken cancellationToken)
+    {
+        var tag = await tagRepo.Select.Where(t => t.TagId == request.TagId).ToOneAsync(cancellationToken);
+        if (tag == null) return Result.Failure("标签不存在");
+
+        var exist = await tagRepo.Select.AnyAsync(t => t.TagId != request.TagId && request.Name == t.Name, cancellationToken);
+        if (exist) return Result.Failure("标签名已存在");
+
+        tag.Name = request.Name;
+        tag.Color = request.Color;
+        var rows = await tagRepo.UpdateAsync(tag, cancellationToken);
+
+        return rows > 0 ? Result.Success() : Result.Failure("更新标签失败");
+    }
+}

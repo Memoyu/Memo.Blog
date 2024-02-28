@@ -14,8 +14,8 @@ public class CreateTagCommandValidator : AbstractValidator<CreateTagCommand>
     {
         RuleFor(x => x.Name)
             .MinimumLength(1)
-            .MaximumLength(20)
-            .WithMessage("标签名称长度在1-20个字符之间");
+            .MaximumLength(10)
+            .WithMessage("标签名称长度在1-10个字符之间");
 
         RuleFor(x => x.Name)
             .MustAsync(async (x, ct) => !await tagResp.Select.AnyAsync(u => x == u.Name, ct))

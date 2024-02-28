@@ -5,7 +5,7 @@ public static partial class Permissions
     public static class Tag
     {
         public const string Create = "create:tag";
-        public const string Set = "set:tag";
+        public const string Update = "update:tag";
         public const string Get = "get:tag";
         public const string Delete = "delete:tag";
     }
