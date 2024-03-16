@@ -43,6 +43,16 @@ public class ArticleController(ISender _mediator) : ApiController
     }
 
     /// <summary>
+    /// 获取文章分页列表
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("page")]
+    public async Task<Result> GetPageAsync([FromQuery] PageArticleQuery request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    /// <summary>
     /// 发布文章
     /// </summary>
     /// <returns></returns>

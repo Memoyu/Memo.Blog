@@ -4,7 +4,6 @@ using FreeSql;
 using FreeSql.DataAnnotations;
 using FreeSql.Internal;
 using Memo.Blog.Application.Common.Interfaces.Persistence.Repositories;
-using Memo.Blog.Application.Common.Models;
 using Memo.Blog.Application.Common.Utils;
 using Memo.Blog.Domain.Common;
 using Memo.Blog.Domain.Constants;
@@ -17,7 +16,7 @@ using Serilog;
 
 namespace Memo.Blog.Infrastructure.Persistence;
 
-public static class PersistenceExtension
+public static class FreeSqlPersistenceExtension
 {
     /// <summary>
     /// 注册MySql数据持久化组件

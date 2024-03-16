@@ -105,12 +105,14 @@ public class Article : BaseAuditEntity
     /// <summary>
     /// 文章分类
     /// </summary>
+    [Navigate(nameof(Category.CategoryId), TempPrimary = nameof(CategoryId))]
     public virtual Category Category { get; set; } = new();
 
     /// <summary>
-    /// 文章标签
+    /// 文章关联标签
     /// </summary>
-    public virtual List<Tag> Tags { get; set; } = [];
+    [Navigate(nameof(TagArticle.ArticleId), TempPrimary = nameof(ArticleId))]
+    public virtual List<TagArticle> TagArticles { get; set; } = [];
 
     /// <summary>
     /// 文章作者

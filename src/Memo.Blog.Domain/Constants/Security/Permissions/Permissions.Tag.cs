@@ -4,9 +4,16 @@ public static partial class Permissions
 {
     public static class Tag
     {
+        [Description("创建文章标签")]
         public const string Create = "create:tag";
+
+        [Description("更新文章标签")]
         public const string Update = "update:tag";
+
+        [Description("获取文章标签")]
         public const string Get = "get:tag";
+
+        [Description("删除文章标签")]
         public const string Delete = "delete:tag";
     }
 }

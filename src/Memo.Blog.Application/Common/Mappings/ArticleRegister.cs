@@ -14,7 +14,6 @@ public class ArticleRegister : IRegister
             .Map(d => d.WordNumber, s => s.Content.Length)
             .Map(d => d.ReadingTime, s => s.Content.Length / 800)
             .Map(d => d.Category, s => MapContext.Current.GetService<IBaseDefaultRepository<Category>>().Select.Where(c => c.CategoryId == s.CategoryId).ToOne())
-            .Map(d => d.Tags, s => MapContext.Current.GetService<IBaseDefaultRepository<Tag>>().Select.Where(t => s.Tags.Contains(t.TagId)).ToList())
             .Map(d => d.Author, userMap);
     }
 }
