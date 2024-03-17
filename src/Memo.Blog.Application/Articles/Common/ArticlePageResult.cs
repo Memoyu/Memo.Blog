@@ -3,6 +3,7 @@ using Memo.Blog.Application.Tags.Common;
 using Memo.Blog.Domain.Enums;
 
 namespace Memo.Blog.Application.Articles.Common;
+
 public class ArticlePageResult
 {
     /// <summary>
