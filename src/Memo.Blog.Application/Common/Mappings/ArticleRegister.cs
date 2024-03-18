@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Memo.Blog.Application.Articles.Commands.Create;
+using Memo.Blog.Application.Articles.Commands.Update;
 using Memo.Blog.Application.Articles.Common;
 using Memo.Blog.Application.Security;
 
@@ -16,6 +17,10 @@ public class ArticleRegister : IRegister
             .Map(d => d.ReadingTime, s => s.Content.Length / 800)
             .Map(d => d.Category, s => MapContext.Current.GetService<IBaseDefaultRepository<Category>>().Select.Where(c => c.CategoryId == s.CategoryId).ToOne())
             .Map(d => d.Author, userMap);
+
+        config.ForType<UpdateArticleCommand, Article>()
+            .Map(d => d.WordNumber, s => s.Content.Length)
+            .Map(d => d.ReadingTime, s => s.Content.Length / 800);
 
         config.ForType<Article, ArticlePageResult>()
             .Map(d => d.Tags, s => s.TagArticles.Select(ta => ta.Tag).ToList());

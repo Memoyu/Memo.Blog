@@ -1,10 +1,11 @@
 ﻿using Memo.Blog.Domain.Enums;
 
-namespace Memo.Blog.Application.Articles.Commands.Create;
+namespace Memo.Blog.Application.Articles.Commands.Update;
 
-[Authorize(Permissions = ApiPermission.Article.Create)]
+[Authorize(Permissions = ApiPermission.Article.Update)]
 [Transactional]
-public record CreateArticleCommand(
+public record UpdateArticleCommand(
+    long ArticleId,
     long CategoryId,
     List<long> Tags,
     string Title,
@@ -17,10 +18,14 @@ public record CreateArticleCommand(
     bool Publicable
     ) : IRequest<Result>;
 
-public class CreateArticleCommandValidator : AbstractValidator<CreateArticleCommand>
+public class UpdateArticleCommandValidator : AbstractValidator<UpdateArticleCommand>
 {
-    public CreateArticleCommandValidator()
+    public UpdateArticleCommandValidator()
     {
+        RuleFor(x => x.ArticleId)
+           .Must(x => x > 0)
+           .WithMessage("文章Id不能小于0");
+
         RuleFor(x => x.Tags)
            .NotEmpty()
            .WithMessage("标签不能为空");
