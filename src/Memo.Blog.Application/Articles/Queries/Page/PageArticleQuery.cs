@@ -1,6 +1,17 @@
-﻿namespace Memo.Blog.Application.Articles.Queries.Get;
+﻿using Memo.Blog.Domain.Enums;
 
-public record PageArticleQuery(string? Title, long? CategoryId, List<long>? TagIds) : PaginationQuery, IRequest<Result>;
+namespace Memo.Blog.Application.Articles.Queries.Page;
+
+public record PageArticleQuery : PaginationQuery, IRequest<Result>
+{
+    public string? Title { get; set; }
+
+    public long? CategoryId { get; set; }
+
+    public List<long>? TagIds { get; set; }
+
+    public ArticleStatus? Status { get; set; }
+}
 
 public class PageArticleQueryValidator : AbstractValidator<PageArticleQuery>
 {

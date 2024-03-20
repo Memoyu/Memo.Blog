@@ -4,10 +4,11 @@ using Memo.Blog.Application.Common.Interfaces.Persistence.Repositories;
 using Memo.Blog.Domain.Common;
 using MediatR;
 using Memo.Blog.Application.Security;
+using SharpCompress.Common;
 
 namespace Memo.Blog.Infrastructure.Persistence.Repositories;
 
-public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, IBaseDefaultRepository<TEntity> where TEntity : class, new()
+public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, IBaseDefaultRepository<TEntity> where TEntity : BaseAuditEntity
 {
     /// <summary>
     ///  当前登录人信息
@@ -110,16 +111,18 @@ public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, 
 
     #region Update
 
+    private readonly Expression<Func<TEntity, object>> _updateIgnoreExp = e => new { e.CreateUserId, e.CreateTime };
+
     public override int Update(TEntity entity)
     {
         BeforeUpdateAsync(entity).GetAwaiter().GetResult();
-        return base.Update(entity);
+        return Orm.Update<TEntity>().SetSource(entity).IgnoreColumns(_updateIgnoreExp).ExecuteAffrows();
     }
 
     public override async Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         await BeforeUpdateAsync(entity);
-        return await base.UpdateAsync(entity, cancellationToken);
+        return await Orm.Update<TEntity>().SetSource(entity).IgnoreColumns(_updateIgnoreExp).ExecuteAffrowsAsync(cancellationToken);
     }
 
     public override int Update(IEnumerable<TEntity> entities)
@@ -129,7 +132,7 @@ public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, 
             BeforeUpdateAsync(entity).GetAwaiter().GetResult();
         }
 
-        return base.Update(entities);
+        return Orm.Update<TEntity>().SetSource(entities).IgnoreColumns(_updateIgnoreExp).ExecuteAffrows();
     }
 
     public override async Task<int> UpdateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
@@ -139,7 +142,7 @@ public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, 
             await BeforeUpdateAsync(entity);
         }
 
-        return await base.UpdateAsync(entities, cancellationToken);
+        return await Orm.Update<TEntity>().SetSource(entities).IgnoreColumns(_updateIgnoreExp).ExecuteAffrowsAsync(cancellationToken);
     }
 
     #endregion

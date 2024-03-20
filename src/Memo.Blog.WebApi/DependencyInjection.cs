@@ -1,4 +1,5 @@
-﻿using NSwag;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using NSwag;
 using NSwag.Generation.Processors.Security;
 
 namespace Memo.Blog.WebApi;
@@ -22,8 +23,12 @@ public static class DependencyInjection
         services.AddCorsPolicy(configuration);
 
         services.AddControllers(options =>
-            // 禁用隐式的[Required]，为了统一响应模型
-            options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true
+           {
+               // 禁用隐式的[Required]，为了统一响应模型
+               options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+               // 处理数组接收带括号时不识别问题，主要用于get 数组传入
+               options.ValueProviderFactories.Add(new JQueryQueryStringValueProviderFactory());
+           }
         );
         services.AddEndpointsApiExplorer();
 

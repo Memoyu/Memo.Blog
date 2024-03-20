@@ -3,6 +3,8 @@ using Memo.Blog.Application.Articles.Commands.Delete;
 using Memo.Blog.Application.Articles.Commands.Published;
 using Memo.Blog.Application.Articles.Commands.Update;
 using Memo.Blog.Application.Articles.Queries.Get;
+using Memo.Blog.Application.Articles.Queries.Page;
+using Memo.Blog.Application.Articles.Queries.Summary;
 
 namespace Memo.Blog.WebApi.Controllers;
 
@@ -59,6 +61,16 @@ public class ArticleController(ISender _mediator) : ApiController
     /// <returns></returns>
     [HttpGet("page")]
     public async Task<Result> GetPageAsync([FromQuery] PageArticleQuery request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 获取文章分页列表汇总
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("page/summary")]
+    public async Task<Result> GetPageSummaryAsync([FromQuery] PageSummaryArticleQuery request)
     {
         return await _mediator.Send(request);
     }
