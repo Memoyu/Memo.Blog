@@ -24,8 +24,8 @@ public class PageArticleQueryHandler(
             .WhereIf(request.TagIds != null && request.TagIds.Any(), a => a.TagArticles.Any(ta => request.TagIds!.Contains(ta.TagId)))
             .ToPageListAsync(request, out var total, cancellationToken);
 
-        var result = mapper.Map<List<ArticlePageResult>>(articles);
+        var results = mapper.Map<List<ArticlePageResult>>(articles);
 
-        return Result.Success(result);
+        return Result.Success(new PaginationResult<ArticlePageResult>(results, total));
     }
 }

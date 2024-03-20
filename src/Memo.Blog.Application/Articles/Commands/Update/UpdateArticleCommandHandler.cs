@@ -1,9 +1,5 @@
-﻿using Memo.Blog.Application.Articles.Common;
-using Memo.Blog.Application.Categories.Common;
-using Memo.Blog.Application.Tags.Common;
-using Memo.Blog.Domain.Entities.Mongo;
+﻿using Memo.Blog.Domain.Entities.Mongo;
 using MongoDB.Driver;
-using SharpCompress.Common;
 
 namespace Memo.Blog.Application.Articles.Commands.Update;
 
@@ -80,10 +76,6 @@ public class UpdateArticleCommandHandler(
 
         #endregion
 
-        var result = mapper.Map<ArticleResult>(article);
-        result.Tags = mapper.Map<List<TagResult>>(tags);
-        result.Category = mapper.Map<CategoryResult>(category);
-
-        return Result.Success(result);
+        return Result.Success(article.ArticleId);
     }
 }

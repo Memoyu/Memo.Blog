@@ -1,7 +1,4 @@
-﻿using Memo.Blog.Application.Articles.Common;
-using Memo.Blog.Application.Categories.Common;
-using Memo.Blog.Application.Tags.Common;
-using Memo.Blog.Domain.Entities.Mongo;
+﻿using Memo.Blog.Domain.Entities.Mongo;
 
 namespace Memo.Blog.Application.Articles.Commands.Create;
 
@@ -35,10 +32,6 @@ public class CreateArticleCommandHandler(
         var mongoInsert = await articleMongoResp.InsertOneAsync(articleCollection, null, cancellationToken);
         if (!mongoInsert) throw new Exception("写入mongodb失败");
 
-        var result = mapper.Map<ArticleResult>(article);
-        result.Tags = mapper.Map<List<TagResult>>(tags);
-        result.Category = mapper.Map<CategoryResult>(category);
-
-        return Result.Success(result);
+        return Result.Success(article.ArticleId);
     }
 }

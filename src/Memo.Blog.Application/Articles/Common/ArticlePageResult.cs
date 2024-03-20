@@ -35,4 +35,19 @@ public class ArticlePageResult
     /// 文章状态
     /// </summary>
     public ArticleStatus Status { get; set; }
+
+    /// <summary>
+    /// 是否置顶
+    /// </summary>
+    public bool IsTop { get; set; }
+
+    /// <summary>
+    /// 是否开启评论
+    /// </summary>
+    public bool Commentable { get; set; }
+
+    /// <summary>
+    /// 是否公开
+    /// </summary>
+    public bool Publicable { get; set; }
 }
