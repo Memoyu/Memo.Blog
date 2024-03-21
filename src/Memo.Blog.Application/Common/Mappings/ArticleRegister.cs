@@ -22,7 +22,7 @@ public class ArticleRegister : IRegister
             .Map(d => d.WordNumber, s => s.Content.Length)
             .Map(d => d.ReadingTime, s => s.Content.Length / 800);
 
-        config.ForType<Article, ArticlePageResult>()
+        config.ForType<Article, PageArticleResult>()
             .Map(d => d.Tags, s => s.TagArticles.Select(ta => ta.Tag).ToList());
     }
 }

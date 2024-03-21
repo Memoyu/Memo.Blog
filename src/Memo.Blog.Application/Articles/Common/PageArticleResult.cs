@@ -4,7 +4,7 @@ using Memo.Blog.Domain.Enums;
 
 namespace Memo.Blog.Application.Articles.Common;
 
-public class ArticlePageResult
+public class PageArticleResult
 {
     /// <summary>
     /// 文章Id
@@ -35,6 +35,11 @@ public class ArticlePageResult
     /// 文章状态
     /// </summary>
     public ArticleStatus Status { get; set; }
+
+    /// <summary>
+    /// 创建时间
+    /// </summary>
+    public DateTime CreateTime { get; set; }
 
     /// <summary>
     /// 是否置顶

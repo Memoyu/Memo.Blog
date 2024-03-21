@@ -1,12 +1,9 @@
-﻿
-using Memo.Blog.Application.Articles.Common;
-using Memo.Blog.Application.Security;
+﻿using Memo.Blog.Application.Articles.Common;
 
 namespace Memo.Blog.Application.Articles.Queries.Summary;
 
 public class PageSummaryArticleQueryHandler(
     IMapper mapper,
-    ICurrentUserProvider currentUserProvider,
     IBaseDefaultRepository<Article> articleRepo,
     IBaseDefaultRepository<Comment> commentRepo
     ) : IRequestHandler<PageSummaryArticleQuery, Result>
@@ -14,7 +11,6 @@ public class PageSummaryArticleQueryHandler(
     public async Task<Result> Handle(PageSummaryArticleQuery request, CancellationToken cancellationToken)
     {
         var articles = await articleRepo.Select
-            .Where(a => a.CreateUserId == currentUserProvider.GetCurrentUser().Id)
             .WhereIf(!string.IsNullOrWhiteSpace(request.Title), a => a.Title.Contains(request.Title!))
             .WhereIf(request.CategoryId > 0, a => a.CategoryId == request.CategoryId)
             .WhereIf(request.TagIds != null && request.TagIds.Any(), a => a.TagArticles.Any(ta => request.TagIds!.Contains(ta.TagId)))
@@ -29,7 +25,7 @@ public class PageSummaryArticleQueryHandler(
            .Where(c => articles.Any(a => a.ArticleId == c.BelongId)).CountAsync();
 
 
-        var dto = new ArticleListSummaryResult(articleTotal, commentTotal, viewTotal);
+        var dto = new PageSummaryArticleResult(articleTotal, commentTotal, viewTotal);
         return Result.Success(dto);
     }
 }

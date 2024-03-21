@@ -40,7 +40,7 @@ public class ArticleController(ISender _mediator) : ApiController
     /// </summary>
     /// <returns></returns>
     [HttpDelete("delete")]
-    public async Task<Result> DeleteAsync(DeleteArticleCommand request)
+    public async Task<Result> DeleteAsync([FromQuery] DeleteArticleCommand request)
     {
         return await _mediator.Send(request);
     }
