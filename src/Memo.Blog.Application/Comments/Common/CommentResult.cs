@@ -20,6 +20,11 @@ public record CommentResult
     public long BelongId { get; set; }
 
     /// <summary>
+    /// 所属信息（文章、动态等）
+    /// </summary>
+    public CommentBelongResult Belong { get; set; }
+
+    /// <summary>
     /// 评论类型
     /// </summary>
     public CommentType CommentType { get; set; }

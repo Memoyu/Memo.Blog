@@ -23,7 +23,7 @@ public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavio
         catch (ValidationException vex)
         {
             var erros = string.Join("; ", vex.Errors.Select(e => e.ErrorMessage).ToList());
-            failureMsg = $"数据验证失败：{erros}"; ;
+            failureMsg = $"参数错误：{erros}"; ;
         }
         catch (Exception ex)
         {

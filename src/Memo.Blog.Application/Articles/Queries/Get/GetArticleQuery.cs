@@ -1,5 +1,6 @@
 ﻿namespace Memo.Blog.Application.Articles.Queries.Get;
 
+[Authorize(Permissions = ApiPermission.Article.Get)]
 public record GetArticleQuery(long ArticleId) : IRequest<Result>;
 
 public class GetArticleQueryValidator : AbstractValidator<GetArticleQuery>

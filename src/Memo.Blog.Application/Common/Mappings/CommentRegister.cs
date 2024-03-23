@@ -8,6 +8,9 @@ public class CommentRegister : IRegister
     {
         config.ForType<Comment, PageCommentResult>()
             .Map(d => d.Belong, s => GetCommentBelog(s));
+
+        config.ForType<Comment, CommentResult>()
+            .Map(d => d.Belong, s => GetCommentBelog(s));
     }
 
     private CommentBelongResult GetCommentBelog(Comment s)

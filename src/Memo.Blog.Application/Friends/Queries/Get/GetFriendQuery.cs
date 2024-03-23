@@ -1,10 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Memo.Blog.Application.Friends.Queries.Get;
 
-namespace Memo.Blog.Application.Friends.Queries.Get;
-internal class GetFriendQuery
+[Authorize(Permissions = ApiPermission.Friend.Get)]
+public record GetFriendQuery(long FriendId) : IRequest<Result>;
+
+
+public class GetFriendQueryValidator : AbstractValidator<GetFriendQuery>
 {
+    public GetFriendQueryValidator()
+    {
+        RuleFor(x => x.FriendId)
+            .Must(x => x > 0)
+            .WithMessage("友链Id必须大于0");
+    }
 }
+

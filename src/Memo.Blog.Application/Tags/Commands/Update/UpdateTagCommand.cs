@@ -13,6 +13,10 @@ public class UpdateTagCommandValidator : AbstractValidator<UpdateTagCommand>
             .WithMessage("标签Id必须大于0");
 
         RuleFor(x => x.Name)
+            .NotEmpty()
+            .WithMessage("分类名称不能为空");
+
+        RuleFor(x => x.Name)
            .MinimumLength(1)
            .MaximumLength(10)
            .WithMessage("标签名称长度在1-10个字符之间");

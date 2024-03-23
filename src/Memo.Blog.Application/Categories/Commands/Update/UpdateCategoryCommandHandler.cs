@@ -6,7 +6,7 @@ public class UpdateCategoryCommandHandler(
 {
     public async Task<Result> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await categoryRepo.Select.Where(c => c.CategoryId == request.CategoryId).ToOneAsync(cancellationToken);
+        var category = await categoryRepo.Select.Where(c => c.CategoryId == request.CategoryId).FirstAsync(cancellationToken);
         if (category == null) return Result.Failure("分类不存在");
 
         var exist = await categoryRepo.Select.AnyAsync(c => c.CategoryId != request.CategoryId && request.Name == c.Name, cancellationToken);

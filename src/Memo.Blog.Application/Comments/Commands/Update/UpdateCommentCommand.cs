@@ -25,6 +25,9 @@ public class UpdateCommentCommandValidator : AbstractValidator<UpdateCommentComm
            .Must(x => x > 0)
            .WithMessage("评论Id不能小于0");
 
+        RuleFor(x => x.Nickname)
+           .NotEmpty()
+           .WithMessage("昵称不能为空");
 
         RuleFor(x => x.Nickname)
            .MinimumLength(1)

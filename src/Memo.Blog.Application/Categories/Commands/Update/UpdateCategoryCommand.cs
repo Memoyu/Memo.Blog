@@ -17,6 +17,10 @@ public class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCo
             .WithMessage("初始分类无法编辑");
 
         RuleFor(x => x.Name)
+            .NotEmpty()
+            .WithMessage("分类名称不能为空");
+
+        RuleFor(x => x.Name)
            .MinimumLength(1)
            .MaximumLength(10)
            .WithMessage("分类名称长度在1-10个字符之间");

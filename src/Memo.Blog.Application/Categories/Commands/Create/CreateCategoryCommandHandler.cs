@@ -8,15 +8,15 @@ public class CreateCategoryCommandHandler(
 {
     public async Task<Result> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
+        var exist = await categoryResp.Select.AnyAsync(c => request.Name == c.Name, cancellationToken);
+        if (exist) return Result.Failure("分类已存在");
+
         var category = new Category
         {
             Name = request.Name,
         };
-
         category = await categoryResp.InsertAsync(category, cancellationToken);
 
-        var result = _mapper.Map<CategoryResult>(category);
-
-        return Result.Success(result);
+        return category == null || category.Id == 0 ? Result.Failure("保存分类失败") : Result.Success(category.CategoryId);
     }
 }

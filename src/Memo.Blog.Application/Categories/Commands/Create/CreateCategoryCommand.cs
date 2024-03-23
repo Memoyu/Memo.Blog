@@ -7,17 +7,15 @@ public record CreateCategoryCommand(
 
 public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
 {
-    public CreateCategoryCommandValidator(
-        IBaseDefaultRepository<Category> categoryResp
-        )
+    public CreateCategoryCommandValidator()
     {
+        RuleFor(x => x.Name)
+           .NotEmpty()
+           .WithMessage("分类名称不能为空");
+
         RuleFor(x => x.Name)
             .MinimumLength(1)
             .MaximumLength(10)
             .WithMessage("分类名称长度在1-10个字符之间");
-
-        RuleFor(x => x.Name)
-            .MustAsync(async (x, ct) => !await categoryResp.Select.AnyAsync(u => x == u.Name, ct))
-            .WithMessage("分类已存在");
     }
 }

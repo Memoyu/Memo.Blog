@@ -1,5 +1,6 @@
 ﻿namespace Memo.Blog.Application.Categories.Queries.Get;
 
+[Authorize(Permissions = ApiPermission.Category.Get)]
 public record GetCategoryQuery(
     long CategoryId
     ) : IRequest<Result>;

@@ -4,9 +4,14 @@ public static partial class Permissions
 {
     public static class About
     {
-        public const string Create = "create:about";
-        public const string Set = "set:about";
+        // public const string Create = "create:about";
+
+        [Description("更新关于信息")]
+        public const string Update = "update:about";
+
+        [Description("获取更新关于信息")]
         public const string Get = "get:about";
-        public const string Delete = "delete:about";
+
+        // public const string Delete = "delete:about";
     }
 }

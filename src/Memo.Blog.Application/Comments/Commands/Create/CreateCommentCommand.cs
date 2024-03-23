@@ -65,8 +65,13 @@ public class CreateCommentCommandValidator : AbstractValidator<CreateCommentComm
             .WithMessage("评论类型错误");
 
         RuleFor(x => x.Nickname)
-          .NotEmpty()
-          .WithMessage("昵称不能为空");
+            .NotEmpty()
+            .WithMessage("昵称不能为空");
+
+        RuleFor(x => x.Nickname)
+            .MinimumLength(1)
+            .MaximumLength(20)
+            .WithMessage("友链昵称长度在1-20个字符之间");
     }
 }
 
