@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Memo.Blog.Application.Abouts.Queries.Get;
 
-namespace Memo.Blog.Application.Abouts.Queries.Get;
-internal class GetAboutQuery
+[Authorize(Permissions = ApiPermission.About.Get)]
+public record GetAboutQuery() : IRequest<Result>;
+
+
+public class GetAboutQueryValidator : AbstractValidator<GetAboutQuery>
 {
+    public GetAboutQueryValidator()
+    {
+    }
 }
+

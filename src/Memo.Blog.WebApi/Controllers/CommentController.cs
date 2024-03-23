@@ -1,7 +1,9 @@
 ﻿using Memo.Blog.Application.Comments.Commands.Create;
 using Memo.Blog.Application.Comments.Commands.Delete;
 using Memo.Blog.Application.Comments.Commands.Update;
+using Memo.Blog.Application.Comments.Queries.Get;
 using Memo.Blog.Application.Comments.Queries.Page;
+using Memo.Blog.Application.Friends.Queries.Get;
 
 namespace Memo.Blog.WebApi.Controllers;
 
@@ -39,6 +41,16 @@ public class CommentController(ISender _mediator) : ApiController
     /// <returns></returns>
     [HttpDelete("delete")]
     public async Task<Result> DeleteAsync([FromQuery] DeleteCommentCommand request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 获取评论
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("get")]
+    public async Task<Result> GetAsync([FromQuery] GetCommentQuery request)
     {
         return await _mediator.Send(request);
     }

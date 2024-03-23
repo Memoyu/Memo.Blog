@@ -14,6 +14,13 @@ public class About : BaseAuditEntity
     public string Title { get; set; } = string.Empty;
 
     /// <summary>
+    /// 个人标签
+    /// </summary>
+    [Description("个人标签")]
+    [Column(StringLength = 300)]
+    public string Tags { get; set; } = string.Empty;
+
+    /// <summary>
     /// 内容
     /// </summary>
     [Description("内容")]
