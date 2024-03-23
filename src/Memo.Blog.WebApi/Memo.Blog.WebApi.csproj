@@ -19,4 +19,10 @@
     <ProjectReference Include="..\Memo.Blog.Infrastructure\Memo.Blog.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\Assets\ip2region.xdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

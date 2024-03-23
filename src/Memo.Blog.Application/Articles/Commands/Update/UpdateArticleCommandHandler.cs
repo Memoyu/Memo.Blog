@@ -14,10 +14,10 @@ public class UpdateArticleCommandHandler(
 {
     public async Task<Result> Handle(UpdateArticleCommand request, CancellationToken cancellationToken)
     {
-        var entity = await articleResp.Select.Where(a => a.ArticleId == request.ArticleId).FirstAsync();
+        var entity = await articleResp.Select.Where(a => a.ArticleId == request.ArticleId).FirstAsync(cancellationToken);
         if (entity is null) return Result.Failure("文章不存在");
 
-        var category = await categoryResp.Select.Where(c => c.CategoryId == request.CategoryId).FirstAsync();
+        var category = await categoryResp.Select.Where(c => c.CategoryId == request.CategoryId).FirstAsync(cancellationToken);
         if (category is null) return Result.Failure("文章分类不存在");
 
         var tags = await tagResp.Select.Where(t => request.Tags.Contains(t.TagId)).ToListAsync();
@@ -29,11 +29,12 @@ public class UpdateArticleCommandHandler(
         var article = mapper.Map<Article>(request);
         article.Id = entity.Id;
         var row = await articleResp.UpdateAsync(article, cancellationToken);
+        if (row <= 0) return Result.Failure("更新文章失败");
 
         #region 标签管理
 
         var addTags = new List<TagArticle>();
-        var currentTagArticles = await tagArticleResp.Select.Where(ta => ta.ArticleId == article.ArticleId).ToListAsync();
+        var currentTagArticles = await tagArticleResp.Select.Where(ta => ta.ArticleId == article.ArticleId).ToListAsync(cancellationToken);
         foreach (var tag in tags)
         {
             if (!currentTagArticles.Any(t => t.TagId == tag.TagId))
@@ -45,8 +46,8 @@ public class UpdateArticleCommandHandler(
                 currentTagArticles.RemoveAll(t => t.TagId == tag.TagId);
             }
         }
-        await tagArticleResp.InsertAsync(addTags);
-        await tagArticleResp.DeleteAsync(currentTagArticles);
+        await tagArticleResp.InsertAsync(addTags, cancellationToken);
+        await tagArticleResp.DeleteAsync(currentTagArticles, cancellationToken);
 
         #endregion
 

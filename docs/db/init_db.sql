@@ -1,0 +1,1 @@
+INSERT INTO blog.category (category_id, name, create_user_id, create_time, update_user_id, update_time, is_deleted, delete_user_id, delete_time) VALUES( 1, '未分类', 1, '2024-02-27 22:59:23.448', 1, '2024-03-23 14:58:16.641', 0, 1, '2024-03-23 15:25:00.585');

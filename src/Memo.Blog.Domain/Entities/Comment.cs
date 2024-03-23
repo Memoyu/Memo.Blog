@@ -84,7 +84,7 @@ public class Comment : BaseAuditEntity
     /// </summary>
     [Description("评论IP所属")]
     [Column(StringLength = 100)]
-    public string IpBelong { get; set; } = string.Empty;
+    public string Region { get; set; } = string.Empty;
 
     /// <summary>
     /// 是否展示

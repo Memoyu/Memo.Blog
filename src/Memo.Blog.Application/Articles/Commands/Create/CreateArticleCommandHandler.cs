@@ -24,6 +24,7 @@ public class CreateArticleCommandHandler(
 
         var article = mapper.Map<Article>(request);
         article = await articleResp.InsertAsync(article, cancellationToken);
+        if (article.Id == 0) return Result.Failure("保存文章失败");
 
         var tagArticles = request.Tags.Select(t => new TagArticle { ArticleId = article.ArticleId, TagId = t }).ToList();
         await tagArticleResp.InsertAsync(tagArticles);

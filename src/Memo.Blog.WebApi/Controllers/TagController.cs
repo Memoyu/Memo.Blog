@@ -37,7 +37,7 @@ public class TagController(ISender _mediator) : ApiController
     /// </summary>
     /// <returns></returns>
     [HttpDelete("delete")]
-    public async Task<Result> DeleteAsync(DeleteTagCommand request)
+    public async Task<Result> DeleteAsync([FromQuery] DeleteTagCommand request)
     {
         return await _mediator.Send(request);
     }

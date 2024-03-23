@@ -1,4 +1,6 @@
-﻿namespace Memo.Blog.Application.Categories.Commands.Delete;
+﻿using Memo.Blog.Domain.Events.Articles;
+
+namespace Memo.Blog.Application.Categories.Commands.Delete;
 
 public class DeleteCategoryCommandHandler(
     IBaseDefaultRepository<Category> categoryRepo
@@ -8,6 +10,8 @@ public class DeleteCategoryCommandHandler(
     {
         var category = await categoryRepo.Select.Where(c => c.CategoryId == request.CategoryId).ToOneAsync(cancellationToken);
         if (category == null) return Result.Failure("分类不存在");
+
+        category.AddDomainEvent(new ArticleUpdateCategoryEvent(category.CategoryId, InitConst.InitCategoryId));
 
         var rows = await categoryRepo.DeleteAsync(category, cancellationToken);
 

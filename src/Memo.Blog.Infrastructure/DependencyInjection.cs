@@ -10,6 +10,11 @@ using MongoDB.Driver;
 using Memo.Blog.Domain.Constants;
 using System.Configuration;
 using Memo.Blog.Application.Security;
+using IP2Region.Net.Abstractions;
+using IP2Region.Net.XDB;
+using Microsoft.AspNetCore.Hosting;
+using Memo.Blog.Application.Common.Interfaces.Region;
+using Memo.Blog.Infrastructure.Region;
 
 namespace Memo.Blog.Infrastructure;
 
@@ -24,7 +29,8 @@ public static class DependencyInjection
             .AddAuthorization() // 注册认证
             .AddAuthentication(configuration) // 注册授权
             .AddPersistenceForMyql(configuration) // 注册MySql数据持久化组件（FreeSql）
-            .AddPersistenceForMongo(configuration); // 注册MongoDb持久化组件（MongoDB.Driver）
+            .AddPersistenceForMongo(configuration) // 注册MongoDb持久化组件（MongoDB.Driver）
+            .AddIp2Region();  // 注册IP地址定位 
 
         return services;
     }
@@ -117,6 +123,23 @@ public static class DependencyInjection
                     }
                 };
             });
+
+        return services;
+    }
+
+    /// <summary>
+    /// 注册IP地址定位
+    /// </summary>
+    /// <param name="services"></param>
+    /// <returns></returns>
+    public static IServiceCollection AddIp2Region(this IServiceCollection services)
+    {
+        var sp = services.BuildServiceProvider();
+        var env = sp.GetRequiredService<IWebHostEnvironment>();
+        string xdbPath = Path.Combine(env.WebRootPath, "Assets", "ip2region.xdb");
+
+        services.AddSingleton<ISearcher>(new Searcher(CachePolicy.Content, xdbPath));
+        services.AddSingleton<IRegionSearcher, RegionSearcher>();
 
         return services;
     }

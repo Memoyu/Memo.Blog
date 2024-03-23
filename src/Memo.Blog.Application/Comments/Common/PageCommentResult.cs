@@ -57,7 +57,7 @@ public record PageCommentResult
     /// <summary>
     /// 评论IP所属
     /// </summary>
-    public string IpBelong { get; set; } = string.Empty;
+    public string Region { get; set; } = string.Empty;
 
     /// <summary>
     /// 是否展示

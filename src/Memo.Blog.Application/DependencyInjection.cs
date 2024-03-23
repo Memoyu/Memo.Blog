@@ -1,4 +1,6 @@
-﻿using Mapster;
+﻿using IP2Region.Net.Abstractions;
+using IP2Region.Net.XDB;
+using Mapster;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;

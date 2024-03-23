@@ -13,6 +13,14 @@ public class ListCategoryQueryHandler(
             .WhereIf(!string.IsNullOrWhiteSpace(request.Name), t => t.Name.Contains(request.Name))
             .ToListAsync(cancellationToken) ?? [];
 
+        // 获取初始化的分类
+        var initCategory = categories.FirstOrDefault(c => c.CategoryId == 1);
+        if (initCategory != null)
+        {
+            categories.Remove(initCategory);
+            categories.Insert(0, initCategory);
+        }
+
         return Result.Success(_mapper.Map<List<CategoryResult>>(categories));
     }
 }

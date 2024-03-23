@@ -17,6 +17,18 @@ public class CurrentUserProvider(IHttpContextAccessor _httpContextAccessor) : IC
         return new CurrentUser(id, username, email);
     }
 
+    public string GetClientIp()
+    {
+        var context = _httpContextAccessor.HttpContext;
+        context.ThrowIfNull();
+        var ip = context.Request.Headers["X-Forwarded-For"].ToString();
+        if (string.IsNullOrEmpty(ip))
+        {
+            if (context.Connection.RemoteIpAddress != null) ip = context.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        }
+
+        return ip;
+    }
     private string? GetSingleClaimValue(string claimType) =>
         _httpContextAccessor.HttpContext!.User?.Claims?.FirstOrDefault(claim => claim.Type == claimType)?.Value;
 }

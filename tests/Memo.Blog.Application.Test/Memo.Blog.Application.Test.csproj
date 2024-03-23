@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Memo.Blog.Application\Memo.Blog.Application.csproj" />
+  </ItemGroup>
+
 </Project>

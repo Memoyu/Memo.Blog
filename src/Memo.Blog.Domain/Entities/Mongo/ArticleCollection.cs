@@ -157,6 +157,11 @@ public class ArticleCommentBson
     public string Ip { get; set; } = string.Empty;
 
     /// <summary>
+    /// 评论IP所属
+    /// </summary>
+    public string Region { get; set; } = string.Empty;
+
+    /// <summary>
     /// 是否展示
     /// </summary>
     public bool Showable { get; set; }
