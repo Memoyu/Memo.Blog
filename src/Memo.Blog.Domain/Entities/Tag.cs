@@ -4,6 +4,7 @@
 /// 文章标签表
 /// </summary>
 [Table(Name = "tag")]
+[Index("index_on_tag_id", nameof(TagId), false)]
 public class Tag : BaseAuditEntity
 {
     /// <summary>

@@ -4,6 +4,7 @@
 /// 用户表
 /// </summary>
 [Table(Name = "user")]
+[Index("index_on_user_id", nameof(UserId), false)]
 public class User : BaseAuditEntity
 {
     /// <summary>

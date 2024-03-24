@@ -4,6 +4,7 @@
 /// 用户角色表
 /// </summary>
 [Table(Name = "role")]
+[Index("index_on_role_id", nameof(RoleId), false)]
 public class Role : BaseAuditEntity
 {
     /// <summary>

@@ -4,6 +4,7 @@
 /// 友链表
 /// </summary>
 [Table(Name = "friend")]
+[Index("index_on_friend_id", nameof(FriendId), false)]
 public class Friend : BaseAuditEntity
 {
     /// <summary>

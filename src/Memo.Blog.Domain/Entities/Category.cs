@@ -4,6 +4,7 @@
 /// 文章分类表
 /// </summary>
 [Table(Name = "category")]
+[Index("index_on_category_id", nameof(CategoryId), false)]
 public class Category : BaseAuditEntity
 {
     /// <summary>

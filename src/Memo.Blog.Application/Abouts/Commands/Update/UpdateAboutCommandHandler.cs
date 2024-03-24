@@ -15,6 +15,7 @@ public class UpdateAboutCommandHandler(
             return about.Id == 0 ? Result.Failure("新增关于信息失败") : Result.Success(about.Id);
         }
 
+        about.Id = entity.Id;
         var rows = await aboutRepo.UpdateAsync(about, cancellationToken);
         return rows > 0 ? Result.Success() : Result.Failure("更新关于信息失败");
     }

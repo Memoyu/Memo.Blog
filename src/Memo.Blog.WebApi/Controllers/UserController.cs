@@ -6,7 +6,6 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 用户管理
 /// </summary>
 [Route("api/user")]
-
 public class UserController(ISender _mediator) : ApiController
 {
     /// <summary>

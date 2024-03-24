@@ -1,11 +1,11 @@
-﻿using static Memo.Blog.Domain.Constants.Security.Permissions.Permissions;
-
-namespace Memo.Blog.Domain.Entities;
+﻿namespace Memo.Blog.Domain.Entities;
 
 /// <summary>
 /// 文章标签
 /// </summary>
 [Table(Name = "tag_article")]
+[Index("index_on_tag_id", nameof(TagId), false)]
+[Index("index_on_article_id", nameof(ArticleId), false)]
 public class TagArticle : BaseAuditEntity
 {
     /// <summary>

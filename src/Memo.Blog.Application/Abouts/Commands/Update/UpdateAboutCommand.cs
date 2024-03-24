@@ -3,7 +3,8 @@
 [Authorize(Permissions = ApiPermission.About.Update)]
 public record UpdateAboutCommand(
     string Title,
-    string Tags,
+    string Banner,
+    List<string> Tags,
     string Content,
     bool Commentable) : IRequest<Result>;
 
@@ -24,12 +25,12 @@ public class UpdateAboutCommandValidator : AbstractValidator<UpdateAboutCommand>
           .WithMessage("关于信息个人标签不能为空");
 
         RuleFor(x => x.Tags)
-          .Must(x => x.Split(new char []{ ',' }, StringSplitOptions.RemoveEmptyEntries).Length != 0)
+          .Must(x => x.Count >= 1)
           .WithMessage("关于信息个人标签个数不能小于1个");
 
         RuleFor(x => x.Content)
           .NotEmpty()
-          .WithMessage("关于信息描述不能为空");
+          .WithMessage("关于信息内容不能为空");
     }
 }
 

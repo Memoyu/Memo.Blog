@@ -14,6 +14,12 @@ public class About : BaseAuditEntity
     public string Title { get; set; } = string.Empty;
 
     /// <summary>
+    /// 横幅图
+    /// </summary>
+    [Description("横幅图")]
+    public string Banner { get; set; } = string.Empty;
+
+    /// <summary>
     /// 个人标签
     /// </summary>
     [Description("个人标签")]

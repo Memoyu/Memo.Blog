@@ -4,6 +4,7 @@
 /// 动态表
 /// </summary>
 [Table(Name = "moment")]
+[Index("index_on_moment_id", nameof(MomentId), false)]
 public class Moment : BaseAuditEntity
 {
     /// <summary>

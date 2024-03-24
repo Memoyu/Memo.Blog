@@ -6,6 +6,8 @@ namespace Memo.Blog.Domain.Entities;
 /// 用户身份认证表
 /// </summary>
 [Table(Name = "user_identity")]
+[Index("index_on_identity_id", nameof(IdentityId), false)]
+[Index("index_on_user_id", nameof(UserId), false)]
 public class UserIdentity : BaseAuditEntity
 {
     /// <summary>

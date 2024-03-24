@@ -6,7 +6,6 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 角色管理
 /// </summary>
 [Route("api/role")]
-
 public class RoleController(ISender _mediator) : ApiController
 {
     /// <summary>

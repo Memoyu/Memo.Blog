@@ -4,6 +4,8 @@
 /// 用户角色与权限关联表
 /// </summary>
 [Table(Name = "role_permission")]
+[Index("index_on_role_id", nameof(RoleId), false)]
+[Index("index_on_permission_id", nameof(PermissionId), false)]
 public class RolePermission : BaseAuditEntity
 {
     /// <summary>

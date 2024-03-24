@@ -6,7 +6,6 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 权限管理
 /// </summary>
 [Route("api/permission")]
-
 public class PermissionController(ISender _mediator) : ApiController
 {
     /// <summary>

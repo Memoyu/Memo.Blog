@@ -6,6 +6,7 @@ namespace Memo.Blog.Domain.Entities;
 /// 文章表
 /// </summary>
 [Table(Name = "article")]
+[Index("index_on_article_id", nameof(ArticleId), false)]
 public class Article : BaseAuditEntity
 {
     /// <summary>

@@ -9,7 +9,6 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 文章标签管理
 /// </summary>
 [Route("api/tag")]
-
 public class TagController(ISender _mediator) : ApiController
 {
     /// <summary>

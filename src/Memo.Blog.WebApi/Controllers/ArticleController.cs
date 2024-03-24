@@ -12,7 +12,6 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 文章管理
 /// </summary>
 [Route("api/article")]
-
 public class ArticleController(ISender _mediator) : ApiController
 {
     /// <summary>

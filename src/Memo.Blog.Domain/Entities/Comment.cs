@@ -6,6 +6,7 @@ namespace Memo.Blog.Domain.Entities;
 /// 评论表
 /// </summary>
 [Table(Name = "comment")]
+[Index("index_on_comment_id", nameof(CommentId), false)]
 public class Comment : BaseAuditEntity
 {
     /// <summary>
