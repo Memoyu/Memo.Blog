@@ -2,13 +2,13 @@
 
 namespace Memo.Blog.Application.Common.Behaviours;
 
-public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
+public class GlobalExceptionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
     where TRequest : notnull
     where TResponse : Result
 {
     private readonly ILogger<TRequest> _logger;
 
-    public UnhandledExceptionBehaviour(ILogger<TRequest> logger)
+    public GlobalExceptionBehaviour(ILogger<TRequest> logger)
     {
         _logger = logger;
     }
@@ -24,6 +24,12 @@ public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavio
         {
             var erros = string.Join("; ", vex.Errors.Select(e => e.ErrorMessage).ToList());
             failureMsg = $"参数错误：{erros}"; ;
+        }
+        catch (ApplicationException ex)
+        {
+            var requestName = typeof(TRequest).Name;
+            _logger.LogError(ex, "Request: 请求中发生业务错误 请求：{Name}；参数：{@Request}", requestName, request);
+            failureMsg = $"{ex.Message}";
         }
         catch (Exception ex)
         {

@@ -53,6 +53,11 @@ public static class DependencyInjection
                 cfg.SetCollectionName("logs");
             }, LogEventLevel.Information)
             .Enrich.FromLogContext()
+#if !DEBUG
+            // 配置日志等级
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+            .MinimumLevel.Override("System", LogEventLevel.Information)
+#endif
             .CreateLogger();
         builder.Logging.AddSerilog();
 

@@ -7,7 +7,7 @@ public class UpdateFriendCommandHandler(
     public async Task<Result> Handle(UpdateFriendCommand request, CancellationToken cancellationToken)
     {
         var friend = await friendRepo.Select.Where(c => c.FriendId == request.FriendId).FirstAsync(cancellationToken);
-        if (friend == null) return Result.Failure("友链不存在");
+        if (friend == null) throw new ApplicationException("友链不存在");
 
         friend.Nickname = request.Nickname;
         friend.Description = request.Description;
@@ -16,6 +16,6 @@ public class UpdateFriendCommandHandler(
         friend.Showable = request.Showable;
         var rows = await friendRepo.UpdateAsync(friend, cancellationToken);
 
-        return rows > 0 ? Result.Success() : Result.Failure("更新友链失败");
+        return rows > 0 ? Result.Success() : throw new ApplicationException("更新友链失败");
     }
 }

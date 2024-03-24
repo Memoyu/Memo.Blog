@@ -10,8 +10,6 @@ public class GetCategoryQueryHandler(
     public async Task<Result> Handle(GetCategoryQuery request, CancellationToken cancellationToken)
     {
         var tag = await _categoryResp.Select.Where(t => t.CategoryId == request.CategoryId).FirstAsync(cancellationToken);
-        if (tag is null) return Result.Failure("分类不存在");
-
-        return Result.Success(_mapper.Map<CategoryResult>(tag));
+        return tag is null ? throw new ApplicationException("分类不存在") : (Result)Result.Success(_mapper.Map<CategoryResult>(tag));
     }
 }

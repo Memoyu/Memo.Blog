@@ -9,8 +9,7 @@ public class GetTagQueryHandler(
     public async Task<Result> Handle(GetTagQuery request, CancellationToken cancellationToken)
     {
         var tag = await _tagResp.Select.Where(t => t.TagId == request.TagId).FirstAsync(cancellationToken);
-        if (tag is null) return Result.Failure("标签不存在");
 
-        return Result.Success(_mapper.Map<TagResult>(tag));
+        return tag is null ? throw new ApplicationException("标签不存在") : (Result)Result.Success(_mapper.Map<TagResult>(tag));
     }
 }

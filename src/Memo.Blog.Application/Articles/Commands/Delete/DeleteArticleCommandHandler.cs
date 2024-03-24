@@ -9,13 +9,13 @@ public class DeleteArticleCommandHandler(
     public async Task<Result> Handle(DeleteArticleCommand request, CancellationToken cancellationToken)
     {
         var article = await articleResp.Select.Where(t => t.ArticleId == request.ArticleId).ToOneAsync(cancellationToken);
-        if (article == null) return Result.Failure("文章不存在");
+        if (article == null) throw new ApplicationException("文章不存在");
 
         article.AddDomainEvent(new ArticleDeleteEvent(article.ArticleId));
 
         var rows = await articleResp.DeleteAsync(article, cancellationToken);
 
-        return rows > 0 ? Result.Success() : Result.Failure("删除文章失败");
+        return rows > 0 ? Result.Success() : throw new ApplicationException("删除文章失败");
     }
 }
 

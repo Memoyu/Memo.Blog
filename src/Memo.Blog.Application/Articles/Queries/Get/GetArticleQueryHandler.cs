@@ -20,7 +20,7 @@ public class GetArticleQueryHandler(
     public async Task<Result> Handle(GetArticleQuery request, CancellationToken cancellationToken)
     {
         var article = await articleRepo.Select.Where(a => a.ArticleId == request.ArticleId).ToOneAsync(cancellationToken);
-        if (article is null) return Result.Failure("文章不存在");
+        if (article is null) throw new ApplicationException("文章不存在");
 
         var category = await categoryRepo.Select
             .Where(c => c.CategoryId == article.CategoryId)

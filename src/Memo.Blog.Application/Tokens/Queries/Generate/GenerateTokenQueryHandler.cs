@@ -10,11 +10,11 @@ public class GenerateTokenHandler(
     {
         var user = await userResp.Where(u => u.Username.Equals(request.Username)).FirstAsync();
         if (user is null)
-            return Result.Failure<GenerateTokenResult>("用户名或密码错误");
+            throw new ApplicationException("用户名或密码错误");
 
         var identity = await userIdentityResp.Where(u => u.UserId == user.UserId).FirstAsync();
         if (identity is null || !identity.Credential.Equals(EncryptUtil.Encrypt(request.Password)))
-            return Result.Failure<GenerateTokenResult>("用户名或密码错误");
+            throw new ApplicationException("用户名或密码错误");
 
         var token = jwtTokenGenerator.GenerateToken(user);
 

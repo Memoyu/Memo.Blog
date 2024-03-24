@@ -10,6 +10,7 @@
     <PackageReference Include="Throw" Version="1.4.0" />
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="FreeSql.DbContext" Version="3.2.810" />
+    <PackageReference Include="Serilog.Sinks.MongoDB" Version="5.4.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.23.1" />
   </ItemGroup>
 

@@ -7,15 +7,15 @@ public class UpdateCategoryCommandHandler(
     public async Task<Result> Handle(UpdateTagCommand request, CancellationToken cancellationToken)
     {
         var tag = await tagRepo.Select.Where(t => t.TagId == request.TagId).ToOneAsync(cancellationToken);
-        if (tag == null) return Result.Failure("标签不存在");
+        if (tag == null) throw new ApplicationException("标签不存在");
 
         var exist = await tagRepo.Select.AnyAsync(t => t.TagId != request.TagId && request.Name == t.Name, cancellationToken);
-        if (exist) return Result.Failure("标签名已存在");
+        if (exist) throw new ApplicationException("标签名已存在");
 
         tag.Name = request.Name;
         tag.Color = request.Color;
         var rows = await tagRepo.UpdateAsync(tag, cancellationToken);
 
-        return rows > 0 ? Result.Success() : Result.Failure("更新标签失败");
+        return rows > 0 ? Result.Success() : throw new ApplicationException("更新标签失败");
     }
 }

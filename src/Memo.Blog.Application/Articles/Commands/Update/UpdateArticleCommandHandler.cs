@@ -15,21 +15,21 @@ public class UpdateArticleCommandHandler(
     public async Task<Result> Handle(UpdateArticleCommand request, CancellationToken cancellationToken)
     {
         var entity = await articleResp.Select.Where(a => a.ArticleId == request.ArticleId).FirstAsync(cancellationToken);
-        if (entity is null) return Result.Failure("文章不存在");
+        if (entity is null) throw new ApplicationException("文章不存在");
 
         var category = await categoryResp.Select.Where(c => c.CategoryId == request.CategoryId).FirstAsync(cancellationToken);
-        if (category is null) return Result.Failure("文章分类不存在");
+        if (category is null) throw new ApplicationException("文章分类不存在");
 
         var tags = await tagResp.Select.Where(t => request.Tags.Contains(t.TagId)).ToListAsync();
         foreach (var tagId in request.Tags)
         {
-            if (!tags.Any(t => t.TagId == tagId)) return Result.Failure($"{tagId}文章标签不存在");
+            if (!tags.Any(t => t.TagId == tagId)) throw new ApplicationException($"{tagId}文章标签不存在");
         }
    
         var article = mapper.Map<Article>(request);
         article.Id = entity.Id;
         var row = await articleResp.UpdateAsync(article, cancellationToken);
-        if (row <= 0) return Result.Failure("更新文章失败");
+        if (row <= 0) throw new ApplicationException("更新文章失败");
 
         #region 标签管理
 

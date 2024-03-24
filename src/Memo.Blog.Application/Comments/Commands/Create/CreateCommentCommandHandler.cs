@@ -22,7 +22,7 @@ public class CreateCommentCommandHandler(
         if (request.CommentType == Domain.Enums.CommentType.Article)
         {
             var article = await articleRepo.Select.Where(a => a.ArticleId == request.BelongId).FirstAsync(cancellationToken);
-            if (article == null) return Result.Failure("评论文章不存在");
+            if (article == null) throw new ApplicationException("评论文章不存在");
             isArticleComment = true;
         }
 
@@ -38,8 +38,6 @@ public class CreateCommentCommandHandler(
         var region = searcher.Search(ip);
         comment.Region = region.GetRegion();
         comment = await commentRepo.InsertAsync(comment, cancellationToken);
-        if (comment.Id == 0) throw new Exception("保存评论失败");
-
-        return Result.Success(comment.CommentId);
+        return comment.Id == 0 ? throw new ApplicationException("保存评论失败") : (Result)Result.Success(comment.CommentId);
     }
 }

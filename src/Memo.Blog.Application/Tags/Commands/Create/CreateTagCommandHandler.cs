@@ -9,7 +9,7 @@ public class CreateTagCommandHandler(
     {
 
         var exist = await tagResp.Select.AnyAsync(c => request.Name == c.Name, cancellationToken);
-        if (exist) return Result.Failure("标签已存在");
+        if (exist) throw new ApplicationException("标签已存在");
 
         var tag = new Tag
         {
@@ -18,6 +18,6 @@ public class CreateTagCommandHandler(
         };
         tag = await tagResp.InsertAsync(tag, cancellationToken);
 
-        return tag == null || tag.Id == 0 ? Result.Failure("保存标签失败") : Result.Success(tag.TagId);
+        return tag == null || tag.Id == 0 ? throw new ApplicationException("保存标签失败") : Result.Success(tag.TagId);
     }
 }

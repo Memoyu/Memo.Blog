@@ -14,7 +14,7 @@ public class DeleteCommentCommandHandler(
     public async Task<Result> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
     {
         var comment = await commentRepo.Select.Where(c => c.CommentId == request.CommentId).FirstAsync(cancellationToken);
-        if (comment == null) return Result.Failure("评论不存在");
+        if (comment == null) throw new ApplicationException("评论不存在");
 
         // 如果是文章评论，则需要更新mongodb数据
         if (comment.CommentType == Domain.Enums.CommentType.Article)
@@ -24,8 +24,6 @@ public class DeleteCommentCommandHandler(
 
         // 删除评论
         var row = await commentRepo.DeleteAsync(comment, cancellationToken);
-        if (row <= 0) throw new Exception("删除评论失败");
-
-        return Result.Success(comment.CommentId);
+        return row <= 0 ? throw new ApplicationException("删除评论失败") : (Result)Result.Success(comment.CommentId);
     }
 }

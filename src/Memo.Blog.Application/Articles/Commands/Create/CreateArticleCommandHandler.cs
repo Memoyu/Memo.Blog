@@ -14,17 +14,17 @@ public class CreateArticleCommandHandler(
     public async Task<Result> Handle(CreateArticleCommand request, CancellationToken cancellationToken)
     {
         var category = await categoryResp.Select.Where(c => c.CategoryId == request.CategoryId).FirstAsync();
-        if (category is null) return Result.Failure("文章分类不存在");
+        if (category is null) throw new ApplicationException("文章分类不存在");
 
         var tags = await tagResp.Select.Where(t => request.Tags.Contains(t.TagId)).ToListAsync();
         foreach (var tagId in request.Tags)
         {
-            if (!tags.Any(t => t.TagId == tagId)) return Result.Failure($"{tagId}文章标签不存在");
+            if (!tags.Any(t => t.TagId == tagId)) throw new ApplicationException($"{tagId}文章标签不存在");
         }
 
         var article = mapper.Map<Article>(request);
         article = await articleResp.InsertAsync(article, cancellationToken);
-        if (article.Id == 0) return Result.Failure("保存文章失败");
+        if (article.Id == 0) throw new ApplicationException("保存文章失败");
 
         var tagArticles = request.Tags.Select(t => new TagArticle { ArticleId = article.ArticleId, TagId = t }).ToList();
         await tagArticleResp.InsertAsync(tagArticles);
