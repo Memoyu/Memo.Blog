@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
 using Memo.Blog.Application.Loggers.Common;
 using Memo.Blog.Domain.Entities.Mongo;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 
 namespace Memo.Blog.Application.Common.Mappings;

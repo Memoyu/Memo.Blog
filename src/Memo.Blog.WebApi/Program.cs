@@ -1,3 +1,5 @@
+using Memo.Blog.Domain.Events.Permissions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // 配置serilog
@@ -9,6 +11,14 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddPresentation(builder.Configuration);
 
 var app = builder.Build();
+
+// 依赖容器构建完成，做数权限数据同步
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var publisher = services.GetRequiredService<IPublisher>();
+    await publisher.Publish(new PermissionSyncEvent());
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

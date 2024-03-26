@@ -50,7 +50,7 @@ public static class DependencyInjection
             {
                 var mongodb = new MongoClient(mongoOptions.ConnectionString).GetDatabase(mongoOptions.Database);
                 cfg.SetMongoDatabase(mongodb);
-                cfg.SetCollectionName("logs");
+                cfg.SetCollectionName(AppConst.SystemLogCollectionName);
             }, LogEventLevel.Information)
             .Enrich.FromLogContext()
 #if !DEBUG
