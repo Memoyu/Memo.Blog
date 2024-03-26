@@ -1,4 +1,6 @@
-﻿namespace Memo.Blog.Domain.Entities;
+﻿using static Memo.Blog.Domain.Constants.Security.Permissions.Permissions;
+
+namespace Memo.Blog.Domain.Entities;
 
 /// <summary>
 /// 用户角色与权限关联表
@@ -19,4 +21,16 @@ public class RolePermission : BaseAuditEntity
     /// </summary>
     [Description("权限Id")]
     public long PermissionId { get; set; }
+
+    /// <summary>
+    /// 角色
+    /// </summary>
+    [Navigate(nameof(Role.RoleId), TempPrimary = nameof(Role))]
+    public virtual Role Role { get; set; }
+
+    /// <summary>
+    /// 权限
+    /// </summary>
+    [Navigate(nameof(Permission.PermissionId), TempPrimary = nameof(PermissionId))]
+    public virtual Permission Permission { get; set; }
 }

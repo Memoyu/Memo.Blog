@@ -1,4 +1,5 @@
-﻿using Memo.Blog.Application.Permissions.Commands.Create;
+﻿using Memo.Blog.Application.Permissions.Queries.Group;
+using Memo.Blog.Application.Permissions.Queries.List;
 
 namespace Memo.Blog.WebApi.Controllers;
 
@@ -9,11 +10,21 @@ namespace Memo.Blog.WebApi.Controllers;
 public class PermissionController(ISender _mediator) : ApiController
 {
     /// <summary>
-    /// 创建权限
+    /// 权限列表
     /// </summary>
     /// <returns></returns>
-    [HttpPost("create")]
-    public async Task<Result> CreateAsync(CreatePermissionCommand request)
+    [HttpGet("list")]
+    public async Task<Result> ListAsync([FromQuery] ListPermissionQuery request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 权限分组列表
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("group")]
+    public async Task<Result> GroupAsync([FromQuery] GroupPermissionQuery request)
     {
         return await _mediator.Send(request);
     }

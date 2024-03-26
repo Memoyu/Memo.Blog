@@ -2,6 +2,7 @@
 using Memo.Blog.Application.Categories.Commands.Delete;
 using Memo.Blog.Application.Categories.Commands.Update;
 using Memo.Blog.Application.Categories.Queries.Get;
+using Memo.Blog.Application.Categories.Queries.List;
 
 namespace Memo.Blog.WebApi.Controllers;
 

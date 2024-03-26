@@ -1,17 +1,17 @@
 ﻿using Memo.Blog.Application.Tags.Common;
 
-namespace Memo.Blog.Application.Tags.Queries.Get;
+namespace Memo.Blog.Application.Tags.Queries.List;
 public class ListTagQueryHandler(
-    IMapper _mapper,
-    IBaseDefaultRepository<Tag> _tagResp
+    IMapper mapper,
+    IBaseDefaultRepository<Tag> tagResp
     ) : IRequestHandler<ListTagQuery, Result>
 {
     public async Task<Result> Handle(ListTagQuery request, CancellationToken cancellationToken)
     {
-        var tags = await _tagResp.Select
+        var tags = await tagResp.Select
             .WhereIf(!string.IsNullOrWhiteSpace(request.Name), t => t.Name.Contains(request.Name))
             .ToListAsync(cancellationToken) ?? [];
 
-        return Result.Success(_mapper.Map<List<TagResult>>(tags));
+        return Result.Success(mapper.Map<List<TagResult>>(tags));
     }
 }

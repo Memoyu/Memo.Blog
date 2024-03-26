@@ -14,6 +14,8 @@ public class LoggerRegister : IRegister
             .Map(d => d.Id, s => s.Id!.ToString())
             .Map(d => d.Message, s => s.RenderedMessage)
             .Map(d => d.Source, s => GetStringLogProperties(s, "SourceContext"))
+            .Map(d => d.Request, s => GetJsonLogRequest(s))
+            .Map(d => d.RequestId, s => GetStringLogProperties(s, "RequestId"))
             .Map(d => d.RequestPath, s => GetStringLogProperties(s, "RequestPath"))
             .Map(d => d.ExMessage, s => GetStringLogException(s, "Message"))
             .Map(d => d.Time, s => s.UtcTimeStamp.ToLocalTime());

@@ -13,10 +13,10 @@ public class CreateArticleCommandHandler(
 {
     public async Task<Result> Handle(CreateArticleCommand request, CancellationToken cancellationToken)
     {
-        var category = await categoryResp.Select.Where(c => c.CategoryId == request.CategoryId).FirstAsync();
+        var category = await categoryResp.Select.Where(c => c.CategoryId == request.CategoryId).FirstAsync(cancellationToken);
         if (category is null) throw new ApplicationException("文章分类不存在");
 
-        var tags = await tagResp.Select.Where(t => request.Tags.Contains(t.TagId)).ToListAsync();
+        var tags = await tagResp.Select.Where(t => request.Tags.Contains(t.TagId)).ToListAsync(cancellationToken);
         foreach (var tagId in request.Tags)
         {
             if (!tags.Any(t => t.TagId == tagId)) throw new ApplicationException($"{tagId}文章标签不存在");
@@ -27,7 +27,7 @@ public class CreateArticleCommandHandler(
         if (article.Id == 0) throw new ApplicationException("保存文章失败");
 
         var tagArticles = request.Tags.Select(t => new TagArticle { ArticleId = article.ArticleId, TagId = t }).ToList();
-        await tagArticleResp.InsertAsync(tagArticles);
+        await tagArticleResp.InsertAsync(tagArticles, cancellationToken);
 
         var articleCollection = mapper.Map<ArticleCollection>(article);
         var mongoInsert = await articleMongoResp.InsertOneAsync(articleCollection, null, cancellationToken);

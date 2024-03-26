@@ -1,4 +1,4 @@
-﻿namespace Memo.Blog.Application.Tags.Queries.Get;
+﻿namespace Memo.Blog.Application.Tags.Queries.List;
 
 public record ListTagQuery(
     string Name

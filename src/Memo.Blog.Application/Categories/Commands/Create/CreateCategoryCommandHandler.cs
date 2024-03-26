@@ -1,6 +1,5 @@
-﻿using Memo.Blog.Application.Categories.Common;
+﻿namespace Memo.Blog.Application.Categories.Commands.Create;
 
-namespace Memo.Blog.Application.Categories.Commands.Create;
 public class CreateCategoryCommandHandler(
     IMapper _mapper,
     IBaseDefaultRepository<Category> categoryResp

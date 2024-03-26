@@ -1,15 +1,15 @@
 ﻿using Memo.Blog.Application.Categories.Common;
-using Memo.Blog.Application.Categories.Queries.Get;
 
-namespace Memo.Blog.Application.Tags.Queries.Get;
+namespace Memo.Blog.Application.Categories.Queries.List;
+
 public class ListCategoryQueryHandler(
-    IMapper _mapper,
-    IBaseDefaultRepository<Category> _categoryResp
+    IMapper mapper,
+    IBaseDefaultRepository<Category> categoryResp
     ) : IRequestHandler<ListCategoryQuery, Result>
 {
     public async Task<Result> Handle(ListCategoryQuery request, CancellationToken cancellationToken)
     {
-        var categories = await _categoryResp.Select
+        var categories = await categoryResp.Select
             .WhereIf(!string.IsNullOrWhiteSpace(request.Name), t => t.Name.Contains(request.Name))
             .ToListAsync(cancellationToken) ?? [];
 
@@ -21,6 +21,6 @@ public class ListCategoryQueryHandler(
             categories.Insert(0, initCategory);
         }
 
-        return Result.Success(_mapper.Map<List<CategoryResult>>(categories));
+        return Result.Success(mapper.Map<List<CategoryResult>>(categories));
     }
 }

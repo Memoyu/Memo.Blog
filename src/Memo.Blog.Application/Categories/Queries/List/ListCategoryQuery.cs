@@ -1,4 +1,4 @@
-﻿namespace Memo.Blog.Application.Categories.Queries.Get;
+﻿namespace Memo.Blog.Application.Categories.Queries.List;
 
 [Authorize(Permissions = ApiPermission.Category.List)]
 public record ListCategoryQuery(

@@ -1,4 +1,5 @@
 ﻿using Memo.Blog.Application.Roles.Commands.Create;
+using Memo.Blog.Application.Roles.Queries.List;
 
 namespace Memo.Blog.WebApi.Controllers;
 
@@ -17,4 +18,15 @@ public class RoleController(ISender _mediator) : ApiController
     {
         return await _mediator.Send(request);
     }
+
+    /// <summary>
+    /// 角色列表
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("list")]
+    public async Task<Result> ListAsync([FromQuery] ListRoleQuery request)
+    {
+        return await _mediator.Send(request);
+    }
+
 }

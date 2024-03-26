@@ -12,6 +12,10 @@ public class LoggerSystemPageResult
 
     public string Source { get; set; } = string.Empty;
 
+    public string Request { get; set; } = string.Empty;
+
+    public string RequestId { get; set; } = string.Empty;
+
     public string RequestPath { get; set; } = string.Empty;
 
     public string ExMessage { get; set; } = string.Empty;

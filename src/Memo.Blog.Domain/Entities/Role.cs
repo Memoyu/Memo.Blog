@@ -1,4 +1,6 @@
-﻿namespace Memo.Blog.Domain.Entities;
+﻿using Memo.Blog.Domain.Enums;
+
+namespace Memo.Blog.Domain.Entities;
 
 /// <summary>
 /// 用户角色表
@@ -25,18 +27,12 @@ public class Role : BaseAuditEntity
     /// 角色类型
     /// </summary>
     [Description("角色类型")]
-    public int Type { get; set; }
+    public RoleType Type { get; set; }
 
     /// <summary>
     /// 角色描述
     /// </summary>
     [Description("角色描述")]
     [Column(StringLength = 100)]
-    public string Info { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 排序码，升序
-    /// </summary>
-    [Description("排序码，升序")]
-    public int Sort { get; set; }
+    public string Description { get; set; } = string.Empty;
 }

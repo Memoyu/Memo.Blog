@@ -20,5 +20,8 @@ public static partial class Permissions
         [Description("获取权限列表")]
         public const string List = "lsit:permission";
 
+        [Description("获取权限分组列表")]
+        public const string Group = "group:permission";
+
     }
 }
