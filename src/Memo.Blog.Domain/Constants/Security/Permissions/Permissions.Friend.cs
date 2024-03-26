@@ -2,6 +2,7 @@
 
 public static partial class Permissions
 {
+    [Description("友链")]
     public static class Friend
     {
         [Description("创建友链")]

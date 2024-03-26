@@ -2,6 +2,7 @@
 
 public static partial class Permissions
 {
+    [Description("文章")]
     public static class Article
     {
         [Description("创建文章")]

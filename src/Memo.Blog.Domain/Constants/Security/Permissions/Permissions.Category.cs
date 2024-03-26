@@ -2,6 +2,7 @@
 
 public static partial class Permissions
 {
+    [Description("文章分类")]
     public static class Category
     {
         [Description("创建文章分类")]

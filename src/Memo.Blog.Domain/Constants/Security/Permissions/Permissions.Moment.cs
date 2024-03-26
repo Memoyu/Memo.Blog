@@ -2,6 +2,7 @@
 
 public static partial class Permissions
 {
+    [Description("动态")]
     public static class Moment
     {
         [Description("创建动态")]

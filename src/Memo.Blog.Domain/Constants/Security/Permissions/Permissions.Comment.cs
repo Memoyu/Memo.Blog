@@ -2,6 +2,7 @@
 
 public static partial class Permissions
 {
+    [Description("评论")]
     public static class Comment
     {
         [Description("创建评论")]

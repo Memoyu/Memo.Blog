@@ -2,6 +2,7 @@
 
 public static partial class Permissions
 {
+    [Description("权限")]
     public static class Permission
     {
         //[Description("创建权限")]

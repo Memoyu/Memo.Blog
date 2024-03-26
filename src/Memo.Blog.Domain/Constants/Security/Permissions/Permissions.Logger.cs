@@ -2,6 +2,7 @@
 
 public static partial class Permissions
 {
+    [Description("访问日志")]
     public static class LoggerAccess
     {
         [Description("获取访问日志")]
@@ -11,6 +12,7 @@ public static partial class Permissions
         public const string Page = "page:logger:access";
     }
 
+    [Description("系统日志")]
     public static class LoggerSystem
     {
         [Description("获取系统日志")]

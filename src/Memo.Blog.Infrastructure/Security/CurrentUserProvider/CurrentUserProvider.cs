@@ -8,8 +8,8 @@ public class CurrentUserProvider(IHttpContextAccessor _httpContextAccessor) : IC
 {
     public CurrentUser GetCurrentUser()
     {
-        _httpContextAccessor.HttpContext.ThrowIfNull();
-
+        if (_httpContextAccessor.HttpContext is null) return new CurrentUser(0, string.Empty, string.Empty); 
+       
         var id = long.Parse(GetSingleClaimValue(ClaimTypes.NameIdentifier) ?? "0");
         var username = GetSingleClaimValue(JwtRegisteredClaimNames.Name) ?? string.Empty;
         var email = GetSingleClaimValue(ClaimTypes.Email) ?? string.Empty;
@@ -20,7 +20,8 @@ public class CurrentUserProvider(IHttpContextAccessor _httpContextAccessor) : IC
     public string GetClientIp()
     {
         var context = _httpContextAccessor.HttpContext;
-        context.ThrowIfNull();
+        if (context is null) return string.Empty;
+
         var ip = context.Request.Headers["X-Forwarded-For"].ToString();
         if (string.IsNullOrEmpty(ip))
         {

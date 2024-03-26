@@ -2,6 +2,7 @@
 
 public static partial class Permissions
 {
+    [Description("文章标签")]
     public static class Tag
     {
         [Description("创建文章标签")]

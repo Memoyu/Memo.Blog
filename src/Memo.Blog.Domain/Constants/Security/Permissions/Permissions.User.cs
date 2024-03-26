@@ -2,6 +2,7 @@
 
 public static partial class Permissions
 {
+    [Description("用户")]
     public static class User
     {
         [Description("创建用户")]
