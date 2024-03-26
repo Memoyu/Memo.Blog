@@ -7,7 +7,7 @@ namespace Memo.Blog.Application.Logger.Queries.System.Page;
 
 public class PageLoggerSystemQueryHandler(
     IMapper mapper,
-    IBaseMongoRepository<LoggerSystemCollection> loggerMongoResp
+    IBaseMongoRepository<LoggerSystemCollection> systemLogMongoResp
     ) : IRequestHandler<PageLoggerSystemQuery, Result>
 {
     public async Task<Result> Handle(PageLoggerSystemQuery request, CancellationToken cancellationToken)
@@ -52,8 +52,8 @@ public class PageLoggerSystemQueryHandler(
 
         var sort = Builders< LoggerSystemCollection >.Sort.Descending( x => x.UtcTimeStamp );
 
-        var total = await loggerMongoResp.CountAsync(f, cancellationToken: cancellationToken);
-        var logs = await loggerMongoResp.FindListByPageAsync(f, request.Page, request.Size, sort: sort, cancellationToken: cancellationToken);
+        var total = await systemLogMongoResp.CountAsync(f, cancellationToken: cancellationToken);
+        var logs = await systemLogMongoResp.FindListByPageAsync(f, request.Page, request.Size, sort: sort, cancellationToken: cancellationToken);
 
         var results = mapper.Map<List<LoggerSystemPageResult>>(logs);
         return Result.Success(new PaginationResult<LoggerSystemPageResult>(results, total));

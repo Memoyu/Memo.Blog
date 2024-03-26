@@ -1,4 +1,5 @@
-﻿using Memo.Blog.Application.Logger.Queries.Access.Get;
+﻿using Memo.Blog.Application.Categories.Commands.Create;
+using Memo.Blog.Application.Logger.Queries.Access.Get;
 using Memo.Blog.Application.Logger.Queries.Access.Page;
 using Memo.Blog.Application.Logger.Queries.System.Get;
 using Memo.Blog.Application.Logger.Queries.System.Page;
@@ -27,6 +28,16 @@ public class LoggerController(ISender _mediator) : ApiController
     /// <returns></returns>
     [HttpGet("system/get")]
     public async Task<Result> GetSystemAsync([FromQuery] GetLoggerSystemQuery request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 创建访问日志
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("access/create")]
+    public async Task<Result> CreateAccessAsync(CreateLoggerAccessCommand request)
     {
         return await _mediator.Send(request);
     }

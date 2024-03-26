@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Serilog.Events;
+﻿using Serilog.Events;
 namespace Memo.Blog.Application.Logger.Queries.System.Page;
 
 [Authorize(Permissions = ApiPermission.LoggerSystem.Page)]

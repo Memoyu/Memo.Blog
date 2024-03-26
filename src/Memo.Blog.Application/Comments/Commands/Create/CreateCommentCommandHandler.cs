@@ -7,12 +7,12 @@ using Microsoft.Extensions.Logging;
 namespace Memo.Blog.Application.Comments.Commands.Create;
 
 public class CreateCommentCommandHandler(
-    ILogger<CreateCommentCommandHandler> logger,
-    IMapper mapper,
-    ICurrentUserProvider currentUserProvider,
-    IRegionSearcher searcher,
-    IBaseDefaultRepository<Comment> commentRepo,
-    IBaseDefaultRepository<Article> articleRepo,
+     ILogger<CreateCommentCommandHandler> logger,
+     IMapper mapper,
+     ICurrentUserProvider currentUserProvider,
+     IRegionSearcher searcher,
+     IBaseDefaultRepository<Comment> commentRepo,
+     IBaseDefaultRepository<Article> articleRepo,
      IBaseMongoRepository<ArticleCollection> articleMongoResp
     ) : IRequestHandler<CreateCommentCommand, Result>
 {

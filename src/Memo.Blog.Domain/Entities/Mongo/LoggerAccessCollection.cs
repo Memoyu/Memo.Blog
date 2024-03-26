@@ -31,9 +31,9 @@ public class LoggerAccessCollection
     public AccessLogBehavior Behavior { get; set; }
 
     /// <summary>
-    /// 访问所属Id（文章Id、动态Id等）
+    /// 被访问信息Id（文章Id、动态Id等）
     /// </summary>
-    public long BelongId { get; set; }
+    public long VisitedId { get; set; }
 
     /// <summary>
     /// 访问者所在IP

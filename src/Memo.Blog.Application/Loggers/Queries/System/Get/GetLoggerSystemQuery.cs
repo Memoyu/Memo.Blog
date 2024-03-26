@@ -1,14 +1,14 @@
 ﻿namespace Memo.Blog.Application.Logger.Queries.System.Get;
 
 [Authorize(Permissions = ApiPermission.LoggerSystem.Get)]
-public record GetLoggerSystemQuery(long CommentId) : IRequest<Result>;
+public record GetLoggerSystemQuery(string LogId) : IRequest<Result>;
 
 public class GetLoggerSystemQueryValidator : AbstractValidator<GetLoggerSystemQuery>
 {
     public GetLoggerSystemQueryValidator()
     {
-        RuleFor(x => x.CommentId)
-            .Must(x => x > 0)
-            .WithMessage("评论Id必须大于0");
+        RuleFor(x => x.LogId)
+            .NotEmpty()
+            .WithMessage("系统日志Id不能为空");
     }
 }

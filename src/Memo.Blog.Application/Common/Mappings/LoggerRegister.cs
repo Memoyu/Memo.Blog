@@ -14,11 +14,22 @@ public class LoggerRegister : IRegister
             .Map(d => d.Id, s => s.Id!.ToString())
             .Map(d => d.Message, s => s.RenderedMessage)
             .Map(d => d.Source, s => GetStringLogProperties(s, "SourceContext"))
+            .Map(d => d.RequestPath, s => GetStringLogProperties(s, "RequestPath"))
+            .Map(d => d.ExMessage, s => GetStringLogException(s, "Message"))
+            .Map(d => d.Time, s => s.UtcTimeStamp.ToLocalTime());
+
+        config.ForType<LoggerSystemCollection, LoggerSystemResult>()
+            .Map(d => d.Id, s => s.Id!.ToString())
+            .Map(d => d.Message, s => s.RenderedMessage)
+            .Map(d => d.Source, s => GetStringLogProperties(s, "SourceContext"))
+            .Map(d => d.ActionId, s => GetStringLogProperties(s, "ActionId"))
+            .Map(d => d.ActionName, s => GetStringLogProperties(s, "ActionName"))
             .Map(d => d.Request, s => GetJsonLogRequest(s))
             .Map(d => d.RequestId, s => GetStringLogProperties(s, "RequestId"))
             .Map(d => d.RequestPath, s => GetStringLogProperties(s, "RequestPath"))
-            .Map(d => d.ExceptionMessage, s => GetStringLogException(s, "Message"))
-            .Map(d => d.ExceptionStackTrace, s => GetStringLogException(s, "StackTrace"))
+            .Map(d => d.ExSource, s => GetStringLogException(s, "Source"))
+            .Map(d => d.ExMessage, s => GetStringLogException(s, "Message"))
+            .Map(d => d.ExStackTrace, s => GetStringLogException(s, "StackTrace"))
             .Map(d => d.Time, s => s.UtcTimeStamp.ToLocalTime());
 
     }
