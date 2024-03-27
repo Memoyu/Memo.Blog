@@ -1,31 +1,53 @@
 ﻿using FreeSql;
 using System.Linq.Expressions;
-using Memo.Blog.Application.Common.Interfaces.Persistence.Repositories;
 using Memo.Blog.Domain.Common;
 using MediatR;
 using Memo.Blog.Application.Security;
+using Memo.Blog.Application.Common.Interfaces.Persistence.Repositories;
+using System.Reflection;
+using System.Collections.Concurrent;
 
 namespace Memo.Blog.Infrastructure.Persistence.Repositories;
 
 public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, IBaseDefaultRepository<TEntity> where TEntity : BaseAuditEntity
 {
+    private static ConcurrentDictionary<Type, DbContext> _dicDbField = new ConcurrentDictionary<Type, DbContext>();
+
+    private readonly IPublisher _publisher;
+
     /// <summary>
     ///  当前登录人信息
     /// </summary>
     protected readonly CurrentUser CurrentUser;
 
-    private readonly IPublisher _publisher;
+    private readonly UnitOfWorkManager _unitOfWorkManager;
 
     public BaseDefaultRepository(UnitOfWorkManager unitOfWorkManager, ICurrentUserProvider currentUserProvider, IPublisher publisher) : base(unitOfWorkManager?.Orm, unitOfWorkManager)
     {
         CurrentUser = currentUserProvider.GetCurrentUser();
         _publisher = publisher;
-       var db = unitOfWorkManager.Orm.CreateDbContext();
-        var dbSet = db.Set<TEntity>();
-        db.SaveChangesAsync();
+        _unitOfWorkManager = unitOfWorkManager;
     }
 
-    protected async Task BeforeInsertAsync(TEntity entity)
+    //private DbContext _db => _unitOfWorkManager.Orm.CreateDbContext();
+
+
+    private DbContext _db => _dicDbField.GetOrAdd(
+        EntityType, fn =>
+        //typeof(DefaultRepository<,>).MakeGenericType(EntityType, typeof(int))?.GetField("_dbPriv", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(this) as DbContext
+        //?? throw new Exception("RepositoryDbContext 为空")
+        {
+            var a = typeof(BaseRepository<,>).MakeGenericType(EntityType, typeof(long));
+            var b = a.GetField("_dbPriv", BindingFlags.Instance | BindingFlags.NonPublic);
+            var c = b.GetValue(this);
+            var type = EntityType;
+            return Orm.CreateDbContext();
+        }
+        );
+
+    private DbSet<TEntity> _dbset => _db.Set<TEntity>();
+
+    protected void BeforeInsert(TEntity entity)
     {
         if (entity is BaseAuditEntity createAudit)
         {
@@ -33,21 +55,19 @@ public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, 
             createAudit.CreateUserId = CurrentUser.Id;
         }
 
-        await BeforeUpdateAsync(entity);
+        BeforeUpdate(entity);
     }
 
-    protected async Task BeforeUpdateAsync(TEntity entity)
+    protected void BeforeUpdate(TEntity entity)
     {
         if (entity is BaseAuditEntity updateAudit)
         {
             updateAudit.UpdateTime = DateTime.Now;
             updateAudit.UpdateUserId = CurrentUser.Id;
         }
-
-        await PublishDomainEventsAsync(entity);
     }
 
-    protected async Task BeforeDeleteAsync(TEntity entity)
+    protected void BeforeDelete(TEntity entity)
     {
         if (entity is BaseAuditEntity deleteAudit)
         {
@@ -55,13 +75,11 @@ public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, 
             deleteAudit.DeleteUserId = CurrentUser.Id;
             deleteAudit.DeleteTime = DateTime.Now;
         }
-
-        await PublishDomainEventsAsync(entity);
     }
 
     #region 领域事件
 
-    private async Task PublishDomainEventsAsync(TEntity entity)
+    protected void PublishDomainEvents(TEntity entity)
     {
         if (entity is not BaseEntity domainEntity) return;
 
@@ -70,81 +88,132 @@ public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, 
         domainEntity.ClearDomainEvents();
 
         foreach (var domainEvent in domainEvents)
-            await _publisher.Publish(domainEvent);
+            _publisher.Publish(domainEvent).ConfigureAwait(false).GetAwaiter();
+    }
+
+    protected async Task PublishDomainEventsAsync(TEntity entity, CancellationToken cancellationToken = default)
+    {
+        if (entity is not BaseEntity domainEntity) return;
+
+        var domainEvents = domainEntity.GetDomainEvents().ToList();
+
+        domainEntity.ClearDomainEvents();
+
+        foreach (var domainEvent in domainEvents)
+            await _publisher.Publish(domainEvent, cancellationToken);
     }
 
     #endregion
+
+    public override ISelect<TEntity> Select => _dbset.Select;
 
     #region Insert
 
     public override TEntity Insert(TEntity entity)
     {
-        BeforeInsertAsync(entity).GetAwaiter().GetResult();
-        return base.Insert(entity);
+        BeforeInsert(entity);
+
+        _dbset.Add(entity);
+
+        PublishDomainEvents(entity);
+
+        _db.SaveChanges();
+
+        return entity;
     }
 
     public override async Task<TEntity> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        await BeforeInsertAsync(entity);
-        return await base.InsertAsync(entity, cancellationToken);
+        BeforeInsert(entity);
+
+        await _dbset.AddAsync(entity, cancellationToken);
+
+        await PublishDomainEventsAsync(entity, cancellationToken);
+
+        await _db.SaveChangesAsync(cancellationToken);
+        return entity;
     }
 
     public override List<TEntity> Insert(IEnumerable<TEntity> entities)
     {
         foreach (TEntity entity in entities)
-        {
-            BeforeInsertAsync(entity).GetAwaiter().GetResult();
-        }
+            BeforeInsert(entity);
 
-        return base.Insert(entities);
+        _dbset.AddRange(entities);
+
+        foreach (var entity in entities)
+            PublishDomainEvents(entity);
+
+        _db.SaveChanges();
+
+        return entities.ToList();
     }
 
     public override async Task<List<TEntity>> InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
         foreach (TEntity entity in entities)
-        {
-            await BeforeInsertAsync(entity);
-        }
+            BeforeInsert(entity);
 
-        return await base.InsertAsync(entities, cancellationToken);
+        await _dbset.AddRangeAsync(entities, cancellationToken);
+
+        foreach (var entity in entities)
+            await PublishDomainEventsAsync(entity, cancellationToken);
+
+        await _db.SaveChangesAsync(cancellationToken);
+
+        return entities.ToList(); ;
     }
 
     #endregion
 
     #region Update
 
-    private readonly Expression<Func<TEntity, object>> _updateIgnoreExp = e => new { e.CreateUserId, e.CreateTime };
-
     public override int Update(TEntity entity)
     {
-        BeforeUpdateAsync(entity).GetAwaiter().GetResult();
-        return Orm.Update<TEntity>().SetSource(entity).IgnoreColumns(_updateIgnoreExp).ExecuteAffrows();
+        BeforeUpdate(entity);
+
+        _dbset.Update(entity);
+
+        PublishDomainEvents(entity);
+
+        return _db.SaveChanges();
     }
 
     public override async Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        await BeforeUpdateAsync(entity);
-        return await Orm.Update<TEntity>().SetSource(entity).IgnoreColumns(_updateIgnoreExp).ExecuteAffrowsAsync(cancellationToken);
+        BeforeUpdate(entity);
+
+        _dbset.Update(entity);
+
+        await PublishDomainEventsAsync(entity, cancellationToken);
+
+        return await _db.SaveChangesAsync(cancellationToken);
     }
 
     public override int Update(IEnumerable<TEntity> entities)
     {
         foreach (var entity in entities)
-        {
-            BeforeUpdateAsync(entity).GetAwaiter().GetResult();
-        }
+            BeforeUpdate(entity);
 
-        return Orm.Update<TEntity>().SetSource(entities).IgnoreColumns(_updateIgnoreExp).ExecuteAffrows();
+        _dbset.UpdateRange(entities);
+
+        foreach (var entity in entities)
+            PublishDomainEvents(entity);
+
+        return _db.SaveChanges();
     }
 
     public override async Task<int> UpdateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
         foreach (var entity in entities)
-        {
-            await BeforeUpdateAsync(entity);
-        }
+            BeforeUpdate(entity);
 
-        return await Orm.Update<TEntity>().SetSource(entities).IgnoreColumns(_updateIgnoreExp).ExecuteAffrowsAsync(cancellationToken);
+        _dbset.UpdateRange(entities);
+
+        foreach (var entity in entities)
+            await PublishDomainEventsAsync(entity, cancellationToken);
+
+        return await _db.SaveChangesAsync(cancellationToken);
     }
 
     #endregion
@@ -154,97 +223,114 @@ public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, 
     public override int Delete(long id)
     {
         TEntity entity = Get(id);
-        BeforeDeleteAsync(entity).GetAwaiter().GetResult();
-        return base.Update(entity);
+        BeforeDelete(entity);
+
+        // 由Update发布领域事件
+        return Update(entity);
     }
 
     public override int Delete(TEntity entity)
     {
-        base.Attach(entity);
-        BeforeDeleteAsync(entity).GetAwaiter().GetResult();
-        return base.Update(entity);
+        _dbset.Attach(entity);
+        BeforeDelete(entity);
+
+        // 由Update发布领域事件
+        return Update(entity);
     }
 
     public override int Delete(IEnumerable<TEntity> entities)
     {
-        base.Attach(entities);
+        _dbset.AttachRange(entities);
         foreach (TEntity entity in entities)
-        {
-            BeforeDeleteAsync(entity).GetAwaiter().GetResult();
-        }
-        return base.Update(entities);
+            BeforeDelete(entity);
+
+        // 由Update发布领域事件
+        return Update(entities);
     }
 
     public override async Task<int> DeleteAsync(long id, CancellationToken cancellationToken = default)
     {
         TEntity entity = await GetAsync(id, cancellationToken);
-        await BeforeDeleteAsync(entity);
-        return await base.UpdateAsync(entity, cancellationToken);
+        BeforeDelete(entity);
+
+        // 由Update发布领域事件
+        return await UpdateAsync(entity, cancellationToken);
     }
 
     public override async Task<int> DeleteAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
     {
-        Attach(entities);
-        foreach (TEntity entity in entities)
-        {
-            await BeforeDeleteAsync(entity);
-        }
+        _dbset.AttachRange(entities);
 
-        return await base.UpdateAsync(entities, cancellationToken);
+        foreach (TEntity entity in entities)
+            BeforeDelete(entity);
+
+        // 由Update发布领域事件
+        return await UpdateAsync(entities, cancellationToken);
     }
 
     public override async Task<int> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        base.Attach(entity);
-        await BeforeDeleteAsync(entity);
-        return await base.UpdateAsync(entity, cancellationToken);
+        _dbset.Attach(entity);
+        BeforeDelete(entity);
+
+        // 由Update发布领域事件
+        return await UpdateAsync(entity, cancellationToken);
     }
 
     public override int Delete(Expression<Func<TEntity, bool>> predicate)
     {
         List<TEntity> items = base.Select.Where(predicate).ToList();
         if (items.Count == 0)
-        {
             return 0;
-        }
 
         foreach (var entity in items)
-        {
-            BeforeDeleteAsync(entity).GetAwaiter().GetResult();
-        }
+            BeforeDelete(entity);
 
-        return base.Update(items);
+        // 由Update发布领域事件
+        return Update(items);
     }
 
     public override async Task<int> DeleteAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
     {
         List<TEntity> items = await base.Select.Where(predicate).ToListAsync(cancellationToken);
         if (items.Count == 0)
-        {
             return 0;
-        }
 
         foreach (var entity in items)
-        {
-            await BeforeDeleteAsync(entity);
-        }
+            BeforeDelete(entity);
 
-        return await base.UpdateAsync(items, cancellationToken);
+        // 由Update发布领域事件
+        return await UpdateAsync(items, cancellationToken);
     }
 
     #endregion
 
     #region InsertOrUpdate
+
     public override TEntity InsertOrUpdate(TEntity entity)
     {
-        BeforeInsertAsync(entity).GetAwaiter().GetResult();
-        return base.InsertOrUpdate(entity);
+        BeforeInsert(entity);
+
+        _dbset.AddOrUpdate(entity);
+
+        PublishDomainEvents(entity);
+
+        _db.SaveChanges();
+
+        return entity;
     }
 
     public override async Task<TEntity> InsertOrUpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        await BeforeInsertAsync(entity);
-        return await base.InsertOrUpdateAsync(entity, cancellationToken);
+        BeforeInsert(entity);
+
+        await _dbset.AddOrUpdateAsync(entity, cancellationToken);
+
+        await PublishDomainEventsAsync(entity);
+
+        await _db.SaveChangesAsync(cancellationToken);
+
+        return entity;
     }
 
     #endregion

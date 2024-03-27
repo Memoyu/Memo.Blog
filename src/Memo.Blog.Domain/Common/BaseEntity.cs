@@ -29,14 +29,14 @@ public class BaseAuditEntity : BaseEntity
     /// <summary>
     /// 创建人UserId
     /// </summary>
-    [Column(Position = -7)]
+    [Column(Position = -7, CanUpdate = false)]
     [Description("创建人UserId")]
     public long CreateUserId { get; set; }
 
     /// <summary>
     /// 创建时间
     /// </summary>
-    [Column(Position = -6)]
+    [Column(Position = -6, CanUpdate = false)]
     [Description("创建时间")]
     public DateTime CreateTime { get; set; }
 
