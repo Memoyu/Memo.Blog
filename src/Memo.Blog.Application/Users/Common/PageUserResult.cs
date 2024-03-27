@@ -1,8 +1,6 @@
-﻿using Memo.Blog.Application.Roles.Common;
+﻿namespace Memo.Blog.Application.Users.Common;
 
-namespace Memo.Blog.Application.Users.Common;
-
-public class UserResult
+public class PageUserResult
 {
     /// <summary>
     /// 用户Id

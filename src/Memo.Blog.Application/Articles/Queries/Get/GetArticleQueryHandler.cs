@@ -19,12 +19,12 @@ public class GetArticleQueryHandler(
 {
     public async Task<Result> Handle(GetArticleQuery request, CancellationToken cancellationToken)
     {
-        var article = await articleRepo.Select.Where(a => a.ArticleId == request.ArticleId).ToOneAsync(cancellationToken);
+        var article = await articleRepo.Select.Where(a => a.ArticleId == request.ArticleId).FirstAsync(cancellationToken);
         if (article is null) throw new ApplicationException("文章不存在");
 
         var category = await categoryRepo.Select
             .Where(c => c.CategoryId == article.CategoryId)
-            .ToOneAsync( cancellationToken);
+            .FirstAsync( cancellationToken);
 
         var tagArticles = await tagArticleRepo.Select
             .Where(ta => ta.ArticleId == request.ArticleId)
@@ -40,7 +40,7 @@ public class GetArticleQueryHandler(
 
         var author = await userRepo.Select
             .Where(u => u.UserId == article.CreateUserId)
-            .ToOneAsync(cancellationToken);
+            .FirstAsync(cancellationToken);
 
         var result = mapper.Map<ArticleResult>(article);
         result.Category = mapper.Map<CategoryResult>(category);

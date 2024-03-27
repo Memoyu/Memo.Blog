@@ -1,4 +1,6 @@
 ﻿using Memo.Blog.Application.Users.Commands.Create;
+using Memo.Blog.Application.Users.Queries.Get;
+using Memo.Blog.Application.Users.Queries.Page;
 
 namespace Memo.Blog.WebApi.Controllers;
 
@@ -23,8 +25,18 @@ public class UserController(ISender _mediator) : ApiController
     /// </summary>
     /// <returns></returns>
     [HttpGet("get")]
-    public async Task<Result> GetAsync()
+    public async Task<Result> GetAsync(GetUserQuery request)
     {
-        return Result.Success();
+        return await _mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 获取用户分页列表
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("page")]
+    public async Task<Result> PageAsync(PageUserQuery request)
+    {
+        return await _mediator.Send(request);
     }
 }

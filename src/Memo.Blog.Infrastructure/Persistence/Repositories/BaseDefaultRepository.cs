@@ -20,6 +20,9 @@ public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, 
     {
         CurrentUser = currentUserProvider.GetCurrentUser();
         _publisher = publisher;
+       var db = unitOfWorkManager.Orm.CreateDbContext();
+        var dbSet = db.Set<TEntity>();
+        db.SaveChangesAsync();
     }
 
     protected async Task BeforeInsertAsync(TEntity entity)

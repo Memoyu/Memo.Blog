@@ -1,5 +1,4 @@
-﻿
-namespace Memo.Blog.Application.Roles.Commands.Create;
+﻿namespace Memo.Blog.Application.Roles.Commands.Create;
 
 public class CreateRoleCommandHandler(
     IMapper mapper,

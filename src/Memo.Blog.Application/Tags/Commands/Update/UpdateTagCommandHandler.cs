@@ -6,7 +6,7 @@ public class UpdateCategoryCommandHandler(
 {
     public async Task<Result> Handle(UpdateTagCommand request, CancellationToken cancellationToken)
     {
-        var tag = await tagRepo.Select.Where(t => t.TagId == request.TagId).ToOneAsync(cancellationToken);
+        var tag = await tagRepo.Select.Where(t => t.TagId == request.TagId).FirstAsync(cancellationToken);
         if (tag == null) throw new ApplicationException("标签不存在");
 
         var exist = await tagRepo.Select.AnyAsync(t => t.TagId != request.TagId && request.Name == t.Name, cancellationToken);

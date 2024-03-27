@@ -2,7 +2,7 @@
 
 namespace Memo.Blog.Application.Users.Common;
 
-public class UserResult
+public class UserWithRoleResult
 {
     /// <summary>
     /// 用户Id
@@ -33,6 +33,11 @@ public class UserResult
     /// 手机号
     /// </summary>
     public string PhoneNumber { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 用户角色
+    /// </summary>
+    public List<RoleResult> Roles { get; set; }
 
     /// <summary>
     /// 最后一次登录的时间

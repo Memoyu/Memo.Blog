@@ -3,14 +3,14 @@ using Memo.Blog.Domain.Events.Articles;
 
 namespace Memo.Blog.Application.Articles.Events;
 
-public class ArticleDeleteTagEventHandler(
+public class ArticleUpdateTagEventHandler(
     IMapper mapper,
     IBaseMongoRepository<ArticleCollection> articleMongoResp,
     IBaseDefaultRepository<TagArticle> tagArticleRepo,
     IBaseDefaultRepository<Tag> tagRepo
-    ) : INotificationHandler<ArticleDeleteTagEvent>
+    ) : INotificationHandler<ArticleUpdateTagEvent>
 {
-    public async Task Handle(ArticleDeleteTagEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(ArticleUpdateTagEvent notification, CancellationToken cancellationToken)
     {
         var articleTags = await tagArticleRepo.Select
             .Include(ta => ta.Tag)
@@ -18,7 +18,7 @@ public class ArticleDeleteTagEventHandler(
             .ToListAsync(cancellationToken);
 
         // 更新mongodb文章详情
-        var tags = articleTags.Where(ta => ta.TagId != notification.TagId).ToList();
+        var tags = articleTags.Select(at => at.Tag).ToList();
 
         var update = MongoDB.Driver.Builders<ArticleCollection>.Update
              .Set(nameof(ArticleCollection.Tags), mapper.Map<List<ArticleTagBson>>(tags));

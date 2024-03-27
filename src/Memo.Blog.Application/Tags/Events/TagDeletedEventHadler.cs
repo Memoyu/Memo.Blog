@@ -8,12 +8,13 @@ public class TagDeletedEventHadler(IBaseDefaultRepository<TagArticle> tagArticle
     public async Task Handle(TagDeletedEvent notification, CancellationToken cancellationToken)
     {
         var tagArticles = await tagArticleRepo.Select.Where(t => t.TagId == notification.TagId).ToListAsync(cancellationToken);
+        var rows = await tagArticleRepo.DeleteAsync(ta => ta.TagId == notification.TagId, cancellationToken);
 
         foreach (var tagArticle in tagArticles)
         {
-            tagArticle.AddDomainEvent(new ArticleDeleteTagEvent(tagArticle.ArticleId, tagArticle.TagId));
-        }   
+            tagArticle.AddDomainEvent(new ArticleUpdateTagEvent(tagArticle.ArticleId));
+        }
 
-        var rows = await tagArticleRepo.DeleteAsync(tagArticles, cancellationToken);
+
     }
 }

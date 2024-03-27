@@ -8,7 +8,7 @@ public class DeleteCategoryCommandHandler(
 {
     public async Task<Result> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await categoryRepo.Select.Where(c => c.CategoryId == request.CategoryId).ToOneAsync(cancellationToken);
+        var category = await categoryRepo.Select.Where(c => c.CategoryId == request.CategoryId).FirstAsync(cancellationToken);
         if (category == null) throw new ApplicationException("分类不存在");
 
         category.AddDomainEvent(new ArticleUpdateCategoryEvent(category.CategoryId, InitConst.InitCategoryId));

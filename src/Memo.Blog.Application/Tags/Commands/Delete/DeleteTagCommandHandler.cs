@@ -8,10 +8,10 @@ public class DeleteTagCommandHandler(
 {
     public async Task<Result> Handle(DeleteTagCommand request, CancellationToken cancellationToken)
     {
-        var tag = await tagResp.Select.Where(t => t.TagId == request.TagId).ToOneAsync(cancellationToken);
+        var tag = await tagResp.Select.Where(t => t.TagId == request.TagId).FirstAsync(cancellationToken);
         if (tag == null) throw new ApplicationException("标签不存在");
 
-        tag.AddDomainEvent(new TagDeletedEvent(tag.TagId));
+        tag.AddDomainEvent(new TagDeletedEvent(request.TagId));
 
         var rows = await tagResp.DeleteAsync(tag, cancellationToken);
 

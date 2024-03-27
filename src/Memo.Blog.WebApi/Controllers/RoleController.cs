@@ -1,4 +1,7 @@
 ﻿using Memo.Blog.Application.Roles.Commands.Create;
+using Memo.Blog.Application.Roles.Commands.Delete;
+using Memo.Blog.Application.Roles.Commands.Update;
+using Memo.Blog.Application.Roles.Queries.Get;
 using Memo.Blog.Application.Roles.Queries.List;
 
 namespace Memo.Blog.WebApi.Controllers;
@@ -15,6 +18,36 @@ public class RoleController(ISender _mediator) : ApiController
     /// <returns></returns>
     [HttpPost("create")]
     public async Task<Result> CreateAsync(CreateRoleCommand request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 更新角色
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut("update")]
+    public async Task<Result> UpdateAsync(UpdateRoleCommand request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 删除角色
+    /// </summary>
+    /// <returns></returns>
+    [HttpDelete("delete")]
+    public async Task<Result> DeleteAsync([FromQuery] DeleteRoleCommand request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 获取角色
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("get")]
+    public async Task<Result> GetAsync(GetRoleQuery request)
     {
         return await _mediator.Send(request);
     }

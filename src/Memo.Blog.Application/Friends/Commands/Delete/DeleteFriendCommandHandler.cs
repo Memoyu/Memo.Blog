@@ -6,7 +6,7 @@ public class DeleteFriendCommandHandler(
 {
     public async Task<Result> Handle(DeleteFriendCommand request, CancellationToken cancellationToken)
     {
-        var category = await friendRepo.Select.Where(c => c.FriendId == request.FriendId).ToOneAsync(cancellationToken);
+        var category = await friendRepo.Select.Where(c => c.FriendId == request.FriendId).FirstAsync(cancellationToken);
         if (category == null) throw new ApplicationException("友链不存在");
 
         var rows = await friendRepo.DeleteAsync(category, cancellationToken);

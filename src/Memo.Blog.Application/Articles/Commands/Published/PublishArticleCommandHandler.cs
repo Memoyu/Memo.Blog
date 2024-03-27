@@ -11,7 +11,7 @@ public class PublishArticleCommandHandler(
 {
     public async Task<Result> Handle(PublishArticleCommand request, CancellationToken cancellationToken)
     {
-        var article = await articleResp.Select.Where(t => t.ArticleId == request.ArticleId).ToOneAsync(cancellationToken);
+        var article = await articleResp.Select.Where(t => t.ArticleId == request.ArticleId).FirstAsync(cancellationToken);
         if (article == null) throw new ApplicationException("文章不存在");
 
         article.AddDomainEvent(new ArticlePublishEvent(article.ArticleId));

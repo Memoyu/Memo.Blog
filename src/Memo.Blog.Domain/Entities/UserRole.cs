@@ -19,4 +19,16 @@ public class UserRole : BaseAuditEntity
     /// </summary>
     [Description("角色Id")]
     public long RoleId { get; set; }
+
+    /// <summary>
+    /// 权限
+    /// </summary>
+    [Navigate(nameof(User.UserId), TempPrimary = nameof(UserId))]
+    public virtual User User { get; set; }
+
+    /// <summary>
+    /// 角色
+    /// </summary>
+    [Navigate(nameof(Role.RoleId), TempPrimary = nameof(Role))]
+    public virtual Role Role { get; set; }
 }
