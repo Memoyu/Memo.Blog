@@ -11,7 +11,7 @@ namespace Memo.Blog.Infrastructure.Persistence.Repositories;
 
 public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, IBaseDefaultRepository<TEntity> where TEntity : BaseAuditEntity
 {
-    private static ConcurrentDictionary<Type, DbContext> _dicDbProp = new();
+    private ConcurrentDictionary<Type, DbContext> _dicDbProp = new();
 
     private readonly IPublisher _publisher;
 
@@ -25,6 +25,7 @@ public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, 
         CurrentUser = currentUserProvider.GetCurrentUser();
         _publisher = publisher;
     }
+
 
     private DbContext _db => _dicDbProp.GetOrAdd(
         EntityType, fn =>
