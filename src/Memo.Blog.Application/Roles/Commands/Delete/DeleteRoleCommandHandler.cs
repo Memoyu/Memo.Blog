@@ -12,6 +12,6 @@ public class DeleteRoleCommandHandler(IBaseDefaultRepository<Role> roleRepo) : I
 
         var rows = await roleRepo.DeleteAsync(role, cancellationToken);
 
-        return rows > 0 ? Result.Success() : throw new ApplicationException("删除失败");
+        return rows > 0 ? Result.Success() : throw new ApplicationException("删除角色失败");
     }
 }

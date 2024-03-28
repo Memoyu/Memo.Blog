@@ -5,6 +5,9 @@ public static partial class Permissions
     [Description("访问日志")]
     public static class LoggerAccess
     {
+        [Description("创建访问日志")]
+        public const string Create = "create:logger:access";
+
         [Description("获取访问日志")]
         public const string Get = "get:logger:access";
 

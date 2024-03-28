@@ -1,4 +1,5 @@
 ﻿namespace Memo.Blog.Application.Moments.Commands.Create;
 
-public class CreateMomentCommand(
+[Authorize(Permissions = ApiPermission.Moment.Create)]
+public record CreateMomentCommand(
     ) : IRequest<Result>;

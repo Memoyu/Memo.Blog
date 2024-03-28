@@ -5,7 +5,8 @@ namespace Memo.Blog.Application.Friends.Queries.Page;
 
 public class PageFriendQueryHandler(
     IMapper mapper,
-    IBaseDefaultRepository<Friend> friendRepo) : IRequestHandler<PageFriendQuery, Result>
+    IBaseDefaultRepository<Friend> friendRepo
+    ) : IRequestHandler<PageFriendQuery, Result>
 {
     public async Task<Result> Handle(PageFriendQuery request, CancellationToken cancellationToken)
     {

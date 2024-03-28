@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Memo.Blog.Application.Moments.Commands.Create;
-internal class CreateMomentCommandHandler
+
+public class CreateMomentCommandHandler(
+    IMapper mapper
+    ) : IRequestHandler<CreateMomentCommand, Result>
 {
+    public Task<Result> Handle(CreateMomentCommand request, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 }

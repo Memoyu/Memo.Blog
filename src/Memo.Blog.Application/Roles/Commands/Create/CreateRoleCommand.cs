@@ -1,5 +1,6 @@
 ﻿namespace Memo.Blog.Application.Roles.Commands.Create;
 
+[Authorize(Permissions = ApiPermission.Role.Create)]
 public record CreateRoleCommand(
     string Name,
     string Description,

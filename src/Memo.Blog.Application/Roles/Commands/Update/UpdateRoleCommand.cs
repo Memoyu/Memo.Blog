@@ -1,5 +1,6 @@
 ﻿namespace Memo.Blog.Application.Roles.Commands.Update;
 
+[Authorize(Permissions = ApiPermission.Role.Update)]
 public record UpdateRoleCommand(
     string Name,
     string Description,

@@ -2,6 +2,7 @@
 
 namespace Memo.Blog.Application.Loggers.Commands.Access.Create;
 
+[Authorize(Permissions = ApiPermission.LoggerAccess.Create)]
 public record CreateLoggerAccessCommand : IRequest<Result>
 {
     /// <summary>

@@ -5,7 +5,8 @@ namespace Memo.Blog.Application.Users.Queries.Page;
 
 public class PageUserQueryHandler(
     IMapper mapper,
-    IBaseDefaultRepository<User> userRepo) : IRequestHandler<PageUserQuery, Result>
+    IBaseDefaultRepository<User> userRepo
+    ) : IRequestHandler<PageUserQuery, Result>
 {
     public async Task<Result> Handle(PageUserQuery request, CancellationToken cancellationToken)
     {
