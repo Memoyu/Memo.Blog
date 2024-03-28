@@ -11,7 +11,7 @@ namespace Memo.Blog.Infrastructure.Persistence.Repositories;
 
 public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, IBaseDefaultRepository<TEntity> where TEntity : BaseAuditEntity
 {
-    private static ConcurrentDictionary<Type, DbContext> _dicDbField = new ConcurrentDictionary<Type, DbContext>();
+    private static ConcurrentDictionary<Type, DbContext> _dicDbProp = new();
 
     private readonly IPublisher _publisher;
 
@@ -20,30 +20,20 @@ public class BaseDefaultRepository<TEntity> : DefaultRepository<TEntity, long>, 
     /// </summary>
     protected readonly CurrentUser CurrentUser;
 
-    private readonly UnitOfWorkManager _unitOfWorkManager;
-
     public BaseDefaultRepository(UnitOfWorkManager unitOfWorkManager, ICurrentUserProvider currentUserProvider, IPublisher publisher) : base(unitOfWorkManager?.Orm, unitOfWorkManager)
     {
         CurrentUser = currentUserProvider.GetCurrentUser();
         _publisher = publisher;
-        _unitOfWorkManager = unitOfWorkManager;
     }
 
-    //private DbContext _db => _unitOfWorkManager.Orm.CreateDbContext();
-
-
-    private DbContext _db => _dicDbField.GetOrAdd(
+    private DbContext _db => _dicDbProp.GetOrAdd(
         EntityType, fn =>
-        //typeof(DefaultRepository<,>).MakeGenericType(EntityType, typeof(int))?.GetField("_dbPriv", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(this) as DbContext
-        //?? throw new Exception("RepositoryDbContext 为空")
         {
             var a = typeof(BaseRepository<,>).MakeGenericType(EntityType, typeof(long));
-            var b = a.GetField("_dbPriv", BindingFlags.Instance | BindingFlags.NonPublic);
-            var c = b.GetValue(this);
-            var type = EntityType;
-            return Orm.CreateDbContext();
-        }
-        );
+            // var ps = a.GetProperties(BindingFlags.Instance | BindingFlags.NonPublic);
+            var pb = a.GetProperty("_db", BindingFlags.Instance | BindingFlags.NonPublic);
+            return pb?.GetValue(this) as DbContext ?? throw new Exception("RepositoryDbContext 为空");
+        });
 
     private DbSet<TEntity> _dbset => _db.Set<TEntity>();
 
