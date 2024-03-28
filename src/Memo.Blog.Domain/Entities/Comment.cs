@@ -14,6 +14,7 @@ public class Comment : BaseAuditEntity
     /// </summary>
     [Snowflake]
     [Description("评论Id")]
+    [Column(CanUpdate = false)]
     public long CommentId { get; set; }
 
     /// <summary>

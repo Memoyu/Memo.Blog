@@ -53,7 +53,7 @@ public class FriendController(ISender _mediator) : ApiController
     }
 
     /// <summary>
-    /// 友链列表
+    /// 获取友链列表
     /// </summary>
     /// <returns></returns>
     [HttpGet("page")]

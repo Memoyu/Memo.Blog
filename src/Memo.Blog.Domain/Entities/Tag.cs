@@ -12,6 +12,7 @@ public class Tag : BaseAuditEntity
     /// </summary>
     [Snowflake]
     [Description("标签Id")]
+    [Column(CanUpdate = false)]
     public long TagId { get; set; }
 
     /// <summary>

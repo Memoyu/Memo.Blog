@@ -2,4 +2,18 @@
 
 [Authorize(Permissions = ApiPermission.Moment.Create)]
 public record CreateMomentCommand(
+    List<string> Tags,
+    string Content,
+    bool Showable,
+    bool Commentable
     ) : IRequest<Result>;
+
+public class CreateMomentCommandValidator : AbstractValidator<CreateMomentCommand>
+{
+    public CreateMomentCommandValidator()
+    {
+        RuleFor(x => x.Content)
+            .NotEmpty()
+            .WithMessage("动态内容不能为空");
+    }
+}

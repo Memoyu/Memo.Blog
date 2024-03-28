@@ -15,6 +15,7 @@ public class UserIdentity : BaseAuditEntity
     /// </summary>
     [Snowflake]
     [Description("业务Id")]
+    [Column(CanUpdate = false)]
     public long IdentityId { get; set; }
 
     /// <summary>

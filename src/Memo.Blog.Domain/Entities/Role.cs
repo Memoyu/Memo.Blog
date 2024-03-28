@@ -14,6 +14,7 @@ public class Role : BaseAuditEntity
     /// </summary>
     [Snowflake]
     [Description("角色Id")]
+    [Column(CanUpdate = false)]
     public long RoleId { get; set; }
 
     /// <summary>

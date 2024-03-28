@@ -14,6 +14,7 @@ public class Article : BaseAuditEntity
     /// </summary>
     [Snowflake]
     [Description("文章Id")]
+    [Column(CanUpdate = false)]
     public long ArticleId { get; set; }
 
     /// <summary>

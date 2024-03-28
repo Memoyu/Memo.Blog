@@ -12,6 +12,7 @@ public class User : BaseAuditEntity
     /// </summary>
     [Snowflake]
     [Description("用户Id")]
+    [Column(CanUpdate = false)]
     public long UserId { get; set; }
 
     /// <summary>

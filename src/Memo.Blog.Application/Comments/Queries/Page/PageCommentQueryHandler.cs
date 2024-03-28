@@ -5,7 +5,8 @@ namespace Memo.Blog.Application.Comments.Queries.Page;
 
 public class PageCommentQueryHandler(
     IMapper mapper,
-    IBaseDefaultRepository<Comment> commentRepo) : IRequestHandler<PageCommentQuery, Result>
+    IBaseDefaultRepository<Comment> commentRepo
+    ) : IRequestHandler<PageCommentQuery, Result>
 {
     public async Task<Result> Handle(PageCommentQuery request, CancellationToken cancellationToken)
     {

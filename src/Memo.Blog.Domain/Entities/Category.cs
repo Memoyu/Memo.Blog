@@ -12,6 +12,7 @@ public class Category : BaseAuditEntity
     /// </summary>
     [Snowflake]
     [Description("分类Id")]
+    [Column(CanUpdate = false)]
     public long CategoryId { get; set; }
 
     /// <summary>

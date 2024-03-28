@@ -12,6 +12,7 @@ public class Permission : BaseAuditEntity
     /// </summary>
     [Snowflake]
     [Description("权限Id")]
+    [Column(CanUpdate = false)]
     public long PermissionId { get; set; }
 
     /// <summary>

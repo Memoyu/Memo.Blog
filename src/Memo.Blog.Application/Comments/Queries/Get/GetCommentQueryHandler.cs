@@ -5,8 +5,8 @@ public class GetCommentQueryHandler(IMapper mapper, IBaseDefaultRepository<Comme
 {
     public async Task<Result> Handle(GetCommentQuery request, CancellationToken cancellationToken)
     {
-        var friend = await commentRepo.Select.Where(f => f.CommentId == request.CommentId).FirstAsync(cancellationToken);
+        var comment = await commentRepo.Select.Where(f => f.CommentId == request.CommentId).FirstAsync(cancellationToken);
 
-        return friend is null ? throw new ApplicationException("评论不存在") : (Result)Result.Success(mapper.Map<CommentResult>(friend));
+        return comment is null ? throw new ApplicationException("评论不存在") : (Result)Result.Success(mapper.Map<CommentResult>(comment));
     }
 }

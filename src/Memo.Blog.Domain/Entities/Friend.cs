@@ -12,6 +12,7 @@ public class Friend : BaseAuditEntity
     /// </summary>
     [Snowflake]
     [Description("友链Id")]
+    [Column(CanUpdate = false)]
     public long FriendId { get; set; }
 
     /// <summary>

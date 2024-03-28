@@ -9,7 +9,6 @@ public record CreateFriendCommand(
     bool Showable
     ) : IRequest<Result>;
 
-
 public class CreateFriendCommandValidator : AbstractValidator<CreateFriendCommand>
 {
     public CreateFriendCommandValidator()

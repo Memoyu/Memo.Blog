@@ -2,11 +2,16 @@
 namespace Memo.Blog.Application.Moments.Commands.Create;
 
 public class CreateMomentCommandHandler(
-    IMapper mapper
+    IMapper mapper,
+    IBaseDefaultRepository<Moment> momentRepo
     ) : IRequestHandler<CreateMomentCommand, Result>
 {
-    public Task<Result> Handle(CreateMomentCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(CreateMomentCommand request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var moment = mapper.Map<Moment>(request);
+
+        moment = await momentRepo.InsertAsync(moment, cancellationToken);
+
+        return moment == null || moment.Id == 0 ? Result.Failure("保存动态失败") : Result.Success(moment.MomentId);
     }
 }
