@@ -5,9 +5,9 @@ namespace Memo.Blog.Application.Users.Commands.Create;
 
 public class CreateUserCommandHandler(
     IMapper mapper,
-    IBaseDefaultRepository<User> userResp,
-    IBaseDefaultRepository<UserIdentity> userIdentityResp,
-    IBaseDefaultRepository<UserRole> userRoleResp
+    IBaseDefaultRepository<User> userRepo,
+    IBaseDefaultRepository<UserIdentity> userIdentityRepo,
+    IBaseDefaultRepository<UserRole> userRoleRepo
     ) : IRequestHandler<CreateUserCommand, Result>
 {
     public async Task<Result> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -16,7 +16,7 @@ public class CreateUserCommandHandler(
         var user = mapper.Map<User>(request);
         var userId = SnowFlakeUtil.NextId();
         user.UserId = userId;
-        user = await userResp.InsertAsync(user);
+        user = await userRepo.InsertAsync(user);
 
         // 用户身份认
         var identity = new UserIdentity
@@ -26,7 +26,7 @@ public class CreateUserCommandHandler(
             Identifier = user.PhoneNumber,
             Credential = EncryptUtil.Encrypt(request.Password)
         };
-        await userIdentityResp.InsertAsync(identity);
+        await userIdentityRepo.InsertAsync(identity);
 
         // 用户角色
         var userRoles = new List<UserRole>();
@@ -35,7 +35,7 @@ public class CreateUserCommandHandler(
             UserId = user.UserId,
             RoleId = id
         }));
-        await userRoleResp.InsertAsync(userRoles);
+        await userRoleRepo.InsertAsync(userRoles);
 
         var result = mapper.Map<UserResult>(user);
 

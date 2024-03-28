@@ -12,7 +12,7 @@ public class GetArticleQueryHandler(
     IBaseDefaultRepository<Article> articleRepo,
     IBaseDefaultRepository<Category> categoryRepo,
     IBaseDefaultRepository<Tag> tagRepo,
-    IBaseDefaultRepository<TagArticle> tagArticleRepo,
+    IBaseDefaultRepository<ArticleTag> articleTagRepo,
     IBaseDefaultRepository<Comment> commentRepo,
     IBaseDefaultRepository<User> userRepo
     ) : IRequestHandler<GetArticleQuery, Result>
@@ -26,11 +26,11 @@ public class GetArticleQueryHandler(
             .Where(c => c.CategoryId == article.CategoryId)
             .FirstAsync( cancellationToken);
 
-        var tagArticles = await tagArticleRepo.Select
-            .Where(ta => ta.ArticleId == request.ArticleId)
+        var articleTags = await articleTagRepo.Select
+            .Where(at => at.ArticleId == request.ArticleId)
             .ToListAsync(cancellationToken);
         var tags = await tagRepo.Select
-            .Where(t => tagArticles.Any(ta => ta.TagId == t.TagId))
+            .Where(t => articleTags.Any(at => at.TagId == t.TagId))
             .ToListAsync(cancellationToken);
 
         var comments = await commentRepo.Select

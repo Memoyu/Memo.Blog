@@ -5,12 +5,12 @@ namespace Memo.Blog.Application.Permissions.Queries.List;
 
 public class GroupPermissionQueryHandler(
     IMapper mapper,
-    IBaseDefaultRepository<Permission> permissionResp
+    IBaseDefaultRepository<Permission> permissionRepo
     ) : IRequestHandler<GroupPermissionQuery, Result>
 {
     public async Task<Result> Handle(GroupPermissionQuery request, CancellationToken cancellationToken)
     {
-        var permissions = await permissionResp.Select
+        var permissions = await permissionRepo.Select
             .WhereIf(!string.IsNullOrWhiteSpace(request.Name), p => p.Name.Contains(request.Name!))
             .ToListAsync(cancellationToken);
 

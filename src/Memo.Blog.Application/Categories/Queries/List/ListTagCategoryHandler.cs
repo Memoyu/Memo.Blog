@@ -4,12 +4,12 @@ namespace Memo.Blog.Application.Categories.Queries.List;
 
 public class ListCategoryQueryHandler(
     IMapper mapper,
-    IBaseDefaultRepository<Category> categoryResp
+    IBaseDefaultRepository<Category> categoryRepo
     ) : IRequestHandler<ListCategoryQuery, Result>
 {
     public async Task<Result> Handle(ListCategoryQuery request, CancellationToken cancellationToken)
     {
-        var categories = await categoryResp.Select
+        var categories = await categoryRepo.Select
             .WhereIf(!string.IsNullOrWhiteSpace(request.Name), t => t.Name.Contains(request.Name))
             .ToListAsync(cancellationToken) ?? [];
 

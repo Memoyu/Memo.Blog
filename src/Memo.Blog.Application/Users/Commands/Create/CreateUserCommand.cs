@@ -15,8 +15,8 @@ public record CreateUserCommand(
 public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
     public CreateUserCommandValidator(
-        IBaseDefaultRepository<Role> roleResp,
-        IBaseDefaultRepository<User> userResp)
+        IBaseDefaultRepository<Role> roleRepo,
+        IBaseDefaultRepository<User> userRepo)
     {
         RuleFor(x => x.Username)
             .MinimumLength(1)
@@ -24,7 +24,7 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
             .WithMessage("用户名称长度在1-50个字符之间");
 
         RuleFor(x => x.Username)
-            .MustAsync(async (x, ct) => !await userResp.Select.AnyAsync(u => x == u.Username, ct))
+            .MustAsync(async (x, ct) => !await userRepo.Select.AnyAsync(u => x == u.Username, ct))
             .WithMessage("用户名称已存在");
 
         RuleFor(x => x.Nickname)
@@ -47,7 +47,7 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
             .WithMessage("角色不能为空");
 
         RuleForEach(x => x.Roles)
-           .MustAsync(async (x, ct) => x > 0 && await roleResp.Select.AnyAsync(r => x == r.RoleId, ct))
+           .MustAsync(async (x, ct) => x > 0 && await roleRepo.Select.AnyAsync(r => x == r.RoleId, ct))
            .WithMessage("角色不存在");
     }
 }

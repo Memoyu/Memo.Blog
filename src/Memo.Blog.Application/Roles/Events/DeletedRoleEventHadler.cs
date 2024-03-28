@@ -2,12 +2,12 @@
 
 namespace Memo.Blog.Application.Roles.Events;
 
-public class RoleDeletedEventHadler(
+public class DeletedRoleEventHadler(
     IBaseDefaultRepository<RolePermission> rolePermissionRepo,
     IBaseDefaultRepository<UserRole> userRoleRepo
-    ) : INotificationHandler<RoleDeleteEvent>
+    ) : INotificationHandler<DeletedRoleEvent>
 {
-    public async Task Handle(RoleDeleteEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(DeletedRoleEvent notification, CancellationToken cancellationToken)
     {
         // 删除关联权限
         var permissions = await rolePermissionRepo.DeleteAsync(rp => rp.RoleId == notification.RoleId, cancellationToken);

@@ -17,7 +17,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var publisher = services.GetRequiredService<IPublisher>();
-    await publisher.Publish(new PermissionSyncEvent());
+    await publisher.Publish(new SyncPermissionEvent());
 }
 
 // Configure the HTTP request pipeline.

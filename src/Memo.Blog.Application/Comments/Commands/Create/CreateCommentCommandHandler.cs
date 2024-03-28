@@ -13,7 +13,7 @@ public class CreateCommentCommandHandler(
      IRegionSearcher searcher,
      IBaseDefaultRepository<Comment> commentRepo,
      IBaseDefaultRepository<Article> articleRepo,
-     IBaseMongoRepository<ArticleCollection> articleMongoResp
+     IBaseMongoRepository<ArticleCollection> articleMongoRepo
     ) : IRequestHandler<CreateCommentCommand, Result>
 {
     public async Task<Result> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
@@ -30,7 +30,7 @@ public class CreateCommentCommandHandler(
         // 如果是文章评论，则需要更新mongodb数据
         if (isArticleComment)
         {
-            comment.AddDomainEvent(new ArticleUpdateCommentEvent(request.BelongId));
+            comment.AddDomainEvent(new UpdatedArticleCommentEvent(request.BelongId));
         }
 
         var ip = currentUserProvider.GetClientIp();

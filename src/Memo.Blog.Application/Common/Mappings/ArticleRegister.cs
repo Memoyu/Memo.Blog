@@ -23,6 +23,6 @@ public class ArticleRegister : IRegister
             .Map(d => d.ReadingTime, s => s.Content.Length / 800);
 
         config.ForType<Article, PageArticleResult>()
-            .Map(d => d.Tags, s => s.TagArticles.Select(ta => ta.Tag).ToList());
+            .Map(d => d.Tags, s => s.ArticleTags.Select(at => at.Tag).ToList());
     }
 }

@@ -3,10 +3,10 @@
 /// <summary>
 /// 文章标签
 /// </summary>
-[Table(Name = "tag_article")]
+[Table(Name = "article_tag")]
 [Index("index_on_tag_id", nameof(TagId), false)]
 [Index("index_on_article_id", nameof(ArticleId), false)]
-public class TagArticle : BaseAuditEntity
+public class ArticleTag : BaseAuditEntity
 {
     /// <summary>
     /// 标签Id

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Memo.Blog.Application.Permissions.Events;
-internal class PermissionDeletedEventHadler
+namespace Memo.Blog.Application.Comments.Events;
+internal class DeletedCommentEventHadler
 {
 }

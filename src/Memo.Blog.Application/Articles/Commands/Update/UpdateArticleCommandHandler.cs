@@ -5,22 +5,22 @@ namespace Memo.Blog.Application.Articles.Commands.Update;
 
 public class UpdateArticleCommandHandler(
     IMapper mapper,
-    IBaseDefaultRepository<Article> articleResp,
-    IBaseDefaultRepository<TagArticle> tagArticleResp,
-    IBaseMongoRepository<ArticleCollection> articleMongoResp,
-    IBaseDefaultRepository<Domain.Entities.Tag> tagResp,
-    IBaseDefaultRepository<Category> categoryResp
+    IBaseDefaultRepository<Article> articleRepo,
+    IBaseDefaultRepository<ArticleTag> articleTagRepo,
+    IBaseMongoRepository<ArticleCollection> articleMongoRepo,
+    IBaseDefaultRepository<Domain.Entities.Tag> tagRepo,
+    IBaseDefaultRepository<Category> categoryRepo
     ) : IRequestHandler<UpdateArticleCommand, Result>
 {
     public async Task<Result> Handle(UpdateArticleCommand request, CancellationToken cancellationToken)
     {
-        var entity = await articleResp.Select.Where(a => a.ArticleId == request.ArticleId).FirstAsync(cancellationToken);
+        var entity = await articleRepo.Select.Where(a => a.ArticleId == request.ArticleId).FirstAsync(cancellationToken);
         if (entity is null) throw new ApplicationException("文章不存在");
 
-        var category = await categoryResp.Select.Where(c => c.CategoryId == request.CategoryId).FirstAsync(cancellationToken);
+        var category = await categoryRepo.Select.Where(c => c.CategoryId == request.CategoryId).FirstAsync(cancellationToken);
         if (category is null) throw new ApplicationException("文章分类不存在");
 
-        var tags = await tagResp.Select.Where(t => request.Tags.Contains(t.TagId)).ToListAsync();
+        var tags = await tagRepo.Select.Where(t => request.Tags.Contains(t.TagId)).ToListAsync();
         foreach (var tagId in request.Tags)
         {
             if (!tags.Any(t => t.TagId == tagId)) throw new ApplicationException($"{tagId}文章标签不存在");
@@ -28,26 +28,26 @@ public class UpdateArticleCommandHandler(
    
         var article = mapper.Map<Article>(request);
         article.Id = entity.Id;
-        var row = await articleResp.UpdateAsync(article, cancellationToken);
+        var row = await articleRepo.UpdateAsync(article, cancellationToken);
         if (row <= 0) throw new ApplicationException("更新文章失败");
 
         #region 标签管理
 
-        var addTags = new List<TagArticle>();
-        var currentTagArticles = await tagArticleResp.Select.Where(ta => ta.ArticleId == article.ArticleId).ToListAsync(cancellationToken);
+        var addTags = new List<ArticleTag>();
+        var currentTagArticles = await articleTagRepo.Select.Where(at => at.ArticleId == article.ArticleId).ToListAsync(cancellationToken);
         foreach (var tag in tags)
         {
             if (!currentTagArticles.Any(t => t.TagId == tag.TagId))
             {
-                addTags.Add(new TagArticle { TagId = tag.TagId, ArticleId = request.ArticleId });
+                addTags.Add(new ArticleTag { TagId = tag.TagId, ArticleId = request.ArticleId });
             }
             else
             {
                 currentTagArticles.RemoveAll(t => t.TagId == tag.TagId);
             }
         }
-        await tagArticleResp.InsertAsync(addTags, cancellationToken);
-        await tagArticleResp.DeleteAsync(currentTagArticles, cancellationToken);
+        await articleTagRepo.InsertAsync(addTags, cancellationToken);
+        await articleTagRepo.DeleteAsync(currentTagArticles, cancellationToken);
 
         #endregion
 
@@ -55,7 +55,7 @@ public class UpdateArticleCommandHandler(
 
         var articleCollection = mapper.Map<ArticleCollection>(article);
         var update = Builders<ArticleCollection>.Update
-                 .Set(nameof(ArticleCollection.Category), category)
+                 .Set(nameof(ArticleCollection.Category), mapper.Map<ArticleCategoryBson>(category))
                  .Set(nameof(ArticleCollection.Title), articleCollection.Title)
                  .Set(nameof(ArticleCollection.Description), articleCollection.Description)
                  .Set(nameof(ArticleCollection.Content), articleCollection.Content)
@@ -72,7 +72,7 @@ public class UpdateArticleCommandHandler(
                  .Set(nameof(ArticleCollection.Tags), mapper.Map<List<ArticleTagBson>>(tags));
 
         var filter = Builders<ArticleCollection>.Filter.Eq(b => b.ArticleId, request.ArticleId);
-        var mongoUpdate = await articleMongoResp.UpdateOneAsync(update, filter, null, cancellationToken);
+        var mongoUpdate = await articleMongoRepo.UpdateOneAsync(update, filter, null, cancellationToken);
         if (!mongoUpdate.IsAcknowledged) throw new Exception("更新mongodb失败"); 
 
         #endregion

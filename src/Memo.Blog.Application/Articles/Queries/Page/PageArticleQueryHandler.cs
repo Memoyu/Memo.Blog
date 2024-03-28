@@ -13,10 +13,10 @@ public class PageArticleQueryHandler(
     {
         var articles = await articleRepo.Select
             .Include(a => a.Category)
-            .IncludeMany(a => a.TagArticles, then => then.Include(t => t.Tag))
+            .IncludeMany(a => a.ArticleTags, then => then.Include(t => t.Tag))
             .WhereIf(!string.IsNullOrWhiteSpace(request.Title), a => a.Title.Contains(request.Title!))
             .WhereIf(request.CategoryId > 0, a => a.CategoryId == request.CategoryId)
-            .WhereIf(request.TagIds != null && request.TagIds.Any(), a => a.TagArticles.Any(ta => request.TagIds!.Contains(ta.TagId)))
+            .WhereIf(request.TagIds != null && request.TagIds.Any(), a => a.ArticleTags.Any(at => request.TagIds!.Contains(at.TagId)))
             .WhereIf(request.Status.HasValue, a=> a.Status == request.Status!.Value)
             .OrderByDescending(a => a.CreateTime)
             .ToPageListAsync(request, out var total, cancellationToken);

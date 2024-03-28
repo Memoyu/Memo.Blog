@@ -4,21 +4,21 @@ using MongoDB.Driver;
 
 namespace Memo.Blog.Application.Articles.Events;
 
-public class ArticleDeleteCommentEventHandler(
+public class UpdatedArticleCommentEventHandler(
     IMapper mapper,
-    IBaseMongoRepository<ArticleCollection> articleMongoResp,
+    IBaseMongoRepository<ArticleCollection> articleMongoRepo,
     IBaseDefaultRepository<Comment> commentRepo
-    ) : INotificationHandler<ArticleDeleteCommentEvent>
+    ) : INotificationHandler<UpdatedArticleCommentEvent>
 {
-    public async Task Handle(ArticleDeleteCommentEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(UpdatedArticleCommentEvent notification, CancellationToken cancellationToken)
     {
-        var articleComments = await commentRepo.Select.Where(c => c.BelongId == notification.ArticleId && c.CommentId != notification.CommentId).ToListAsync<ArticleCommentBson>(cancellationToken);
+        var articleComments = await commentRepo.Select.Where(c => c.BelongId == notification.ArticleId).ToListAsync<ArticleCommentBson>(cancellationToken);
 
         var update = Builders<ArticleCollection>.Update
                  .Set(nameof(ArticleCollection.Comments), mapper.Map<List<ArticleCommentBson>>(articleComments));
 
         var filter = Builders<ArticleCollection>.Filter.Eq(b => b.ArticleId, notification.ArticleId);
-        var mongoUpdate = await articleMongoResp.UpdateOneAsync(update, filter, null, cancellationToken);
+        var mongoUpdate = await articleMongoRepo.UpdateOneAsync(update, filter, null, cancellationToken);
         if (!mongoUpdate.IsAcknowledged) throw new Exception("更新mongodb失败");
     }
 }

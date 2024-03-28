@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Memo.Blog.Application.Friends.Events;
-internal class FriendDeletedEventHadler
+internal class DeletedFriendEventHadler
 {
 }

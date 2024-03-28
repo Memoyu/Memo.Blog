@@ -1,4 +1,6 @@
-﻿namespace Memo.Blog.Application.Categories.Commands.Update;
+﻿using Memo.Blog.Domain.Events.Articles;
+
+namespace Memo.Blog.Application.Categories.Commands.Update;
 
 public class UpdateCategoryCommandHandler(
     IBaseDefaultRepository<Category> categoryRepo
@@ -13,6 +15,8 @@ public class UpdateCategoryCommandHandler(
         if (exist) throw new ApplicationException("分类名已存在");
 
         category.Name = request.Name;
+        category.AddDomainEvent(new UpdatedArticleCategoryEvent(category));
+
         var rows = await categoryRepo.UpdateAsync(category, cancellationToken);
 
         return rows > 0 ? Result.Success() : throw new ApplicationException("更新分类失败");

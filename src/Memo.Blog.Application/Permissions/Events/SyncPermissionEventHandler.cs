@@ -5,12 +5,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Memo.Blog.Application.Permissions.Events;
 
-public class PermissionSyncEventHandler(
-    ILogger<PermissionSyncEventHandler> logger,
+public class SyncPermissionEventHandler(
+    ILogger<SyncPermissionEventHandler> logger,
     IBaseDefaultRepository<Permission> permissionRepo
-    ) : INotificationHandler<PermissionSyncEvent>
+    ) : INotificationHandler<SyncPermissionEvent>
 {
-    public async Task Handle(PermissionSyncEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(SyncPermissionEvent notification, CancellationToken cancellationToken)
     {
         var permissions = new List<Permission>();
         var permissionTypes = typeof(ApiPermission).GetNestedTypes().ToList();

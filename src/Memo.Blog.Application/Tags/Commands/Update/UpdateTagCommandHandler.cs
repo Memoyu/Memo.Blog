@@ -1,4 +1,6 @@
-﻿namespace Memo.Blog.Application.Tags.Commands.Update;
+﻿using Memo.Blog.Domain.Events.Articles;
+
+namespace Memo.Blog.Application.Tags.Commands.Update;
 
 public class UpdateCategoryCommandHandler(
     IBaseDefaultRepository<Tag> tagRepo
@@ -14,6 +16,8 @@ public class UpdateCategoryCommandHandler(
 
         tag.Name = request.Name;
         tag.Color = request.Color;
+        tag.AddDomainEvent(new UpdatedArticleTagEvent(request.TagId));
+
         var rows = await tagRepo.UpdateAsync(tag, cancellationToken);
 
         return rows > 0 ? Result.Success() : throw new ApplicationException("更新标签失败");

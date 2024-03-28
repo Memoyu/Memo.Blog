@@ -112,8 +112,8 @@ public class Article : BaseAuditEntity
     /// <summary>
     /// 文章关联标签
     /// </summary>
-    [Navigate(nameof(TagArticle.ArticleId), TempPrimary = nameof(ArticleId))]
-    public virtual List<TagArticle> TagArticles { get; set; } = [];
+    [Navigate(nameof(ArticleTag.ArticleId), TempPrimary = nameof(ArticleId))]
+    public virtual List<ArticleTag> ArticleTags { get; set; } = [];
 
     /// <summary>
     /// 文章作者

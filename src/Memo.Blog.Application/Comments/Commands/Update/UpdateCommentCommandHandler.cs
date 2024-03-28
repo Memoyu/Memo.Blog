@@ -9,7 +9,7 @@ public class UpdateCommentCommandHandler(
     ILogger<UpdateCommentCommandHandler> logger,
     IMapper mapper,
     IBaseDefaultRepository<Comment> commentRepo,
-     IBaseMongoRepository<ArticleCollection> articleMongoResp
+     IBaseMongoRepository<ArticleCollection> articleMongoRepo
     ) : IRequestHandler<UpdateCommentCommand, Result>
 {
     public async Task<Result> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
@@ -21,7 +21,7 @@ public class UpdateCommentCommandHandler(
         // 如果是文章评论，则需要更新mongodb数据
         if (comment.CommentType == Domain.Enums.CommentType.Article)
         {
-            comment.AddDomainEvent(new ArticleUpdateCommentEvent(comment.BelongId));
+            comment.AddDomainEvent(new UpdatedArticleCommentEvent(comment.BelongId));
         }
 
         // 更新评论

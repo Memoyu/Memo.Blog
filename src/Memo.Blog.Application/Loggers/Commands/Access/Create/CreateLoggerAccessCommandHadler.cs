@@ -10,7 +10,7 @@ public class CreateLoggerAccessCommandHadler(
      IMapper mapper,
      ICurrentUserProvider currentUserProvider,
      IRegionSearcher searcher,
-     IBaseMongoRepository<LoggerAccessCollection> accesslogMongoResp
+     IBaseMongoRepository<LoggerAccessCollection> accesslogMongoRepo
     ) : IRequestHandler<CreateLoggerAccessCommand, Result>
 {
     public async Task<Result> Handle(CreateLoggerAccessCommand request, CancellationToken cancellationToken)
@@ -24,7 +24,7 @@ public class CreateLoggerAccessCommandHadler(
         var region = searcher.Search(ip);
         log.Region = region.GetRegion();
 
-        var mongoInsert = await accesslogMongoResp.InsertOneAsync(log, null, cancellationToken);
+        var mongoInsert = await accesslogMongoRepo.InsertOneAsync(log, null, cancellationToken);
 
         return mongoInsert ? (Result)Result.Success(log.AccessId) : throw new ApplicationException("保存访问日志失败");
     }

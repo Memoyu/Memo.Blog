@@ -3,12 +3,12 @@
 namespace Memo.Blog.Application.Tags.Queries.List;
 public class ListTagQueryHandler(
     IMapper mapper,
-    IBaseDefaultRepository<Tag> tagResp
+    IBaseDefaultRepository<Tag> tagRepo
     ) : IRequestHandler<ListTagQuery, Result>
 {
     public async Task<Result> Handle(ListTagQuery request, CancellationToken cancellationToken)
     {
-        var tags = await tagResp.Select
+        var tags = await tagRepo.Select
             .WhereIf(!string.IsNullOrWhiteSpace(request.Name), t => t.Name.Contains(request.Name))
             .ToListAsync(cancellationToken) ?? [];
 
