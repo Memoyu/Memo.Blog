@@ -13,6 +13,7 @@ public class ListPermissionQueryHandler(
     {
         var permissions = await permissionRepo.Select
             .WhereIf(!string.IsNullOrWhiteSpace(request.Name), p => p.Name.Contains(request.Name!))
+            .WhereIf(!string.IsNullOrWhiteSpace(request.Signature), p => p.Signature.Contains(request.Signature!))
             .ToListAsync(cancellationToken);
 
         var rolePermissions = await rolePermissionRepo.Select
@@ -21,7 +22,7 @@ public class ListPermissionQueryHandler(
         var dtos = mapper.Map<List<PermissionResult>>(permissions);
         foreach (var d in dtos)
         {
-            d.Roles = rolePermissions.Where(r => r.PermissionId == d.PermissionId).Select(r => mapper.Map<RoleResult>(r)).ToList();
+            d.Roles = rolePermissions.Where(r => r.PermissionId == d.PermissionId).Select(mapper.Map<RoleResult>).ToList();
         }
 
         return Result.Success(dtos);
