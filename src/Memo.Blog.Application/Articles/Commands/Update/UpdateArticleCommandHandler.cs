@@ -14,12 +14,8 @@ public class UpdateArticleCommandHandler(
 {
     public async Task<Result> Handle(UpdateArticleCommand request, CancellationToken cancellationToken)
     {
-        var entity = await articleRepo.Select.Where(a => a.ArticleId == request.ArticleId).FirstAsync(cancellationToken);
-        if (entity is null) throw new ApplicationException("文章不存在");
-
-        var category = await categoryRepo.Select.Where(c => c.CategoryId == request.CategoryId).FirstAsync(cancellationToken);
-        if (category is null) throw new ApplicationException("文章分类不存在");
-
+        var entity = await articleRepo.Select.Where(a => a.ArticleId == request.ArticleId).FirstAsync(cancellationToken) ?? throw new ApplicationException("文章不存在");
+        var category = await categoryRepo.Select.Where(c => c.CategoryId == request.CategoryId).FirstAsync(cancellationToken) ?? throw new ApplicationException("文章分类不存在");
         var tags = await tagRepo.Select.Where(t => request.Tags.Contains(t.TagId)).ToListAsync();
         foreach (var tagId in request.Tags)
         {
@@ -31,23 +27,23 @@ public class UpdateArticleCommandHandler(
         var row = await articleRepo.UpdateAsync(article, cancellationToken);
         if (row <= 0) throw new ApplicationException("更新文章失败");
 
-        #region 标签管理
+        #region 文章关联标签管理
 
-        var addTags = new List<ArticleTag>();
-        var currentTagArticles = await articleTagRepo.Select.Where(at => at.ArticleId == article.ArticleId).ToListAsync(cancellationToken);
+        var addArticleTags = new List<ArticleTag>();
+        var currentArticleTags = await articleTagRepo.Select.Where(at => at.ArticleId == article.ArticleId).ToListAsync(cancellationToken);
         foreach (var tag in tags)
         {
-            if (!currentTagArticles.Any(t => t.TagId == tag.TagId))
+            if (!currentArticleTags.Any(t => t.TagId == tag.TagId))
             {
-                addTags.Add(new ArticleTag { TagId = tag.TagId, ArticleId = request.ArticleId });
+                addArticleTags.Add(new ArticleTag { TagId = tag.TagId, ArticleId = request.ArticleId });
             }
             else
             {
-                currentTagArticles.RemoveAll(t => t.TagId == tag.TagId);
+                currentArticleTags.RemoveAll(t => t.TagId == tag.TagId);
             }
         }
-        await articleTagRepo.InsertAsync(addTags, cancellationToken);
-        await articleTagRepo.DeleteAsync(currentTagArticles, cancellationToken);
+        await articleTagRepo.InsertAsync(addArticleTags, cancellationToken);
+        await articleTagRepo.DeleteAsync(currentArticleTags, cancellationToken);
 
         #endregion
 

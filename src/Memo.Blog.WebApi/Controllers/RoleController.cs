@@ -47,7 +47,7 @@ public class RoleController(ISender _mediator) : ApiController
     /// </summary>
     /// <returns></returns>
     [HttpGet("get")]
-    public async Task<Result> GetAsync(GetRoleQuery request)
+    public async Task<Result> GetAsync([FromQuery] GetRoleQuery request)
     {
         return await _mediator.Send(request);
     }

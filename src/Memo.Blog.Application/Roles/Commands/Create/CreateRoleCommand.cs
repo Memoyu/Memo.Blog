@@ -27,6 +27,11 @@ public class CreateRoleCommandValidator : AbstractValidator<CreateRoleCommand>
         RuleFor(x => x.Description)
             .MinimumLength(1)
             .MaximumLength(10)
-            .WithMessage("角色描述长度在1-10个字符之间");
+            .WithMessage("角色描述长度在1-100个字符之间");
+
+
+        RuleFor(x => x.Permissions)
+          .Must(x => x != null && x.Count > 0)
+          .WithMessage("角色权限不能为空");
     }
 }

@@ -14,7 +14,7 @@ public class ListRoleQueryHandler(
                 .WhereIf(!string.IsNullOrWhiteSpace(request.Name), p => p.Name.Contains(request.Name!))
                 .ToListAsync(cancellationToken);
 
-        var dtos = mapper.Map<List<RoleResult>>(roles);
+        var dtos = mapper.Map<List<RoleListResult>>(roles);
         return Result.Success(dtos);
     }
 }

@@ -25,7 +25,7 @@ public class UserController(ISender _mediator) : ApiController
     /// </summary>
     /// <returns></returns>
     [HttpGet("get")]
-    public async Task<Result> GetAsync(GetUserQuery request)
+    public async Task<Result> GetAsync([FromQuery] GetUserQuery request)
     {
         return await _mediator.Send(request);
     }

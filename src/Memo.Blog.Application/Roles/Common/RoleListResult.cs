@@ -1,9 +1,8 @@
-﻿using Memo.Blog.Application.Permissions.Common;
-using Memo.Blog.Domain.Enums;
+﻿using Memo.Blog.Domain.Enums;
 
 namespace Memo.Blog.Application.Roles.Common;
 
-public class RoleWithPermissionResult
+public class RoleListResult
 {
     /// <summary>
     /// 角色Id
@@ -23,10 +22,5 @@ public class RoleWithPermissionResult
     /// <summary>
     /// 角色描述
     /// </summary>
-    public string Info { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 关联权限
-    /// </summary>
-    public List<PermissionResult> Permissions { get; set; } = [];
+    public string Description { get; set; } = string.Empty;
 }

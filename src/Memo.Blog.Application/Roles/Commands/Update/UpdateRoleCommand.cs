@@ -2,6 +2,7 @@
 
 [Authorize(Permissions = ApiPermission.Role.Update)]
 public record UpdateRoleCommand(
+    long RoleId,
     string Name,
     string Description,
     List<long> Permissions

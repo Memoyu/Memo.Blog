@@ -17,7 +17,7 @@ public class GetRoleQueryHandler(
             .Where(rp => rp.RoleId == request.RoleId)
             .ToListAsync(cancellationToken);
 
-        var dto = mapper.Map<RoleWithPermissionResult>(role);
+        var dto = mapper.Map<RoleResult>(role);
         dto.Permissions = rolePermissions.Select(rp => mapper.Map<PermissionResult>(rp.Permission)).ToList();
 
         return Result.Success(dto);
