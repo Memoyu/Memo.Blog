@@ -18,8 +18,8 @@ public class UpdateCategoryCommandHandler(
         tag.Color = request.Color;
         tag.AddDomainEvent(new UpdatedArticleTagEvent(request.TagId));
 
-        var rows = await tagRepo.UpdateAsync(tag, cancellationToken);
+        var affrows = await tagRepo.UpdateAsync(tag, cancellationToken);
 
-        return rows > 0 ? Result.Success() : throw new ApplicationException("更新标签失败");
+        return affrows > 0 ? Result.Success() : throw new ApplicationException("更新标签失败");
     }
 }

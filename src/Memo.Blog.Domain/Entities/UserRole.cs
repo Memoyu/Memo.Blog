@@ -29,6 +29,6 @@ public class UserRole : BaseAuditEntity
     /// <summary>
     /// 角色
     /// </summary>
-    [Navigate(nameof(Role.RoleId), TempPrimary = nameof(Role))]
+    [Navigate(nameof(Role.RoleId), TempPrimary = nameof(RoleId))]
     public virtual Role Role { get; set; }
 }

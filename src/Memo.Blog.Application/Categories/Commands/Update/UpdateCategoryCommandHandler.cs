@@ -17,8 +17,8 @@ public class UpdateCategoryCommandHandler(
         category.Name = request.Name;
         category.AddDomainEvent(new UpdatedArticleCategoryEvent(category));
 
-        var rows = await categoryRepo.UpdateAsync(category, cancellationToken);
+        var affrows = await categoryRepo.UpdateAsync(category, cancellationToken);
 
-        return rows > 0 ? Result.Success() : throw new ApplicationException("更新分类失败");
+        return affrows > 0 ? Result.Success() : throw new ApplicationException("更新分类失败");
     }
 }

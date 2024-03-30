@@ -8,7 +8,7 @@ public class CreateCategoryCommandHandler(
     public async Task<Result> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
         var exist = await categoryRepo.Select.AnyAsync(c => request.Name == c.Name, cancellationToken);
-        if (exist) throw new ApplicationException("分类已存在");
+        if (exist) throw new ApplicationException("同名分类已存在");
 
         var category = new Category
         {

@@ -1,5 +1,14 @@
 ﻿namespace Memo.Blog.Application.Users.Commands.Delete;
 
 [Authorize(Permissions = ApiPermission.User.Delete)]
-public record DeleteUserCommand(
-    ) : IRequest<Result>;
+public record DeleteUserCommand(long UserId ) : IRequest<Result>;
+
+public class DeleteUserCommandValidator : AbstractValidator<DeleteUserCommand>
+{
+    public DeleteUserCommandValidator()
+    {
+        RuleFor(x => x.UserId)
+            .Must(x => x > 0)
+            .WithMessage("用户Id必须大于0");
+    }
+}

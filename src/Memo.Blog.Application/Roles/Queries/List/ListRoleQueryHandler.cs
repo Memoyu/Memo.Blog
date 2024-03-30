@@ -12,6 +12,7 @@ public class ListRoleQueryHandler(
     {
         var roles = await roleRepo.Select
                 .WhereIf(!string.IsNullOrWhiteSpace(request.Name), p => p.Name.Contains(request.Name!))
+                .OrderByDescending(p => p.CreateTime)
                 .ToListAsync(cancellationToken);
 
         var dtos = mapper.Map<List<RoleListResult>>(roles);

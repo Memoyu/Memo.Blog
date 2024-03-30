@@ -10,7 +10,7 @@ public class CreateRoleCommandHandler(
     public async Task<Result> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
     {
         var exist = await roleRepo.Select.AnyAsync(r => r.Name == request.Name, cancellationToken);
-        if (exist) throw new ApplicationException("角色已存在");
+        if (exist) throw new ApplicationException("同名角色已存在");
 
         var permission = await permissionRepo.Select.Where(p => request.Permissions.Contains(p.PermissionId)).ToListAsync(cancellationToken);
         foreach (var permissionId in request.Permissions)

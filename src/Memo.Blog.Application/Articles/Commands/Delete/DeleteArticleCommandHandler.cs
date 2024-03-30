@@ -13,9 +13,9 @@ public class DeleteArticleCommandHandler(
 
         article.AddDomainEvent(new DeletedArticleEvent(article.ArticleId));
 
-        var rows = await articleRepo.DeleteAsync(article, cancellationToken);
+        var affrows = await articleRepo.DeleteAsync(article, cancellationToken);
 
-        return rows > 0 ? Result.Success() : throw new ApplicationException("删除文章失败");
+        return affrows > 0 ? Result.Success() : throw new ApplicationException("删除文章失败");
     }
 }
 

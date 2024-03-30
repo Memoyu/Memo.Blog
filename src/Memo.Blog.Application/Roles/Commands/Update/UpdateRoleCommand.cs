@@ -27,7 +27,7 @@ public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
 
         RuleFor(x => x.Description)
             .MinimumLength(1)
-            .MaximumLength(10)
-            .WithMessage("角色描述长度在1-10个字符之间");
+            .MaximumLength(100)
+            .WithMessage("角色描述长度在1-100个字符之间");
     }
 }

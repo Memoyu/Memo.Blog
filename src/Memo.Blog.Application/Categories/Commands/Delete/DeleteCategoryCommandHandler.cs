@@ -12,8 +12,8 @@ public class DeleteCategoryCommandHandler(
 
         category.AddDomainEvent(new DeletedCategoryEvent(category.CategoryId));
 
-        var rows = await categoryRepo.DeleteAsync(category, cancellationToken);
+        var affrows = await categoryRepo.DeleteAsync(category, cancellationToken);
 
-        return rows > 0 ? Result.Success() : throw new ApplicationException("删除分类失败");
+        return affrows > 0 ? Result.Success() : throw new ApplicationException("删除分类失败");
     }
 }

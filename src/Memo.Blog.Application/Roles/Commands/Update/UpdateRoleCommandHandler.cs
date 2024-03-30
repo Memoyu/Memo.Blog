@@ -18,8 +18,8 @@ public class UpdateRoleCommandHandler(
 
         var role = mapper.Map<Role>(request);
         role.Id = entity.Id;
-        var row = await roleRepo.UpdateAsync(role, cancellationToken);
-        if (row <= 0) throw new ApplicationException("更新角色失败");
+        var affrows = await roleRepo.UpdateAsync(role, cancellationToken);
+        if (affrows <= 0) throw new ApplicationException("更新角色失败");
 
         #region 角色关联权限管理
 
@@ -36,8 +36,10 @@ public class UpdateRoleCommandHandler(
                 currentRolePermissions.RemoveAll(t => t.PermissionId == permission.PermissionId);
             }
         }
-        await rolePermissionRepo.InsertAsync(addRolePermissions, cancellationToken);
-        await rolePermissionRepo.DeleteAsync(currentRolePermissions, cancellationToken);
+        addRolePermissions= await rolePermissionRepo.InsertAsync(addRolePermissions, cancellationToken);
+        if (addRolePermissions.Any(ur => ur.Id <= 0)) throw new ApplicationException("添加角色权限失败");
+        var delRolePermissionAffrows = await rolePermissionRepo.DeleteAsync(currentRolePermissions, cancellationToken);
+        if (delRolePermissionAffrows != currentRolePermissions.Count) throw new ApplicationException("删除角色权限失败");
 
         #endregion
 

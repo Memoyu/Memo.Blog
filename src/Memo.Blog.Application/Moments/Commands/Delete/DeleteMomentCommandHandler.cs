@@ -11,8 +11,8 @@ public class DeleteMomentCommandHandler(
 
         // TODO: 做评论的删除
 
-        var rows = await momentRepo.DeleteAsync(moment, cancellationToken);
+        var affrows = await momentRepo.DeleteAsync(moment, cancellationToken);
 
-        return rows > 0 ? Result.Success() : throw new ApplicationException("删除动态失败");
+        return affrows > 0 ? Result.Success() : throw new ApplicationException("删除动态失败");
     }
 }

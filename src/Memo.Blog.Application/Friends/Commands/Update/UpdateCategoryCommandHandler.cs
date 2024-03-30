@@ -11,8 +11,8 @@ public class UpdateFriendCommandHandler(
        
         var update = mapper.Map<Friend>(request);
         update.Id = friend.Id;
-        var rows = await friendRepo.UpdateAsync(update, cancellationToken);
+        var affrows = await friendRepo.UpdateAsync(update, cancellationToken);
 
-        return rows > 0 ? Result.Success() : throw new ApplicationException("更新友链失败");
+        return affrows > 0 ? Result.Success() : throw new ApplicationException("更新友链失败");
     }
 }

@@ -38,4 +38,9 @@ public class UserResult
     /// 最后一次登录的时间
     /// </summary>
     public DateTime LastLoginTime { get; set; }
+
+    /// <summary>
+    /// 创建时间
+    /// </summary>
+    public DateTime CreateTime { get; set; }
 }

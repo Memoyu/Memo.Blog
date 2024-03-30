@@ -10,8 +10,8 @@ public class DeleteRoleCommandHandler(IBaseDefaultRepository<Role> roleRepo) : I
 
         role.AddDomainEvent(new DeletedRoleEvent(request.RoleId));
 
-        var rows = await roleRepo.DeleteAsync(role, cancellationToken);
+        var affrows = await roleRepo.DeleteAsync(role, cancellationToken);
 
-        return rows > 0 ? Result.Success() : throw new ApplicationException("删除角色失败");
+        return affrows > 0 ? Result.Success() : throw new ApplicationException("删除角色失败");
     }
 }

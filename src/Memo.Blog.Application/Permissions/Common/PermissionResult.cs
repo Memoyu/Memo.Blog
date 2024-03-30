@@ -32,5 +32,5 @@ public record PermissionResult
     /// <summary>
     /// 关联角色数
     /// </summary>
-    public List<RoleResult> Roles { get; set; } = [];
+    public List<RoleListResult> Roles { get; set; } = [];
 }

@@ -13,8 +13,8 @@ public class DeleteTagCommandHandler(
         tag.AddDomainEvent(new DeletedTagEvent(request.TagId));
         tag.AddDomainEvent(new UpdatedArticleTagEvent(request.TagId));
 
-        var rows = await tagRepo.DeleteAsync(tag, cancellationToken);
+        var affrows = await tagRepo.DeleteAsync(tag, cancellationToken);
 
-        return rows > 0 ? Result.Success() : throw new ApplicationException("删除标签失败");
+        return affrows > 0 ? Result.Success() : throw new ApplicationException("删除标签失败");
     }
 }

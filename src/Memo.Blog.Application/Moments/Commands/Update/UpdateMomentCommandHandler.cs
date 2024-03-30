@@ -12,8 +12,8 @@ public class UpdateMomentCommandHandler(
 
         var update = mapper.Map<Moment>(request);
         update.Id = moment.Id;
-        var rows = await momentRepo.UpdateAsync(update, cancellationToken);
+        var affrows = await momentRepo.UpdateAsync(update, cancellationToken);
 
-        return rows > 0 ? Result.Success() : throw new ApplicationException("更新动态失败");
+        return affrows > 0 ? Result.Success() : throw new ApplicationException("更新动态失败");
     }
 }

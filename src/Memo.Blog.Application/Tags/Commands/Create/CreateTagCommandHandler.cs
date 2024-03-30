@@ -9,7 +9,7 @@ public class CreateTagCommandHandler(
     {
 
         var exist = await tagRepo.Select.AnyAsync(c => request.Name == c.Name, cancellationToken);
-        if (exist) throw new ApplicationException("标签已存在");
+        if (exist) throw new ApplicationException("同名标签已存在");
 
         var tag = new Tag
         {

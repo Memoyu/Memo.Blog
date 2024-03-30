@@ -6,7 +6,8 @@ namespace Memo.Blog.Application.Users.Queries.Get;
 public class GetUserQueryHandler(
     IMapper mapper,
     IBaseDefaultRepository<User> userRepo,
-    IBaseDefaultRepository<UserRole> userRoleRepo
+    IBaseDefaultRepository<UserRole> userRoleRepo,
+     IBaseDefaultRepository<UserIdentity> userIdentityRepo
     ) : IRequestHandler<GetUserQuery, Result>
 {
     public async Task<Result> Handle(GetUserQuery request, CancellationToken cancellationToken)
@@ -16,8 +17,11 @@ public class GetUserQueryHandler(
             .Include(u => u.Role)
             .Where(u => u.UserId == request.UserId).ToListAsync(cancellationToken) ?? [];
 
-        var dto = mapper.Map<UserWithRoleResult>(user);
-        dto.Roles = userRoles.Select(ur => mapper.Map<RoleResult>(ur.Role)).ToList();
+        var userIdentity = await userIdentityRepo.Select.Where(ui => ui.UserId == request.UserId).FirstAsync(cancellationToken);
+        
+        var dto = mapper.Map<UserWithUserIdentityResult>(user);
+        dto.Roles = userRoles.Select(ur => mapper.Map<RoleListResult>(ur.Role)).ToList();
+        dto.UserIdentity = mapper.Map<UserIdentityResult>(userIdentity);
 
         return Result.Success(dto);
     }

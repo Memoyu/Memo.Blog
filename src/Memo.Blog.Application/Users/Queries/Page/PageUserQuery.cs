@@ -13,4 +13,6 @@ public record PageUserQuery : PaginationQuery, IRequest<Result>
 
     public string? PhoneNumber { get; set; }
 
+    public List<long>? Roles { get; set; }
+
 }

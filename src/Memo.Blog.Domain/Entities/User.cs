@@ -54,4 +54,10 @@ public class User : BaseAuditEntity
     /// </summary>
     [Description("最后一次登录的时间")]
     public DateTime LastLoginTime { get; set; }
+
+    /// <summary>
+    /// 角色
+    /// </summary>
+    [Navigate(nameof(UserRole.UserId), TempPrimary = nameof(UserId))]
+    public virtual List<UserRole> UserRoles { get; set; }
 }

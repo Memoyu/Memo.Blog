@@ -33,7 +33,6 @@ public class CommentController(ISender _mediator) : ApiController
         return await _mediator.Send(request);
     }
 
-
     /// <summary>
     /// 删除评论
     /// </summary>

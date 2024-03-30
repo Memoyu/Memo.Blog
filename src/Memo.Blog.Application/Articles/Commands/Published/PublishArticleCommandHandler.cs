@@ -17,16 +17,16 @@ public class PublishArticleCommandHandler(
         article.AddDomainEvent(new PublishedArticleEvent(article.ArticleId));
 
         article.Status = Domain.Enums.ArticleStatus.Published;
-        var rows = await articleRepo.UpdateAsync(article, cancellationToken);
+        var affrows = await articleRepo.UpdateAsync(article, cancellationToken);
 
-        if (rows <= 0) throw new ApplicationException("发布文章失败");
+        if (affrows <= 0) throw new ApplicationException("发布文章失败");
 
         var update = Builders<ArticleCollection>.Update
             .Set(nameof(article.Status), Domain.Enums.ArticleStatus.Published);
         var filter = Builders<ArticleCollection>.Filter.Eq(b => b.ArticleId, article.ArticleId);
         var updateMongo = await articleMongoRepo.UpdateOneAsync(update, filter, null, cancellationToken);
 
-        return rows > 0 ? Result.Success() : throw new ApplicationException("发布文章失败");
+        return updateMongo.IsAcknowledged ? Result.Success() : throw new ApplicationException("发布文章失败");
     }
 }
 
