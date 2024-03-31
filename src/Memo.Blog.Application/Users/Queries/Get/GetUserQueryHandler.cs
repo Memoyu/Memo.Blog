@@ -1,10 +1,12 @@
 ﻿using Memo.Blog.Application.Roles.Common;
+using Memo.Blog.Application.Security;
 using Memo.Blog.Application.Users.Common;
 
 namespace Memo.Blog.Application.Users.Queries.Get;
 
 public class GetUserQueryHandler(
     IMapper mapper,
+    ICurrentUserProvider currentUserProvider,
     IBaseDefaultRepository<User> userRepo,
     IBaseDefaultRepository<UserRole> userRoleRepo,
      IBaseDefaultRepository<UserIdentity> userIdentityRepo
@@ -12,13 +14,20 @@ public class GetUserQueryHandler(
 {
     public async Task<Result> Handle(GetUserQuery request, CancellationToken cancellationToken)
     {
-        var user = await userRepo.Select.Where(u => u.UserId == request.UserId).FirstAsync(cancellationToken) ?? throw new ApplicationException("用户不存在");
+        var userId = request.UserId;
+        // 没有传入用户Id时从认证信息中获取Id
+        if (!request.UserId.HasValue)
+            userId = currentUserProvider.GetCurrentUser().Id;
+
+        if (userId <= 0) throw new ApplicationException("当前用户Id为空");
+
+        var user = await userRepo.Select.Where(u => u.UserId == userId).FirstAsync(cancellationToken) ?? throw new ApplicationException("用户不存在");
         var userRoles = await userRoleRepo.Select
             .Include(u => u.Role)
-            .Where(u => u.UserId == request.UserId).ToListAsync(cancellationToken) ?? [];
+            .Where(u => u.UserId == userId).ToListAsync(cancellationToken) ?? [];
 
-        var userIdentity = await userIdentityRepo.Select.Where(ui => ui.UserId == request.UserId).FirstAsync(cancellationToken);
-        
+        var userIdentity = await userIdentityRepo.Select.Where(ui => ui.UserId == userId).FirstAsync(cancellationToken);
+
         var dto = mapper.Map<UserWithUserIdentityResult>(user);
         dto.Roles = userRoles.Select(ur => mapper.Map<RoleListResult>(ur.Role)).ToList();
         dto.UserIdentity = mapper.Map<UserIdentityResult>(userIdentity);
