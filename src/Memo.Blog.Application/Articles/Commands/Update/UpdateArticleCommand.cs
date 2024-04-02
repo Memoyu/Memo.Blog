@@ -16,7 +16,7 @@ public record UpdateArticleCommand(
     bool IsTop,
     bool Commentable,
     bool Publicable
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class UpdateArticleCommandValidator : AbstractValidator<UpdateArticleCommand>
 {

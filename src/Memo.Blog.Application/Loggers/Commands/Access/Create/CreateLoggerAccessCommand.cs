@@ -3,7 +3,7 @@
 namespace Memo.Blog.Application.Loggers.Commands.Access.Create;
 
 [Authorize(Permissions = ApiPermission.LoggerAccess.Create)]
-public record CreateLoggerAccessCommand : IRequest<Result>
+public record CreateLoggerAccessCommand : IAuthorizeableRequest<Result>
 {
     /// <summary>
     /// 访问者标识Id

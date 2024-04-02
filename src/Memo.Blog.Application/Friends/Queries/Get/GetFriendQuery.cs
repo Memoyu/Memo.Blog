@@ -1,7 +1,7 @@
 ﻿namespace Memo.Blog.Application.Friends.Queries.Get;
 
 [Authorize(Permissions = ApiPermission.Friend.Get)]
-public record GetFriendQuery(long FriendId) : IRequest<Result>;
+public record GetFriendQuery(long FriendId) : IAuthorizeableRequest<Result>;
 
 
 public class GetFriendQueryValidator : AbstractValidator<GetFriendQuery>

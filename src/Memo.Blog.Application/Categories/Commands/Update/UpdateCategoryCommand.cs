@@ -2,7 +2,7 @@
 
 [Authorize(Permissions = ApiPermission.Category.Update)]
 [Transactional]
-public record UpdateCategoryCommand(long CategoryId, string Name) : IRequest<Result>;
+public record UpdateCategoryCommand(long CategoryId, string Name) : IAuthorizeableRequest<Result>;
 
 public class UpdateCategoryCommandValidator : AbstractValidator<UpdateCategoryCommand>
 {

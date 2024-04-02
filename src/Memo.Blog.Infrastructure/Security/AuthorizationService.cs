@@ -1,33 +1,28 @@
-﻿using Memo.Blog.Application.Security;
+﻿using Memo.Blog.Application.Common.Interfaces.Persistence.Repositories;
+using Memo.Blog.Application.Security;
 
 namespace Memo.Blog.Infrastructure.Security;
 
-public class AuthorizationService(ICurrentUserProvider _currentUserProvider) : IAuthorizationService
+public class AuthorizationService(
+    ICurrentUserProvider currentUserProvider,
+    IBaseDefaultRepository<UserRole> userRoleRepo,
+    IBaseDefaultRepository<RolePermission> rolePermissionRepo
+    ) : IAuthorizationService
 {
-    public Result AuthorizeCurrentUser<T>(IAuthorizeableRequest<T> request, List<string> requiredRoles, List<string> requiredPermissions, List<string> requiredPolicies)
+    public async Task<Result> AuthorizeCurrentUserAsync<T>(IAuthorizeableRequest<T> request,List<string> requiredPermissions)
     {
-        var currentUser = _currentUserProvider.GetCurrentUser();
+        var currentUser = currentUserProvider.GetCurrentUser();
+        var userRoles = await userRoleRepo.Select.Where(ur => ur.UserId == currentUser.Id).ToListAsync();
+        var roleIds = userRoles.Select(ur => ur.RoleId).ToList();
+        var rolePermissions = await rolePermissionRepo.Select
+            .Include(rp => rp.Permission)
+            .Where(rp => roleIds.Contains(rp.RoleId))
+            .ToListAsync(rp => rp.Permission.Signature);
 
-        // TODO：完善鉴权逻辑
-        //if (requiredPermissions.Except(currentUser.Permissions).Any())
-        //{
-        //    return Error.Unauthorized(description: "User is missing required permissions for taking this action");
-        //}
-
-        //if (requiredRoles.Except(currentUser.Roles).Any())
-        //{
-        //    return Error.Unauthorized(description: "User is missing required roles for taking this action");
-        //}
-
-        //foreach (var policy in requiredPolicies)
-        //{
-        //    var authorizationAgainstPolicyResult = _policyEnforcer.Authorize(request, currentUser, policy);
-
-        //    if (authorizationAgainstPolicyResult.IsError)
-        //    {
-        //        return authorizationAgainstPolicyResult.Errors;
-        //    }
-        //}
+        if (requiredPermissions.Except(rolePermissions).Any())
+        {
+            return Result.Failure( "当前用户无权发起该操作", ResultCode.Forbidden);
+        }
 
         return Result.Success();
     }

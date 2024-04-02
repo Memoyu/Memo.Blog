@@ -2,7 +2,7 @@
 
 [Authorize(Permissions = ApiPermission.Article.Delete)]
 [Transactional]
-public record DeleteArticleCommand(long ArticleId) : IRequest<Result>;
+public record DeleteArticleCommand(long ArticleId) : IAuthorizeableRequest<Result>;
 
 
 public class DeleteArticleCommandValidator : AbstractValidator<DeleteArticleCommand>

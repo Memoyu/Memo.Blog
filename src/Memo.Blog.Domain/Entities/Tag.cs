@@ -12,20 +12,20 @@ public class Tag : BaseAuditEntity
     /// </summary>
     [Snowflake]
     [Description("标签Id")]
-    [Column(CanUpdate = false)]
+    [Column(CanUpdate = false, IsNullable = false)]
     public long TagId { get; set; }
 
     /// <summary>
     /// 标签名称
     /// </summary>
     [Description("标签名称")]
-    [Column(StringLength = 40)]
+    [Column(StringLength = 40, IsNullable = false)]
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// 标签颜色
     /// </summary>
     [Description("标签颜色")]
-    [Column(StringLength = 7)]
+    [Column(StringLength = 7, IsNullable = false)]
     public string Color { get; set; } = string.Empty;
 }

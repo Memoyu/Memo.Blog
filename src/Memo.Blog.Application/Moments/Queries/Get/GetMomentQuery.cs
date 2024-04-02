@@ -1,7 +1,7 @@
 ﻿namespace Memo.Blog.Application.Moments.Queries.Get;
 
 [Authorize(Permissions = ApiPermission.Moment.Get)]
-public record GetMomentQuery(long MomentId) : IRequest<Result>;
+public record GetMomentQuery(long MomentId) : IAuthorizeableRequest<Result>;
 
 public class GetMomentQueryValidator : AbstractValidator<GetMomentQuery>
 {

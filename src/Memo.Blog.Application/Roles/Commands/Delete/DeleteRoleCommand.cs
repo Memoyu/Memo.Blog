@@ -1,7 +1,7 @@
 ﻿namespace Memo.Blog.Application.Roles.Commands.Delete;
 
 [Authorize(Permissions = ApiPermission.Role.Delete)]
-public record DeleteRoleCommand(long RoleId) : IRequest<Result>;
+public record DeleteRoleCommand(long RoleId) : IAuthorizeableRequest<Result>;
 
 public class DeleteRoleCommandValidator : AbstractValidator<DeleteRoleCommand>
 {

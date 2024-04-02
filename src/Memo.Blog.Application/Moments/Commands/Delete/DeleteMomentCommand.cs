@@ -3,7 +3,7 @@
 [Authorize(Permissions = ApiPermission.Moment.Delete)]
 public record DeleteMomentCommand(
     long MomentId
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class DeleteMomentCommandValidator : AbstractValidator<DeleteMomentCommand>
 {

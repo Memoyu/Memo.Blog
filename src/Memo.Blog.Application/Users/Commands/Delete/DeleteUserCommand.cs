@@ -1,7 +1,7 @@
 ﻿namespace Memo.Blog.Application.Users.Commands.Delete;
 
 [Authorize(Permissions = ApiPermission.User.Delete)]
-public record DeleteUserCommand(long UserId ) : IRequest<Result>;
+public record DeleteUserCommand(long UserId ) : IAuthorizeableRequest<Result>;
 
 public class DeleteUserCommandValidator : AbstractValidator<DeleteUserCommand>
 {

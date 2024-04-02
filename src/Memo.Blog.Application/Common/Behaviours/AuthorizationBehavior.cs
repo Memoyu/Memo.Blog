@@ -23,19 +23,9 @@ public class AuthorizationBehavior<TRequest, TResponse>(IAuthorizationService _a
             .SelectMany(authorizationAttribute => authorizationAttribute.Permissions?.Split(',') ?? [])
             .ToList();
 
-        var requiredRoles = authorizationAttributes
-            .SelectMany(authorizationAttribute => authorizationAttribute.Roles?.Split(',') ?? [])
-            .ToList();
-
-        var requiredPolicies = authorizationAttributes
-            .SelectMany(authorizationAttribute => authorizationAttribute.Policies?.Split(',') ?? [])
-            .ToList();
-
-        var authorizationResult = _authorizationService.AuthorizeCurrentUser(
+        var authorizationResult = await _authorizationService.AuthorizeCurrentUserAsync(
             request,
-            requiredRoles,
-            requiredPermissions,
-            requiredPolicies);
+            requiredPermissions);
 
         return authorizationResult.IsSuccess
             ? await next()

@@ -19,4 +19,7 @@ public enum ResultCode
 
     [Description("认证失败")]
     AuthenticationFailure = 4012,
+
+    [Description("未授权")]
+    Forbidden = 4030,
 }

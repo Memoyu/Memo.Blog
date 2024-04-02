@@ -2,7 +2,7 @@
 
 public record ListTagQuery(
     string Name
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class ListTagQueryValidator : AbstractValidator<ListTagQuery>
 {

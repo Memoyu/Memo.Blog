@@ -2,7 +2,7 @@
 
 public record GetTagQuery(
     long TagId
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class GetTagQueryValidator : AbstractValidator<GetTagQuery>
 {

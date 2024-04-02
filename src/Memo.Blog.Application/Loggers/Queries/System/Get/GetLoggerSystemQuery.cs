@@ -1,7 +1,7 @@
 ﻿namespace Memo.Blog.Application.Logger.Queries.System.Get;
 
 [Authorize(Permissions = ApiPermission.LoggerSystem.Get)]
-public record GetLoggerSystemQuery(string LogId) : IRequest<Result>;
+public record GetLoggerSystemQuery(string LogId) : IAuthorizeableRequest<Result>;
 
 public class GetLoggerSystemQueryValidator : AbstractValidator<GetLoggerSystemQuery>
 {

@@ -2,7 +2,7 @@
 
 [Authorize(Permissions = ApiPermission.Tag.Delete)]
 [Transactional]
-public record DeleteTagCommand(long TagId) : IRequest<Result>;
+public record DeleteTagCommand(long TagId) : IAuthorizeableRequest<Result>;
 
 public class DeleteTagCommandValidator : AbstractValidator<DeleteTagCommand>
 {

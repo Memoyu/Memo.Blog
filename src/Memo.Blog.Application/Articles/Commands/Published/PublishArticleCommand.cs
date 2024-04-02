@@ -2,7 +2,7 @@
 
 [Authorize(Permissions = ApiPermission.Article.Publish)]
 [Transactional]
-public record PublishArticleCommand(long ArticleId) : IRequest<Result>;
+public record PublishArticleCommand(long ArticleId) : IAuthorizeableRequest<Result>;
 
 public class PublishArticleCommandValidator : AbstractValidator<PublishArticleCommand>
 {

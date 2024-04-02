@@ -3,7 +3,7 @@
 [Authorize(Permissions = ApiPermission.Category.Create)]
 public record CreateCategoryCommand(
     string Name
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
 {

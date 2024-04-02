@@ -3,7 +3,7 @@
 namespace Memo.Blog.Application.Comments.Queries.Page;
 
 [Authorize(Permissions = ApiPermission.Comment.Page)]
-public record PageCommentQuery : PaginationQuery, IRequest<Result>
+public record PageCommentQuery : PaginationQuery, IAuthorizeableRequest<Result>
 {
     public CommentType CommentType { get; set; }
 

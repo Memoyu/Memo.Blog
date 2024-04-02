@@ -1,7 +1,7 @@
 ﻿namespace Memo.Blog.Application.Logger.Queries.Access.Get;
 
 [Authorize(Permissions = ApiPermission.LoggerAccess.Get)]
-public record GetLoggerAccessQuery(long CommentId) : IRequest<Result>;
+public record GetLoggerAccessQuery(long CommentId) : IAuthorizeableRequest<Result>;
 
 public class GetLoggerAccessQueryValidator : AbstractValidator<GetLoggerAccessQuery>
 {

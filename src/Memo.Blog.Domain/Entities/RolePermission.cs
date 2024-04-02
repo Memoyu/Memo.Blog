@@ -14,12 +14,14 @@ public class RolePermission : BaseAuditEntity
     /// 角色Id
     /// </summary>
     [Description("角色Id")]
+    [Column(IsNullable = false)]
     public long RoleId { get; set; }
 
     /// <summary>
     /// 权限Id
     /// </summary>
     [Description("权限Id")]
+    [Column(IsNullable = false)]
     public long PermissionId { get; set; }
 
     /// <summary>

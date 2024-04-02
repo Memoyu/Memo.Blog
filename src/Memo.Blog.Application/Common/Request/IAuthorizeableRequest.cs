@@ -2,5 +2,4 @@
 
 public interface IAuthorizeableRequest<T> : IRequest<T>
 {
-    long UserId { get; }
 }

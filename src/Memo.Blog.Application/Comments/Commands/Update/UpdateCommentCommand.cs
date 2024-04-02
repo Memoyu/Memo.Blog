@@ -2,7 +2,7 @@
 
 [Authorize(Permissions = ApiPermission.Comment.Update)]
 [Transactional]
-public record UpdateCommentCommand : IRequest<Result>
+public record UpdateCommentCommand : IAuthorizeableRequest<Result>
 {
     public long CommentId { get; set; }
 

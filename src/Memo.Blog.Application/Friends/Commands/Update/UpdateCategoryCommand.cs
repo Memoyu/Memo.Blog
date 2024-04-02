@@ -7,7 +7,7 @@ public record UpdateFriendCommand(
     string Description,
     string Site,
     string? Avatar,
-    bool Showable) : IRequest<Result>;
+    bool Showable) : IAuthorizeableRequest<Result>;
 
 public class UpdateFriendCommandValidator : AbstractValidator<UpdateFriendCommand>
 {

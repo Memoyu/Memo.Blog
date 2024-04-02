@@ -1,6 +1,4 @@
-﻿using Memo.Blog.Domain.Enums;
-
-namespace Memo.Blog.Application.Users.Commands.Update;
+﻿namespace Memo.Blog.Application.Users.Commands.Update;
 
 [Authorize(Permissions = ApiPermission.User.Update)]
 public record UpdateUserCommand(
@@ -11,7 +9,7 @@ public record UpdateUserCommand(
     string? PhoneNumber,
     string? Email,
     List<long> Roles
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
 {

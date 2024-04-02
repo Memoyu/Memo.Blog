@@ -12,13 +12,13 @@ public class Category : BaseAuditEntity
     /// </summary>
     [Snowflake]
     [Description("分类Id")]
-    [Column(CanUpdate = false)]
+    [Column(CanUpdate = false, IsNullable = false)]
     public long CategoryId { get; set; }
 
     /// <summary>
     /// 分类名称
     /// </summary>
     [Description("分类名称")]
-    [Column(StringLength = 40)]
+    [Column(StringLength = 40, IsNullable = false)]
     public string Name { get; set; } = string.Empty;
 }

@@ -14,26 +14,27 @@ public class Role : BaseAuditEntity
     /// </summary>
     [Snowflake]
     [Description("角色Id")]
-    [Column(CanUpdate = false)]
+    [Column(CanUpdate = false, IsNullable = false)]
     public long RoleId { get; set; }
 
     /// <summary>
     /// 角色唯一标识字符
     /// </summary>
     [Description("角色唯一标识字符")]
-    [Column(StringLength = 60)]
+    [Column(StringLength = 60, IsNullable = false)]
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
     /// 角色类型
     /// </summary>
     [Description("角色类型")]
+    [Column(IsNullable = false)]
     public RoleType Type { get; set; }
 
     /// <summary>
     /// 角色描述
     /// </summary>
     [Description("角色描述")]
-    [Column(StringLength = 100)]
+    [Column(StringLength = 100, IsNullable = false)]
     public string Description { get; set; } = string.Empty;
 }

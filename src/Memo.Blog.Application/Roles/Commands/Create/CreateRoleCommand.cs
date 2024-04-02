@@ -5,7 +5,7 @@ public record CreateRoleCommand(
     string Name,
     string Description,
     List<long> Permissions
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class CreateRoleCommandValidator : AbstractValidator<CreateRoleCommand>
 {

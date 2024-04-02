@@ -2,7 +2,7 @@
 
 [Authorize(Permissions = ApiPermission.Comment.Delete)]
 [Transactional]
-public record DeleteCommentCommand(long CommentId) : IRequest<Result>;
+public record DeleteCommentCommand(long CommentId) : IAuthorizeableRequest<Result>;
 
 public class DeleteCommentCommandValidator : AbstractValidator<DeleteCommentCommand>
 {

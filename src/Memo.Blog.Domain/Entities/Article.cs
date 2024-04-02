@@ -14,94 +14,105 @@ public class Article : BaseAuditEntity
     /// </summary>
     [Snowflake]
     [Description("文章Id")]
-    [Column(CanUpdate = false)]
+    [Column(CanUpdate = false, IsNullable = false)]
     public long ArticleId { get; set; }
 
     /// <summary>
     /// 所属分类Id
     /// </summary>
     [Description("所属分类Id")]
+    [Column(IsNullable = false)]
     public long CategoryId { get; set; }
 
     /// <summary>
     /// 标题
     /// </summary>
     [Description("标题")]
-    [Column(StringLength = 200)]
+    [Column(StringLength = 200, IsNullable = false)]
     public string Title { get; set; } = string.Empty;
 
     /// <summary>
     /// 描述
     /// </summary>
     [Description("描述")]
-    [Column(StringLength = 200)]
+    [Column(StringLength = 200, IsNullable = false)]
     public string Description { get; set; } = string.Empty;
 
     /// <summary>
     /// 文章正文
     /// </summary>
     [Description("文章正文")]
-    [Column(StringLength = -2)]
+    [Column(StringLength = -2, IsNullable = false)]
     public string Content { get; set; } = string.Empty;
 
     /// <summary>
     /// 文章横幅图
     /// </summary>
     [Description("文章横幅图")]
+    [Column(IsNullable = false)]
     public string Banner { get; set; } = string.Empty;
 
     /// <summary>
     /// 文章缩略图封面图
     /// </summary>
     [Description("文章缩略图封面图")]
+    [Column(IsNullable = false)]
     public string Thumbnail { get; set; } = string.Empty;
 
     /// <summary>
     /// 字数
     /// </summary>
     [Description("字数")]
+    [Column(IsNullable = false)]
     public int WordNumber { get; set; }
 
     /// <summary>
     /// 预计阅读时长
     /// </summary>
     [Description("预计阅读时长")]
+    [Column(IsNullable = false)]
     public int ReadingTime { get; set; }
 
     /// <summary>
     /// 文章状态
     /// </summary>
     [Description("文章状态")]
+    [Column(IsNullable = false)]
     public ArticleStatus Status { get; set; }
 
     /// <summary>
     /// 浏览次数
     /// </summary>
     [Description("浏览次数")]
+    [Column(IsNullable = false)]
     public int Views { get; set; }
 
     /// <summary>
     /// 点赞次数
     /// </summary>
     [Description("点赞次数")]
+    [Column(IsNullable = false)]
     public int Likes { get; set; }
 
     /// <summary>
     /// 是否置顶
     /// </summary>
     [Description("是否置顶")]
+    [Column(IsNullable = false)]
     public bool IsTop { get; set; }
 
     /// <summary>
     /// 是否开启评论
     /// </summary>
     [Description("是否开启评论")]
+    [Column(IsNullable = false)]
     public bool Commentable { get; set; }
 
     /// <summary>
     /// 是否公开
     /// </summary>
     [Description("是否公开")]
+    [Column(IsNullable = false)]
     public bool Publicable { get; set; }
 
     /// <summary>
@@ -119,5 +130,6 @@ public class Article : BaseAuditEntity
     /// <summary>
     /// 文章作者
     /// </summary>
-    public User Author { get; set; } = new();
+    [Navigate(nameof(User.UserId), TempPrimary = nameof(CreateUserId))]
+    public virtual User Author { get; set; } = new();
 }

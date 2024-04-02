@@ -3,7 +3,7 @@
 [Authorize(Permissions = ApiPermission.Category.Get)]
 public record GetCategoryQuery(
     long CategoryId
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class GetCategoryQueryValidator : AbstractValidator<GetCategoryQuery>
 {

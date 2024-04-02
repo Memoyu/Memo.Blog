@@ -12,12 +12,14 @@ public class ArticleTag : BaseAuditEntity
     /// 标签Id
     /// </summary>
     [Description("标签Id")]
+    [Column(IsNullable = false)]
     public long TagId { get; set; }
 
     /// <summary>
     /// 文章Id
     /// </summary>
     [Description("文章Id")]
+    [Column(IsNullable = false)]
     public long ArticleId { get; set; }
 
     /// <summary>

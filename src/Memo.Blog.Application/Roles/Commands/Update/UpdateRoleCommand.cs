@@ -6,7 +6,7 @@ public record UpdateRoleCommand(
     string Name,
     string Description,
     List<long> Permissions
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class UpdateRoleCommandValidator : AbstractValidator<UpdateRoleCommand>
 {

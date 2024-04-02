@@ -2,5 +2,5 @@
 
 public interface IAuthorizationService
 {
-    Result AuthorizeCurrentUser<T>(IAuthorizeableRequest<T> request, List<string> requiredRoles, List<string> requiredPermissions, List<string> requiredPolicies);
+    Task<Result> AuthorizeCurrentUserAsync<T>(IAuthorizeableRequest<T> request, List<string> requiredPermissions);
 }

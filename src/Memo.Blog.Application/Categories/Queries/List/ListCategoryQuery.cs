@@ -3,7 +3,7 @@
 [Authorize(Permissions = ApiPermission.Category.List)]
 public record ListCategoryQuery(
     string Name
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class ListCategoryQueryValidator : AbstractValidator<ListCategoryQuery>
 {

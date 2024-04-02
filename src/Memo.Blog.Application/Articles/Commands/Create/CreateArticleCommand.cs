@@ -15,7 +15,7 @@ public record CreateArticleCommand(
     bool IsTop,
     bool Commentable,
     bool Publicable
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class CreateArticleCommandValidator : AbstractValidator<CreateArticleCommand>
 {

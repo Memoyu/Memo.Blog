@@ -14,7 +14,7 @@ public class Comment : BaseAuditEntity
     /// </summary>
     [Snowflake]
     [Description("评论Id")]
-    [Column(CanUpdate = false)]
+    [Column(CanUpdate = false, IsNullable = false)]
     public long CommentId { get; set; }
 
     /// <summary>
@@ -27,70 +27,76 @@ public class Comment : BaseAuditEntity
     /// 所属Id（文章Id、动态Id等）
     /// </summary>
     [Description("所属Id（文章Id、动态Id等）")]
+    [Column(IsNullable = false)]
     public long BelongId { get; set; }
 
     /// <summary>
     /// 评论类型
     /// </summary>
     [Description("评论类型")]
+    [Column(IsNullable = false)]
     public CommentType CommentType { get; set; }
 
     /// <summary>
     /// 昵称
     /// </summary>
     [Description("昵称")]
-    [Column(StringLength = 50)]
+    [Column(StringLength = 50, IsNullable = false)]
     public string Nickname { get; set; } = string.Empty;
 
     /// <summary>
     /// 电子邮箱
     /// </summary>
     [Description("电子邮箱")]
-    [Column(StringLength = 100)]
+    [Column(StringLength = 100, IsNullable = false)]
     public string Email { get; set; } = string.Empty;
 
     /// <summary>
     /// 评论内容
     /// </summary>
     [Description("评论内容")]
-    [Column(StringLength = -2)]
+    [Column(StringLength = -2, IsNullable = false)]
     public string Content { get; set; } = string.Empty;
 
     /// <summary>
     ///  头像url
     /// </summary>
     [Description("头像url")]
+    [Column(IsNullable = false)]
     public string Avatar { get; set; } = string.Empty;
 
     /// <summary>
     /// 头像来源类型
     /// </summary>
     [Description("头像来源类型")]
+    [Column(IsNullable = false)]
     public AvatarOriginType AvatarOriginType { get; set; }
 
     /// <summary>
     /// 头像来源
     /// </summary>
     [Description("头像来源")]
+    [Column(IsNullable = false)]
     public string AvatarOrigin { get; set; } = string.Empty;
 
     /// <summary>
     /// 评论所在IP
     /// </summary>
     [Description("评论所在IP")]
-    [Column(StringLength = 50)]
+    [Column(StringLength = 50, IsNullable = false)]
     public string Ip { get; set; } = string.Empty;
 
     /// <summary>
     /// 评论IP所属
     /// </summary>
     [Description("评论IP所属")]
-    [Column(StringLength = 100)]
+    [Column(StringLength = 100, IsNullable = false)]
     public string Region { get; set; } = string.Empty;
 
     /// <summary>
     /// 是否展示
     /// </summary>
     [Description("是否展示")]
+    [Column(IsNullable = false)]
     public bool Showable { get; set; }
 }

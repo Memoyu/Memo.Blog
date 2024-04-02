@@ -6,7 +6,7 @@ public record UpdateAboutCommand(
     string Banner,
     List<string> Tags,
     string Content,
-    bool Commentable) : IRequest<Result>;
+    bool Commentable) : IAuthorizeableRequest<Result>;
 
 public class UpdateAboutCommandValidator : AbstractValidator<UpdateAboutCommand>
 {

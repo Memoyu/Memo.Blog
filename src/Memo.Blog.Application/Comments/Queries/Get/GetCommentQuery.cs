@@ -1,7 +1,7 @@
 ﻿namespace Memo.Blog.Application.Comments.Queries.Get;
 
 [Authorize(Permissions = ApiPermission.Comment.Get)]
-public record GetCommentQuery(long CommentId) : IRequest<Result>;
+public record GetCommentQuery(long CommentId) : IAuthorizeableRequest<Result>;
 
 public class GetCommentQueryValidator : AbstractValidator<GetCommentQuery>
 {

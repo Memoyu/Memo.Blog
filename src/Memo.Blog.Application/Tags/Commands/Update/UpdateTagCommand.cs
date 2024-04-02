@@ -2,7 +2,7 @@
 
 [Authorize(Permissions = ApiPermission.Tag.Update)]
 [Transactional]
-public record UpdateTagCommand(long TagId, string Name, string Color) : IRequest<Result>;
+public record UpdateTagCommand(long TagId, string Name, string Color) : IAuthorizeableRequest<Result>;
 
 public class UpdateTagCommandValidator : AbstractValidator<UpdateTagCommand>
 {

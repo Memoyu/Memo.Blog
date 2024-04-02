@@ -5,7 +5,7 @@
 public record ListPermissionQuery(
     string? Name,
     string? Signature
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class ListPermissionQueryValidator : AbstractValidator<ListPermissionQuery>
 {

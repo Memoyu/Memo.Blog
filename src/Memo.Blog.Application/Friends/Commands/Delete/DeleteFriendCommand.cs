@@ -1,7 +1,7 @@
 ﻿namespace Memo.Blog.Application.Friends.Commands.Delete;
 
 [Authorize(Permissions = ApiPermission.Friend.Delete)]
-public record DeleteFriendCommand(long FriendId) : IRequest<Result>;
+public record DeleteFriendCommand(long FriendId) : IAuthorizeableRequest<Result>;
 
 public class DeleteFriendCommandValidator : AbstractValidator<DeleteFriendCommand>
 {

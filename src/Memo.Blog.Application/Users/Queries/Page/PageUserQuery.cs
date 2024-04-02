@@ -1,7 +1,7 @@
 ﻿namespace Memo.Blog.Application.Users.Queries.Page;
 
 [Authorize(Permissions = ApiPermission.User.Page)]
-public record PageUserQuery : PaginationQuery, IRequest<Result>
+public record PageUserQuery : PaginationQuery, IAuthorizeableRequest<Result>
 {
     public long? UserId { get; set; }
 

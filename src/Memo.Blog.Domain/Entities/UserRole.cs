@@ -12,12 +12,14 @@ public class UserRole : BaseAuditEntity
     /// 用户Id
     /// </summary>
     [Description("用户Id")]
+    [Column(IsNullable = false)]
     public long UserId { get; set; }
 
     /// <summary>
     /// 角色Id
     /// </summary>
     [Description("角色Id")]
+    [Column(IsNullable = false)]
     public long RoleId { get; set; }
 
     /// <summary>

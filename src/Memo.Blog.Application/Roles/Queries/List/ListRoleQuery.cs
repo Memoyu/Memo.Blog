@@ -4,7 +4,7 @@
 
 public record ListRoleQuery(
     string? Name
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class ListRoleQueryValidator : AbstractValidator<ListRoleQuery>
 {

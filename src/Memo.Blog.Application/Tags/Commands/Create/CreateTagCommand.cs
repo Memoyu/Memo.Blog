@@ -4,7 +4,7 @@
 public record CreateTagCommand(
     string Name,
     string Color
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class CreateTagCommandValidator : AbstractValidator<CreateTagCommand>
 {

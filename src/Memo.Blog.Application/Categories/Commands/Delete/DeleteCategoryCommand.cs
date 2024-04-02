@@ -2,7 +2,7 @@
 
 [Authorize(Permissions = ApiPermission.Category.Delete)]
 [Transactional]
-public record DeleteCategoryCommand(long CategoryId) : IRequest<Result>;
+public record DeleteCategoryCommand(long CategoryId) : IAuthorizeableRequest<Result>;
 
 public class DeleteCategoryCommandValidator : AbstractValidator<DeleteCategoryCommand>
 {

@@ -3,7 +3,7 @@
 [Authorize(Permissions = ApiPermission.Permission.Group)]
 public record GroupPermissionQuery(
     string? Name
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class GroupPermissionQueryValidator : AbstractValidator<GroupPermissionQuery>
 {

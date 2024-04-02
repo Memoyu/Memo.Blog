@@ -3,7 +3,7 @@
 namespace Memo.Blog.Application.Articles.Queries.Page;
 
 [Authorize(Permissions = ApiPermission.Article.Page)]
-public record PageArticleQuery : PaginationQuery, IRequest<Result>
+public record PageArticleQuery : PaginationQuery, IAuthorizeableRequest<Result>
 {
     public string? Title { get; set; }
 

@@ -2,7 +2,7 @@
 namespace Memo.Blog.Application.Logger.Queries.System.Page;
 
 [Authorize(Permissions = ApiPermission.LoggerSystem.Page)]
-public record PageLoggerSystemQuery : PaginationQuery, IRequest<Result>
+public record PageLoggerSystemQuery : PaginationQuery, IAuthorizeableRequest<Result>
 {
     public LogEventLevel? Level { get; set; }
 

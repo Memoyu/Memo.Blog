@@ -6,4 +6,4 @@ public record PageMomentQuery(
     string? Content,
     DateTime? TimeBegin,
     DateTime? TimeEnd
-    ) : PaginationQuery, IRequest<Result>;
+    ) : PaginationQuery, IAuthorizeableRequest<Result>;

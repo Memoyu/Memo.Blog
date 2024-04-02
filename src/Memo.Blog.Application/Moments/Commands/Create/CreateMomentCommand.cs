@@ -6,7 +6,7 @@ public record CreateMomentCommand(
     string Content,
     bool Showable,
     bool Commentable
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class CreateMomentCommandValidator : AbstractValidator<CreateMomentCommand>
 {

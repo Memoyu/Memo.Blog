@@ -9,7 +9,7 @@ public record UpdateMomentCommand(
     string Content,
     bool Showable,
     bool Commentable
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class UpdateMomentCommandValidator : AbstractValidator<UpdateMomentCommand>
 {

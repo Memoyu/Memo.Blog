@@ -13,7 +13,7 @@ public record CreateUserCommand(
     string? PhoneNumber,
     string? Email,
     List<long> Roles
-    ) : IRequest<Result>;
+    ) : IAuthorizeableRequest<Result>;
 
 public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {

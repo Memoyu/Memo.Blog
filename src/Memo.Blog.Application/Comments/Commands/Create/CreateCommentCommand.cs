@@ -4,7 +4,7 @@ namespace Memo.Blog.Application.Comments.Commands.Create;
 
 [Authorize(Permissions = ApiPermission.Comment.Create)]
 [Transactional]
-public class CreateCommentCommand : IRequest<Result>
+public class CreateCommentCommand : IAuthorizeableRequest<Result>
 {
     /// <summary>
     /// 父评论Id
