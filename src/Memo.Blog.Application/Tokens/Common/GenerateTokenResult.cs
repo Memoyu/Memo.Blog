@@ -1,4 +1,4 @@
-﻿namespace Memo.Blog.Application.Common.Security;
+﻿namespace Memo.Blog.Application.Tokens.Common;
 
 public record GenerateTokenResult(
     long UserId,
