@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Common\Interfaces\Services\" />
+    <Folder Include="FileStorages\Command\" />
     <Folder Include="Permissions\Commands\" />
   </ItemGroup>
 
