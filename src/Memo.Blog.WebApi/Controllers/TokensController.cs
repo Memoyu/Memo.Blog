@@ -3,10 +3,10 @@
 /// <summary>
 /// 用户授权
 /// </summary>
-/// <param name="_mediator"></param>
+/// <param name="mediator"></param>
 [Route("api/tokens")]
 [AllowAnonymous]
-public class TokensController(ISender _mediator) : ApiController
+public class TokensController(ISender mediator) : ApiController
 {
     /// <summary>
     /// 生成用户Token
@@ -16,6 +16,6 @@ public class TokensController(ISender _mediator) : ApiController
     [HttpPost("generate")]
     public async Task<Result> GenerateAsync(GenerateTokenQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 }

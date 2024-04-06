@@ -10,7 +10,7 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 友链管理
 /// </summary>
 [Route("api/friend")]
-public class FriendController(ISender _mediator) : ApiController
+public class FriendController(ISender mediator) : ApiController
 {
     /// <summary>
     /// 创建友链
@@ -19,7 +19,7 @@ public class FriendController(ISender _mediator) : ApiController
     [HttpPost("create")]
     public async Task<Result> CreateAsync(CreateFriendCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ public class FriendController(ISender _mediator) : ApiController
     [HttpPut("update")]
     public async Task<Result> UpdateAsync(UpdateFriendCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public class FriendController(ISender _mediator) : ApiController
     [HttpDelete("delete")]
     public async Task<Result> DeleteAsync([FromQuery] DeleteFriendCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public class FriendController(ISender _mediator) : ApiController
     [HttpGet("get")]
     public async Task<Result> GetAsync([FromQuery] GetFriendQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -59,6 +59,6 @@ public class FriendController(ISender _mediator) : ApiController
     [HttpGet("page")]
     public async Task<Result> PageAsync([FromQuery] PageFriendQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 }

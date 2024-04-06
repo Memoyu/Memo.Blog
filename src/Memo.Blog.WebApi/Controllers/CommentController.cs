@@ -3,7 +3,6 @@ using Memo.Blog.Application.Comments.Commands.Delete;
 using Memo.Blog.Application.Comments.Commands.Update;
 using Memo.Blog.Application.Comments.Queries.Get;
 using Memo.Blog.Application.Comments.Queries.Page;
-using Memo.Blog.Application.Friends.Queries.Get;
 
 namespace Memo.Blog.WebApi.Controllers;
 
@@ -11,7 +10,7 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 评论管理
 /// </summary>
 [Route("api/comment")]
-public class CommentController(ISender _mediator) : ApiController
+public class CommentController(ISender mediator) : ApiController
 {
     /// <summary>
     /// 创建评论
@@ -20,7 +19,7 @@ public class CommentController(ISender _mediator) : ApiController
     [HttpPost("create")]
     public async Task<Result> CreateAsync(CreateCommentCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -30,7 +29,7 @@ public class CommentController(ISender _mediator) : ApiController
     [HttpPut("update")]
     public async Task<Result> UpdateAsync(UpdateCommentCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -40,7 +39,7 @@ public class CommentController(ISender _mediator) : ApiController
     [HttpDelete("delete")]
     public async Task<Result> DeleteAsync([FromQuery] DeleteCommentCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -50,7 +49,7 @@ public class CommentController(ISender _mediator) : ApiController
     [HttpGet("get")]
     public async Task<Result> GetAsync([FromQuery] GetCommentQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -60,6 +59,6 @@ public class CommentController(ISender _mediator) : ApiController
     [HttpGet("page")]
     public async Task<Result> GetPageAsync([FromQuery] PageCommentQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 }

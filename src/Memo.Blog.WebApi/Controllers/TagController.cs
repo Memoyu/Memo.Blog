@@ -10,7 +10,7 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 文章标签管理
 /// </summary>
 [Route("api/tag")]
-public class TagController(ISender _mediator) : ApiController
+public class TagController(ISender mediator) : ApiController
 {
     /// <summary>
     /// 创建标签
@@ -19,7 +19,7 @@ public class TagController(ISender _mediator) : ApiController
     [HttpPost("create")]
     public async Task<Result> CreateAsync(CreateTagCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ public class TagController(ISender _mediator) : ApiController
     [HttpPut("update")]
     public async Task<Result> UpdateAsync(UpdateTagCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public class TagController(ISender _mediator) : ApiController
     [HttpDelete("delete")]
     public async Task<Result> DeleteAsync([FromQuery] DeleteTagCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public class TagController(ISender _mediator) : ApiController
     [HttpGet("get")]
     public async Task<Result> GetAsync([FromQuery] GetTagQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -59,6 +59,6 @@ public class TagController(ISender _mediator) : ApiController
     [HttpGet("list")]
     public async Task<Result> ListAsync([FromQuery] ListTagQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 }

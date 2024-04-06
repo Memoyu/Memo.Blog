@@ -10,7 +10,7 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 动态管理
 /// </summary>
 [Route("api/moment")]
-public class MomentController(ISender _mediator) : ApiController
+public class MomentController(ISender mediator) : ApiController
 {
     /// <summary>
     /// 创建动态
@@ -19,7 +19,7 @@ public class MomentController(ISender _mediator) : ApiController
     [HttpPost("create")]
     public async Task<Result> CreateAsync(CreateMomentCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ public class MomentController(ISender _mediator) : ApiController
     [HttpPut("update")]
     public async Task<Result> UpdateAsync(UpdateMomentCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public class MomentController(ISender _mediator) : ApiController
     [HttpDelete("delete")]
     public async Task<Result> DeleteAsync([FromQuery] DeleteMomentCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public class MomentController(ISender _mediator) : ApiController
     [HttpGet("get")]
     public async Task<Result> GetAsync([FromQuery] GetMomentQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -59,6 +59,6 @@ public class MomentController(ISender _mediator) : ApiController
     [HttpGet("page")]
     public async Task<Result> PageAsync([FromQuery] PageMomentQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 }

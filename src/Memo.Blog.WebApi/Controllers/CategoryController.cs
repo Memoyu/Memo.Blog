@@ -10,7 +10,7 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 文章分类管理
 /// </summary>
 [Route("api/category")]
-public class CategoryController(ISender _mediator) : ApiController
+public class CategoryController(ISender mediator) : ApiController
 {
     /// <summary>
     /// 创建分类
@@ -19,7 +19,7 @@ public class CategoryController(ISender _mediator) : ApiController
     [HttpPost("create")]
     public async Task<Result> CreateAsync(CreateCategoryCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ public class CategoryController(ISender _mediator) : ApiController
     [HttpPut("update")]
     public async Task<Result> UpdateAsync(UpdateCategoryCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public class CategoryController(ISender _mediator) : ApiController
     [HttpDelete("delete")]
     public async Task<Result> DeleteAsync([FromQuery]DeleteCategoryCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public class CategoryController(ISender _mediator) : ApiController
     [HttpGet("get")]
     public async Task<Result> GetAsync([FromQuery] GetCategoryQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -59,6 +59,6 @@ public class CategoryController(ISender _mediator) : ApiController
     [HttpGet("list")]
     public async Task<Result> ListAsync([FromQuery] ListCategoryQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 }

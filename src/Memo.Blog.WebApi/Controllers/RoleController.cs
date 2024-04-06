@@ -10,7 +10,7 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 角色管理
 /// </summary>
 [Route("api/role")]
-public class RoleController(ISender _mediator) : ApiController
+public class RoleController(ISender mediator) : ApiController
 {
     /// <summary>
     /// 创建角色
@@ -19,7 +19,7 @@ public class RoleController(ISender _mediator) : ApiController
     [HttpPost("create")]
     public async Task<Result> CreateAsync(CreateRoleCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ public class RoleController(ISender _mediator) : ApiController
     [HttpPut("update")]
     public async Task<Result> UpdateAsync(UpdateRoleCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public class RoleController(ISender _mediator) : ApiController
     [HttpDelete("delete")]
     public async Task<Result> DeleteAsync([FromQuery] DeleteRoleCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public class RoleController(ISender _mediator) : ApiController
     [HttpGet("get")]
     public async Task<Result> GetAsync([FromQuery] GetRoleQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -59,7 +59,7 @@ public class RoleController(ISender _mediator) : ApiController
     [HttpGet("list")]
     public async Task<Result> ListAsync([FromQuery] ListRoleQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
 }

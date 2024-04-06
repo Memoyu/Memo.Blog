@@ -10,7 +10,7 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 用户管理
 /// </summary>
 [Route("api/user")]
-public class UserController(ISender _mediator) : ApiController
+public class UserController(ISender mediator) : ApiController
 {
     /// <summary>
     /// 创建用户
@@ -19,7 +19,7 @@ public class UserController(ISender _mediator) : ApiController
     [HttpPost("create")]
     public async Task<Result> CreateAsync(CreateUserCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -29,7 +29,7 @@ public class UserController(ISender _mediator) : ApiController
     [HttpPut("update")]
     public async Task<Result> UpdateAsync(UpdateUserCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ public class UserController(ISender _mediator) : ApiController
     [HttpDelete("delete")]
     public async Task<Result> DeleteAsync([FromQuery] DeleteUserCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public class UserController(ISender _mediator) : ApiController
     [HttpGet("get")]
     public async Task<Result> GetAsync([FromQuery] GetUserQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -59,6 +59,6 @@ public class UserController(ISender _mediator) : ApiController
     [HttpGet("page")]
     public async Task<Result> PageAsync([FromQuery] PageUserQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 }

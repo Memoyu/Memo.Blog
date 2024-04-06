@@ -7,7 +7,7 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 关于管理
 /// </summary>
 [Route("api/about")]
-public class AboutController(ISender _mediator) : ApiController
+public class AboutController(ISender mediator) : ApiController
 {
     /// <summary>
     /// 更新关于信息
@@ -16,7 +16,7 @@ public class AboutController(ISender _mediator) : ApiController
     [HttpPut("update")]
     public async Task<Result> UpdateAsync(UpdateAboutCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -26,6 +26,6 @@ public class AboutController(ISender _mediator) : ApiController
     [HttpGet("get")]
     public async Task<Result> GetAsync([FromQuery] GetAboutQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 }

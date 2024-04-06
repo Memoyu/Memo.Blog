@@ -1,6 +1,7 @@
 ﻿using IP2Region.Net.Abstractions;
 using IP2Region.Net.XDB;
 using Mapster;
+using Memo.Blog.Application.Common.Models.FileStorages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -36,6 +37,9 @@ public static class DependencyInjection
 
         // 注册实体映射组件
         services.AddMapper();
+
+        // 注册七牛云文件存储配置
+        services.Configure<QiniuOptions>(configuration.GetSection(QiniuOptions.Section));
 
         return services;
     }

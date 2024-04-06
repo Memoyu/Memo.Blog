@@ -7,7 +7,7 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 权限管理
 /// </summary>
 [Route("api/permission")]
-public class PermissionController(ISender _mediator) : ApiController
+public class PermissionController(ISender mediator) : ApiController
 {
     /// <summary>
     /// 权限列表
@@ -16,7 +16,7 @@ public class PermissionController(ISender _mediator) : ApiController
     [HttpGet("list")]
     public async Task<Result> ListAsync([FromQuery] ListPermissionQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -26,6 +26,6 @@ public class PermissionController(ISender _mediator) : ApiController
     [HttpGet("group")]
     public async Task<Result> GroupAsync([FromQuery] GroupPermissionQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 }

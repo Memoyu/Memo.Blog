@@ -11,7 +11,7 @@ namespace Memo.Blog.WebApi.Controllers;
 /// 友链管理
 /// </summary>
 [Route("api/looger")]
-public class LoggerController(ISender _mediator) : ApiController
+public class LoggerController(ISender mediator) : ApiController
 {
     /// <summary>
     /// 获取系统日志分页
@@ -20,7 +20,7 @@ public class LoggerController(ISender _mediator) : ApiController
     [HttpGet("system/page")]
     public async Task<Result> PageSystemAsync([FromQuery] PageLoggerSystemQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -30,7 +30,7 @@ public class LoggerController(ISender _mediator) : ApiController
     [HttpGet("system/get")]
     public async Task<Result> GetSystemAsync([FromQuery] GetLoggerSystemQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public class LoggerController(ISender _mediator) : ApiController
     [HttpPost("access/create")]
     public async Task<Result> CreateAccessAsync(CreateLoggerAccessCommand request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ public class LoggerController(ISender _mediator) : ApiController
     [HttpGet("access/page")]
     public async Task<Result> PageAccessAsync([FromQuery] PageLoggerAccessQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 
 
@@ -61,6 +61,6 @@ public class LoggerController(ISender _mediator) : ApiController
     [HttpGet("access/get")]
     public async Task<Result> GetAccessAsync([FromQuery] GetLoggerAccessQuery request)
     {
-        return await _mediator.Send(request);
+        return await mediator.Send(request);
     }
 }
