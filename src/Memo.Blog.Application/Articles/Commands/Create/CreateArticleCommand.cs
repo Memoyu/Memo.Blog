@@ -34,9 +34,9 @@ public class CreateArticleCommandValidator : AbstractValidator<CreateArticleComm
             .NotEmpty()
             .WithMessage("文章内容不能为空");
 
-        RuleFor(x => x.Banner)
-            .NotEmpty()
-            .WithMessage("文章横幅图不能为空");
+        //RuleFor(x => x.Banner)
+        //    .NotEmpty()
+        //    .WithMessage("文章横幅图不能为空");
 
         RuleFor(x => x.Status)
             .IsInEnum()
