@@ -6,25 +6,40 @@ namespace Memo.Blog.Infrastructure.Region;
 
 public class RegionSearcher(ISearcher searcher) : IRegionSearcher
 {
-    public RegionInfo Search(string ipStr)
+    public string Search(string ipStr)
+    {
+        return searcher.Search(ipStr) ?? string.Empty;
+    }
+
+    public string Search(IPAddress ipAddress)
+    {
+        return searcher.Search(ipAddress) ?? string.Empty;
+    }
+
+    public string Search(uint ipAddress)
+    {
+        return searcher.Search(ipAddress) ?? string.Empty;
+    }
+
+    public RegionInfo SearchInfo(string ipStr)
     {
         var region = searcher.Search(ipStr);
-        return GetRegionDto(region);
+        return ToRegionInfo(region);
     }
 
-    public RegionInfo Search(IPAddress ipAddress)
+    public RegionInfo SearchInfo(IPAddress ipAddress)
     {
         var region = searcher.Search(ipAddress);
-        return GetRegionDto(region);
+        return ToRegionInfo(region);
     }
 
-    public RegionInfo Search(uint ipAddress)
+    public RegionInfo SearchInfo(uint ipAddress)
     {
         var region = searcher.Search(ipAddress);
-        return GetRegionDto(region);
+        return ToRegionInfo(region);
     }
 
-    private RegionInfo GetRegionDto(string? region)
+    public RegionInfo ToRegionInfo(string? region)
     {
         if (string.IsNullOrWhiteSpace(region)) return new();
         var regions = region.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries)?.ToList() ?? [];

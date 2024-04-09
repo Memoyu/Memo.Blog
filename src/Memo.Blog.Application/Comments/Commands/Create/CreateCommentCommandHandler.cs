@@ -36,7 +36,7 @@ public class CreateCommentCommandHandler(
         var ip = currentUserProvider.GetClientIp();
         comment.Ip = ip;
         var region = searcher.Search(ip);
-        comment.Region = region.GetRegion();
+        comment.Region = region;
         comment = await commentRepo.InsertAsync(comment, cancellationToken);
         return comment.Id == 0 ? throw new ApplicationException("保存评论失败") : (Result)Result.Success(comment.CommentId);
     }

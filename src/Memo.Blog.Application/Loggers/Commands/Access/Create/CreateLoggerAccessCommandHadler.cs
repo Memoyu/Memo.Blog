@@ -21,8 +21,12 @@ public class CreateLoggerAccessCommandHadler(
 
         var ip = currentUserProvider.GetClientIp();
         log.Ip = ip;
-        var region = searcher.Search(ip);
-        log.Region = region.GetRegion();
+        var region = searcher.SearchInfo(ip);
+        log.Country = region.Country;
+        log.Region = region.Region;
+        log.Province = region.Province;
+        log.City = region.City;
+        log.Isp = region.Isp;
 
         var mongoInsert = await accesslogMongoRepo.InsertOneAsync(log, null, cancellationToken);
 
