@@ -3,16 +3,16 @@
 public static partial class Permissions
 {
     [Description("访问日志")]
-    public static class LoggerAccess
+    public static class LoggerVisit
     {
         [Description("创建访问日志")]
-        public const string Create = "create:logger:access";
+        public const string Create = "create:logger:visit";
 
         [Description("获取访问日志")]
-        public const string Get = "get:logger:access";
+        public const string Get = "get:logger:visit";
 
         [Description("获取访问日志分页")]
-        public const string Page = "page:logger:access";
+        public const string Page = "page:logger:visit";
     }
 
     [Description("系统日志")]

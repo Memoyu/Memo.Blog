@@ -1,9 +1,9 @@
 ﻿using Memo.Blog.Domain.Enums;
 
-namespace Memo.Blog.Application.Loggers.Commands.Access.Create;
+namespace Memo.Blog.Application.Loggers.Commands.Visit.Create;
 
-[Authorize(Permissions = ApiPermission.LoggerAccess.Create)]
-public record CreateLoggerAccessCommand : IAuthorizeableRequest<Result>
+[Authorize(Permissions = ApiPermission.LoggerVisit.Create)]
+public record CreateLoggerVisitCommand : IAuthorizeableRequest<Result>
 {
     /// <summary>
     /// 访问者标识Id
@@ -18,7 +18,7 @@ public record CreateLoggerAccessCommand : IAuthorizeableRequest<Result>
     /// <summary>
     /// 访问行为
     /// </summary>
-    public AccessLogBehavior Behavior { get; set; }
+    public VisitLogBehavior Behavior { get; set; }
 
     /// <summary>
     /// 被访问信息Id（文章Id、动态Id等）
@@ -36,9 +36,9 @@ public record CreateLoggerAccessCommand : IAuthorizeableRequest<Result>
     public string? Browser { get; set; }
 }
 
-public class CreateLoggerAccessCommandValidator : AbstractValidator<CreateLoggerAccessCommand>
+public class CreateLoggerVisitCommandValidator : AbstractValidator<CreateLoggerVisitCommand>
 {
-    public CreateLoggerAccessCommandValidator()
+    public CreateLoggerVisitCommandValidator()
     {
         RuleFor(x => x.VisitorId)
            .NotEmpty()

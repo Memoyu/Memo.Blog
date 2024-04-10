@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Anlyanis\Queries\" />
     <Folder Include="Common\Interfaces\Services\" />
     <Folder Include="FileStorages\Command\" />
     <Folder Include="Permissions\Commands\" />

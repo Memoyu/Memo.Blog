@@ -1,9 +1,8 @@
-﻿using Memo.Blog.Application.Categories.Commands.Create;
-using Memo.Blog.Application.Logger.Queries.Access.Get;
-using Memo.Blog.Application.Logger.Queries.Access.Page;
+﻿using Memo.Blog.Application.Logger.Queries.Visit.Get;
+using Memo.Blog.Application.Logger.Queries.Visit.Page;
 using Memo.Blog.Application.Logger.Queries.System.Get;
 using Memo.Blog.Application.Logger.Queries.System.Page;
-using Memo.Blog.Application.Loggers.Commands.Access.Create;
+using Memo.Blog.Application.Loggers.Commands.Visit.Create;
 
 namespace Memo.Blog.WebApi.Controllers;
 
@@ -37,8 +36,8 @@ public class LoggerController(ISender mediator) : ApiController
     /// 创建访问日志
     /// </summary>
     /// <returns></returns>
-    [HttpPost("access/create")]
-    public async Task<Result> CreateAccessAsync(CreateLoggerAccessCommand request)
+    [HttpPost("visit/create")]
+    public async Task<Result> CreateVisitAsync(CreateLoggerVisitCommand request)
     {
         return await mediator.Send(request);
     }
@@ -47,8 +46,8 @@ public class LoggerController(ISender mediator) : ApiController
     /// 获取访问日志分页
     /// </summary>
     /// <returns></returns>
-    [HttpGet("access/page")]
-    public async Task<Result> PageAccessAsync([FromQuery] PageLoggerAccessQuery request)
+    [HttpGet("visit/page")]
+    public async Task<Result> PageVisitAsync([FromQuery] PageLoggerVisitQuery request)
     {
         return await mediator.Send(request);
     }
@@ -58,8 +57,8 @@ public class LoggerController(ISender mediator) : ApiController
     /// 获取访问日志详情
     /// </summary>
     /// <returns></returns>
-    [HttpGet("access/get")]
-    public async Task<Result> GetAccessAsync([FromQuery] GetLoggerAccessQuery request)
+    [HttpGet("visit/get")]
+    public async Task<Result> GetVisitAsync([FromQuery] GetLoggerVisitQuery request)
     {
         return await mediator.Send(request);
     }

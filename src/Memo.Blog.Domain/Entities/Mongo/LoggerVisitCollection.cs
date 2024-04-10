@@ -6,14 +6,14 @@ namespace Memo.Blog.Domain.Entities.Mongo;
 /// <summary>
 /// 访问日志
 /// </summary>
-[MongoCollection("access-logs")]
-public class LoggerAccessCollection
+[MongoCollection("visit-logs")]
+public class LoggerVisitCollection
 {
     /// <summary>
     /// 访问日志Id
     /// </summary>
     [BsonId]
-    public long AccessId { get; set; }
+    public long VisitId { get; set; }
 
     /// <summary>
     /// 访问者标识Id
@@ -28,7 +28,7 @@ public class LoggerAccessCollection
     /// <summary>
     /// 访问行为
     /// </summary>
-    public AccessLogBehavior Behavior { get; set; }
+    public VisitLogBehavior Behavior { get; set; }
 
     /// <summary>
     /// 被访问信息Id（文章Id、动态Id等）
@@ -78,6 +78,6 @@ public class LoggerAccessCollection
     /// <summary>
     /// 访问时间
     /// </summary>
-    public DateTime AccessTime { get; set; }
+    public DateTime VisitTime { get; set; }
 
 }
