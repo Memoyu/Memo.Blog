@@ -1,6 +1,3 @@
 ﻿namespace Memo.Blog.Application.Anlyanis.Common;
 
-public class CityUniqueVisitorAnlyanisResult
-{
-
-}
+public record CityUniqueVisitorAnlyanisResult(string Name, int Value);
