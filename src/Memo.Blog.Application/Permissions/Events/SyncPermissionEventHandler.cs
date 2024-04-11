@@ -60,7 +60,12 @@ public class SyncPermissionEventHandler(
             }
         }
 
-        var deletes = dbPermissions;
+        // 增加权限删除事件
+        var deletes = dbPermissions.Select(p =>
+        {
+            p.AddDomainEvent(new DeletedPermissionEvent(p.PermissionId));
+            return p;
+        }).ToList();
 
         var insertCount = (await permissionRepo.InsertAsync(inserts, cancellationToken))?.Count ?? 0;
         var updateCount = await permissionRepo.UpdateAsync(updates, cancellationToken);

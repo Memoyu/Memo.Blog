@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Memo.Blog.Domain.Events.Permissions;
 
 namespace Memo.Blog.Application.Permissions.Events;
-internal class DeletedPermissionEventHadler
+
+public class DeletedPermissionEventHadler(
+    IBaseDefaultRepository<RolePermission> rolePermissionRepo
+    ) : INotificationHandler<DeletedPermissionEvent>
 {
+    public async Task Handle(DeletedPermissionEvent notification, CancellationToken cancellationToken)
+    {
+        // 删除关联权限
+        var permissionAffrows = await rolePermissionRepo.DeleteAsync(rp => rp.PermissionId == notification.PermissionId, cancellationToken);
+    }
 }

@@ -4,13 +4,12 @@ using Memo.Blog.Application.Roles.Commands.Update;
 using Memo.Blog.Application.Roles.Queries.Get;
 using Memo.Blog.Application.Roles.Queries.List;
 
-namespace Memo.Blog.WebApi.Controllers;
+namespace Memo.Blog.WebApi.Controllers.Admin;
 
 /// <summary>
 /// 角色管理
 /// </summary>
-[Route("api/role")]
-public class RoleController(ISender mediator) : ApiController
+public class RoleController(ISender mediator) : ApiAdminController
 {
     /// <summary>
     /// 创建角色

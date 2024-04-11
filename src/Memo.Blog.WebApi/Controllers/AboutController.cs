@@ -1,24 +1,12 @@
-﻿using Memo.Blog.Application.Abouts.Commands.Update;
-using Memo.Blog.Application.Abouts.Queries.Get;
+﻿using Memo.Blog.Application.Abouts.Queries.Get;
 
 namespace Memo.Blog.WebApi.Controllers;
 
 /// <summary>
 /// 关于管理
 /// </summary>
-[Route("api/about")]
 public class AboutController(ISender mediator) : ApiController
 {
-    /// <summary>
-    /// 更新关于信息
-    /// </summary>
-    /// <returns></returns>
-    [HttpPut("update")]
-    public async Task<Result> UpdateAsync(UpdateAboutCommand request)
-    {
-        return await mediator.Send(request);
-    }
-
     /// <summary>
     /// 获取关于信息
     /// </summary>

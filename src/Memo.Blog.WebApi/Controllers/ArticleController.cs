@@ -1,49 +1,14 @@
-﻿using Memo.Blog.Application.Articles.Commands.Create;
-using Memo.Blog.Application.Articles.Commands.Delete;
-using Memo.Blog.Application.Articles.Commands.Published;
-using Memo.Blog.Application.Articles.Commands.Update;
-using Memo.Blog.Application.Articles.Queries.Get;
+﻿using Memo.Blog.Application.Articles.Queries.Get;
 using Memo.Blog.Application.Articles.Queries.Page;
-using Memo.Blog.Application.Articles.Queries.Summary;
+using Memo.Blog.Application.Articles.Queries.Anlyanis;
 
 namespace Memo.Blog.WebApi.Controllers;
 
 /// <summary>
 /// 文章管理
 /// </summary>
-[Route("api/article")]
 public class ArticleController(ISender mediator) : ApiController
 {
-    /// <summary>
-    /// 创建文章
-    /// </summary>
-    /// <returns></returns>
-    [HttpPost("create")]
-    public async Task<Result> CreateAsync(CreateArticleCommand request)
-    {
-        return await mediator.Send(request);
-    }
-
-    /// <summary>
-    /// 更新文章
-    /// </summary>
-    /// <returns></returns>
-    [HttpPut("update")]
-    public async Task<Result> UpdateAsync(UpdateArticleCommand request)
-    {
-        return await mediator.Send(request);
-    }
-
-    /// <summary>
-    /// 删除文章
-    /// </summary>
-    /// <returns></returns>
-    [HttpDelete("delete")]
-    public async Task<Result> DeleteAsync([FromQuery] DeleteArticleCommand request)
-    {
-        return await mediator.Send(request);
-    }
-
     /// <summary>
     /// 获取文章
     /// </summary>
@@ -70,16 +35,6 @@ public class ArticleController(ISender mediator) : ApiController
     /// <returns></returns>
     [HttpGet("page/summary")]
     public async Task<Result> GetPageSummaryAsync([FromQuery] PageSummaryArticleQuery request)
-    {
-        return await mediator.Send(request);
-    }
-
-    /// <summary>
-    /// 发布文章
-    /// </summary>
-    /// <returns></returns>
-    [HttpPut("publish")]
-    public async Task<Result> PublishAsync(PublishArticleCommand request)
     {
         return await mediator.Send(request);
     }

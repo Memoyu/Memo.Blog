@@ -1,13 +1,12 @@
 ﻿using Memo.Blog.Application.Permissions.Queries.Group;
 using Memo.Blog.Application.Permissions.Queries.List;
 
-namespace Memo.Blog.WebApi.Controllers;
+namespace Memo.Blog.WebApi.Controllers.Admin;
 
 /// <summary>
 /// 权限管理
 /// </summary>
-[Route("api/permission")]
-public class PermissionController(ISender mediator) : ApiController
+public class PermissionController(ISender mediator) : ApiAdminController
 {
     /// <summary>
     /// 权限列表

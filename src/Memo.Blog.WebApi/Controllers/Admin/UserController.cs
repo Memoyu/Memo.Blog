@@ -4,13 +4,12 @@ using Memo.Blog.Application.Users.Commands.Update;
 using Memo.Blog.Application.Users.Queries.Get;
 using Memo.Blog.Application.Users.Queries.Page;
 
-namespace Memo.Blog.WebApi.Controllers;
+namespace Memo.Blog.WebApi.Controllers.Admin;
 
 /// <summary>
 /// 用户管理
 /// </summary>
-[Route("api/user")]
-public class UserController(ISender mediator) : ApiController
+public class UserController(ISender mediator) : ApiAdminController
 {
     /// <summary>
     /// 创建用户

@@ -24,6 +24,6 @@ public static partial class Permissions
         public const string Page = "page:article";
 
         [Description("获取文章分页汇总")]
-        public const string SummaryPage = "summary:page:article";
+        public const string SummaryPage = "anlyanis:summary:page:article";
     }
 }

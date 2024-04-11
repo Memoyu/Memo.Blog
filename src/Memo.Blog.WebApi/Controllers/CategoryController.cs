@@ -9,39 +9,8 @@ namespace Memo.Blog.WebApi.Controllers;
 /// <summary>
 /// 文章分类管理
 /// </summary>
-[Route("api/category")]
 public class CategoryController(ISender mediator) : ApiController
 {
-    /// <summary>
-    /// 创建分类
-    /// </summary>
-    /// <returns></returns>
-    [HttpPost("create")]
-    public async Task<Result> CreateAsync(CreateCategoryCommand request)
-    {
-        return await mediator.Send(request);
-    }
-
-    /// <summary>
-    /// 更新分类
-    /// </summary>
-    /// <returns></returns>
-    [HttpPut("update")]
-    public async Task<Result> UpdateAsync(UpdateCategoryCommand request)
-    {
-        return await mediator.Send(request);
-    }
-
-    /// <summary>
-    /// 删除分类
-    /// </summary>
-    /// <returns></returns>
-    [HttpDelete("delete")]
-    public async Task<Result> DeleteAsync([FromQuery]DeleteCategoryCommand request)
-    {
-        return await mediator.Send(request);
-    }
-
     /// <summary>
     /// 获取分类
     /// </summary>

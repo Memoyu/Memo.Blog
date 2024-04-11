@@ -15,5 +15,5 @@ public record CommentAnlyanisResult
     /// <summary>
     /// 总评论数
     /// </summary>
-    public int TotalComments { get; set; }
+    public int Comments { get; set; }
 }

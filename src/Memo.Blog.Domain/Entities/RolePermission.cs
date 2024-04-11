@@ -28,11 +28,11 @@ public class RolePermission : BaseAuditEntity
     /// 角色
     /// </summary>
     [Navigate(nameof(Role.RoleId), TempPrimary = nameof(Role))]
-    public virtual Role Role { get; set; }
+    public virtual Role? Role { get; set; }
 
     /// <summary>
     /// 权限
     /// </summary>
     [Navigate(nameof(Permission.PermissionId), TempPrimary = nameof(PermissionId))]
-    public virtual Permission Permission { get; set; }
+    public virtual Permission? Permission { get; set; }
 }

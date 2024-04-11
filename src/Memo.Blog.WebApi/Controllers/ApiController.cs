@@ -4,7 +4,8 @@
 /// API基类
 /// </summary>
 [ApiController]
-[Authorize]
+[Route("api/[controller]")]
+[AllowAnonymous]
 public abstract class ApiController : ControllerBase
 {
 }

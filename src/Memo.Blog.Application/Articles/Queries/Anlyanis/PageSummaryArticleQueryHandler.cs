@@ -1,6 +1,6 @@
 ﻿using Memo.Blog.Application.Articles.Common;
 
-namespace Memo.Blog.Application.Articles.Queries.Summary;
+namespace Memo.Blog.Application.Articles.Queries.Anlyanis;
 
 public class PageSummaryArticleQueryHandler(
     IMapper mapper,

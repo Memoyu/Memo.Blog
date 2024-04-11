@@ -1,9 +1,11 @@
-﻿namespace Memo.Blog.WebApi.Controllers;
+﻿namespace Memo.Blog.WebApi.Controllers.Admin;
 
 /// <summary>
 /// 用户授权
 /// </summary>
-public class TokensController(ISender mediator) : ApiController
+/// <param name="mediator"></param>
+[AllowAnonymous]
+public class TokensController(ISender mediator) : ApiAdminController
 {
     /// <summary>
     /// 生成用户Token
