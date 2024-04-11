@@ -23,7 +23,7 @@ public class PageMomentQueryHandler(
 
         var moments = await selectMoment
             .WhereIf(!string.IsNullOrWhiteSpace(request.Content), m => m.Content.Contains(request.Content!))
-            .WhereIf(request.TimeBegin.HasValue && request.TimeEnd.HasValue, m => m.CreateTime <= request.TimeEnd && m.CreateTime >= request.TimeBegin)
+            .WhereIf(request.DateBegin.HasValue && request.DateEnd.HasValue, m => m.CreateTime <= request.DateEnd && m.CreateTime >= request.DateBegin)
             .OrderByDescending(m => m.CreateTime)
             .ToPageListAsync(request, out var total, cancellationToken);
 

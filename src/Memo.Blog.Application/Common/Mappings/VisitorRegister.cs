@@ -1,8 +1,8 @@
 ﻿namespace Memo.Blog.Application.Common.Mappings;
-public class UserRegister : IRegister
+
+public class VisitorRegister : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-      
     }
 }

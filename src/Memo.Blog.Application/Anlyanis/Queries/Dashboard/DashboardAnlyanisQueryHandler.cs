@@ -1,7 +1,7 @@
-﻿
-using Memo.Blog.Application.Anlyanis.Common;
+﻿using Memo.Blog.Application.Anlyanis.Common;
 using Memo.Blog.Application.Common.Extensions;
 using Memo.Blog.Domain.Entities.Mongo;
+using MongoDB.Driver;
 using static Memo.Blog.Application.Common.Extensions.DateTimeExtension;
 
 namespace Memo.Blog.Application.Anlyanis.Queries.Dashboard;
@@ -11,38 +11,58 @@ public class DashboardAnlyanisQueryHandler(
     IBaseDefaultRepository<Moment> momentRepo,
     IBaseDefaultRepository<Friend> friendRepo,
     IBaseDefaultRepository<Comment> commentRepo,
-    IBaseMongoRepository<LoggerVisitCollection> logVisitRepo
+    IBaseDefaultRepository<Visitor> visitorRepo,
+    IBaseDefaultRepository<VisitStatistics> visitStatisticsRepo,
+    IBaseMongoRepository<LoggerVisitCollection> loggerVisitRepo
     ) : IRequestHandler<DashboardAnlyanisQuery, Result>
 {
     public async Task<Result> Handle(DashboardAnlyanisQuery request, CancellationToken cancellationToken)
     {
         var now = DateTime.Now;
-        var (weekBegin, weekEnd) = now.GetRange(DataTimeRangeType.Week);
-        var weekRanges = now.GetRanges(DataTimeRangeType.Week);
+        var weekBegin = now.Date.AddDays(-1); // 从昨天开始算
+        var weekEnd = weekBegin.AddDays(-7); // 往后的7天
+        var weekRanges = weekBegin.GetRanges(weekEnd);
 
         #region 汇总数据统计
 
         var summaryAnlyanis = new SummaryAnlyanisResult
         {
-            WeekArticles = (int)await articleRepo.Select
+            WeekArticles = await articleRepo.Select
                         .Where(a => a.CreateTime >= weekBegin && a.CreateTime <= weekEnd)
                         .CountAsync(cancellationToken),
-            Articles = (int)await articleRepo.Select.CountAsync(cancellationToken),
-            Moments = (int)await momentRepo.Select.CountAsync(cancellationToken),
-            Friends = (int)await friendRepo.Select.CountAsync(cancellationToken)
+            Articles = await articleRepo.Select.CountAsync(cancellationToken),
+            Moments = await momentRepo.Select.CountAsync(cancellationToken),
+            Friends = await friendRepo.Select.CountAsync(cancellationToken)
         };
 
         #endregion
 
+        var visitorStats = await visitStatisticsRepo.Select.ToListAsync(cancellationToken);
+
         #region UV分析数据
 
-        var uniqueVisitorAnlyanis = new UniqueVisitorAnlyanisResult();
+        var uniqueVisitorAnlyanis = new UniqueVisitorAnlyanisResult
+        {
+            WeekUniqueVisitors = visitorStats.Where(v => weekRanges.Any(w => w == v.CreateTime.Date)).Select(v => v.UniqueVisitors).ToList(),
+            TodayUniqueVisitors = await visitorRepo.Select.Where(v => v.CreateTime.Date == now.Date).CountAsync(cancellationToken)
+        };
+
+        uniqueVisitorAnlyanis.UniqueVisitors = visitorStats.Sum(a => a.UniqueVisitors) + uniqueVisitorAnlyanis.TodayUniqueVisitors;
 
         #endregion
 
         #region PV分析数据
 
-        var pageVisitorAnlyanis = new PageVisitorAnlyanisResult();
+        var pageVisitorAnlyanis = new PageVisitorAnlyanisResult
+        {
+            WeekPageVisitors = visitorStats.Where(v => weekRanges.Any(w => w == v.CreateTime.Date)).Select(v => v.PageVisitors).ToList(),
+        };
+        var f = Builders<LoggerVisitCollection>.Filter.Empty;
+        f &= Builders<LoggerVisitCollection>.Filter.And(
+                Builders<LoggerVisitCollection>.Filter.Gte(u => u.VisitDate, now.Date),
+                Builders<LoggerVisitCollection>.Filter.Lte(u => u.VisitDate, now.Date));
+        pageVisitorAnlyanis.TodayPageVisitors = await loggerVisitRepo.CountAsync(f, cancellationToken: cancellationToken);
+        pageVisitorAnlyanis.PageVisitors = visitorStats.Sum(a => a.PageVisitors) + pageVisitorAnlyanis.TodayPageVisitors;
 
         #endregion
 

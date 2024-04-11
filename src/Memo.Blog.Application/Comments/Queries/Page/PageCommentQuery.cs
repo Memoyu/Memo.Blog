@@ -11,7 +11,7 @@ public record PageCommentQuery : PaginationQuery, IAuthorizeableRequest<Result>
 
     public string? Ip { get; set; }
 
-    public DateTime? CommentTimeBegin { get; set; }
+    public DateTime? DateBegin { get; set; }
 
-    public DateTime? CommentTimeEnd { get; set; }
+    public DateTime? DateEnd { get; set; }
 }

@@ -11,7 +11,7 @@ public static class DateTimeExtension
     }
 
     /// <summary>
-    /// 获取指定时间范围的起止日期
+    /// 获取指定时间范围类型的起止日期
     /// </summary>
     /// <param name="date"></param>
     /// <param name="type"></param>
@@ -53,7 +53,7 @@ public static class DateTimeExtension
     }
 
     /// <summary>
-    /// 获取指定时间范围的日期集合
+    /// 获取指定时间范围类型的日期集合
     /// </summary>
     /// <param name="date"></param>
     /// <param name="type"></param>
@@ -61,8 +61,20 @@ public static class DateTimeExtension
     public static List<DateTime> GetRanges(this DateTime date, DataTimeRangeType type)
     {
         var (begin, end) = date.GetRange(type);
+        return begin.GetRanges(end);
+    }
+
+    /// <summary>
+    /// 获取指定时间范围的日期集合
+    /// </summary>
+    /// <param name="begin"></param>
+    /// <param name="end"></param>
+    /// <returns></returns>
+    public static List<DateTime> GetRanges(this DateTime begin, DateTime end)
+    {
         var dates = new List<DateTime> { begin };
-        while (begin < end) {
+        while (begin < end)
+        {
             begin = begin.AddDays(1);
             dates.Add(begin);
         };

@@ -5,15 +5,15 @@ public record PageVisitorAnlyanisResult
     /// <summary>
     /// 今日PV数
     /// </summary>
-    public int TodayPvs { get; set; }
+    public long TodayPageVisitors { get; set; }
 
     /// <summary>
     /// 周PV数据
     /// </summary>
-    public List<int> WeekPvs { get; set; } = [];
+    public List<long> WeekPageVisitors { get; set; } = [];
 
     /// <summary>
     /// 总PV数
     /// </summary>
-    public int TotalPvs { get; set; }
+    public long PageVisitors { get; set; }
 }

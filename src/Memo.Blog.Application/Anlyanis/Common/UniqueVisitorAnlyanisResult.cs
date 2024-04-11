@@ -5,15 +5,15 @@ public record UniqueVisitorAnlyanisResult
     /// <summary>
     /// 今日UV数
     /// </summary>
-    public int TodayUvs { get; set; }
+    public long TodayUniqueVisitors { get; set; }
 
     /// <summary>
     /// 周UV数据
     /// </summary>
-    public List<int> WeekUvs { get; set; } = [];
+    public List<long> WeekUniqueVisitors { get; set; } = [];
 
     /// <summary>
     /// 总UV数
     /// </summary>
-    public int TotalUvs { get; set; }
+    public long UniqueVisitors { get; set; }
 }

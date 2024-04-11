@@ -1,18 +1,12 @@
 ﻿using Memo.Blog.Domain.Enums;
-using MongoDB.Bson.Serialization.Attributes;
 
-namespace Memo.Blog.Domain.Entities.Mongo;
+namespace Memo.Blog.Application.Loggers.Common;
 
-/// <summary>
-/// 访问日志
-/// </summary>
-[MongoCollection("visit-logs")]
-public class LoggerVisitCollection
+public record LoggerVisitPageResult
 {
     /// <summary>
     /// 访问日志Id
     /// </summary>
-    [BsonId]
     public long VisitId { get; set; }
 
     /// <summary>
@@ -31,9 +25,9 @@ public class LoggerVisitCollection
     public VisitLogBehavior Behavior { get; set; }
 
     /// <summary>
-    /// 被访问信息Id（文章Id、动态Id等）
+    /// 受访问信息
     /// </summary>
-    public long VisitedId { get; set; }
+    public LoggerVisitedResult Visited { get; set; }
 
     /// <summary>
     /// 访问者所在IP
@@ -79,5 +73,4 @@ public class LoggerVisitCollection
     /// 访问时间
     /// </summary>
     public DateTime VisitDate { get; set; }
-
 }

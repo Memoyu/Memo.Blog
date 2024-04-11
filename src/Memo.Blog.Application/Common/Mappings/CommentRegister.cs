@@ -31,7 +31,7 @@ public class CommentRegister : IRegister
             case Domain.Enums.CommentType.Article:
                 belong = MapContext.Current.GetService<IBaseDefaultRepository<Article>>().Select
                     .Where(c => c.ArticleId == s.BelongId)
-                    .ToOne(a => new CommentBelongResult { BelongId = s.BelongId, Title = a.Title, Link = "" });
+                    .First(a => new CommentBelongResult { BelongId = s.BelongId, Title = a.Title, Link = "" });
                 break;
             case Domain.Enums.CommentType.Moment:
                 belong = new CommentBelongResult { BelongId = s.BelongId, Title = "动态", Link = "" };

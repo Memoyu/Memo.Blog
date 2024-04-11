@@ -13,7 +13,10 @@ public class PageLoggerSystemQueryHandler(
     public async Task<Result> Handle(PageLoggerSystemQuery request, CancellationToken cancellationToken)
     {
         var f = Builders<LoggerSystemCollection>.Filter.Empty;
-        if (request.Level.HasValue)
+        if (!string.IsNullOrWhiteSpace(request.Id))
+            f &= Builders<LoggerSystemCollection>.Filter.Eq(nameof(LoggerSystemCollection.Id), ObjectId.Parse(request.Id));
+
+            if (request.Level.HasValue)
             f &= Builders<LoggerSystemCollection>.Filter.Eq(nameof(LoggerSystemCollection.Level), request.Level.Value);
 
         if (!string.IsNullOrWhiteSpace(request.Message))
@@ -42,11 +45,11 @@ public class PageLoggerSystemQueryHandler(
         if (!string.IsNullOrWhiteSpace(request.RequestPath))
             f &= Builders<LoggerSystemCollection>.Filter.Regex("Properties.RequestPath", new BsonRegularExpression(request.RequestPath, "i"));
 
-        if (request.TimeBegin.HasValue && request.TimeEnd.HasValue)
+        if (request.DateBegin.HasValue && request.DateEnd.HasValue)
         {
             f &= Builders<LoggerSystemCollection>.Filter.And(
-                Builders<LoggerSystemCollection>.Filter.Gte(u => u.UtcTimeStamp, request.TimeBegin.Value),
-                Builders<LoggerSystemCollection>.Filter.Lte(u => u.UtcTimeStamp, request.TimeEnd.Value)
+                Builders<LoggerSystemCollection>.Filter.Gte(u => u.UtcTimeStamp, request.DateBegin.Value),
+                Builders<LoggerSystemCollection>.Filter.Lte(u => u.UtcTimeStamp, request.DateEnd.Value)
                 );
         }
 

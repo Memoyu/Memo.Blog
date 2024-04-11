@@ -34,6 +34,9 @@ public class LoggerRegister : IRegister
             .Map(d => d.ExStackTrace, s => GetStringLogException(s, "StackTrace"))
             .Map(d => d.Time, s => s.UtcTimeStamp.ToLocalTime());
 
+        config.ForType<LoggerVisitCollection, LoggerVisitPageResult>()
+            .Map(d => d.Visited, s => GetLoggerVisited(s));
+
     }
 
     private static string GetJsonLogRequest(LoggerSystemCollection s)
@@ -51,5 +54,39 @@ public class LoggerRegister : IRegister
     private static string GetStringLogException(LoggerSystemCollection s, string field)
     {
         return s.Exception == null || !s.Exception.Names.Any(n => n.Equals(field)) || s.Exception[field] == null ? string.Empty : s.Exception[field].AsString;
+    }
+
+    private LoggerVisitedResult GetLoggerVisited(LoggerVisitCollection s)
+    {
+        var belong = new LoggerVisitedResult();
+        switch (s.Behavior)
+        {
+            case Domain.Enums.VisitLogBehavior.Article:
+                if (s.VisitedId != 0)
+                {
+                    belong = MapContext.Current.GetService<IBaseDefaultRepository<Article>>().Select
+                        .Where(c => c.ArticleId == s.VisitedId)
+                        .First(a => new LoggerVisitedResult { Id = s.VisitedId, Title = a.Title, Link = "" });
+                }
+                else
+                {
+                    belong = new LoggerVisitedResult { Id = s.VisitedId, Title = "文章", Link = "" };
+                }
+                break;
+            case Domain.Enums.VisitLogBehavior.Moment:
+                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = "动态", Link = "" };
+                break;
+            case Domain.Enums.VisitLogBehavior.Friend:
+                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = "友链", Link = "" };
+                break;
+            case Domain.Enums.VisitLogBehavior.Tool:
+                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = "工具", Link = "" };
+                break;
+            case Domain.Enums.VisitLogBehavior.About:
+                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = "关于", Link = "" };
+                break;
+        }
+
+        return belong;
     }
 }

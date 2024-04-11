@@ -14,7 +14,7 @@ public class PageCommentQueryHandler(
             .Where(c => c.CommentType == request.CommentType)
             .WhereIf(!string.IsNullOrWhiteSpace(request.Nickname), c=> c.Nickname.Contains(request.Nickname!))
             .WhereIf(!string.IsNullOrWhiteSpace(request.Ip), c => c.Ip.Contains(request.Ip!))
-            .WhereIf(request.CommentTimeBegin.HasValue && request.CommentTimeEnd.HasValue, c => c.CreateTime <= request.CommentTimeEnd && c.CreateTime >= request.CommentTimeBegin)
+            .WhereIf(request.DateBegin.HasValue && request.DateEnd.HasValue, c => c.CreateTime <= request.DateEnd && c.CreateTime >= request.DateBegin)
             .OrderByDescending(a => a.CreateTime)
             .ToPageListAsync(request, out var total, cancellationToken);
 

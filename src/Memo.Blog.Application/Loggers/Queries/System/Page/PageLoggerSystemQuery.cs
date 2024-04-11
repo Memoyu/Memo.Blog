@@ -4,6 +4,8 @@ namespace Memo.Blog.Application.Logger.Queries.System.Page;
 [Authorize(Permissions = ApiPermission.LoggerSystem.Page)]
 public record PageLoggerSystemQuery : PaginationQuery, IAuthorizeableRequest<Result>
 {
+    public string? Id { get; set; }
+
     public LogEventLevel? Level { get; set; }
 
     public string? Message { get; set; }
@@ -18,7 +20,7 @@ public record PageLoggerSystemQuery : PaginationQuery, IAuthorizeableRequest<Res
 
     public string? RequestPath { get; set; }
 
-    public DateTime? TimeBegin { get; set; }
+    public DateTime? DateBegin { get; set; }
 
-    public DateTime? TimeEnd { get; set; }
+    public DateTime? DateEnd { get; set; }
 }

@@ -1,83 +1,72 @@
-﻿using Memo.Blog.Domain.Enums;
-using MongoDB.Bson.Serialization.Attributes;
-
-namespace Memo.Blog.Domain.Entities.Mongo;
+﻿namespace Memo.Blog.Domain.Entities;
 
 /// <summary>
-/// 访问日志
+/// 访客信息表
 /// </summary>
-[MongoCollection("visit-logs")]
-public class LoggerVisitCollection
+[Table(Name = "visitor")]
+public class Visitor : BaseAuditEntity
 {
-    /// <summary>
-    /// 访问日志Id
-    /// </summary>
-    [BsonId]
-    public long VisitId { get; set; }
-
     /// <summary>
     /// 访问者标识Id
     /// </summary>
+    [Snowflake]
+    [Description("当日UV总数")]
+    [Column(IsNullable = false)]
     public long VisitorId { get; set; }
-
-    /// <summary>
-    /// 访问路径
-    /// </summary>
-    public string Path { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 访问行为
-    /// </summary>
-    public VisitLogBehavior Behavior { get; set; }
-
-    /// <summary>
-    /// 被访问信息Id（文章Id、动态Id等）
-    /// </summary>
-    public long VisitedId { get; set; }
 
     /// <summary>
     /// 访问者所在IP
     /// </summary>
+    [Description("访问者所在IP")]
+    [Column(StringLength = 50, IsNullable = false)]
     public string Ip { get; set; } = string.Empty;
 
     /// <summary>
     /// 访问者IP所属国家
     /// </summary>
+    [Description("访问者IP所属国家")]
+    [Column(StringLength = 50, IsNullable = false)]
     public string Country { get; set; } = string.Empty;
 
     /// <summary>
     /// 访问者IP所属区域
     /// </summary>
+    [Description("访问者IP所属区域")]
+    [Column(StringLength = 50, IsNullable = false)]
     public string Region { get; set; } = string.Empty;
 
     /// <summary>
     /// 访问者IP所属省市
     /// </summary>
+    [Description("访问者IP所属省市")]
+    [Column(StringLength = 50, IsNullable = false)]
     public string Province { get; set; } = string.Empty;
 
     /// <summary>
     /// 访问者IP所属城市
     /// </summary>
+    [Description("访问者IP所属城市")]
+    [Column(StringLength = 50, IsNullable = false)]
     public string City { get; set; } = string.Empty;
 
     /// <summary>
     /// 访问者IP所属互联网服务商
     /// </summary>
+    [Description("访问者IP所属互联网服务商")]
+    [Column(StringLength = 50, IsNullable = false)]
     public string Isp { get; set; } = string.Empty;
 
     /// <summary>
     /// 操作系统
     /// </summary>
+    [Description("操作系统")]
+    [Column(StringLength = 50, IsNullable = false)]
     public string Os { get; set; } = string.Empty;
 
     /// <summary>
     /// 浏览器
     /// </summary>
+    [Description("浏览器")]
+    [Column(StringLength = 50, IsNullable = false)]
     public string Browser { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 访问时间
-    /// </summary>
-    public DateTime VisitDate { get; set; }
-
 }
