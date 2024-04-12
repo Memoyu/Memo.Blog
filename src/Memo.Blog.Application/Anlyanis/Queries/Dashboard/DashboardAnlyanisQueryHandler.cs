@@ -2,6 +2,7 @@
 using Memo.Blog.Application.Common.Extensions;
 using Memo.Blog.Domain.Entities.Mongo;
 using MongoDB.Driver;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using static Memo.Blog.Application.Common.Extensions.DateTimeExtension;
 
 namespace Memo.Blog.Application.Anlyanis.Queries.Dashboard;
@@ -19,8 +20,8 @@ public class DashboardAnlyanisQueryHandler(
     public async Task<Result> Handle(DashboardAnlyanisQuery request, CancellationToken cancellationToken)
     {
         var now = DateTime.Now;
-        var weekBegin = now.Date.AddDays(-1); // 从昨天开始算
-        var weekEnd = weekBegin.AddDays(-7); // 往后的7天
+        var weekBegin = now.Date.AddDays(-7); // 往后7天
+        var weekEnd = now.Date.AddDays(-1); // 到昨天
         var weekRanges = weekBegin.GetRanges(weekEnd);
 
         #region 汇总数据统计
@@ -43,9 +44,13 @@ public class DashboardAnlyanisQueryHandler(
 
         var uniqueVisitorAnlyanis = new UniqueVisitorAnlyanisResult
         {
-            WeekUniqueVisitors = visitorStats.Where(v => weekRanges.Any(w => w == v.CreateTime.Date)).Select(v => v.UniqueVisitors).ToList(),
             TodayUniqueVisitors = await visitorRepo.Select.Where(v => v.CreateTime.Date == now.Date).CountAsync(cancellationToken)
         };
+        foreach (var date in weekRanges)
+        {
+            var total = visitorStats.Where(v => date == v.CreateTime.Date).FirstOrDefault()?.UniqueVisitors ?? 0;
+            uniqueVisitorAnlyanis.WeekUniqueVisitors.Add(new MetricItemResult(date.ToString("yyyy-MM-dd"), total));
+        }
 
         uniqueVisitorAnlyanis.UniqueVisitors = visitorStats.Sum(a => a.UniqueVisitors) + uniqueVisitorAnlyanis.TodayUniqueVisitors;
 
@@ -53,10 +58,14 @@ public class DashboardAnlyanisQueryHandler(
 
         #region PV分析数据
 
-        var pageVisitorAnlyanis = new PageVisitorAnlyanisResult
+        var pageVisitorAnlyanis = new PageVisitorAnlyanisResult();
+
+        foreach (var date in weekRanges)
         {
-            WeekPageVisitors = visitorStats.Where(v => weekRanges.Any(w => w == v.CreateTime.Date)).Select(v => v.PageVisitors).ToList(),
-        };
+            var total = visitorStats.Where(v => date == v.CreateTime.Date).FirstOrDefault()?.PageVisitors ?? 0;
+            pageVisitorAnlyanis.WeekPageVisitors.Add(new MetricItemResult(date.ToString("yyyy-MM-dd"), total));
+        }
+
         var f = Builders<LoggerVisitCollection>.Filter.Empty;
         f &= Builders<LoggerVisitCollection>.Filter.And(
                 Builders<LoggerVisitCollection>.Filter.Gte(u => u.VisitDate, now.Date),
@@ -70,18 +79,18 @@ public class DashboardAnlyanisQueryHandler(
 
         var commentAnlyanis = new CommentAnlyanisResult
         {
-            Comments = (int)await commentRepo.Select.CountAsync(cancellationToken)
+            Comments = await commentRepo.Select.CountAsync(cancellationToken)
         };
         var weekComments = new List<int>();
-        foreach (var day in weekRanges)
+        foreach (var date in weekRanges)
         {
-            var count = (int)await commentRepo.Select
-                    .Where(c => c.CreateTime >= day && c.CreateTime <= day.AddDays(1).AddSeconds(-1))
+            var count = await commentRepo.Select
+                    .Where(c => c.CreateTime >= date && c.CreateTime <= date.AddDays(1).AddSeconds(-1))
                     .CountAsync(cancellationToken);
-            if (day == now.Date)
+            if (date == now.Date)
                 commentAnlyanis.TodayComments = count;
 
-            commentAnlyanis.WeekComments.Add(count);
+            commentAnlyanis.WeekComments.Add(new MetricItemResult (date.ToString("yyyy-MM-dd"), count));
         }
 
         #endregion

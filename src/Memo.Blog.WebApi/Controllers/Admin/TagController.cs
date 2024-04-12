@@ -1,6 +1,7 @@
 ﻿using Memo.Blog.Application.Tags.Commands.Create;
 using Memo.Blog.Application.Tags.Commands.Delete;
 using Memo.Blog.Application.Tags.Commands.Update;
+using Memo.Blog.Application.Tags.Queries.Anlyanis;
 using Memo.Blog.Application.Tags.Queries.Get;
 using Memo.Blog.Application.Tags.Queries.List;
 
@@ -57,6 +58,16 @@ public class TagController(ISender mediator) : ApiAdminController
     /// <returns></returns>
     [HttpGet("list")]
     public async Task<Result> ListAsync([FromQuery] ListTagQuery request)
+    {
+        return await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 获取标签关联文章汇总
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("relation/summary")]
+    public async Task<Result> GetRelationSummaryAsync([FromQuery] RelationSummaryQuery request)
     {
         return await mediator.Send(request);
     }

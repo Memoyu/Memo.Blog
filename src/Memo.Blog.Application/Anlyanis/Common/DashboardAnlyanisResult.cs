@@ -20,9 +20,4 @@ public record DashboardAnlyanisResult
     /// 评论分析数据
     /// </summary>
     public CommentAnlyanisResult Comment { get; set; } = new();
-
-    /// <summary>
-    /// 文章排行
-    /// </summary>
-    public List<ArticleAnlyanisResult> ArticleRankings { get; set; } = [];
 }

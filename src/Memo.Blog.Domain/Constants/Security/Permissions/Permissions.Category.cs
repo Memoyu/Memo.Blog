@@ -19,5 +19,8 @@ public static partial class Permissions
 
         [Description("获取文章分类列表")]
         public const string List = "list:category";
+
+        [Description("获取分类关联文章汇总")]
+        public const string RelationSummary = "anlyanis:relation:summary:category";
     }
 }

@@ -37,9 +37,14 @@ public class PageArticleResult
     public ArticleStatus Status { get; set; }
 
     /// <summary>
-    /// 创建时间
+    /// 浏览次数
     /// </summary>
-    public DateTime CreateTime { get; set; }
+    public int Views { get; set; }
+
+    /// <summary>
+    /// 点赞次数
+    /// </summary>
+    public int Likes { get; set; }
 
     /// <summary>
     /// 是否置顶
@@ -55,4 +60,9 @@ public class PageArticleResult
     /// 是否公开
     /// </summary>
     public bool Publicable { get; set; }
+
+    /// <summary>
+    /// 创建时间
+    /// </summary>
+    public DateTime CreateTime { get; set; }
 }

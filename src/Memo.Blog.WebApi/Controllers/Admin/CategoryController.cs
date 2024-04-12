@@ -1,6 +1,7 @@
 ﻿using Memo.Blog.Application.Categories.Commands.Create;
 using Memo.Blog.Application.Categories.Commands.Delete;
 using Memo.Blog.Application.Categories.Commands.Update;
+using Memo.Blog.Application.Categories.Queries.Anlyanis;
 using Memo.Blog.Application.Categories.Queries.Get;
 using Memo.Blog.Application.Categories.Queries.List;
 
@@ -57,6 +58,16 @@ public class CategoryController(ISender mediator) : ApiAdminController
     /// <returns></returns>
     [HttpGet("list")]
     public async Task<Result> ListAsync([FromQuery] ListCategoryQuery request)
+    {
+        return await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 获取分类关联文章汇总
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("relation/summary")]
+    public async Task<Result> GetRelationSummaryAsync([FromQuery] RelationSummaryQuery request)
     {
         return await mediator.Send(request);
     }

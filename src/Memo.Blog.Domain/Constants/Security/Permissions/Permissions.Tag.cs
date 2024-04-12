@@ -19,5 +19,8 @@ public static partial class Permissions
 
         [Description("获取文章标签列表")]
         public const string List = "list:tag";
+
+        [Description("获取标签关联文章汇总")]
+        public const string RelationSummary = "anlyanis:relation:summary:tag";
     }
 }

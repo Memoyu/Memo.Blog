@@ -5,6 +5,7 @@ using Memo.Blog.Application.Articles.Commands.Update;
 using Memo.Blog.Application.Articles.Queries.Get;
 using Memo.Blog.Application.Articles.Queries.Page;
 using Memo.Blog.Application.Articles.Queries.Anlyanis;
+using Memo.Blog.Application.Articles.Queries.Ranking;
 
 namespace Memo.Blog.WebApi.Controllers.Admin;
 
@@ -49,6 +50,16 @@ public class ArticleController(ISender mediator) : ApiAdminController
     /// <returns></returns>
     [HttpGet("get")]
     public async Task<Result> GetAsync([FromQuery] GetArticleQuery request)
+    {
+        return await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 获取文章排名列表
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("ranking")]
+    public async Task<Result> GetRankingAsync([FromQuery] RankingArticleQuery request)
     {
         return await mediator.Send(request);
     }

@@ -10,7 +10,7 @@ public record UniqueVisitorAnlyanisResult
     /// <summary>
     /// 周UV数据
     /// </summary>
-    public List<long> WeekUniqueVisitors { get; set; } = [];
+    public List<MetricItemResult> WeekUniqueVisitors { get; set; } = [];
 
     /// <summary>
     /// 总UV数

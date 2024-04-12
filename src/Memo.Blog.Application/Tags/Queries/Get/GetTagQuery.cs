@@ -1,8 +1,7 @@
 ﻿namespace Memo.Blog.Application.Tags.Queries.Get;
 
-public record GetTagQuery(
-    long TagId
-    ) : IAuthorizeableRequest<Result>;
+[Authorize(Permissions = ApiPermission.Tag.Get)]
+public record GetTagQuery(long TagId) : IAuthorizeableRequest<Result>;
 
 public class GetTagQueryValidator : AbstractValidator<GetTagQuery>
 {

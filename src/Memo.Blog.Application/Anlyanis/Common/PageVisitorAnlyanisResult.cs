@@ -10,7 +10,7 @@ public record PageVisitorAnlyanisResult
     /// <summary>
     /// 周PV数据
     /// </summary>
-    public List<long> WeekPageVisitors { get; set; } = [];
+    public List<MetricItemResult> WeekPageVisitors { get; set; } = [];
 
     /// <summary>
     /// 总PV数
