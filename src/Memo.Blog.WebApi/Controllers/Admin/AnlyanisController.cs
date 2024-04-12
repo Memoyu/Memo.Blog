@@ -17,4 +17,14 @@ public class AnlyanisController(ISender mediator) : ApiAdminController
     {
         return await mediator.Send(request);
     }
+
+    /// <summary>
+    /// 获取访客地图分析数据
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("uv/map")]
+    public async Task<Result> GetUvMapAsync([FromQuery] UvMapAnlyanisQuery request)
+    {
+        return await mediator.Send(request);
+    }
 }

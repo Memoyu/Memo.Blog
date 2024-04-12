@@ -13,8 +13,7 @@ public class GenerateVisitorIdCommandHandler(
     public async Task<Result> Handle(GenerateVisitorIdCommand request, CancellationToken cancellationToken)
     {
         var ip = currentUserProvider.GetClientIp();
-        var regionInfo = searcher.SearchInfo(ip);
-
+        var regionInfo = searcher.SearchInfo(ip); 
         var visitor = mapper.Map<Visitor>(request);
 
         visitor.Country = regionInfo?.Country ?? string.Empty;
