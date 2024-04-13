@@ -1,6 +1,4 @@
-﻿using Memo.Blog.Domain.Enums;
-
-namespace Memo.Blog.Application.Users.Commands.Update;
+﻿namespace Memo.Blog.Application.Users.Commands.Update;
 
 public class UpdateUserCommandHandler(
      IMapper mapper,
@@ -27,7 +25,6 @@ public class UpdateUserCommandHandler(
         user.Id = entity.Id;
         var affrows = await userRepo.UpdateAsync(user, cancellationToken);
         if (affrows <= 0) throw new ApplicationException("更新用户失败");
-
 
         #region 用户关联角色管理
 

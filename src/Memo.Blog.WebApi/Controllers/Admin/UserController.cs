@@ -32,6 +32,16 @@ public class UserController(ISender mediator) : ApiAdminController
     }
 
     /// <summary>
+    /// 变更用户密码
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut("change-password")]
+    public async Task<Result> ChangePasswordAsync(ChangePasswordCommand request)
+    {
+        return await mediator.Send(request);
+    }
+
+    /// <summary>
     /// 删除用户
     /// </summary>
     /// <returns></returns>

@@ -11,6 +11,9 @@ public static partial class Permissions
         [Description("更新用户")]
         public const string Update = "update:user";
 
+        [Description("变更用户密码")]
+        public const string ChangePassword = "change:password:user";
+
         [Description("删除用户")]
         public const string Delete = "delete:user";
 
