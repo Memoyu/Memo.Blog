@@ -26,7 +26,7 @@ public static partial class Permissions
         [Description("获取文章排名")]
         public const string Ranking = "ranking:article";
 
-        [Description("获取文章分页汇总")]
-        public const string SummaryPage = "anlyanis:summary:page:article";
+        [Description("获取文章汇总统计")]
+        public const string Summary = "anlyanis:summary:article";
     }
 }

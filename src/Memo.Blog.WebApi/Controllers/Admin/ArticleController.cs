@@ -79,7 +79,7 @@ public class ArticleController(ISender mediator) : ApiAdminController
     /// </summary>
     /// <returns></returns>
     [HttpGet("page/summary")]
-    public async Task<Result> GetPageSummaryAsync([FromQuery] PageSummaryArticleQuery request)
+    public async Task<Result> GetPageSummaryAsync([FromQuery] SummaryArticleQuery request)
     {
         return await mediator.Send(request);
     }

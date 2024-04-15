@@ -7,7 +7,7 @@ public static partial class Permissions
     {
         // public const string Create = "create:about";
 
-        [Description("更新关于信息343434")]
+        [Description("更新关于信息")]
         public const string Update = "update:about";
 
         [Description("获取更新关于信息")]

@@ -46,6 +46,7 @@ public class SyncPermissionEventHandler(
             var dbPermission = dbPermissions.FirstOrDefault(p => permission.Module == p.Module && permission.Signature == p.Signature);
             if (dbPermission is null)
             {
+                permission.PermissionId = SnowFlakeUtil.NextId();
                 inserts.Add(permission);
             }
             else
@@ -59,6 +60,9 @@ public class SyncPermissionEventHandler(
                 dbPermissions.Remove(dbPermission);
             }
         }
+
+        // 增加权限创建事件
+        inserts.ForEach(p => p.AddDomainEvent(new CreatedPermissionEvent(p.PermissionId)));
 
         // 增加权限删除事件
         var deletes = dbPermissions.Select(p =>
