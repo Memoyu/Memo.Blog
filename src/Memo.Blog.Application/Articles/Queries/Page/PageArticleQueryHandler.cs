@@ -26,3 +26,22 @@ public class PageArticleQueryHandler(
         return Result.Success(new PaginationResult<PageArticleResult>(results, total));
     }
 }
+
+public class ClientPageArticleQueryHandler(
+    IMapper mapper,
+    IBaseDefaultRepository<Article> articleRepo
+    ) : IRequestHandler<ClientPageArticleQuery, Result>
+{
+    public async Task<Result> Handle(ClientPageArticleQuery request, CancellationToken cancellationToken)
+    {
+        var articles = await articleRepo.Select
+            .Include(a => a.Category)
+            .IncludeMany(a => a.ArticleTags, then => then.Include(t => t.Tag))
+            .OrderByDescending(a => a.CreateTime)
+            .ToPageListAsync(request, out var total, cancellationToken);
+
+        var results = mapper.Map<List<ArticleResult>>(articles);
+
+        return Result.Success(new PaginationResult<ArticleResult>(results, total));
+    }
+}

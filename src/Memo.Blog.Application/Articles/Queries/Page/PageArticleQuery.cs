@@ -20,3 +20,7 @@ public class PageArticleQueryValidator : AbstractValidator<PageArticleQuery>
     {
     }
 }
+
+public record ClientPageArticleQuery : PaginationQuery, IRequest<Result>
+{
+}
