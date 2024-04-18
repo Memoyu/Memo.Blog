@@ -55,9 +55,6 @@ public class ClientListCategoryQueryHandler(
             category.Articles = total;
         }
 
-        // 添加全部
-        dtos?.Insert(0, new CategoryWithArticleCountResult { CategoryId = 0, Name = "全部", Articles = articles.Count });
-
         return Result.Success(dtos);
     }
 }
