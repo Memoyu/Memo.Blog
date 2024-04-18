@@ -37,6 +37,7 @@ public class ClientPageArticleQueryHandler(
         var articles = await articleRepo.Select
             .Include(a => a.Category)
             .IncludeMany(a => a.ArticleTags, then => then.Include(t => t.Tag))
+            .WhereIf(request.CategoryId > 0, a => a.CategoryId == request.CategoryId)
             .OrderByDescending(a => a.CreateTime)
             .ToPageListAsync(request, out var total, cancellationToken);
 

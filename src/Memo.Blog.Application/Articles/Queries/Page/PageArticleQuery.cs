@@ -23,4 +23,5 @@ public class PageArticleQueryValidator : AbstractValidator<PageArticleQuery>
 
 public record ClientPageArticleQuery : PaginationQuery, IRequest<Result>
 {
+    public long? CategoryId { get; set; }
 }
