@@ -1,7 +1,4 @@
-﻿using Memo.Blog.Application.Categories.Commands.Create;
-using Memo.Blog.Application.Categories.Commands.Delete;
-using Memo.Blog.Application.Categories.Commands.Update;
-using Memo.Blog.Application.Categories.Queries.Get;
+﻿using Memo.Blog.Application.Categories.Queries.Get;
 using Memo.Blog.Application.Categories.Queries.List;
 
 namespace Memo.Blog.WebApi.Controllers;
@@ -26,7 +23,7 @@ public class CategoryController(ISender mediator) : ApiController
     /// </summary>
     /// <returns></returns>
     [HttpGet("list")]
-    public async Task<Result> ListAsync([FromQuery] ListCategoryQuery request)
+    public async Task<Result> ListAsync([FromQuery] ClientListCategoryQuery request)
     {
         return await mediator.Send(request);
     }

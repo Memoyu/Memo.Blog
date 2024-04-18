@@ -10,6 +10,7 @@ public class ListTagQueryHandler(
     {
         var tags = await tagRepo.Select
             .WhereIf(!string.IsNullOrWhiteSpace(request.Name), t => t.Name.Contains(request.Name))
+            .OrderByDescending(t => t.CreateTime)
             .ToListAsync(cancellationToken) ?? [];
 
         return Result.Success(mapper.Map<List<TagResult>>(tags));

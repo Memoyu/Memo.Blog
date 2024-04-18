@@ -40,8 +40,8 @@ public class ClientPageArticleQueryHandler(
             .OrderByDescending(a => a.CreateTime)
             .ToPageListAsync(request, out var total, cancellationToken);
 
-        var results = mapper.Map<List<ArticleResult>>(articles);
+        var results = mapper.Map<List<ClientPageArticleResult>>(articles);
 
-        return Result.Success(new PaginationResult<ArticleResult>(results, total));
+        return Result.Success(new PaginationResult<ClientPageArticleResult>(results, total));
     }
 }
