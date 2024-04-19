@@ -46,7 +46,7 @@ public class SummaryArticleQueryHandler(
             var articleTotal = articles.Where(a => a.CreateTime.Date == date.Date).Count();
             weekArticles.Add(new MetricItemResult(dateStr, articleTotal));
 
-            var commentTotal = articles.Where(a => a.CreateTime.Date == date.Date).Count();
+            var commentTotal = comments.Where(a => a.CreateTime.Date == date.Date).Count();
             weekComments.Add(new MetricItemResult(dateStr, commentTotal));
 
             f = Builders<LoggerVisitCollection>.Filter.Empty;
