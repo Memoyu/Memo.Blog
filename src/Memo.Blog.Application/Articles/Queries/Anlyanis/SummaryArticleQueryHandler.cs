@@ -17,8 +17,8 @@ public class SummaryArticleQueryHandler(
     public async Task<Result> Handle(SummaryArticleQuery request, CancellationToken cancellationToken)
     {
         var now = DateTime.Now;
-        var weekBegin = now.Date.AddDays(-7); // 往后7天
-        var weekEnd = now.Date.AddDays(-1); // 到昨天
+        var weekBegin = now.Date.AddDays(-6); // 往后7天
+        var weekEnd = now.Date; // 到昨天
         var weekRanges = weekBegin.GetRanges(weekEnd);
 
         var articles = await articleRepo.Select.ToListAsync(a => new { a.ArticleId, a.CreateTime }, cancellationToken);
@@ -43,10 +43,10 @@ public class SummaryArticleQueryHandler(
         {
             var dateStr = date.ToString("yyyy-MM-dd");
 
-            var articleTotal = articles.Where(a => a.CreateTime.Date == now.Date).Count();
+            var articleTotal = articles.Where(a => a.CreateTime.Date == date.Date).Count();
             weekArticles.Add(new MetricItemResult(dateStr, articleTotal));
 
-            var commentTotal = articles.Where(a => a.CreateTime.Date == now.Date).Count();
+            var commentTotal = articles.Where(a => a.CreateTime.Date == date.Date).Count();
             weekComments.Add(new MetricItemResult(dateStr, commentTotal));
 
             f = Builders<LoggerVisitCollection>.Filter.Empty;
