@@ -11,6 +11,8 @@
     <PackageReference Include="IP2Region.Net" Version="2.0.2" />
     <PackageReference Include="Mapster.Async" Version="2.0.1" />
     <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
@@ -23,8 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Interfaces\Services\" />
     <Folder Include="FileStorages\Command\" />
+    <Folder Include="OpenSources\Common\" />
+    <Folder Include="OpenSources\Events\" />
+    <Folder Include="OpenSources\Queries\" />
     <Folder Include="Permissions\Commands\" />
   </ItemGroup>
 

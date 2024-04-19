@@ -1,4 +1,4 @@
-﻿using Memo.Blog.Application.Common.Models.FileStorages;
+﻿using Memo.Blog.Application.Common.Models.Settings;
 using Memo.Blog.Application.FileStorages.Common;
 using Microsoft.Extensions.Options;
 using Qiniu.Storage;
@@ -6,11 +6,11 @@ using Qiniu.Util;
 
 namespace Memo.Blog.Application.FileStorages.Queries.Generate;
 
-public class GenerateQiniuUploadTokenQueryHandler(IOptionsMonitor<QiniuOptions> qiniuOptions) : IRequestHandler<GenerateQiniuUploadTokenQuery, Result>
+public class GenerateQiniuUploadTokenQueryHandler(IOptionsMonitor<AuthorizationSettings> authOptions) : IRequestHandler<GenerateQiniuUploadTokenQuery, Result>
 {
     public async Task<Result> Handle(GenerateQiniuUploadTokenQuery request, CancellationToken cancellationToken)
     {
-        var options = qiniuOptions.CurrentValue;
+        var options = authOptions.CurrentValue?.Qiniu ?? throw new Exception("未配置七牛云授权信息");
         var sign = new Signature(new Mac(options.AK, options.SK));
         var policy = new PutPolicy
         {

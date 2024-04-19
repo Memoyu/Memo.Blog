@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Memo.Blog.Application.Common.Models.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Memo.Blog.Infrastructure.Security.TokenValidation;
 
-public sealed class JwtBearerTokenValidationConfiguration(IOptions<JwtOptions> jwtOptions)
+public sealed class JwtBearerTokenValidationConfiguration(IOptionsMonitor<AuthorizationSettings> authOptions)
     : IConfigureNamedOptions<JwtBearerOptions>
 {
-    private readonly JwtOptions _jwtOptions = jwtOptions.Value;
+    private readonly JwtOptions _jwtOptions = authOptions.CurrentValue?.Jwt ?? throw new Exception("未配置服务jwt授权信息");
 
     public void Configure(string? name, JwtBearerOptions options) => Configure(options);
 

@@ -1,13 +1,14 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using Memo.Blog.Application.Common.Models.Settings;
 using Memo.Blog.Application.Security;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Memo.Blog.Infrastructure.Security.GenerateToken;
 
-public class JwtTokenGenerator(IOptions<JwtOptions> jwtOptions) : IJwtTokenGenerator
+public class JwtTokenGenerator(IOptionsMonitor<AuthorizationSettings> authOptions) : IJwtTokenGenerator
 {
-    private readonly JwtOptions _jwtOptions = jwtOptions.Value;
+    private readonly JwtOptions _jwtOptions = authOptions.CurrentValue?.Jwt ?? throw new Exception("未配置服务jwt授权信息");
 
     public JwtTokenDto GenerateToken(User user)
     {

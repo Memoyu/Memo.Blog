@@ -1,23 +1,21 @@
-namespace Memo.Blog.Infrastructure.Security.GenerateToken;
+namespace Memo.Blog.Application.Common.Models.Settings;
 
 public class JwtOptions
 {
-    public const string Section = "JwtOptions";
-
     /// <summary>
     /// 密钥
     /// </summary>
-    public required string Secret { get; set; }
+    public string Secret { get; set; } = string.Empty;
 
     /// <summary>
     /// 签发人
     /// </summary>
-    public required string Issuer { get; set; }
+    public string Issuer { get; set; } = string.Empty;
 
     /// <summary>
     /// 受众
     /// </summary>
-    public required string Audience { get; set; }
+    public string Audience { get; set; } = string.Empty;
 
     /// <summary>
     /// Jwt Token 过期时间（分钟） 

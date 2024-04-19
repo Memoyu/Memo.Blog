@@ -1,0 +1,24 @@
+﻿using Memo.Blog.Domain.Events.Articles;
+
+namespace Memo.Blog.Application.OpenSources.Commands.Update;
+
+public class UpdateProjectCommandHandler(
+    IBaseDefaultRepository<Category> categoryRepo
+    ) : IRequestHandler<UpdateProjectCommand, Result>
+{
+    public async Task<Result> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
+    {
+        var category = await categoryRepo.Select.Where(c => c.CategoryId == request.CategoryId).FirstAsync(cancellationToken);
+        if (category == null) throw new ApplicationException("分类不存在");
+
+        var exist = await categoryRepo.Select.AnyAsync(c => c.CategoryId != request.CategoryId && request.Name == c.Name, cancellationToken);
+        if (exist) throw new ApplicationException("分类名已存在");
+
+        category.Name = request.Name;
+        category.AddDomainEvent(new UpdatedArticleCategoryEvent(category));
+
+        var affrows = await categoryRepo.UpdateAsync(category, cancellationToken);
+
+        return affrows > 0 ? Result.Success() : throw new ApplicationException("更新分类失败");
+    }
+}

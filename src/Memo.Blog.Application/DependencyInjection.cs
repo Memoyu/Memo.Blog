@@ -1,7 +1,5 @@
-﻿using IP2Region.Net.Abstractions;
-using IP2Region.Net.XDB;
-using Mapster;
-using Memo.Blog.Application.Common.Models.FileStorages;
+﻿using Memo.Blog.Application.Common.Models.Settings;
+using Memo.Blog.Application.Common.Services.Background;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -18,8 +16,12 @@ public static class DependencyInjection
         // 配置雪花ID生成
         SnowFlakeUtil.Init();
 
+        // 注册Http请求服务
+        services.AddHttpClient();
+
         // 注册服务配置
         services.Configure<AppSettings>(configuration.GetSection(AppConst.AppSettingSection));
+        services.Configure<AuthorizationSettings>(configuration.GetSection(AppConst.AuthorizationSection));
 
         // 注册Validators
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
@@ -38,9 +40,9 @@ public static class DependencyInjection
         // 注册实体映射组件
         services.AddMapper();
 
-        // 注册七牛云文件存储配置
-        services.Configure<QiniuOptions>(configuration.GetSection(QiniuOptions.Section));
-
+        // 注册后台任务
+        services.AddHostedServices();
+        
         return services;
     }
 
@@ -65,6 +67,14 @@ public static class DependencyInjection
         // 配置支持依赖注入
         services.AddSingleton(config);
         services.AddScoped<IMapper, ServiceMapper>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddHostedServices(this IServiceCollection services)
+    {
+        // 添加GitHub Repo拉取 定时任务
+        services.AddHostedService<GitHubRepoPullTaskService>();
 
         return services;
     }

@@ -1,6 +1,6 @@
-﻿namespace Memo.Blog.Application.Common.Models.FileStorages;
+﻿namespace Memo.Blog.Application.Common.Models.Settings;
 
-public record QiniuOptions
+public class QiniuOptions
 {
     public const string Section = "Qiniu";
 
