@@ -38,7 +38,7 @@ public class ClientPageArticleQueryHandler(
             .Include(a => a.Category)
             .IncludeMany(a => a.ArticleTags, then => then.Include(t => t.Tag))
             .WhereIf(request.CategoryId > 0, a => a.CategoryId == request.CategoryId)
-            .OrderByDescending(a => a.CreateTime)
+            .OrderByDescending(a => new { a.IsTop, a.CreateTime })
             .ToPageListAsync(request, out var total, cancellationToken);
 
         var results = mapper.Map<List<ClientPageArticleResult>>(articles);
