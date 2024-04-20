@@ -27,7 +27,6 @@
   <ItemGroup>
     <Folder Include="FileStorages\Command\" />
     <Folder Include="OpenSources\Common\" />
-    <Folder Include="OpenSources\Events\" />
     <Folder Include="OpenSources\Queries\" />
     <Folder Include="Permissions\Commands\" />
   </ItemGroup>

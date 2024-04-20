@@ -1,30 +1,36 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Memo.Blog.Domain.Events.OpenSources;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Memo.Blog.Application.Common.Services.Background;
-internal class GitHubRepoPullTaskService : BaseTaskService
+
+internal class GitHubRepoPullTaskService(
+     IServiceScopeFactory serviceScopeFactory,
+     ILogger<GitHubRepoPullTaskService> logger
+     ) : BaseTaskService(logger)
 {
-    private readonly ILogger _logger;
 
-    public GitHubRepoPullTaskService(ILogger<GitHubRepoPullTaskService> logger) : base(logger)
-    {
-        _logger = logger;
-    }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         await ExecuteScheduledTaskAsync(
-          stoppingToken,
+          cancellationToken,
           new TimeSpan(1, 0, 0),
           0,
           async () =>
           {
-              await ExecuteJobAsync(stoppingToken);
+              await ExecuteJobAsync(cancellationToken);
           });
     }
 
-    private async Task ExecuteJobAsync(CancellationToken stoppingToken)
+    private async Task ExecuteJobAsync(CancellationToken cancellationToken)
     {
-        Console.WriteLine($"定时执行，时间：{DateTime.Now:yyyy-MM-dd HH:mm:ss}");
-        await Task.CompletedTask;
+        // 解决BackgroundService is Singleton Service
+        using IServiceScope scope = serviceScopeFactory.CreateScope();
+
+        var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
+
+        await publisher.Publish(new SyncGitHubRepoEvent(), cancellationToken);
     }
+
 }

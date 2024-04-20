@@ -18,7 +18,7 @@ public class GitHubRestApiService : IGitHubRestApiService
         _options = githubOptions;
 
         _client = httpClientFactory.CreateClient();
-        
+
         _client.BaseAddress = new Uri("https://api.github.com/");
         _client.DefaultRequestHeaders.Add("Accept", "application/vnd.github+json");
         _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_options.Token}");
@@ -26,12 +26,38 @@ public class GitHubRestApiService : IGitHubRestApiService
         _client.DefaultRequestHeaders.UserAgent.TryParseAdd("request"); //Set the User Agent to "request" 不然会报403
     }
 
-    public async Task<List<GitHubRepoResponse>> GetReposAsync()
+    public async Task<List<GitHubRepoResponse>> GetAllReposAsync()
     {
-        var resp = await _client.GetAsync($"users/{_options.Owner}/repos");
-        resp.EnsureSuccessStatusCode();
+        var repos = new List<GitHubRepoResponse>();
+        var perPage = 50;
+        var page = 0;
+        var hasNextPage = false;
 
-        var json = await resp.Content.ReadAsStringAsync();
-        return JsonSerializer.Deserialize<List<GitHubRepoResponse>>(json) ?? [];
+        do
+        {
+            page++;
+            var resp = await _client.GetAsync($"users/{_options.Owner}/repos?per_page={perPage}&page={page}");
+            resp.EnsureSuccessStatusCode();
+
+            var json = await resp.Content.ReadAsStringAsync();
+            var pages = JsonSerializer.Deserialize<List<GitHubRepoResponse>>(json) ?? [];
+            repos.AddRange(pages);
+
+            var hasLink = resp.Headers.TryGetValues("Link", out var linkHeaders);
+            if (hasLink)
+            {
+                var links = linkHeaders?.FirstOrDefault()?.Split(',') ?? [];
+                hasNextPage = links.Any(l => l.Contains("rel=\"next\""));
+            }
+            else
+            {
+                hasNextPage = false;
+            }
+          
+
+        } while (hasNextPage);
+
+
+        return repos;
     }
 }

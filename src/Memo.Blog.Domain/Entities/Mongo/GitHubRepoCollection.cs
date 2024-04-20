@@ -205,7 +205,7 @@ public class GitHubRepoCollection
     public int ForksCount { get; set; }
 
     [JsonPropertyName("mirror_url")]
-    public object MirrorUrl { get; set; }
+    public string MirrorUrl { get; set; }
 
     [JsonPropertyName("archived")]
     public bool Archived { get; set; }
@@ -217,7 +217,7 @@ public class GitHubRepoCollection
     public int OpenIssuesCount { get; set; }
 
     [JsonPropertyName("license")]
-    public object License { get; set; }
+    public RepoLicense License { get; set; }
 
     [JsonPropertyName("allow_forking")]
     public bool AllowForking { get; set; }
@@ -286,7 +286,7 @@ public class GitHubRepoCollection
     public string MergeCommitTitle { get; set; }
 
     [JsonPropertyName("security_and_analysis")]
-    public Security_And_Analysis SecurityAndAnalysis { get; set; }
+    public SecurityAndAnalysis SecurityAndAnalysis { get; set; }
 
     [JsonPropertyName("network_count")]
     public int NetworkCount { get; set; }
@@ -372,47 +372,66 @@ public class Permissions
 
 }
 
-public class Security_And_Analysis
+public class SecurityAndAnalysis
 {
     [JsonPropertyName("secret_scanning")]
-    public Secret_Scanning SecretScanning { get; set; }
+    public SecretScanning SecretScanning { get; set; }
 
     [JsonPropertyName("secret_scanning_push_protection")]
-    public Secret_Scanning_Push_Protection SecretScanningPushProtection { get; set; }
+    public SecretScanningPushProtection SecretScanningPushProtection { get; set; }
 
     [JsonPropertyName("dependabot_security_updates")]
-    public Dependabot_Security_Updates DependabotSecurityUpdates { get; set; }
+    public DependabotSecurityUpdates DependabotSecurityUpdates { get; set; }
 
     [JsonPropertyName("secret_scanning_validity_checks")]
-    public Secret_Scanning_Validity_Checks SecretScanningValidityChecks { get; set; }
+    public SecretScanningValidityChecks SecretScanningValidityChecks { get; set; }
 
 }
 
-public class Secret_Scanning
+public class SecretScanning
 {
     [JsonPropertyName("status")]
     public string Status { get; set; }
 
 }
 
-public class Secret_Scanning_Push_Protection
+public class SecretScanningPushProtection
 {
     [JsonPropertyName("status")]
     public string Status { get; set; }
 
 }
 
-public class Dependabot_Security_Updates
+public class DependabotSecurityUpdates
 {
     [JsonPropertyName("status")]
     public string Status { get; set; }
 
 }
 
-public class Secret_Scanning_Validity_Checks
+public class SecretScanningValidityChecks
 {
     [JsonPropertyName("status")]
     public string Status { get; set; }
 
+}
+
+public class RepoLicense
+{
+    [JsonPropertyName("key")]
+    public string Key { get; set; }
+
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
+
+    [JsonPropertyName("spdx_id")]
+    public string SpdxId { get; set; }
+
+    [JsonPropertyName("url")]
+    public string Url { get; set; }
+
+    [JsonPropertyName("node_id")]
+    public string NodeId { get; set; }
+ 
 }
 

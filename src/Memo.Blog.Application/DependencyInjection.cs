@@ -1,5 +1,7 @@
-﻿using Memo.Blog.Application.Common.Models.Settings;
+﻿using Memo.Blog.Application.Common.Interfaces.Services.GitHubs;
+using Memo.Blog.Application.Common.Models.Settings;
 using Memo.Blog.Application.Common.Services.Background;
+using Memo.Blog.Application.Common.Services.GitHubs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -18,6 +20,9 @@ public static class DependencyInjection
 
         // 注册Http请求服务
         services.AddHttpClient();
+
+        // 注册GitHub Rest Api服务
+        services.AddScoped<IGitHubRestApiService, GitHubRestApiService>();
 
         // 注册服务配置
         services.Configure<AppSettings>(configuration.GetSection(AppConst.AppSettingSection));

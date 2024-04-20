@@ -37,7 +37,7 @@ public class GitHubRestApiServiceTest
     [Fact]
     public async void GetReposAsync_Should_Success()
     {
-        var repos = await _gitHubRestApiService.GetReposAsync();
+        var repos = await _gitHubRestApiService.GetAllReposAsync();
         Assert.NotNull(repos);
         Assert.True(repos.Count > 1);
     }

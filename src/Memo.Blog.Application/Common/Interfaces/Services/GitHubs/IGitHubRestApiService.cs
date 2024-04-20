@@ -8,5 +8,5 @@ public interface IGitHubRestApiService
     /// 获取owner仓库集合
     /// </summary>
     /// <returns></returns>
-    Task<List<GitHubRepoResponse>> GetReposAsync();
+    Task<List<GitHubRepoResponse>> GetAllReposAsync();
 }
