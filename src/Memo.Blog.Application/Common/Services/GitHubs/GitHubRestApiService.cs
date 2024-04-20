@@ -53,11 +53,21 @@ public class GitHubRestApiService : IGitHubRestApiService
             {
                 hasNextPage = false;
             }
-          
+
 
         } while (hasNextPage);
 
 
         return repos;
+    }
+
+    public async Task<GitHubRepoReadmeResponse> GetRepoReadmeAsync(string name)
+    {
+        var resp = await _client.GetAsync($"repos/{_options.Owner}/{name}/readme");
+
+        if (resp.Content == null) return new();
+        var json = await resp.Content.ReadAsStringAsync();
+
+        return JsonSerializer.Deserialize<GitHubRepoReadmeResponse>(json) ?? new();
     }
 }

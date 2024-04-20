@@ -9,4 +9,11 @@ public interface IGitHubRestApiService
     /// </summary>
     /// <returns></returns>
     Task<List<GitHubRepoResponse>> GetAllReposAsync();
+
+    /// <summary>
+    /// 获取仓库Readme
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    Task<GitHubRepoReadmeResponse> GetRepoReadmeAsync(string name);
 }

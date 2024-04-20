@@ -1,16 +1,18 @@
-﻿using Memo.Blog.Application.Common.Interfaces.Services.GitHubs;
+﻿using System.Text;
+using Memo.Blog.Application.Common.Interfaces.Services.GitHubs;
 using Memo.Blog.Application.Common.Models.GitHub;
 using Memo.Blog.Domain.Entities.Mongo;
 using Memo.Blog.Domain.Events.OpenSources;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Memo.Blog.Application.OpenSources.Events;
 
 public class SyncGitHubRepoEventHandler(
     IMapper mapper,
     ILogger<SyncGitHubRepoEventHandler> logger,
-    IGitHubRestApiService gitHubRestApiService,
+    IGitHubRestApiService githubRestApiService,
     IBaseMongoRepository<GitHubRepoCollection> githubRepo
     ) : INotificationHandler<SyncGitHubRepoEvent>
 {
@@ -19,7 +21,7 @@ public class SyncGitHubRepoEventHandler(
         var githubRepos = new List<GitHubRepoResponse>();
         try
         {
-            githubRepos = await gitHubRestApiService.GetAllReposAsync();
+            githubRepos = await githubRestApiService.GetAllReposAsync();
         }
         catch (Exception ex)
         {
@@ -61,15 +63,18 @@ public class SyncGitHubRepoEventHandler(
             {
                 var updateFilter = Builders<GitHubRepoCollection>.Filter.Eq(b => b.Id, update.Id);
                 await githubRepo.ReplaceOneAsync(update, updateFilter, null, cancellationToken);
+
+                // TODO: 更新已添加到开源列表的项目数据
+
             }
         }
 
         // 删除不存在的仓库
         if (currentRepos.Count != 0)
         {
-            var deleteIds  = currentRepos.Select(c => c.Id);
+            var deleteIds = currentRepos.Select(c => c.Id);
             var deleteFilter = Builders<GitHubRepoCollection>.Filter.In(b => b.Id, deleteIds);
-            
+
             await githubRepo.DeleteManyAsync(deleteFilter, null, cancellationToken);
         }
     }

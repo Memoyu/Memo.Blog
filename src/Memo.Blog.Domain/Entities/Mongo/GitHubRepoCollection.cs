@@ -229,7 +229,7 @@ public class GitHubRepoCollection
     public bool WebCommitSignoffRequired { get; set; }
 
     [JsonPropertyName("topics")]
-    public string[] Topics { get; set; }
+    public List<string> Topics { get; set; }
 
     [JsonPropertyName("visibility")]
     public string Visibility { get; set; }

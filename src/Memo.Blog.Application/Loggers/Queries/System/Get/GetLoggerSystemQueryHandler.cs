@@ -14,7 +14,7 @@ public class GetLoggerSystemQueryHandler(
         var f = Builders<LoggerSystemCollection>.Filter.Empty;
         f = Builders<LoggerSystemCollection>.Filter.Eq("_id", new ObjectId(request.LogId));
 
-        var logs = await systemLogMongoRepo.FindListAsync(f, cancellationToken: cancellationToken)?? throw new ApplicationException("系统日志不存在");
+        var logs = await systemLogMongoRepo.FindListAsync(f, cancellationToken: cancellationToken) ?? throw new ApplicationException("系统日志不存在");
 
         var dto = logs.Count > 0 ? mapper.Map<LoggerSystemResult>(logs.FirstOrDefault()!) : throw new ApplicationException("系统日志不存在");
 

@@ -1,4 +1,5 @@
-﻿using Memo.Blog.Application.Common.Interfaces.Services.GitHubs;
+﻿using System.Text;
+using Memo.Blog.Application.Common.Interfaces.Services.GitHubs;
 using Memo.Blog.Application.Common.Models.Settings;
 using Memo.Blog.Application.Common.Services.GitHubs;
 using Memo.Blog.Domain.Constants;
@@ -16,7 +17,7 @@ public class GitHubRestApiServiceTest
         var settings = new Dictionary<string, string>
         {
             ["Authorization:GitHub:Owner"] = "Memoyu",
-            ["Authorization:GitHub:Token"] = "**",
+            ["Authorization:GitHub:Token"] = "**"
         };
 
         var services = new ServiceCollection();
@@ -40,5 +41,16 @@ public class GitHubRestApiServiceTest
         var repos = await _gitHubRestApiService.GetAllReposAsync();
         Assert.NotNull(repos);
         Assert.True(repos.Count > 1);
+    }
+
+    [Fact]
+    public async void GetRepoReadmeAsync_Should_Success()
+    {
+        var readme = await _gitHubRestApiService.GetRepoReadmeAsync("mbill_wechat_app");
+        Assert.NotNull(readme);
+        Assert.NotEmpty(readme.Content);
+
+        var text = Encoding.UTF8.GetString(Convert.FromBase64String(readme.Content));
+
     }
 }

@@ -2,28 +2,30 @@
 
 [Authorize(Permissions = ApiPermission.OpenSource.Update)]
 [Transactional]
-public record UpdateProjectCommand(long CategoryId, string Name) : IAuthorizeableRequest<Result>;
+public record UpdateProjectCommand(
+    long ProjectId,
+    long? RepoId,
+    string Title,
+    string Description,
+    string? ImageUrl,
+    string? ReadmeUrl) : IAuthorizeableRequest<Result>;
 
 public class UpdateProjectCommandValidator : AbstractValidator<UpdateProjectCommand>
 {
     public UpdateProjectCommandValidator()
     {
-        RuleFor(x => x.CategoryId)
+        RuleFor(x => x.ProjectId)
             .Must(x => x > 0)
-            .WithMessage("分类Id必须大于0");
+            .WithMessage("项目Id必须大于0");
 
-        RuleFor(x => x.CategoryId)
-            .Must(x => x != InitConst.InitCategoryId)
-            .WithMessage("初始分类无法编辑");
+        RuleFor(x => x.Title)
+           .NotEmpty()
+           .WithMessage("项目名称不能为空");
 
-        RuleFor(x => x.Name)
-            .NotEmpty()
-            .WithMessage("分类名称不能为空");
-
-        RuleFor(x => x.Name)
-           .MinimumLength(1)
-           .MaximumLength(10)
-           .WithMessage("分类名称长度在1-10个字符之间");
+        RuleFor(x => x.Description)
+            .MinimumLength(1)
+            .MaximumLength(100)
+            .WithMessage("项目描述长度在1-100个字符之间");
     }
 }
 

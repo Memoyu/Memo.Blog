@@ -17,6 +17,9 @@ public static partial class Permissions
         [Description("获取开源项目")]
         public const string Get = "get:open-source";
 
+        [Description("获取GitHub开源项目分页列表")]
+        public const string GitHubRepoPage = "page:github:open-source";
+
         [Description("获取开源项目列表")]
         public const string List = "list:open-source";
     }
