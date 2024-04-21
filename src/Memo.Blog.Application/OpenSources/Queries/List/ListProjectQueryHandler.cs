@@ -22,3 +22,20 @@ public class ListProjectQueryHandler(
     }
 }
 
+public class ListProjectClientQueryHandler(
+    IMapper mapper,
+    IBaseDefaultRepository<OpenSource> openSourceRepo
+    ) : IRequestHandler<ListProjectClientQuery, Result>
+{
+    public async Task<Result> Handle(ListProjectClientQuery request, CancellationToken cancellationToken)
+    {
+        var projects = await openSourceRepo.Select
+            .OrderByDescending(c => c.CreateTime)
+            .ToListAsync(cancellationToken) ?? [];
+
+        var results = mapper.Map<List<OpenSourceClientResult>>(projects);
+
+        return Result.Success(results);
+    }
+}
+

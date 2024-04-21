@@ -10,4 +10,4 @@ public class ListCategoryQueryValidator : AbstractValidator<ListCategoryQuery>
     }
 }
 
-public record ClientListCategoryQuery(string Name) : IRequest<Result>;
+public record ListCategoryClientQuery(string Name) : IRequest<Result>;

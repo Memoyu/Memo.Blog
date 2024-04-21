@@ -23,7 +23,7 @@ public class CategoryController(ISender mediator) : ApiController
     /// </summary>
     /// <returns></returns>
     [HttpGet("list")]
-    public async Task<Result> ListAsync([FromQuery] ClientListCategoryQuery request)
+    public async Task<Result> ListAsync([FromQuery] ListCategoryClientQuery request)
     {
         return await mediator.Send(request);
     }

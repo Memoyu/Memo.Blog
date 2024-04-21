@@ -19,3 +19,5 @@ public class ListProjectQueryValidator : AbstractValidator<ListProjectQuery>
     {
     }
 }
+
+public record ListProjectClientQuery() : IRequest<Result>;

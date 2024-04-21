@@ -6,7 +6,7 @@ using Memo.Blog.Domain.Enums;
 
 namespace Memo.Blog.Application.Articles.Common;
 
-public record ClientPageArticleResult
+public record PageArticleClientResult
 {
     /// <summary>
     /// 文章Id

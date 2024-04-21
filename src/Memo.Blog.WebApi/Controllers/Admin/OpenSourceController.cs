@@ -72,5 +72,4 @@ public class OpenSourceController(ISender mediator) : ApiAdminController
     {
         return await mediator.Send(request);
     }
-
 }

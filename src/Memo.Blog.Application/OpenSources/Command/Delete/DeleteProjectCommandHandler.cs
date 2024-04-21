@@ -1,19 +1,15 @@
-﻿using Memo.Blog.Domain.Events.Categories;
-
-namespace Memo.Blog.Application.OpenSources.Commands.Delete;
+﻿namespace Memo.Blog.Application.OpenSources.Commands.Delete;
 
 public class DeleteCategoryCommandHandler(
-    IBaseDefaultRepository<Category> categoryRepo
+   IBaseDefaultRepository<OpenSource> openSourceRepo
     ) : IRequestHandler<DeleteProjectCommand, Result>
 {
     public async Task<Result> Handle(DeleteProjectCommand request, CancellationToken cancellationToken)
     {
-        var category = await categoryRepo.Select.Where(c => c.CategoryId == request.CategoryId).FirstAsync(cancellationToken) ?? throw new ApplicationException("分类不存在");
+        var project = await openSourceRepo.Select.Where(p => p.ProjectId == request.ProjectId).FirstAsync(cancellationToken) ?? throw new ApplicationException("项目不存在");
 
-        category.AddDomainEvent(new DeletedCategoryEvent(category.CategoryId));
+        var affrows = await openSourceRepo.DeleteAsync(project, cancellationToken);
 
-        var affrows = await categoryRepo.DeleteAsync(category, cancellationToken);
-
-        return affrows > 0 ? Result.Success() : throw new ApplicationException("删除分类失败");
+        return affrows > 0 ? Result.Success() : throw new ApplicationException("删除项目失败");
     }
 }

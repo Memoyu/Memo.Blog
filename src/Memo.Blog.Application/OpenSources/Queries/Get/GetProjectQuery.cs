@@ -13,3 +13,14 @@ public class GetProjectQueryValidator : AbstractValidator<GetProjectQuery>
     }
 }
 
+public record GetProjectClientQuery(long ProjectId) : IRequest<Result>;
+
+public class GetProjectClientQueryValidator : AbstractValidator<GetProjectClientQuery>
+{
+    public GetProjectClientQueryValidator()
+    {
+        RuleFor(x => x.ProjectId)
+            .NotEmpty()
+            .WithMessage("项目Id不能为空");
+    }
+}

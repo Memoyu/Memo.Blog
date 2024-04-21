@@ -26,13 +26,13 @@ public class ListCategoryQueryHandler(
     }
 }
 
-public class ClientListCategoryQueryHandler(
+public class ListCategoryClientQueryHandler(
     IMapper mapper,
     IBaseDefaultRepository<Category> categoryRepo,
     IBaseDefaultRepository<Article> articleRepo
-    ) : IRequestHandler<ClientListCategoryQuery, Result>
+    ) : IRequestHandler<ListCategoryClientQuery, Result>
 {
-    public async Task<Result> Handle(ClientListCategoryQuery request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(ListCategoryClientQuery request, CancellationToken cancellationToken)
     {
         var categories = await categoryRepo.Select
             .WhereIf(!string.IsNullOrWhiteSpace(request.Name), t => t.Name.Contains(request.Name))

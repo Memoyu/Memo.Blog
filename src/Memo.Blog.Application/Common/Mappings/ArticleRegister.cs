@@ -25,7 +25,7 @@ public class ArticleRegister : IRegister
         config.ForType<Article, PageArticleResult>()
             .Map(d => d.Tags, s => s.ArticleTags.Select(at => at.Tag).ToList());
 
-        config.ForType<Article, ClientPageArticleResult>()
+        config.ForType<Article, PageArticleClientResult>()
            .Map(d => d.Tags, s => s.ArticleTags.Select(at => at.Tag).ToList());
 
         config.ForType<Article, ArticleResult>()
