@@ -6,7 +6,7 @@ using Memo.Blog.Domain.Enums;
 
 namespace Memo.Blog.Application.Articles.Common;
 
-public record ArticleResult
+public record ArticleDetailResult
 {
     /// <summary>
     /// 文章Id
@@ -87,6 +87,11 @@ public record ArticleResult
     /// 关联标签
     /// </summary>
     public List<TagResult> Tags { get; set; } = [];
+
+    /// <summary>
+    /// 作者
+    /// </summary>
+    public required ArticleAuthorResult Author { get; set; }
 
     /// <summary>
     /// 创建时间

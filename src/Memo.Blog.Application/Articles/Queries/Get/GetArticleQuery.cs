@@ -12,3 +12,15 @@ public class GetArticleQueryValidator : AbstractValidator<GetArticleQuery>
             .WithMessage("文章Id必须大于0");
     }
 }
+
+public record GetArticleClientQuery(long ArticleId) : IRequest<Result>;
+
+public class GetArticleClientQueryValidator : AbstractValidator<GetArticleClientQuery>
+{
+    public GetArticleClientQueryValidator()
+    {
+        RuleFor(x => x.ArticleId)
+            .Must(x => x > 0)
+            .WithMessage("文章Id必须大于0");
+    }
+}

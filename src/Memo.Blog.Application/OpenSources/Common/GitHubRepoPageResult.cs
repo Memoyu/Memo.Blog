@@ -15,5 +15,10 @@ public class GitHubRepoPageResult
 
     public List<string> Topics { get; set; } = [];
 
+    /// <summary>
+    /// 默认分支
+    /// </summary>
+    public string DefaultBranch { get; set; } = string.Empty;
+
     public DateTime CreatedAt { get; set; }
 }

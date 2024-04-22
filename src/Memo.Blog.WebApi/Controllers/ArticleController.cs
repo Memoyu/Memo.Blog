@@ -14,7 +14,7 @@ public class ArticleController(ISender mediator) : ApiController
     /// </summary>
     /// <returns></returns>
     [HttpGet("get")]
-    public async Task<Result> GetAsync([FromQuery] GetArticleQuery request)
+    public async Task<Result> GetAsync([FromQuery] GetArticleClientQuery request)
     {
         return await mediator.Send(request);
     }
