@@ -12,7 +12,7 @@ public class PageCommentQueryHandler(
     {
         var comments = await commentRepo.Select
             .WhereIf(request.CommentType.HasValue, c => c.CommentType == request.CommentType)
-            .WhereIf(!string.IsNullOrWhiteSpace(request.Nickname), c=> c.Nickname.Contains(request.Nickname!))
+            .WhereIf(!string.IsNullOrWhiteSpace(request.Nickname), c => c.Nickname.Contains(request.Nickname!))
             .WhereIf(!string.IsNullOrWhiteSpace(request.Ip), c => c.Ip.Contains(request.Ip!))
             .WhereIf(request.DateBegin.HasValue && request.DateEnd.HasValue, c => c.CreateTime <= request.DateEnd && c.CreateTime >= request.DateBegin)
             .OrderByDescending(a => a.CreateTime)
@@ -32,21 +32,20 @@ public class PageCommentClientQueryHandler(
     public async Task<Result> Handle(PageCommentClientQuery request, CancellationToken cancellationToken)
     {
         var comments = await commentRepo.Select
+            .Where(c => !c.ParentId.HasValue) // 以没有父评论的评论作为分页的根据
             .Where(c => c.CommentType == request.CommentType)
             .WhereIf(request.BelongId.HasValue, c => c.BelongId == request.BelongId)
             .OrderByDescending(a => a.CreateTime)
             .ToPageListAsync(request, out var total, cancellationToken);
 
-        // var results = mapper.Map<List<CommentClientResult>>(comments);        
         var results = new List<CommentClientResult>();
-        int idx = 1;
-        var layers = comments.Where(c => !c.ParentId.HasValue).ToList();
-        foreach (var layer in layers)
+        var layer = (int)total - ((request.Page - 1) * request.Size);
+        foreach (var comment in comments)
         {
-            var childs = comments.Where(c => c.ParentId.HasValue && c.ParentId.Value == layer.CommentId).ToList();
+            var childs = await commentRepo.Select.Where(c => c.ParentId.HasValue && c.ParentId == comment.CommentId).ToListAsync(cancellationToken);
 
-            var result = mapper.Map<CommentClientResult>(layer);
-            result.Layer = idx++;
+            var result = mapper.Map<CommentClientResult>(comment);
+            result.Layer = layer --;
             result.Childs = mapper.Map<List<CommentClientResult>>(childs);
             results.Add(result);
         }

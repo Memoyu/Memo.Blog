@@ -8,7 +8,7 @@ public record PaginationQuery
     public int Size { get; set; } = 15;
 
     /// <summary>
-    /// 从0开始，0时取第1页，1时取第二页
+    /// 页数
     /// </summary>
     public int Page { get; set; } = 1;
 
