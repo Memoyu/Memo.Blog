@@ -14,6 +14,9 @@ public class CommentRegister : IRegister
         config.ForType<Comment, CommentResult>()
             .Map(d => d.Belong, s => GetCommentBelog(s))
             .Map(d => d.Region, s => GetRegionFormat(s.Region));
+
+        config.ForType<Comment, CommentClientResult>()
+            .Map(d => d.Region, s => GetRegionFormat(s.Region));
     }
 
     private string GetRegionFormat(string region)

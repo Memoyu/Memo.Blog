@@ -5,7 +5,7 @@ using Memo.Blog.Application.Articles.Queries.Anlyanis;
 namespace Memo.Blog.WebApi.Controllers;
 
 /// <summary>
-/// 文章管理
+/// 文章
 /// </summary>
 public class ArticleController(ISender mediator) : ApiController
 {

@@ -3,7 +3,7 @@
 namespace Memo.Blog.WebApi.Controllers;
 
 /// <summary>
-/// 关于管理
+/// 关于
 /// </summary>
 public class AboutController(ISender mediator) : ApiController
 {
@@ -12,7 +12,7 @@ public class AboutController(ISender mediator) : ApiController
     /// </summary>
     /// <returns></returns>
     [HttpGet("get")]
-    public async Task<Result> GetAsync([FromQuery] GetAboutQuery request)
+    public async Task<Result> GetAsync([FromQuery] GetAboutClientQuery request)
     {
         return await mediator.Send(request);
     }

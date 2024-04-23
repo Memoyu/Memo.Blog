@@ -4,7 +4,7 @@ using Memo.Blog.Application.Tags.Queries.List;
 namespace Memo.Blog.WebApi.Controllers;
 
 /// <summary>
-/// 文章标签管理
+/// 文章标签
 /// </summary>
 public class TagController(ISender mediator) : ApiController
 {

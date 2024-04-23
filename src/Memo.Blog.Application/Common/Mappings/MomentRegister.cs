@@ -11,10 +11,13 @@ public class MomentRegister : IRegister
         config.ForType<Moment, MomentResult>()
            .Map(d => d.Tags, s => s.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries));
 
+        config.ForType<Moment, MomentClientResult>()
+          .Map(d => d.Tags, s => s.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries));
+
         config.ForType<UpdateMomentCommand, Moment > ()
-           .Map(d => d.Tags, s => string.Join(',', s.Tags.Where(s => !string.IsNullOrWhiteSpace(s)).ToList()));
+           .Map(d => d.Tags, s => string.Join(',', (s.Tags ?? new()).Where(s => !string.IsNullOrWhiteSpace(s)).ToList()));
 
         config.ForType<CreateMomentCommand, Moment>()
-          .Map(d => d.Tags, s => string.Join(',', s.Tags.Where(s => !string.IsNullOrWhiteSpace(s)).ToList()));
+          .Map(d => d.Tags, s => string.Join(',', (s.Tags ?? new()).Where(s => !string.IsNullOrWhiteSpace(s)).ToList()));
     }
 }

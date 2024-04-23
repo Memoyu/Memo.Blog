@@ -4,7 +4,7 @@ using Memo.Blog.Application.Categories.Queries.List;
 namespace Memo.Blog.WebApi.Controllers;
 
 /// <summary>
-/// 文章分类管理
+/// 文章分类
 /// </summary>
 public class CategoryController(ISender mediator) : ApiController
 {

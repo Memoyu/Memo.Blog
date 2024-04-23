@@ -4,7 +4,7 @@ using Memo.Blog.Application.OpenSources.Queries.List;
 namespace Memo.Blog.WebApi.Controllers;
 
 /// <summary>
-/// 开源项目管理
+/// 开源项目
 /// </summary>
 /// <param name="mediator"></param>
 public class OpenSourceController(ISender mediator) : ApiController

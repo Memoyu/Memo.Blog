@@ -5,7 +5,7 @@ namespace Memo.Blog.Application.Moments.Commands.Update;
 [Authorize(Permissions = ApiPermission.Moment.Update)]
 public record UpdateMomentCommand(
     long MomentId,
-    List<string> Tags,
+    List<string>? Tags,
     string Content,
     bool Showable,
     bool Commentable

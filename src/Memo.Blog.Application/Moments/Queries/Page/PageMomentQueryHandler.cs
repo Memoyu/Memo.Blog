@@ -32,3 +32,33 @@ public class PageMomentQueryHandler(
         return Result.Success(new PaginationResult<MomentResult>(results, total));
     }
 }
+
+public class PageMomentClientQueryHandler(
+    IMapper mapper,
+    IBaseDefaultRepository<Moment> momentRepo,
+    IBaseDefaultRepository<User> userRepo
+    ) : IRequestHandler<PageMomentClientQuery, Result>
+{
+    public async Task<Result> Handle(PageMomentClientQuery request, CancellationToken cancellationToken)
+    {
+        var moments = await momentRepo.Select
+            .Where(m => m.Showable)
+            .OrderByDescending(m => m.CreateTime)
+            .ToPageListAsync(request, out var total, cancellationToken);
+
+        var userIds = moments.Select(m => m.CreateUserId).Distinct().ToList();
+        var announcers = await userRepo.Select
+         .Where(u => userIds.Contains(u.UserId))
+         .ToListAsync(cancellationToken);
+
+        var results = new List<MomentClientResult>();
+        foreach (var moment in moments)
+        {
+            var result = mapper.Map<MomentClientResult>(moment);
+            result.Announcer = mapper.Map<MomentAnnouncerResult>(announcers.FirstOrDefault(a => a.UserId == moment.CreateUserId) ?? new());
+            results.Add(result);
+        }
+
+        return Result.Success(new PaginationResult<MomentClientResult>(results, total));
+    }
+}

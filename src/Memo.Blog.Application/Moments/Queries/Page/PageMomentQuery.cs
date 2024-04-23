@@ -7,3 +7,6 @@ public record PageMomentQuery(
     DateTime? DateBegin,
     DateTime? DateEnd
     ) : PaginationQuery, IAuthorizeableRequest<Result>;
+
+
+public record PageMomentClientQuery() : PaginationQuery, IRequest<Result>;

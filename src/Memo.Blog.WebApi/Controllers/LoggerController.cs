@@ -4,7 +4,7 @@ using Memo.Blog.Application.Loggers.Commands.Visit.Generate;
 namespace Memo.Blog.WebApi.Controllers;
 
 /// <summary>
-/// 日志管理
+/// 日志
 /// </summary>
 public class LoggerController(ISender mediator) : ApiController
 {

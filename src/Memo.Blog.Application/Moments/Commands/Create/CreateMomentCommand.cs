@@ -2,7 +2,7 @@
 
 [Authorize(Permissions = ApiPermission.Moment.Create)]
 public record CreateMomentCommand(
-    List<string> Tags,
+    List<string>? Tags,
     string Content,
     bool Showable,
     bool Commentable

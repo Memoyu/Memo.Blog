@@ -11,3 +11,5 @@ public class GetAboutQueryValidator : AbstractValidator<GetAboutQuery>
     }
 }
 
+public record GetAboutClientQuery() : IRequest<Result>;
+
