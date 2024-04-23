@@ -2,9 +2,8 @@
 
 namespace Memo.Blog.Application.Comments.Commands.Create;
 
-[Authorize(Permissions = ApiPermission.Comment.Create)]
 [Transactional]
-public class CreateCommentCommand : IAuthorizeableRequest<Result>
+public class CreateCommentCommand : IRequest<Result>
 {
     /// <summary>
     /// 父评论Id
@@ -56,10 +55,6 @@ public class CreateCommentCommandValidator : AbstractValidator<CreateCommentComm
 {
     public CreateCommentCommandValidator()
     {
-        RuleFor(x => x.BelongId)
-           .Must(x => x > 0)
-           .WithMessage("评论所属Id不能小于0");
-
         RuleFor(x => x.CommentType)
             .IsInEnum()
             .WithMessage("评论类型错误");
@@ -71,7 +66,7 @@ public class CreateCommentCommandValidator : AbstractValidator<CreateCommentComm
         RuleFor(x => x.Nickname)
             .MinimumLength(1)
             .MaximumLength(20)
-            .WithMessage("友链昵称长度在1-20个字符之间");
+            .WithMessage("昵称长度在1-20个字符之间");
     }
 }
 

@@ -8,12 +8,12 @@ public enum AvatarOriginType
     [Description("未知来源")]
     Unknown = 0,
 
-    [Description("用户上传")]
-    Upload = 1,
+    [Description("来源QQ")]
+    Qq = 1,
 
     [Description("来源github")]
     Github = 2,
 
-    [Description("来源QQ")]
-    Qq = 3,
+    [Description("用户上传")]
+    Upload = 3,
 }

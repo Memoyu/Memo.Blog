@@ -1,4 +1,5 @@
-﻿using Memo.Blog.Application.Comments.Queries.Page;
+﻿using Memo.Blog.Application.Comments.Commands.Create;
+using Memo.Blog.Application.Comments.Queries.Page;
 
 namespace Memo.Blog.WebApi.Controllers;
 
@@ -7,6 +8,16 @@ namespace Memo.Blog.WebApi.Controllers;
 /// </summary>
 public class CommentController(ISender mediator) : ApiController
 {
+    /// <summary>
+    /// 创建评论
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("create")]
+    public async Task<Result> CreateAsync(CreateCommentCommand request)
+    {
+        return await mediator.Send(request);
+    }
+
     /// <summary>
     /// 获取评论分页列表
     /// </summary>
