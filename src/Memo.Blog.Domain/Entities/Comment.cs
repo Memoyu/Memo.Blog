@@ -24,6 +24,12 @@ public class Comment : BaseAuditEntity
     public long? ParentId { get; set; }
 
     /// <summary>
+    /// 回复评论Id
+    /// </summary>
+    [Description("回复评论Id")]
+    public long? ReplyId { get; set; }
+
+    /// <summary>
     /// 所属Id（文章Id、动态Id等）
     /// </summary>
     [Description("所属Id（文章Id、动态Id等）")]
@@ -92,6 +98,13 @@ public class Comment : BaseAuditEntity
     [Description("评论IP所属")]
     [Column(StringLength = 100, IsNullable = false)]
     public string Region { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 楼层
+    /// </summary>
+    [Description("楼层")]
+    [Column(IsNullable = false)]
+    public int Floor { get; set; }
 
     /// <summary>
     /// 是否展示

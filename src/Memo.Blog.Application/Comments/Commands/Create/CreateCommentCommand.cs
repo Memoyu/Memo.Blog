@@ -11,6 +11,11 @@ public class CreateCommentCommand : IRequest<Result>
     public long? ParentId { get; set; }
 
     /// <summary>
+    /// 回复评论Id
+    /// </summary>
+    public long? ReplyId { get; set; }
+
+    /// <summary>
     /// 所属Id（文章Id、动态Id等）
     /// </summary>
     public long BelongId { get; set; }

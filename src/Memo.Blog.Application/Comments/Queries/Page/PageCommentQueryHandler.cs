@@ -39,14 +39,43 @@ public class PageCommentClientQueryHandler(
             .ToPageListAsync(request, out var total, cancellationToken);
 
         var results = new List<CommentClientResult>();
-        var layer = (int)total - ((request.Page - 1) * request.Size);
+
+        var parentIds = comments.Select(c => c.CommentId).ToList();
+
+        var allChilds = await commentRepo.Select
+            .Where(c => c.ParentId.HasValue && parentIds.Contains(c.ParentId.Value))
+            .ToListAsync(cancellationToken);
+
+        var childIds = allChilds.Where(c => c.ReplyId.HasValue).Select(c => c.ReplyId).ToList();
+        var replies = await commentRepo.Select
+         .Where(c => c.ReplyId.HasValue && childIds.Contains(c.ReplyId))
+         .ToListAsync(cancellationToken);
+
         foreach (var comment in comments)
         {
-            var childs = await commentRepo.Select.Where(c => c.ParentId.HasValue && c.ParentId == comment.CommentId).ToListAsync(cancellationToken);
-
             var result = mapper.Map<CommentClientResult>(comment);
-            result.Layer = layer --;
-            result.Childs = mapper.Map<List<CommentClientResult>>(childs);
+            result.FloorString = $"{result.Floor}楼";
+            var childs = allChilds.Where(ac => ac.ParentId == comment.CommentId).ToList();
+            foreach (var child in childs)
+            {
+                CommentClientResult? reply = null;
+                if (child.ReplyId.HasValue)
+                {
+                    var replyEntity = replies.FirstOrDefault(r => r.CommentId == child.ReplyId);
+                    if (replyEntity != null)
+                    {
+                        reply = mapper.Map<CommentClientResult>(replyEntity);
+                        reply.FloorString = $"{reply.Floor}#";
+                    }
+                }
+
+                var childDto = mapper.Map<CommentClientResult>(child);
+
+                childDto.Reply = reply;
+                childDto.FloorString = $"{childDto.Floor}#";
+                result.Childs.Add(childDto);
+            }
+
             results.Add(result);
         }
 

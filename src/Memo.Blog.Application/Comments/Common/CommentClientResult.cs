@@ -3,14 +3,14 @@
 public record CommentClientResult
 {
     /// <summary>
+    /// 父评论Id
+    /// </summary>
+    public long? ParentId { get; set; }
+
+    /// <summary>
     /// 评论Id
     /// </summary>
     public long CommentId { get; set; }
-
-    /// <summary>
-    /// 父评论Id
-    /// </summary>
-    public long ParentId { get; set; }
 
     /// <summary>
     /// 昵称
@@ -45,7 +45,20 @@ public record CommentClientResult
     /// <summary>
     /// 楼层
     /// </summary>
-    public int Layer { get; set; }
+    public int Floor { get; set; }
 
+    /// <summary>
+    /// 楼层
+    /// </summary>
+    public string FloorString { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 回复的评论
+    /// </summary>
+    public CommentClientResult? Reply { get; set; }
+
+    /// <summary>
+    /// 子评论
+    /// </summary>
     public List<CommentClientResult> Childs { get; set; } = [];
 }

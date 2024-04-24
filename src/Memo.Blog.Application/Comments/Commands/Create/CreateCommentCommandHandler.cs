@@ -12,8 +12,7 @@ public class CreateCommentCommandHandler(
      ICurrentUserProvider currentUserProvider,
      IRegionSearcher searcher,
      IBaseDefaultRepository<Comment> commentRepo,
-     IBaseDefaultRepository<Article> articleRepo,
-     IBaseMongoRepository<ArticleCollection> articleMongoRepo
+     IBaseDefaultRepository<Article> articleRepo
     ) : IRequestHandler<CreateCommentCommand, Result>
 {
     public async Task<Result> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
@@ -21,12 +20,34 @@ public class CreateCommentCommandHandler(
         var isArticleComment = false;
         if (request.CommentType == Domain.Enums.CommentType.Article)
         {
-            var article = await articleRepo.Select.Where(a => a.ArticleId == request.BelongId).FirstAsync(cancellationToken);
-            if (article == null) throw new ApplicationException("评论文章不存在");
+            var article = await articleRepo.Select.Where(a => a.ArticleId == request.BelongId).FirstAsync(cancellationToken)
+                ?? throw new ApplicationException("评论文章不存在");
             isArticleComment = true;
         }
 
         var comment = mapper.Map<Comment>(request);
+
+        // 确认楼层
+        // 如果是主楼
+        var maxFloor = 0;
+        if (!request.ParentId.HasValue)
+        {
+            maxFloor = await commentRepo.Select
+                 .Where(c => !c.ParentId.HasValue)
+                 .Where(c => c.CommentType == request.CommentType)
+                 .MaxAsync(c => c.Floor, cancellationToken);      
+        }
+        else
+        {
+            // 如果是楼中楼
+            maxFloor = await commentRepo.Select
+                   .Where(c => c.ParentId.HasValue && c.ParentId == request.ParentId)
+                   .MaxAsync(c => c.Floor, cancellationToken);
+
+        }
+
+        comment.Floor = maxFloor + 1;
+
         // 如果是文章评论，则需要更新mongodb数据
         if (isArticleComment)
         {
