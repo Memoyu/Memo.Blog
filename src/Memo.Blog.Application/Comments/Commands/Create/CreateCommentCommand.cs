@@ -3,7 +3,7 @@
 namespace Memo.Blog.Application.Comments.Commands.Create;
 
 [Transactional]
-public class CreateCommentCommand : IRequest<Result>
+public class CreateCommentClientCommand : IRequest<Result>
 {
     /// <summary>
     /// 父评论Id
@@ -56,7 +56,7 @@ public class CreateCommentCommand : IRequest<Result>
     public string? AvatarOrigin { get; set; }
 }
 
-public class CreateCommentCommandValidator : AbstractValidator<CreateCommentCommand>
+public class CreateCommentCommandValidator : AbstractValidator<CreateCommentClientCommand>
 {
     public CreateCommentCommandValidator()
     {

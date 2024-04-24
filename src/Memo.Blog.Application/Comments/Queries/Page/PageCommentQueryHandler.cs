@@ -58,22 +58,20 @@ public class PageCommentClientQueryHandler(
             var childs = allChilds.Where(ac => ac.ParentId == comment.CommentId).ToList();
             foreach (var child in childs)
             {
-                CommentClientResult? reply = null;
+                var childResult = mapper.Map<CommentClientResult>(child);
+
                 if (child.ReplyId.HasValue)
                 {
-                    var replyEntity = replies.FirstOrDefault(r => r.CommentId == child.ReplyId);
-                    if (replyEntity != null)
+                    var reply = replies.FirstOrDefault(r => r.CommentId == child.ReplyId);
+                    if (reply != null)
                     {
-                        reply = mapper.Map<CommentClientResult>(replyEntity);
-                        reply.FloorString = $"{reply.Floor}#";
+                        childResult. Reply = mapper.Map<CommentClientResult>(reply);
+                        childResult.Reply.FloorString = $"{reply.Floor}#";
                     }
                 }
 
-                var childDto = mapper.Map<CommentClientResult>(child);
-
-                childDto.Reply = reply;
-                childDto.FloorString = $"{childDto.Floor}#";
-                result.Childs.Add(childDto);
+                childResult.FloorString = $"{childResult.Floor}#";
+                result.Childs.Add(childResult);
             }
 
             results.Add(result);

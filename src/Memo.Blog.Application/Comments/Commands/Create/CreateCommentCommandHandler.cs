@@ -1,21 +1,21 @@
-﻿using Memo.Blog.Application.Common.Interfaces.Region;
+﻿using Memo.Blog.Application.Comments.Common;
+using Memo.Blog.Application.Common.Interfaces.Region;
 using Memo.Blog.Application.Security;
-using Memo.Blog.Domain.Entities.Mongo;
 using Memo.Blog.Domain.Events.Articles;
 using Microsoft.Extensions.Logging;
 
 namespace Memo.Blog.Application.Comments.Commands.Create;
 
-public class CreateCommentCommandHandler(
-     ILogger<CreateCommentCommandHandler> logger,
+public class CreateCommentClientCommandHandler(
+     ILogger<CreateCommentClientCommandHandler> logger,
      IMapper mapper,
      ICurrentUserProvider currentUserProvider,
      IRegionSearcher searcher,
      IBaseDefaultRepository<Comment> commentRepo,
      IBaseDefaultRepository<Article> articleRepo
-    ) : IRequestHandler<CreateCommentCommand, Result>
+    ) : IRequestHandler<CreateCommentClientCommand, Result>
 {
-    public async Task<Result> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(CreateCommentClientCommand request, CancellationToken cancellationToken)
     {
         var isArticleComment = false;
         if (request.CommentType == Domain.Enums.CommentType.Article)
@@ -35,7 +35,8 @@ public class CreateCommentCommandHandler(
             maxFloor = await commentRepo.Select
                  .Where(c => !c.ParentId.HasValue)
                  .Where(c => c.CommentType == request.CommentType)
-                 .MaxAsync(c => c.Floor, cancellationToken);      
+                 .Where(c => c.BelongId == request.BelongId)
+                 .MaxAsync(c => c.Floor, cancellationToken);
         }
         else
         {
@@ -59,6 +60,20 @@ public class CreateCommentCommandHandler(
         var region = searcher.Search(ip);
         comment.Region = region;
         comment = await commentRepo.InsertAsync(comment, cancellationToken);
-        return comment.Id == 0 ? throw new ApplicationException("保存评论失败") : (Result)Result.Success(comment.CommentId);
+
+        var dto = mapper.Map<CommentClientResult>(comment);
+        if (comment.ReplyId.HasValue)
+        {
+            var reply = await commentRepo.Select.Where(c => c.CommentId == comment.ReplyId).FirstAsync(cancellationToken);
+            if (reply != null)
+            {
+                dto.Reply = mapper.Map<CommentClientResult>(reply);
+                dto.Reply.FloorString = $"{reply.Floor}#";
+            }
+        }
+
+        dto.FloorString = $"{comment.Floor}#";
+
+        return comment.Id == 0 ? throw new ApplicationException("保存评论失败") : (Result)Result.Success(dto);
     }
 }

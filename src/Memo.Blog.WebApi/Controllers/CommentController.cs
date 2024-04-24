@@ -13,7 +13,7 @@ public class CommentController(ISender mediator) : ApiController
     /// </summary>
     /// <returns></returns>
     [HttpPost("create")]
-    public async Task<Result> CreateAsync(CreateCommentCommand request)
+    public async Task<Result> CreateAsync(CreateCommentClientCommand request)
     {
         return await mediator.Send(request);
     }
