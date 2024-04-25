@@ -1,5 +1,5 @@
 ﻿using Memo.Blog.Application.Loggers.Commands.Visit.Create;
-using Memo.Blog.Application.Loggers.Commands.Visit.Generate;
+using Memo.Blog.Application.Visitors.Commands.Generate;
 
 namespace Memo.Blog.WebApi.Controllers;
 
@@ -13,7 +13,7 @@ public class LoggerController(ISender mediator) : ApiController
     /// </summary>
     /// <returns></returns>
     [HttpPost("visit/visitor-id/generate")]
-    public async Task<Result> GenerateVisitorIdAsync(GenerateVisitorIdCommand request)
+    public async Task<Result> GenerateVisitorIdAsync(CreateVisitorCommand request)
     {
         return await mediator.Send(request);
     }

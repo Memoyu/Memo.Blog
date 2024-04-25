@@ -85,18 +85,4 @@ public class Visitor : BaseAuditEntity
     [Description("访问者IP所属互联网服务商")]
     [Column(StringLength = 50, IsNullable = false)]
     public string Isp { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 操作系统
-    /// </summary>
-    [Description("操作系统")]
-    [Column(StringLength = 50, IsNullable = false)]
-    public string Os { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 浏览器
-    /// </summary>
-    [Description("浏览器")]
-    [Column(StringLength = 50, IsNullable = false)]
-    public string Browser { get; set; } = string.Empty;
 }

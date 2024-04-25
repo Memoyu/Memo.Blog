@@ -1,4 +1,4 @@
-﻿using Memo.Blog.Application.Loggers.Common;
+﻿using Memo.Blog.Application.Visitors.Common;
 
 namespace Memo.Blog.Application.Comments.Common;
 

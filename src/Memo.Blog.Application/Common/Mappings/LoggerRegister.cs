@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Memo.Blog.Application.Common.Extensions;
+using Memo.Blog.Application.Loggers.Commands.Visit.Create;
 using Memo.Blog.Application.Loggers.Common;
 using Memo.Blog.Domain.Entities.Mongo;
 using Memo.Blog.Domain.Enums;
@@ -11,7 +12,6 @@ public class LoggerRegister : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-
         config.ForType<LoggerSystemCollection, LoggerSystemPageResult>()
             .Map(d => d.Id, s => s.Id!.ToString())
             .Map(d => d.Message, s => s.RenderedMessage)
@@ -39,6 +39,9 @@ public class LoggerRegister : IRegister
         config.ForType<LoggerVisitCollection, LoggerVisitPageResult>()
             .Map(d => d.Visited, s => GetLoggerVisited(s));
 
+        config.ForType<CreateLoggerVisitCommand, LoggerVisitCollection>()
+            .Map(d => d.VisitDate, s => DateTime.Now)
+            .Map(d => d.Behavior, s => GetVisitBehavior(s));
     }
 
     private static string GetJsonLogRequest(LoggerSystemCollection s)
@@ -61,14 +64,15 @@ public class LoggerRegister : IRegister
     private LoggerVisitedResult GetLoggerVisited(LoggerVisitCollection s)
     {
         var belong = new LoggerVisitedResult();
+        var visitedId = s.VisitedId.HasValue ? s.VisitedId.Value : 0;
         switch (s.Behavior)
         {
             case VisitLogBehavior.Home:
-                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = VisitLogBehavior.Home.GetDescription(), Link = "" };
+                belong = new LoggerVisitedResult { Id = visitedId, Title = VisitLogBehavior.Home.GetDescription() };
                 break;
 
             case VisitLogBehavior.Article:
-                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = VisitLogBehavior.Article.GetDescription(), Link = "" };
+                belong = new LoggerVisitedResult { Id = visitedId, Title = VisitLogBehavior.Article.GetDescription() };
                 break;
 
             case VisitLogBehavior.ArticleDetail:
@@ -76,24 +80,46 @@ public class LoggerRegister : IRegister
                     .Where(c => c.ArticleId == s.VisitedId)
                     .First();
                 belong = article != null
-                    ? new LoggerVisitedResult { Id = s.VisitedId, Title = article.Title, Link = "" }
-                    : new LoggerVisitedResult { Id = s.VisitedId, Title = VisitLogBehavior.ArticleDetail.GetDescription(), Link = "" };
+                    ? new LoggerVisitedResult { Id = visitedId, Title = article.Title }
+                    : new LoggerVisitedResult { Id = visitedId, Title = VisitLogBehavior.ArticleDetail.GetDescription() };
 
                 break;
 
             case VisitLogBehavior.Labs:
-                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = VisitLogBehavior.Labs.GetDescription(), Link = "" };
+                belong = new LoggerVisitedResult { Id = visitedId, Title = VisitLogBehavior.Labs.GetDescription() };
                 break;
 
             case VisitLogBehavior.Moment:
-                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = VisitLogBehavior.Moment.GetDescription(), Link = "" };
+                belong = new LoggerVisitedResult { Id = visitedId, Title = VisitLogBehavior.Moment.GetDescription() };
                 break;
 
             case VisitLogBehavior.About:
-                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = VisitLogBehavior.About.GetDescription(), Link = "" };
+                belong = new LoggerVisitedResult { Id = visitedId, Title = VisitLogBehavior.About.GetDescription() };
                 break;
         }
 
+        belong.Link = s.Path;
+
         return belong;
+    }
+
+    private VisitLogBehavior GetVisitBehavior(CreateLoggerVisitCommand req)
+    {
+        var behavior = VisitLogBehavior.Unknown;
+        var ok = Uri.TryCreate(req.Path, UriKind.Absolute, out var uri);
+        if (!ok || uri == null) return behavior;
+
+        var abs = uri.AbsolutePath.ToLower();
+
+        // 匹配页面访问行为
+        if (abs == "/") return VisitLogBehavior.Home;
+        // 得放前面，这样才能匹配到
+        if (abs.StartsWith("/article/detail")) return VisitLogBehavior.ArticleDetail;
+        if (abs.StartsWith("/article")) return VisitLogBehavior.Article;    
+        if (abs.StartsWith("/moment")) return VisitLogBehavior.Moment;
+        if (abs.StartsWith("/labs")) return VisitLogBehavior.Labs;
+        if (abs.StartsWith("/about")) return VisitLogBehavior.About;
+
+        return behavior;
     }
 }

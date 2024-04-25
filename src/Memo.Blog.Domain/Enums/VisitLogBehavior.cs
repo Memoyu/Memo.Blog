@@ -2,6 +2,9 @@
 
 public enum VisitLogBehavior
 {
+    [Description("未知")]
+    Unknown = -1,
+
     [Description("首页")]
     Home = 0,
 

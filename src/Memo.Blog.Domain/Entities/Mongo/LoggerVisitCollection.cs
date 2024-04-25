@@ -33,7 +33,7 @@ public class LoggerVisitCollection
     /// <summary>
     /// 被访问信息Id（文章Id、动态Id等）
     /// </summary>
-    public long VisitedId { get; set; }
+    public long? VisitedId { get; set; }
 
     /// <summary>
     /// 访问者所在IP

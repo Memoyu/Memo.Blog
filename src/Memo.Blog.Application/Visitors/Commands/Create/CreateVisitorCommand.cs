@@ -1,19 +1,9 @@
 ﻿using Memo.Blog.Domain.Enums;
 
-namespace Memo.Blog.Application.Loggers.Commands.Visit.Generate;
+namespace Memo.Blog.Application.Visitors.Commands.Generate;
 
-public record GenerateVisitorIdCommand : IRequest<Result>
+public record CreateVisitorCommand : IRequest<Result>
 {
-    /// <summary>
-    /// 操作系统
-    /// </summary>
-    public string Os { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 浏览器
-    /// </summary>
-    public string Browser { get; set; } = string.Empty;
-
     /// <summary>
     /// 昵称
     /// </summary>
