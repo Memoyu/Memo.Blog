@@ -12,7 +12,6 @@ public class PageCommentQueryHandler(
     {
         var comments = await commentRepo.Select
             .WhereIf(request.CommentType.HasValue, c => c.CommentType == request.CommentType)
-            .WhereIf(!string.IsNullOrWhiteSpace(request.Nickname), c => c.Nickname.Contains(request.Nickname!))
             .WhereIf(!string.IsNullOrWhiteSpace(request.Ip), c => c.Ip.Contains(request.Ip!))
             .WhereIf(request.DateBegin.HasValue && request.DateEnd.HasValue, c => c.CreateTime <= request.DateEnd && c.CreateTime >= request.DateBegin)
             .OrderByDescending(a => a.CreateTime)
@@ -54,7 +53,6 @@ public class PageCommentClientQueryHandler(
         foreach (var comment in comments)
         {
             var result = mapper.Map<CommentClientResult>(comment);
-            result.FloorString = $"{result.Floor}楼";
             var childs = allChilds.Where(ac => ac.ParentId == comment.CommentId).ToList();
             foreach (var child in childs)
             {
@@ -64,13 +62,9 @@ public class PageCommentClientQueryHandler(
                 {
                     var reply = replies.FirstOrDefault(r => r.CommentId == child.ReplyId);
                     if (reply != null)
-                    {
-                        childResult. Reply = mapper.Map<CommentClientResult>(reply);
-                        childResult.Reply.FloorString = $"{reply.Floor}#";
-                    }
+                        childResult.Reply = mapper.Map<CommentReplyResult>(reply);
                 }
 
-                childResult.FloorString = $"{childResult.Floor}#";
                 result.Childs.Add(childResult);
             }
 

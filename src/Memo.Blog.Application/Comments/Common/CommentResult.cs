@@ -1,4 +1,5 @@
-﻿using Memo.Blog.Domain.Enums;
+﻿using Memo.Blog.Application.Loggers.Common;
+using Memo.Blog.Domain.Enums;
 
 namespace Memo.Blog.Application.Comments.Common;
 
@@ -30,34 +31,9 @@ public record CommentResult
     public CommentType CommentType { get; set; }
 
     /// <summary>
-    /// 昵称
-    /// </summary>
-    public string Nickname { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 电子邮箱
-    /// </summary>
-    public string Email { get; set; } = string.Empty;
-
-    /// <summary>
     /// 评论内容
     /// </summary>
     public string Content { get; set; } = string.Empty;
-
-    /// <summary>
-    ///  头像url
-    /// </summary>
-    public string Avatar { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 头像来源类型
-    /// </summary>
-    public AvatarOriginType AvatarOriginType { get; set; }
-
-    /// <summary>
-    /// 头像来源
-    /// </summary>
-    public string AvatarOrigin { get; set; } = string.Empty;
 
     /// <summary>
     /// 评论所在IP
@@ -78,4 +54,9 @@ public record CommentResult
     /// 创建时间
     /// </summary>
     public DateTime CreateTime { get; set; }
+
+    /// <summary>
+    /// 访客信息
+    /// </summary>
+    public VisitorResult Visitor { get; set; } = new();
 }

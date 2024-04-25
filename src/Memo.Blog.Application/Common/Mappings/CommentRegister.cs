@@ -1,5 +1,6 @@
 ﻿using Memo.Blog.Application.Comments.Common;
 using Memo.Blog.Application.Common.Interfaces.Region;
+using Memo.Blog.Application.Loggers.Common;
 
 namespace Memo.Blog.Application.Common.Mappings;
 
@@ -12,11 +13,23 @@ public class CommentRegister : IRegister
             .Map(d => d.Region, s => GetRegionFormat(s.Region));
 
         config.ForType<Comment, CommentResult>()
+            .Map(d => d.Visitor, s => GetCommentVisitor<VisitorResult>(s))
             .Map(d => d.Belong, s => GetCommentBelog(s))
             .Map(d => d.Region, s => GetRegionFormat(s.Region));
 
         config.ForType<Comment, CommentClientResult>()
+            .Map(d => d.Visitor, s => GetCommentVisitor<VisitorClientResult>(s))
+            .Map(d => d.FloorString, s => GetCommentFloorString(s))
             .Map(d => d.Region, s => GetRegionFormat(s.Region));
+
+        config.ForType<Comment, CommentReplyResult>()
+            .Map(d => d.Nickname, s => GetCommentVisitor<VisitorClientResult>(s).Nickname)
+            .Map(d => d.FloorString, s => $"{s.Floor}#");
+    }
+
+    private string GetCommentFloorString(Comment s)
+    {
+        return s.ParentId.HasValue ? $"{s.Floor}#" : $"{s.Floor}楼";
     }
 
     private string GetRegionFormat(string region)
@@ -44,6 +57,14 @@ public class CommentRegister : IRegister
                 break;
         }
 
-        return belong; 
+        return belong;
+    }
+
+
+    private T GetCommentVisitor<T>(Comment s)
+    {
+        var visitor = MapContext.Current.GetService<IBaseDefaultRepository<Visitor>>().Where(c => c.VisitorId == s.VisitorId).First();
+        var mapper = MapContext.Current.GetService<IMapper>();
+        return mapper.Map<T>(visitor ?? new());
     }
 }

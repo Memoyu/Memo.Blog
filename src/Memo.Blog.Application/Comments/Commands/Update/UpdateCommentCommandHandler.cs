@@ -1,6 +1,4 @@
-﻿
-using Memo.Blog.Domain.Entities.Mongo;
-using Memo.Blog.Domain.Events.Articles;
+﻿using Memo.Blog.Domain.Events.Articles;
 using Microsoft.Extensions.Logging;
 
 namespace Memo.Blog.Application.Comments.Commands.Update;
@@ -8,8 +6,7 @@ namespace Memo.Blog.Application.Comments.Commands.Update;
 public class UpdateCommentCommandHandler(
     ILogger<UpdateCommentCommandHandler> logger,
     IMapper mapper,
-    IBaseDefaultRepository<Comment> commentRepo,
-     IBaseMongoRepository<ArticleCollection> articleMongoRepo
+    IBaseDefaultRepository<Comment> commentRepo
     ) : IRequestHandler<UpdateCommentCommand, Result>
 {
     public async Task<Result> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
@@ -25,9 +22,6 @@ public class UpdateCommentCommandHandler(
         }
 
         // 更新评论
-        comment.Nickname = request.Nickname;
-        comment.Avatar = request.Avatar;
-        comment.Email = request.Email;
         comment.Content = request.Content;
         comment.Showable = request.Showable;
         var row = await commentRepo.UpdateAsync(comment, cancellationToken);

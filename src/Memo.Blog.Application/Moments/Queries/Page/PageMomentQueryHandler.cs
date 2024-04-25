@@ -36,7 +36,8 @@ public class PageMomentQueryHandler(
 public class PageMomentClientQueryHandler(
     IMapper mapper,
     IBaseDefaultRepository<Moment> momentRepo,
-    IBaseDefaultRepository<User> userRepo
+    IBaseDefaultRepository<User> userRepo,
+    IBaseDefaultRepository<Comment> commentRepo
     ) : IRequestHandler<PageMomentClientQuery, Result>
 {
     public async Task<Result> Handle(PageMomentClientQuery request, CancellationToken cancellationToken)
@@ -51,11 +52,19 @@ public class PageMomentClientQueryHandler(
          .Where(u => userIds.Contains(u.UserId))
          .ToListAsync(cancellationToken);
 
+
         var results = new List<MomentClientResult>();
         foreach (var moment in moments)
         {
+            var comments = await commentRepo.Select
+               .Where(c => !c.ParentId.HasValue) // 以没有父评论的评论作为分页的根据
+               .Where(c => c.CommentType == Domain.Enums.CommentType.Moment)
+               .Where(c => c.BelongId == moment.MomentId)
+               .CountAsync(cancellationToken);
+
             var result = mapper.Map<MomentClientResult>(moment);
             result.Announcer = mapper.Map<MomentAnnouncerResult>(announcers.FirstOrDefault(a => a.UserId == moment.CreateUserId) ?? new());
+            result.Comments = (int)comments;
             results.Add(result);
         }
 

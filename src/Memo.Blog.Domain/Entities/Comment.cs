@@ -37,6 +37,13 @@ public class Comment : BaseAuditEntity
     public long BelongId { get; set; }
 
     /// <summary>
+    /// 访客Id
+    /// </summary>
+    [Description("访客Id")]
+    [Column(IsNullable = false)]
+    public long VisitorId { get; set; }
+
+    /// <summary>
     /// 评论类型
     /// </summary>
     [Description("评论类型")]
@@ -44,46 +51,11 @@ public class Comment : BaseAuditEntity
     public CommentType CommentType { get; set; }
 
     /// <summary>
-    /// 昵称
-    /// </summary>
-    [Description("昵称")]
-    [Column(StringLength = 50, IsNullable = false)]
-    public string Nickname { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 电子邮箱
-    /// </summary>
-    [Description("电子邮箱")]
-    [Column(StringLength = 100, IsNullable = false)]
-    public string Email { get; set; } = string.Empty;
-
-    /// <summary>
     /// 评论内容
     /// </summary>
     [Description("评论内容")]
     [Column(StringLength = -2, IsNullable = false)]
     public string Content { get; set; } = string.Empty;
-
-    /// <summary>
-    ///  头像url
-    /// </summary>
-    [Description("头像url")]
-    [Column(IsNullable = false)]
-    public string Avatar { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 头像来源类型
-    /// </summary>
-    [Description("头像来源类型")]
-    [Column(IsNullable = false)]
-    public AvatarOriginType AvatarOriginType { get; set; }
-
-    /// <summary>
-    /// 头像来源
-    /// </summary>
-    [Description("头像来源")]
-    [Column(IsNullable = false)]
-    public string AvatarOrigin { get; set; } = string.Empty;
 
     /// <summary>
     /// 评论所在IP

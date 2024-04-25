@@ -1,6 +1,8 @@
 ﻿using System.Text.Json;
+using Memo.Blog.Application.Common.Extensions;
 using Memo.Blog.Application.Loggers.Common;
 using Memo.Blog.Domain.Entities.Mongo;
+using Memo.Blog.Domain.Enums;
 using MongoDB.Bson.Serialization;
 
 namespace Memo.Blog.Application.Common.Mappings;
@@ -61,29 +63,34 @@ public class LoggerRegister : IRegister
         var belong = new LoggerVisitedResult();
         switch (s.Behavior)
         {
-            case Domain.Enums.VisitLogBehavior.Article:
-                if (s.VisitedId != 0)
-                {
-                    belong = MapContext.Current.GetService<IBaseDefaultRepository<Article>>().Select
-                        .Where(c => c.ArticleId == s.VisitedId)
-                        .First(a => new LoggerVisitedResult { Id = s.VisitedId, Title = a.Title, Link = "" });
-                }
-                else
-                {
-                    belong = new LoggerVisitedResult { Id = s.VisitedId, Title = "文章", Link = "" };
-                }
+            case VisitLogBehavior.Home:
+                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = VisitLogBehavior.Home.GetDescription(), Link = "" };
                 break;
-            case Domain.Enums.VisitLogBehavior.Moment:
-                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = "动态", Link = "" };
+
+            case VisitLogBehavior.Article:
+                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = VisitLogBehavior.Article.GetDescription(), Link = "" };
                 break;
-            case Domain.Enums.VisitLogBehavior.Friend:
-                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = "友链", Link = "" };
+
+            case VisitLogBehavior.ArticleDetail:
+                var article = MapContext.Current.GetService<IBaseDefaultRepository<Article>>().Select
+                    .Where(c => c.ArticleId == s.VisitedId)
+                    .First();
+                belong = article != null
+                    ? new LoggerVisitedResult { Id = s.VisitedId, Title = article.Title, Link = "" }
+                    : new LoggerVisitedResult { Id = s.VisitedId, Title = VisitLogBehavior.ArticleDetail.GetDescription(), Link = "" };
+
                 break;
-            case Domain.Enums.VisitLogBehavior.Tool:
-                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = "工具", Link = "" };
+
+            case VisitLogBehavior.Labs:
+                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = VisitLogBehavior.Labs.GetDescription(), Link = "" };
                 break;
-            case Domain.Enums.VisitLogBehavior.About:
-                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = "关于", Link = "" };
+
+            case VisitLogBehavior.Moment:
+                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = VisitLogBehavior.Moment.GetDescription(), Link = "" };
+                break;
+
+            case VisitLogBehavior.About:
+                belong = new LoggerVisitedResult { Id = s.VisitedId, Title = VisitLogBehavior.About.GetDescription(), Link = "" };
                 break;
         }
 

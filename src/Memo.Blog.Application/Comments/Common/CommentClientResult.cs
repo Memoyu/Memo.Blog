@@ -1,4 +1,6 @@
-﻿namespace Memo.Blog.Application.Comments.Common;
+﻿using Memo.Blog.Application.Loggers.Common;
+
+namespace Memo.Blog.Application.Comments.Common;
 
 public record CommentClientResult
 {
@@ -13,24 +15,9 @@ public record CommentClientResult
     public long CommentId { get; set; }
 
     /// <summary>
-    /// 昵称
-    /// </summary>
-    public string Nickname { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 电子邮箱
-    /// </summary>
-    public string Email { get; set; } = string.Empty;
-
-    /// <summary>
     /// 评论内容
     /// </summary>
     public string Content { get; set; } = string.Empty;
-
-    /// <summary>
-    ///  头像url
-    /// </summary>
-    public string Avatar { get; set; } = string.Empty;
 
     /// <summary>
     /// 评论IP所属
@@ -53,9 +40,14 @@ public record CommentClientResult
     public string FloorString { get; set; } = string.Empty;
 
     /// <summary>
+    /// 访客信息
+    /// </summary>
+    public VisitorClientResult Visitor { get; set; } = new();
+
+    /// <summary>
     /// 回复的评论
     /// </summary>
-    public CommentClientResult? Reply { get; set; }
+    public CommentReplyResult? Reply { get; set; }
 
     /// <summary>
     /// 子评论

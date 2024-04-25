@@ -66,13 +66,8 @@ public class CreateCommentClientCommandHandler(
         {
             var reply = await commentRepo.Select.Where(c => c.CommentId == comment.ReplyId).FirstAsync(cancellationToken);
             if (reply != null)
-            {
-                dto.Reply = mapper.Map<CommentClientResult>(reply);
-                dto.Reply.FloorString = $"{reply.Floor}#";
-            }
+                dto.Reply = mapper.Map<CommentReplyResult>(reply);
         }
-
-        dto.FloorString = $"{comment.Floor}#";
 
         return comment.Id == 0 ? throw new ApplicationException("保存评论失败") : (Result)Result.Success(dto);
     }
