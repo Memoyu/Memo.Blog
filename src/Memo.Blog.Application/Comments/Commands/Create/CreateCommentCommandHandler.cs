@@ -12,7 +12,8 @@ public class CreateCommentClientCommandHandler(
      ICurrentUserProvider currentUserProvider,
      IRegionSearcher searcher,
      IBaseDefaultRepository<Comment> commentRepo,
-     IBaseDefaultRepository<Article> articleRepo
+     IBaseDefaultRepository<Article> articleRepo,
+     IBaseDefaultRepository<Visitor> visitorRepo
     ) : IRequestHandler<CreateCommentClientCommand, Result>
 {
     public async Task<Result> Handle(CreateCommentClientCommand request, CancellationToken cancellationToken)
@@ -59,12 +60,19 @@ public class CreateCommentClientCommandHandler(
         comment.Ip = ip;
         var region = searcher.Search(ip);
         comment.Region = region;
+        comment.Showable = true;
         comment = await commentRepo.InsertAsync(comment, cancellationToken);
+
+        comment.Visitor = await visitorRepo.Select
+            .Where(c => c.VisitorId == comment.VisitorId)
+            .FirstAsync(cancellationToken);
 
         var dto = mapper.Map<CommentClientResult>(comment);
         if (comment.ReplyId.HasValue)
         {
-            var reply = await commentRepo.Select.Where(c => c.CommentId == comment.ReplyId).FirstAsync(cancellationToken);
+            var reply = await commentRepo.Select
+                .Include(c => c.Visitor)
+                .Where(c => c.CommentId == comment.ReplyId).FirstAsync(cancellationToken);
             if (reply != null)
                 dto.Reply = mapper.Map<CommentReplyResult>(reply);
         }

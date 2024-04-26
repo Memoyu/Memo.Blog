@@ -57,7 +57,7 @@ public class PageMomentClientQueryHandler(
         foreach (var moment in moments)
         {
             var comments = await commentRepo.Select
-               .Where(c => !c.ParentId.HasValue) // 以没有父评论的评论作为分页的根据
+               .Where(m => m.Showable)
                .Where(c => c.CommentType == Domain.Enums.CommentType.Moment)
                .Where(c => c.BelongId == moment.MomentId)
                .CountAsync(cancellationToken);

@@ -1,4 +1,5 @@
-﻿using Memo.Blog.Application.Visitors.Common;
+﻿using System.ComponentModel;
+using Memo.Blog.Application.Visitors.Common;
 
 namespace Memo.Blog.Application.Comments.Common;
 
@@ -13,6 +14,11 @@ public record CommentClientResult
     /// 评论Id
     /// </summary>
     public long CommentId { get; set; }
+
+    /// <summary>
+    /// 所属Id（文章Id、动态Id等）
+    /// </summary>
+    public long BelongId { get; set; }
 
     /// <summary>
     /// 评论内容

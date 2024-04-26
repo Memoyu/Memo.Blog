@@ -13,17 +13,15 @@ public class CommentRegister : IRegister
             .Map(d => d.Region, s => GetRegionFormat(s.Region));
 
         config.ForType<Comment, CommentResult>()
-            .Map(d => d.Visitor, s => GetCommentVisitor<VisitorResult>(s))
             .Map(d => d.Belong, s => GetCommentBelog(s))
             .Map(d => d.Region, s => GetRegionFormat(s.Region));
 
         config.ForType<Comment, CommentClientResult>()
-            .Map(d => d.Visitor, s => GetCommentVisitor<VisitorClientResult>(s))
             .Map(d => d.FloorString, s => GetCommentFloorString(s))
             .Map(d => d.Region, s => GetRegionFormat(s.Region));
 
         config.ForType<Comment, CommentReplyResult>()
-            .Map(d => d.Nickname, s => GetCommentVisitor<VisitorClientResult>(s).Nickname)
+            .Map(d => d.Nickname, s => s.Visitor.Nickname)
             .Map(d => d.FloorString, s => $"{s.Floor}#");
     }
 
@@ -58,13 +56,5 @@ public class CommentRegister : IRegister
         }
 
         return belong;
-    }
-
-
-    private T GetCommentVisitor<T>(Comment s)
-    {
-        var visitor = MapContext.Current.GetService<IBaseDefaultRepository<Visitor>>().Where(c => c.VisitorId == s.VisitorId).First();
-        var mapper = MapContext.Current.GetService<IMapper>();
-        return mapper.Map<T>(visitor ?? new());
     }
 }

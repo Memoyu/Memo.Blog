@@ -84,4 +84,10 @@ public class Comment : BaseAuditEntity
     [Description("是否展示")]
     [Column(IsNullable = false)]
     public bool Showable { get; set; }
+
+    /// <summary>
+    /// 访客信息
+    /// </summary>
+    [Navigate(nameof(Visitor.VisitorId), TempPrimary = nameof(VisitorId))]
+    public virtual Visitor Visitor { get; set; } = new();
 }

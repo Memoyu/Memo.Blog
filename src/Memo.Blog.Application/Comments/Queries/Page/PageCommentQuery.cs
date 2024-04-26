@@ -7,6 +7,10 @@ public record PageCommentQuery : PaginationQuery, IAuthorizeableRequest<Result>
 {
     public CommentType? CommentType { get; set; }
 
+    public string? Nickname { get; set; }
+
+    public string? Content { get; set; }
+
     public string? Ip { get; set; }
 
     public DateTime? DateBegin { get; set; }
