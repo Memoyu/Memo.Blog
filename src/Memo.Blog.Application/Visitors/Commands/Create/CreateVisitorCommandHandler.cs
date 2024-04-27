@@ -16,6 +16,7 @@ public class CreateVisitorCommandHandler(
         var regionInfo = searcher.SearchInfo(ip);
         var visitor = mapper.Map<Visitor>(request);
 
+        visitor.Ip = ip;
         visitor.Country = regionInfo?.Country ?? string.Empty;
         visitor.Region = regionInfo?.Region ?? string.Empty;
         visitor.Province = regionInfo?.Province ?? string.Empty;

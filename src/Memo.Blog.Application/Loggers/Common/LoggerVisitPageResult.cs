@@ -25,9 +25,14 @@ public record LoggerVisitPageResult
     public VisitLogBehavior Behavior { get; set; }
 
     /// <summary>
+    /// 访问行为
+    /// </summary>
+    public string BehaviorName { get; set; } = string.Empty;
+
+    /// <summary>
     /// 受访问信息
     /// </summary>
-    public LoggerVisitedResult Visited { get; set; }
+    public LoggerVisitedResult Visited { get; set; } = new();
 
     /// <summary>
     /// 访问者所在IP

@@ -114,10 +114,11 @@ public class PageCommentClientQueryHandler(
             .Include(c => c.Visitor)
             .ToListAsync(cancellationToken);
 
-        var childIds = allChilds.Where(c => c.ReplyId.HasValue).Select(c => c.ReplyId).ToList();
+        var childReplyIds = allChilds.Where(c => c.ReplyId.HasValue).Select(c => c.ReplyId).Distinct().ToList();
         var replies = await commentRepo.Select
-         .Where(c => c.ReplyId.HasValue && childIds.Contains(c.ReplyId))
-         .ToListAsync(cancellationToken);
+            .Include(c => c.Visitor)
+            .Where(c => childReplyIds.Contains(c.CommentId))
+            .ToListAsync(cancellationToken);
 
         foreach (var comment in comments)
         {

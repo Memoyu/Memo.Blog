@@ -37,6 +37,7 @@ public class LoggerRegister : IRegister
             .Map(d => d.Time, s => s.UtcTimeStamp.ToLocalTime());
 
         config.ForType<LoggerVisitCollection, LoggerVisitPageResult>()
+            .Map(d => d.BehaviorName, s => s.Behavior.GetDescription())
             .Map(d => d.Visited, s => GetLoggerVisited(s));
 
         config.ForType<CreateLoggerVisitCommand, LoggerVisitCollection>()

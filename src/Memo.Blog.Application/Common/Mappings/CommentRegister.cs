@@ -1,6 +1,5 @@
 ﻿using Memo.Blog.Application.Comments.Common;
 using Memo.Blog.Application.Common.Interfaces.Region;
-using Memo.Blog.Application.Visitors.Common;
 
 namespace Memo.Blog.Application.Common.Mappings;
 

@@ -69,7 +69,7 @@ public class DashboardAnlyanisQueryHandler(
         var f = Builders<LoggerVisitCollection>.Filter.Empty;
         f &= Builders<LoggerVisitCollection>.Filter.And(
                 Builders<LoggerVisitCollection>.Filter.Gte(u => u.VisitDate, now.Date),
-                Builders<LoggerVisitCollection>.Filter.Lte(u => u.VisitDate, now.Date));
+                Builders<LoggerVisitCollection>.Filter.Lte(u => u.VisitDate, now.Date.AddDays(1).AddSeconds(-1)));
         pageVisitorAnlyanis.TodayPageVisitors = await loggerVisitRepo.CountAsync(f, cancellationToken: cancellationToken);
         pageVisitorAnlyanis.PageVisitors = visitorStats.Sum(a => a.PageVisitors) + pageVisitorAnlyanis.TodayPageVisitors;
 
