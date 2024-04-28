@@ -2,7 +2,6 @@
 using Memo.Blog.Application.Articles.Common;
 using Memo.Blog.Application.Categories.Common;
 using Memo.Blog.Application.Tags.Common;
-using Memo.Blog.Application.Users.Common;
 
 namespace Memo.Blog.Application.Articles.Queries.Get;
 

@@ -47,7 +47,7 @@ public static class DependencyInjection
 
         // 注册后台任务
         services.AddHostedServices();
-        
+
         return services;
     }
 
@@ -80,6 +80,9 @@ public static class DependencyInjection
     {
         // 添加GitHub Repo拉取 定时任务
         services.AddHostedService<GitHubRepoPullTaskService>();
+
+        // 添加访客数据统计 定时任务
+        services.AddHostedService<VisitStatisticsTaskService>();
 
         return services;
     }

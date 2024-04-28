@@ -15,6 +15,11 @@ using IP2Region.Net.XDB;
 using Microsoft.AspNetCore.Hosting;
 using Memo.Blog.Application.Common.Interfaces.Region;
 using Memo.Blog.Infrastructure.Region;
+using Microsoft.Extensions.Configuration;
+using EasyCaching.FreeRedis;
+using FreeRedis;
+using System.Configuration.Provider;
+using EasyCaching.Serialization.SystemTextJson.Configurations;
 
 namespace Memo.Blog.Infrastructure;
 
@@ -27,10 +32,12 @@ public static class DependencyInjection
     {
         services
             .AddAuthorization() // 注册认证
-            .AddAuthentication(configuration) // 注册授权
+            .AddAuthentication() // 注册授权
             .AddPersistenceForMyql(configuration) // 注册MySql数据持久化组件（FreeSql）
             .AddPersistenceForMongo(configuration) // 注册MongoDb持久化组件（MongoDB.Driver）
-            .AddIp2Region();  // 注册IP地址定位 
+            .AddAddEasyCaching(configuration) // 注册缓存组件
+            .AddIp2Region(); // 注册IP地址定位
+        
 
         return services;
     }
@@ -73,7 +80,7 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddAuthentication(this IServiceCollection services)
     {
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
@@ -143,6 +150,27 @@ public static class DependencyInjection
 
         services.AddSingleton<ISearcher>(new Searcher(CachePolicy.Content, xdbPath));
         services.AddSingleton<IRegionSearcher, RegionSearcher>();
+
+        return services;
+    }
+
+    /// <summary>
+    /// 注册缓存组件
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
+    private static IServiceCollection AddAddEasyCaching(this IServiceCollection services, IConfiguration configuration)
+    {
+        var connectionString = configuration.GetConnectionString("Redis") ?? string.Empty;
+        services.AddEasyCaching(options => options.UseFreeRedis(frops =>
+        {
+            frops.DBConfig = new FreeRedisDBOptions
+            {
+                ConnectionStrings = [connectionString],
+            };
+            frops.SerializerName = "system-text-json";
+        }).WithSystemTextJson("system-text-json"));
 
         return services;
     }

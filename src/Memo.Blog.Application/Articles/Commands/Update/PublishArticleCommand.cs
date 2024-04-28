@@ -1,4 +1,4 @@
-﻿namespace Memo.Blog.Application.Articles.Commands.Published;
+﻿namespace Memo.Blog.Application.Articles.Commands.Update;
 
 [Authorize(Permissions = ApiPermission.Article.Publish)]
 [Transactional]

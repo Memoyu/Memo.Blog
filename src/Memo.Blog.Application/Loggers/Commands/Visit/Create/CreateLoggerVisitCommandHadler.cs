@@ -1,13 +1,15 @@
 ﻿using Memo.Blog.Application.Common.Interfaces.Region;
 using Memo.Blog.Application.Security;
 using Memo.Blog.Domain.Entities.Mongo;
+using Memo.Blog.Domain.Events.Articles;
 using Microsoft.Extensions.Logging;
 
 namespace Memo.Blog.Application.Loggers.Commands.Visit.Create;
 
 public class CreateLoggerVisitCommandHadler(
-     ILogger<CreateLoggerVisitCommandHadler> logger,
      IMapper mapper,
+     ILogger<CreateLoggerVisitCommandHadler> logger,
+     IPublisher publisher,
      ICurrentUserProvider currentUserProvider,
      IRegionSearcher searcher,
      IBaseMongoRepository<LoggerVisitCollection> visitlogMongoRepo
@@ -19,6 +21,9 @@ public class CreateLoggerVisitCommandHadler(
 
         log.VisitId = SnowFlakeUtil.NextId();
 
+        var visitorId = currentUserProvider.GetCurrentVisitor();
+        log.VisitorId = visitorId;
+
         var ip = currentUserProvider.GetClientIp();
         log.Ip = ip;
         var region = searcher.SearchInfo(ip);
@@ -29,6 +34,19 @@ public class CreateLoggerVisitCommandHadler(
         log.Isp = region.Isp;
 
         var mongoInsert = await visitlogMongoRepo.InsertOneAsync(log, null, cancellationToken);
+
+        try
+        {
+            if (log.Behavior == Domain.Enums.VisitLogBehavior.ArticleDetail && log.VisitedId.HasValue)
+            {
+                // 更新文章浏览次数
+                await publisher.Publish(new UpdatedArticleViewsEvent(log.VisitedId.Value, log.VisitorId), cancellationToken);
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "更新文章浏览次数异常");
+        }
 
         return mongoInsert ? Result.Success(log.VisitId) : throw new ApplicationException("保存访问日志失败");
     }

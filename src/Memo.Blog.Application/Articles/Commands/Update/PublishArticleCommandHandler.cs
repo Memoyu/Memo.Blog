@@ -2,7 +2,7 @@
 using Memo.Blog.Domain.Events.Articles;
 using MongoDB.Driver;
 
-namespace Memo.Blog.Application.Articles.Commands.Published;
+namespace Memo.Blog.Application.Articles.Commands.Update;
 
 public class PublishArticleCommandHandler(
     IBaseDefaultRepository<Article> articleRepo,
@@ -11,9 +11,8 @@ public class PublishArticleCommandHandler(
 {
     public async Task<Result> Handle(PublishArticleCommand request, CancellationToken cancellationToken)
     {
-        var article = await articleRepo.Select.Where(t => t.ArticleId == request.ArticleId).FirstAsync(cancellationToken);
-        if (article == null) throw new ApplicationException("文章不存在");
-
+        var article = await articleRepo.Select.Where(t => t.ArticleId == request.ArticleId).FirstAsync(cancellationToken)
+            ?? throw new ApplicationException("文章不存在");
         article.AddDomainEvent(new PublishedArticleEvent(article.ArticleId));
 
         article.Status = Domain.Enums.ArticleStatus.Published;

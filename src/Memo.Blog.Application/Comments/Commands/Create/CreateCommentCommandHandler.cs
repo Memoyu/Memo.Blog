@@ -3,6 +3,7 @@ using Memo.Blog.Application.Common.Interfaces.Region;
 using Memo.Blog.Application.Security;
 using Memo.Blog.Domain.Events.Articles;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Memo.Blog.Application.Comments.Commands.Create;
 
@@ -27,6 +28,10 @@ public class CreateCommentClientCommandHandler(
         }
 
         var comment = mapper.Map<Comment>(request);
+
+        var visitorId = currentUserProvider.GetCurrentVisitor();
+        if (visitorId <= 0) throw new ApplicationException("评论文章不存在");
+        comment.VisitorId = visitorId;
 
         // 确认楼层
         // 如果是主楼

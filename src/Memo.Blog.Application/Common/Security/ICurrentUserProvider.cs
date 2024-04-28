@@ -9,6 +9,12 @@ public interface ICurrentUserProvider
     CurrentUser GetCurrentUser();
 
     /// <summary>
+    /// 获取当前访客
+    /// </summary>
+    /// <returns></returns>
+    long GetCurrentVisitor();
+
+    /// <summary>
     /// 获取当前请求Ip
     /// </summary>
     /// <returns></returns>

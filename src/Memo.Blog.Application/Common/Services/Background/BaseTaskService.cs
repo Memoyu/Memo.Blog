@@ -16,28 +16,28 @@ internal abstract class BaseTaskService : BackgroundService
     /// 运行周期的任务
     /// </summary>
     /// <param name="cancellationToken">cancellationToken</param>
+    /// <param name="type">时间类型 0：小时、分钟、秒；1：天；</param>
     /// <param name="time">TimeSpan</param>
-    /// <param name="timeType">时间类型 0：小时、分钟、秒；1：天；</param>
     /// <param name="nextTickHandle">周期任务</param>
     /// <returns>returns</returns>
-    public async Task ExecuteScheduledTaskAsync(CancellationToken cancellationToken, TimeSpan time, int timeType, Func<Task> nextTickHandle)
+    public async Task ExecuteScheduledTaskAsync(CancellationToken cancellationToken, ScheduledTaskTimeType type, TimeSpan time, Func<Task> nextTickHandle)
     {
         while (!cancellationToken.IsCancellationRequested)
         {
-            var delay = CalcDelayToNextTime(time, timeType);
+            var delay = CalcDelayToNextTime(type, time);
             _logger.LogInformation($"{GetType().Name}自动化程序，将在{delay}后处理");
             await Task.Delay(delay, cancellationToken);
             await nextTickHandle();
         }
     }
 
-    private TimeSpan CalcDelayToNextTime(TimeSpan momentTime, int timeType)
+    private TimeSpan CalcDelayToNextTime(ScheduledTaskTimeType type, TimeSpan momentTime)
     {
-        switch (timeType)
+        switch (type)
         {
-            case 0:
+            case ScheduledTaskTimeType.Time:
                 return DateTime.Now.Add(momentTime) - DateTime.Now;
-            case 1:
+            case ScheduledTaskTimeType.Day:
                 return DateTime.Now.TimeOfDay < momentTime ?
                         DateTime.Now.Date.Add(momentTime) - DateTime.Now : // 延迟到今天
                         DateTime.Now.Date.AddDays(1).Add(momentTime) - DateTime.Now; // 延迟到明天
@@ -45,4 +45,10 @@ internal abstract class BaseTaskService : BackgroundService
                 throw new Exception("未指定的时间类型");
         }
     }
+}
+
+internal enum ScheduledTaskTimeType
+{
+    Time, // 小时、分钟、秒
+    Day, // 天
 }

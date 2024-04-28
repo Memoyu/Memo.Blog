@@ -21,11 +21,6 @@ public class CreateCommentClientCommand : IRequest<Result>
     public long BelongId { get; set; }
 
     /// <summary>
-    /// 访客Id
-    /// </summary>
-    public long VisitorId { get; set; }
-
-    /// <summary>
     /// 评论类型
     /// </summary>
     public CommentType CommentType { get; set; }
@@ -43,11 +38,6 @@ public class CreateCommentCommandValidator : AbstractValidator<CreateCommentClie
         RuleFor(x => x.CommentType)
             .IsInEnum()
             .WithMessage("评论类型错误");
-
-        RuleFor(x => x.VisitorId)
-           .Must(x => x > 0)
-           .WithMessage("访客Id不能小于0");
-
     }
 }
 

@@ -29,7 +29,7 @@ public class DashboardAnlyanisQueryHandler(
         var summaryAnlyanis = new SummaryAnlyanisResult
         {
             WeekArticles = await articleRepo.Select
-                        .Where(a => a.CreateTime >= weekBegin && a.CreateTime <= weekEnd)
+                        .Where(a => a.CreateTime >= weekBegin && a.CreateTime <= now)
                         .CountAsync(cancellationToken),
             Articles = await articleRepo.Select.CountAsync(cancellationToken),
             Moments = await momentRepo.Select.CountAsync(cancellationToken),
@@ -48,7 +48,7 @@ public class DashboardAnlyanisQueryHandler(
         };
         foreach (var date in weekRanges)
         {
-            var total = visitorStats.Where(v => date == v.CreateTime.Date).FirstOrDefault()?.UniqueVisitors ?? 0;
+            var total = visitorStats.Where(v => date == v.Date.Date).FirstOrDefault()?.UniqueVisitors ?? 0;
             uniqueVisitorAnlyanis.WeekUniqueVisitors.Add(new MetricItemResult(date.ToString("yyyy-MM-dd"), total));
         }
 
@@ -62,7 +62,7 @@ public class DashboardAnlyanisQueryHandler(
 
         foreach (var date in weekRanges)
         {
-            var total = visitorStats.Where(v => date == v.CreateTime.Date).FirstOrDefault()?.PageVisitors ?? 0;
+            var total = visitorStats.Where(v => date == v.Date.Date).FirstOrDefault()?.PageVisitors ?? 0;
             pageVisitorAnlyanis.WeekPageVisitors.Add(new MetricItemResult(date.ToString("yyyy-MM-dd"), total));
         }
 

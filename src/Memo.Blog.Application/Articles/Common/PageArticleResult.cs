@@ -37,6 +37,11 @@ public class PageArticleResult
     public ArticleStatus Status { get; set; }
 
     /// <summary>
+    /// 评论条数
+    /// </summary>
+    public int Comments { get; set; }
+
+    /// <summary>
     /// 浏览次数
     /// </summary>
     public int Views { get; set; }

@@ -2,7 +2,6 @@
 using Memo.Blog.Application.Common.Interfaces.Services.GitHubs;
 using Memo.Blog.Application.Common.Models.Settings;
 using Memo.Blog.Application.Common.Services.GitHubs;
-using Memo.Blog.Domain.Constants;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

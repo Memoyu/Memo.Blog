@@ -23,10 +23,14 @@ public class ArticleRegister : IRegister
             .Map(d => d.ReadingTime, s => s.Content.Length / 800);
 
         config.ForType<Article, PageArticleResult>()
+            .Map(d => d.Comments, s => s.Comments.Count)
             .Map(d => d.Tags, s => s.ArticleTags.Select(at => at.Tag).ToList());
 
         config.ForType<Article, PageArticleClientResult>()
            .Map(d => d.Tags, s => s.ArticleTags.Select(at => at.Tag).ToList());
+        
+        config.ForType<Article, RankingArticleResult>()
+           .Map(d => d.Comments, s => s.Comments.Count);
 
         config.ForType<Article, ArticleResult>()
         .Map(d => d.Tags, s => s.ArticleTags.Select(at => at.Tag).ToList());

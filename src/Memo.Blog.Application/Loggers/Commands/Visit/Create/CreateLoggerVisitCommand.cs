@@ -3,11 +3,6 @@
 public record CreateLoggerVisitCommand : IAuthorizeableRequest<Result>
 {
     /// <summary>
-    /// 访问者标识Id
-    /// </summary>
-    public long VisitorId { get; set; }
-
-    /// <summary>
     /// 访问路径
     /// </summary>
     public string Path { get; set; } = string.Empty;
@@ -30,11 +25,5 @@ public record CreateLoggerVisitCommand : IAuthorizeableRequest<Result>
 
 public class CreateLoggerVisitCommandValidator : AbstractValidator<CreateLoggerVisitCommand>
 {
-    public CreateLoggerVisitCommandValidator()
-    {
-        RuleFor(x => x.VisitorId)
-           .NotEmpty()
-           .WithMessage("访问者标识Id不能为空");
-    }
 }
 

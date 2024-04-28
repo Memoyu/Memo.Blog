@@ -17,6 +17,19 @@ public class CurrentUserProvider(IHttpContextAccessor _httpContextAccessor) : IC
         return new CurrentUser(id, username, email);
     }
 
+    public long GetCurrentVisitor()
+    {
+        var visitorId = 0L;
+        var context = _httpContextAccessor.HttpContext;
+        if (context is null) return visitorId;
+
+        var hasHeader = context.Request.Headers.TryGetValue("Visitor-Id", out var value);
+        if (!hasHeader) return visitorId;
+
+        var well = long.TryParse(value, out visitorId);
+        return visitorId;
+    }
+
     public string GetClientIp()
     {
         var context = _httpContextAccessor.HttpContext;
@@ -30,6 +43,7 @@ public class CurrentUserProvider(IHttpContextAccessor _httpContextAccessor) : IC
 
         return ip;
     }
+
     private string? GetSingleClaimValue(string claimType) =>
         _httpContextAccessor.HttpContext!.User?.Claims?.FirstOrDefault(claim => claim.Type == claimType)?.Value;
 }

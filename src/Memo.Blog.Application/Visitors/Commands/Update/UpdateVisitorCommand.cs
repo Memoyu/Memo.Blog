@@ -7,7 +7,7 @@ public record UpdateVisitorCommand : IRequest<Result>
     /// <summary>
     /// 访客Id
     /// </summary>
-    public long VisitorId { get; set; }
+    public long? VisitorId { get; set; }
 
     /// <summary>
     /// 昵称
@@ -39,10 +39,6 @@ public class UpdateVisitorCommandValidator : AbstractValidator<UpdateVisitorComm
 {
     public UpdateVisitorCommandValidator()
     {
-        RuleFor(x => x.VisitorId)
-          .Must(x => x > 0)
-          .WithMessage("访客Id必须大于0");
-
         RuleFor(x => x.Nickname)
             .NotEmpty()
             .WithMessage("访客昵称不能为空");

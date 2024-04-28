@@ -132,4 +132,10 @@ public class Article : BaseAuditEntity
     /// </summary>
     [Navigate(nameof(User.UserId), TempPrimary = nameof(CreateUserId))]
     public virtual User Author { get; set; } = new();
+
+    /// <summary>
+    /// 文章评论
+    /// </summary>
+    [Navigate(nameof(Comment.BelongId), TempPrimary = nameof(ArticleId))]
+    public virtual List<Comment> Comments { get; set; } = [];
 }
