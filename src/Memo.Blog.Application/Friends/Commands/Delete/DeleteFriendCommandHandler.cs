@@ -6,8 +6,8 @@ public class DeleteFriendCommandHandler(
 {
     public async Task<Result> Handle(DeleteFriendCommand request, CancellationToken cancellationToken)
     {
-        var category = await friendRepo.Select.Where(c => c.FriendId == request.FriendId).FirstAsync(cancellationToken) ?? throw new ApplicationException("友链不存在");
-        var affrows = await friendRepo.DeleteAsync(category, cancellationToken);
+        var friend = await friendRepo.Select.Where(c => c.FriendId == request.FriendId).FirstAsync(cancellationToken) ?? throw new ApplicationException("友链不存在");
+        var affrows = await friendRepo.DeleteAsync(friend, cancellationToken);
 
         return affrows > 0 ? Result.Success() : throw new ApplicationException("删除友链失败");
     }

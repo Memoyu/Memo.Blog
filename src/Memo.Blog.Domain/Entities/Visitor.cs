@@ -52,37 +52,9 @@ public class Visitor : BaseAuditEntity
     public string Ip { get; set; } = string.Empty;
 
     /// <summary>
-    /// 访问者IP所属国家
+    /// 评论IP所属
     /// </summary>
-    [Description("访问者IP所属国家")]
-    [Column(StringLength = 50, IsNullable = false)]
-    public string Country { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 访问者IP所属区域
-    /// </summary>
-    [Description("访问者IP所属区域")]
-    [Column(StringLength = 50, IsNullable = false)]
+    [Description("评论IP所属")]
+    [Column(StringLength = 100, IsNullable = false)]
     public string Region { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 访问者IP所属省市
-    /// </summary>
-    [Description("访问者IP所属省市")]
-    [Column(StringLength = 50, IsNullable = false)]
-    public string Province { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 访问者IP所属城市
-    /// </summary>
-    [Description("访问者IP所属城市")]
-    [Column(StringLength = 50, IsNullable = false)]
-    public string City { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 访问者IP所属互联网服务商
-    /// </summary>
-    [Description("访问者IP所属互联网服务商")]
-    [Column(StringLength = 50, IsNullable = false)]
-    public string Isp { get; set; } = string.Empty;
 }

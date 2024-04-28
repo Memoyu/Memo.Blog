@@ -13,4 +13,9 @@ public class VisitorResult : VisitorClientResult
     /// 头像来源
     /// </summary>
     public string? AvatarOrigin { get; set; }
+
+    /// <summary>
+    /// 访客归属
+    /// </summary>
+    public string Region { get; set; } = string.Empty;
 }

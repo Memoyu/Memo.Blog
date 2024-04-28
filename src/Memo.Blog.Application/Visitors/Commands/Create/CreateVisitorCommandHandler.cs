@@ -12,16 +12,12 @@ public class CreateVisitorCommandHandler(
 {
     public async Task<Result> Handle(CreateVisitorCommand request, CancellationToken cancellationToken)
     {
-        var ip = currentUserProvider.GetClientIp();
-        var regionInfo = searcher.SearchInfo(ip);
         var visitor = mapper.Map<Visitor>(request);
 
+        var ip = currentUserProvider.GetClientIp();
+        var region = searcher.Search(ip);
         visitor.Ip = ip;
-        visitor.Country = regionInfo?.Country ?? string.Empty;
-        visitor.Region = regionInfo?.Region ?? string.Empty;
-        visitor.Province = regionInfo?.Province ?? string.Empty;
-        visitor.City = regionInfo?.City ?? string.Empty;
-        visitor.Isp = regionInfo?.Isp ?? string.Empty;
+        visitor.Region = region ?? string.Empty;
 
         var entity = await visitorRepo.InsertAsync(visitor, cancellationToken);
         return entity.Id <= 0 ? throw new ApplicationException("生成访客Id异常") : Result.Success(entity.VisitorId);
