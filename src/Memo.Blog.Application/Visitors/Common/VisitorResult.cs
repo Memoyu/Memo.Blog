@@ -18,4 +18,9 @@ public class VisitorResult : VisitorClientResult
     /// 访客归属
     /// </summary>
     public string Region { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 创建时间
+    /// </summary>
+    public DateTime CreateTime { get; set; }
 }

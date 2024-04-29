@@ -5,15 +5,15 @@
 /// </summary>
 public enum AvatarOriginType
 {
-    [Description("未知来源")]
+    [Description("未知")]
     Unknown = 0,
 
-    [Description("来源QQ")]
+    [Description("QQ")]
     Qq = 1,
 
-    [Description("来源github")]
+    [Description("GitHub")]
     Github = 2,
 
-    [Description("用户上传")]
+    [Description("上传")]
     Upload = 3,
 }
