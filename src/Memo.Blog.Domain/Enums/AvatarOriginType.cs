@@ -14,6 +14,6 @@ public enum AvatarOriginType
     [Description("GitHub")]
     Github = 2,
 
-    [Description("上传")]
+    [Description("链接")]
     Upload = 3,
 }
