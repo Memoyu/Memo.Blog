@@ -74,10 +74,10 @@ public class ArticleController(ISender mediator) : ApiAdminController
     }
 
     /// <summary>
-    /// 获取文章分页列表汇总
+    /// 获取文章汇总
     /// </summary>
     /// <returns></returns>
-    [HttpGet("page/summary")]
+    [HttpGet("summary")]
     public async Task<Result> GetPageSummaryAsync([FromQuery] SummaryArticleQuery request)
     {
         return await mediator.Send(request);

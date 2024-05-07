@@ -71,3 +71,34 @@ public class SummaryArticleQueryHandler(
         });
     }
 }
+
+public class SummaryArticleClientQueryHandler(
+    IMapper mapper,
+    IBaseDefaultRepository<Article> articleRepo,
+    IBaseDefaultRepository<Moment> memontRepo,
+    IBaseDefaultRepository<Comment> commentRepo
+    ) : IRequestHandler<SummaryArticleClientQuery, Result>
+{
+    public async Task<Result> Handle(SummaryArticleClientQuery request, CancellationToken cancellationToken)
+    {
+        var articles = await articleRepo.Select
+            .Where(a => a.Status == ArticleStatus.Published)
+            .CountAsync(cancellationToken);
+
+        var moments = await memontRepo.Select
+                   .Where(c => c.Showable)
+                   .CountAsync(cancellationToken);
+
+        var comments = await commentRepo.Select
+            .Where(c => c.CommentType == CommentType.Article)
+            .CountAsync(cancellationToken);
+
+
+        return Result.Success(new SummaryArticleClientResult
+        {
+            Articles = articles,
+            Moments = moments,
+            Comments = comments,
+        });
+    }
+}
