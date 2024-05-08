@@ -28,7 +28,7 @@ public class Role : BaseAuditEntity
     /// 角色类型
     /// </summary>
     [Description("角色类型")]
-    [Column(IsNullable = false)]
+    [Column(IsNullable = false, CanUpdate = false)]
     public RoleType Type { get; set; }
 
     /// <summary>

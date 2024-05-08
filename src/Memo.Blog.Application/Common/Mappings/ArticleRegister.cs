@@ -14,13 +14,13 @@ public class ArticleRegister : IRegister
 
         config.ForType<CreateArticleCommand, Article>()
             .Map(d => d.WordNumber, s => s.Content.Length)
-            .Map(d => d.ReadingTime, s => s.Content.Length / 800)
+            .Map(d => d.ReadingTime, s => GetReadingTime(s.Content))
             .Map(d => d.Category, s => MapContext.Current.GetService<IBaseDefaultRepository<Category>>().Select.Where(c => c.CategoryId == s.CategoryId).ToOne())
             .Map(d => d.Author, userMap);
 
         config.ForType<UpdateArticleCommand, Article>()
             .Map(d => d.WordNumber, s => s.Content.Length)
-            .Map(d => d.ReadingTime, s => s.Content.Length / 800);
+            .Map(d => d.ReadingTime, s => GetReadingTime(s.Content));
 
         config.ForType<Article, PageArticleResult>()
             .Map(d => d.Comments, s => s.Comments.Count)
@@ -35,4 +35,7 @@ public class ArticleRegister : IRegister
         config.ForType<Article, ArticleResult>()
         .Map(d => d.Tags, s => s.ArticleTags.Select(at => at.Tag).ToList());
     }
+
+    private int GetReadingTime(string content) => (int)Math.Ceiling((decimal)content.Length / 800);
+
 }
