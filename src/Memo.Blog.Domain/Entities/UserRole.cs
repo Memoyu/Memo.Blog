@@ -26,11 +26,11 @@ public class UserRole : BaseAuditEntity
     /// 权限
     /// </summary>
     [Navigate(nameof(User.UserId), TempPrimary = nameof(UserId))]
-    public virtual User User { get; set; }
+    public virtual User User { get; set; } = new();
 
     /// <summary>
     /// 角色
     /// </summary>
     [Navigate(nameof(Role.RoleId), TempPrimary = nameof(RoleId))]
-    public virtual Role Role { get; set; }
+    public virtual Role Role { get; set; } = new();
 }

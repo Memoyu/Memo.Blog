@@ -26,11 +26,11 @@ public class ArticleTag : BaseAuditEntity
     /// 标签
     /// </summary>
     [Navigate(nameof(Tag.TagId), TempPrimary = nameof(TagId))]
-    public virtual Tag Tag { get; set; }
+    public virtual Tag Tag { get; set; } = new();
 
     /// <summary>
     /// 文章
     /// </summary>
     [Navigate(nameof(Article.ArticleId), TempPrimary = nameof(ArticleId))]
-    public virtual Article Article { get; set; }
+    public virtual Article Article { get; set; } = new();
 }

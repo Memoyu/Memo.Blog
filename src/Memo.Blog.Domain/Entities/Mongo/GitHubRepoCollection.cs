@@ -13,139 +13,139 @@ public class GitHubRepoCollection
     public int Id { get; set; }
 
     [JsonPropertyName("node_id")]
-    public string NodeId { get; set; }
+    public string NodeId { get; set; } = string.Empty;
 
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     [JsonPropertyName("full_name")]
-    public string FullName { get; set; }
+    public string FullName { get; set; } = string.Empty;
 
     [JsonPropertyName("private")]
     public bool Private { get; set; }
 
     [JsonPropertyName("owner")]
-    public Owner Owner { get; set; }
+    public Owner Owner { get; set; } = new();
 
     [JsonPropertyName("html_url")]
-    public string HtmlUrl { get; set; }
+    public string HtmlUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("description")]
-    public string Description { get; set; }
+    public string Description { get; set; } = string.Empty;
 
     [JsonPropertyName("fork")]
     public bool Fork { get; set; }
 
     [JsonPropertyName("url")]
-    public string Url { get; set; }
+    public string Url { get; set; } = string.Empty;
 
     [JsonPropertyName("forks_url")]
-    public string ForksUrl { get; set; }
+    public string ForksUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("keys_url")]
-    public string KeysUrl { get; set; }
+    public string KeysUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("collaborators_url")]
-    public string CollaboratorsUrl { get; set; }
+    public string CollaboratorsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("teams_url")]
-    public string TeamsUrl { get; set; }
+    public string TeamsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("hooks_url")]
-    public string HooksUrl { get; set; }
+    public string HooksUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("issue_events_url")]
-    public string IssueEventsUrl { get; set; }
+    public string IssueEventsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("events_url")]
-    public string EventsUrl { get; set; }
+    public string EventsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("assignees_url")]
-    public string AssigneesUrl { get; set; }
+    public string AssigneesUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("branches_url")]
-    public string BranchesUrl { get; set; }
+    public string BranchesUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("tags_url")]
-    public string TagsUrl { get; set; }
+    public string TagsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("blobs_url")]
-    public string BlobsUrl { get; set; }
+    public string BlobsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("git_tags_url")]
-    public string GitTagsUrl { get; set; }
+    public string GitTagsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("git_refs_url")]
-    public string GitRefsUrl { get; set; }
+    public string GitRefsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("trees_url")]
-    public string TreesUrl { get; set; }
+    public string TreesUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("statuses_url")]
-    public string StatusesUrl { get; set; }
+    public string StatusesUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("languages_url")]
-    public string LanguagesUrl { get; set; }
+    public string LanguagesUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("stargazers_url")]
-    public string StargazersUrl { get; set; }
+    public string StargazersUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("contributors_url")]
-    public string ContributorsUrl { get; set; }
+    public string ContributorsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("subscribers_url")]
-    public string SubscribersUrl { get; set; }
+    public string SubscribersUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("subscription_url")]
-    public string SubscriptionUrl { get; set; }
+    public string SubscriptionUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("commits_url")]
-    public string CommitsUrl { get; set; }
+    public string CommitsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("git_commits_url")]
-    public string GitCommitsUrl { get; set; }
+    public string GitCommitsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("comments_url")]
-    public string CommentsUrl { get; set; }
+    public string CommentsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("issue_comment_url")]
-    public string IssueCommentUrl { get; set; }
+    public string IssueCommentUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("contents_url")]
-    public string ContentsUrl { get; set; }
+    public string ContentsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("compare_url")]
-    public string CompareUrl { get; set; }
+    public string CompareUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("merges_url")]
-    public string MergesUrl { get; set; }
+    public string MergesUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("archive_url")]
-    public string ArchiveUrl { get; set; }
+    public string ArchiveUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("downloads_url")]
-    public string DownloadsUrl { get; set; }
+    public string DownloadsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("issues_url")]
-    public string IssuesUrl { get; set; }
+    public string IssuesUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("pulls_url")]
-    public string PullsUrl { get; set; }
+    public string PullsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("milestones_url")]
-    public string MilestonesUrl { get; set; }
+    public string MilestonesUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("notifications_url")]
-    public string NotificationsUrl { get; set; }
+    public string NotificationsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("labels_url")]
-    public string LabelsUrl { get; set; }
+    public string LabelsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("releases_url")]
-    public string ReleasesUrl { get; set; }
+    public string ReleasesUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("deployments_url")]
-    public string DeploymentsUrl { get; set; }
+    public string DeploymentsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("created_at")]
     public DateTime CreatedAt { get; set; }
@@ -157,19 +157,19 @@ public class GitHubRepoCollection
     public DateTime PushedAt { get; set; }
 
     [JsonPropertyName("git_url")]
-    public string GitUrl { get; set; }
+    public string GitUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("ssh_url")]
-    public string SshUrl { get; set; }
+    public string SshUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("clone_url")]
-    public string CloneUrl { get; set; }
+    public string CloneUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("svn_url")]
-    public string SvnUrl { get; set; }
+    public string SvnUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("homepage")]
-    public string Homepage { get; set; }
+    public string Homepage { get; set; } = string.Empty;
 
     [JsonPropertyName("size")]
     public int Size { get; set; }
@@ -181,7 +181,7 @@ public class GitHubRepoCollection
     public int WatchersCount { get; set; }
 
     [JsonPropertyName("language")]
-    public string Language { get; set; }
+    public string Language { get; set; } = string.Empty;
 
     [JsonPropertyName("has_issues")]
     public bool HasIssues { get; set; }
@@ -205,7 +205,7 @@ public class GitHubRepoCollection
     public int ForksCount { get; set; }
 
     [JsonPropertyName("mirror_url")]
-    public string MirrorUrl { get; set; }
+    public string MirrorUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("archived")]
     public bool Archived { get; set; }
@@ -217,7 +217,7 @@ public class GitHubRepoCollection
     public int OpenIssuesCount { get; set; }
 
     [JsonPropertyName("license")]
-    public RepoLicense License { get; set; }
+    public RepoLicense License { get; set; } = new();
 
     [JsonPropertyName("allow_forking")]
     public bool AllowForking { get; set; }
@@ -229,10 +229,10 @@ public class GitHubRepoCollection
     public bool WebCommitSignoffRequired { get; set; }
 
     [JsonPropertyName("topics")]
-    public List<string> Topics { get; set; }
+    public List<string> Topics { get; set; } = new();
 
     [JsonPropertyName("visibility")]
-    public string Visibility { get; set; }
+    public string Visibility { get; set; } = string.Empty;
 
     [JsonPropertyName("forks")]
     public int Forks { get; set; }
@@ -244,13 +244,13 @@ public class GitHubRepoCollection
     public int Watchers { get; set; }
 
     [JsonPropertyName("default_branch")]
-    public string DefaultBranch { get; set; }
+    public string DefaultBranch { get; set; } = string.Empty;
 
     [JsonPropertyName("permissions")]
-    public Permissions Permissions { get; set; }
+    public Permissions Permissions { get; set; } = new();
 
     [JsonPropertyName("temp_clone_token")]
-    public string TempCloneToken { get; set; }
+    public string TempCloneToken { get; set; } = string.Empty;
 
     [JsonPropertyName("allow_squash_merge")]
     public bool AllowSquashMerge { get; set; }
@@ -274,19 +274,19 @@ public class GitHubRepoCollection
     public bool UseSquashPrTitleAsDefault { get; set; }
 
     [JsonPropertyName("squash_merge_commit_message")]
-    public string SquashMergeCommitMessage { get; set; }
+    public string SquashMergeCommitMessage { get; set; } = string.Empty;
 
     [JsonPropertyName("squash_merge_commit_title")]
-    public string SquashMergeCommitTitle { get; set; }
+    public string SquashMergeCommitTitle { get; set; } = string.Empty;
 
     [JsonPropertyName("merge_commit_message")]
-    public string MergeCommitMessage { get; set; }
+    public string MergeCommitMessage { get; set; } = string.Empty;
 
     [JsonPropertyName("merge_commit_title")]
-    public string MergeCommitTitle { get; set; }
+    public string MergeCommitTitle { get; set; } = string.Empty;
 
     [JsonPropertyName("security_and_analysis")]
-    public SecurityAndAnalysis SecurityAndAnalysis { get; set; }
+    public SecurityAndAnalysis SecurityAndAnalysis { get; set; } = new();
 
     [JsonPropertyName("network_count")]
     public int NetworkCount { get; set; }

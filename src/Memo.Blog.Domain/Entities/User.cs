@@ -60,5 +60,5 @@ public class User : BaseAuditEntity
     /// 角色
     /// </summary>
     [Navigate(nameof(UserRole.UserId), TempPrimary = nameof(UserId))]
-    public virtual List<UserRole> UserRoles { get; set; }
+    public virtual List<UserRole> UserRoles { get; set; } = [];
 }
