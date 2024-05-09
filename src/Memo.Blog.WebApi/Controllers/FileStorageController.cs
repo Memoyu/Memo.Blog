@@ -3,6 +3,6 @@
 /// <summary>
 /// 文件存储
 /// </summary>
-public class FileStorageController(ISender mediator) : ApiController
+public class FileStorageController() : ApiController
 {
 }

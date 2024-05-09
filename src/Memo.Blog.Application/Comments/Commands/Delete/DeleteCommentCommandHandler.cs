@@ -1,14 +1,10 @@
-﻿using Memo.Blog.Application.Comments.Commands.Update;
-using Memo.Blog.Domain.Entities.Mongo;
-using Memo.Blog.Domain.Events.Articles;
+﻿using Memo.Blog.Domain.Events.Articles;
 using Microsoft.Extensions.Logging;
 
 namespace Memo.Blog.Application.Comments.Commands.Delete;
 public class DeleteCommentCommandHandler(
-    ILogger<UpdateCommentCommandHandler> logger,
-    IMapper mapper,
-    IBaseDefaultRepository<Comment> commentRepo,
-     IBaseMongoRepository<ArticleCollection> articleMongoRepo
+    // ILogger<UpdateCommentCommandHandler> logger,
+    IBaseDefaultRepository<Comment> commentRepo
     ) : IRequestHandler<DeleteCommentCommand, Result>
 {
     public async Task<Result> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)

@@ -23,7 +23,7 @@ public record CommentResult
     /// <summary>
     /// 所属信息（文章、动态等）
     /// </summary>
-    public CommentBelongResult Belong { get; set; }
+    public CommentBelongResult Belong { get; set; } = new();
 
     /// <summary>
     /// 评论类型

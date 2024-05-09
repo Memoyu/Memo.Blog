@@ -2,7 +2,7 @@
 
 namespace Memo.Blog.Application.Users.Events;
 
-public class DeletedUserEventHadler(IBaseDefaultRepository<User> userRepo) : INotificationHandler<DeletedUserEvent>
+public class DeletedUserEventHadler() : INotificationHandler<DeletedUserEvent>
 {
     public Task Handle(DeletedUserEvent notification, CancellationToken cancellationToken)
     {

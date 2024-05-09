@@ -4,16 +4,14 @@ using Microsoft.Extensions.Logging;
 namespace Memo.Blog.Application.Comments.Commands.Update;
 
 public class UpdateCommentCommandHandler(
-    ILogger<UpdateCommentCommandHandler> logger,
-    IMapper mapper,
+    // ILogger<UpdateCommentCommandHandler> logger,
     IBaseDefaultRepository<Comment> commentRepo
     ) : IRequestHandler<UpdateCommentCommand, Result>
 {
     public async Task<Result> Handle(UpdateCommentCommand request, CancellationToken cancellationToken)
     {
-        var comment = await commentRepo.Select.Where(c => c.CommentId == request.CommentId).FirstAsync(cancellationToken);
-        if (comment == null) throw new ApplicationException("评论不存在");
-
+        var comment = await commentRepo.Select.Where(c => c.CommentId == request.CommentId).FirstAsync(cancellationToken) ??
+            throw new ApplicationException("评论不存在");
 
         // 如果是文章评论，则需要更新mongodb数据
         if (comment.CommentType == Domain.Enums.CommentType.Article)

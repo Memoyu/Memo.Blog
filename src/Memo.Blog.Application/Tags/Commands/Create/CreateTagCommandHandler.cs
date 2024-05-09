@@ -1,7 +1,6 @@
 ﻿namespace Memo.Blog.Application.Tags.Commands.Create;
 
 public class CreateTagCommandHandler(
-    IMapper mapper,
     IBaseDefaultRepository<Tag> tagRepo
     ) : IRequestHandler<CreateTagCommand, Result>
 {

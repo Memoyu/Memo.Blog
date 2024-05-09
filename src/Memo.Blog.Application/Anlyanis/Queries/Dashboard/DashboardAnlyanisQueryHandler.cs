@@ -2,12 +2,10 @@
 using Memo.Blog.Application.Common.Extensions;
 using Memo.Blog.Domain.Entities.Mongo;
 using MongoDB.Driver;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using static Memo.Blog.Application.Common.Extensions.DateTimeExtension;
 
 namespace Memo.Blog.Application.Anlyanis.Queries.Dashboard;
 public class DashboardAnlyanisQueryHandler(
-    IMapper mapper,
     IBaseDefaultRepository<Article> articleRepo,
     IBaseDefaultRepository<Moment> momentRepo,
     IBaseDefaultRepository<Friend> friendRepo,

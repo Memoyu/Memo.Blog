@@ -16,8 +16,8 @@ public class AuthorizationService(
         var roleIds = userRoles.Select(ur => ur.RoleId).ToList();
         var rolePermissions = await rolePermissionRepo.Select
             .Include(rp => rp.Permission)
-            .Where(rp => roleIds.Contains(rp.RoleId))
-            .ToListAsync(rp => rp.Permission.Signature);
+            .Where(rp => rp.Permission != null && roleIds.Contains(rp.RoleId))
+            .ToListAsync(rp => rp.Permission!.Signature);
 
         if (requiredPermissions.Except(rolePermissions).Any())
         {

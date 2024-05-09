@@ -11,23 +11,26 @@ public class UpdateProjectCommandHandler(
 {
     public async Task<Result> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
     {
-        var current = await openSourceRepo.Select.Where(p => request.ProjectId == p.ProjectId).FirstAsync(cancellationToken) ?? throw new ApplicationException("项目不存在");
+        var project = await openSourceRepo.Select.Where(p => request.ProjectId == p.ProjectId).FirstAsync(cancellationToken) ?? throw new ApplicationException("项目不存在");
 
-        var entity = mapper.Map<OpenSource>(request);
-        entity.Id = current.Id;
-        entity.ProjectId = current.ProjectId;
+        var update = mapper.Map<OpenSource>(request);
+        update.Id = project.Id;
+        update.ProjectId = project.ProjectId;
+        update.Star = project.Star;
+        update.Fork = project.Fork;
+
         if (request.RepoId.HasValue)
         {
             var f = Builders<GitHubRepoCollection>.Filter.Empty;
             f = Builders<GitHubRepoCollection>.Filter.Eq(u => u.Id, request.RepoId.Value);
 
             var repo = (await githubRepo.FindListAsync(f, cancellationToken: cancellationToken))?.FirstOrDefault() ?? throw new ApplicationException("指定的GitHub源项目不存在");
-            entity.Star = repo.StargazersCount;
-            entity.Fork = repo.ForksCount;
-            entity.HtmlUrl = repo.HtmlUrl;
+            update.Star = repo.StargazersCount;
+            update.Fork = repo.ForksCount;
+            update.HtmlUrl = repo.HtmlUrl;
         }
 
-        var affrows = await openSourceRepo.UpdateAsync(entity, cancellationToken);
+        var affrows = await openSourceRepo.UpdateAsync(update, cancellationToken);
 
         return affrows > 0 ? Result.Success() : throw new ApplicationException("更新项目失败");
     }

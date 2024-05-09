@@ -1,7 +1,6 @@
 ﻿namespace Memo.Blog.Application.Categories.Commands.Create;
 
 public class CreateCategoryCommandHandler(
-    IMapper mapper,
     IBaseDefaultRepository<Category> categoryRepo
     ) : IRequestHandler<CreateCategoryCommand, Result>
 {

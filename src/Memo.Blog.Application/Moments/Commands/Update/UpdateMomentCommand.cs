@@ -1,6 +1,4 @@
-﻿using Memo.Blog.Application.Moments.Commands.Create;
-
-namespace Memo.Blog.Application.Moments.Commands.Update;
+﻿namespace Memo.Blog.Application.Moments.Commands.Update;
 
 [Authorize(Permissions = ApiPermission.Moment.Update)]
 public record UpdateMomentCommand(

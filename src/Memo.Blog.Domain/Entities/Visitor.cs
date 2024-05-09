@@ -48,13 +48,13 @@ public class Visitor : BaseAuditEntity
     /// 访问者所在IP
     /// </summary>
     [Description("访问者所在IP")]
-    [Column(StringLength = 50, IsNullable = false)]
+    [Column(StringLength = 50, IsNullable = false, CanUpdate = false)]
     public string Ip { get; set; } = string.Empty;
 
     /// <summary>
     /// 评论IP所属
     /// </summary>
     [Description("评论IP所属")]
-    [Column(StringLength = 100, IsNullable = false)]
+    [Column(StringLength = 100, IsNullable = false, CanUpdate = false)]
     public string Region { get; set; } = string.Empty;
 }

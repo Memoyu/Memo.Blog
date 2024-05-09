@@ -8,7 +8,8 @@ public record UpdateProjectCommand(
     string Title,
     string Description,
     string? ImageUrl,
-    string? ReadmeUrl) : IAuthorizeableRequest<Result>;
+    string? ReadmeUrl,
+    string? HtmlUrl) : IAuthorizeableRequest<Result>;
 
 public class UpdateProjectCommandValidator : AbstractValidator<UpdateProjectCommand>
 {

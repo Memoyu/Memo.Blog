@@ -3,14 +3,13 @@
 public class UpdateUserCommandHandler(
      IMapper mapper,
      IBaseDefaultRepository<User> userRepo,
-     IBaseDefaultRepository<UserIdentity> userIdentityRepo,
      IBaseDefaultRepository<UserRole> userRoleRepo,
      IBaseDefaultRepository<Role> roleRepo
     ) : IRequestHandler<UpdateUserCommand, Result>
 {
     public async Task<Result> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        var entity = await userRepo.Select.Where(u => u.UserId == request.UserId).FirstAsync(cancellationToken) ?? throw new ApplicationException("用户不存在");
+        var user = await userRepo.Select.Where(u => u.UserId == request.UserId).FirstAsync(cancellationToken) ?? throw new ApplicationException("用户不存在");
 
         var exist = await userRepo.Select.AnyAsync(u => request.Username == u.Username && u.UserId != request.UserId, cancellationToken);
         if (exist) throw new ApplicationException("同名用户已存在");
@@ -21,15 +20,16 @@ public class UpdateUserCommandHandler(
             if (!roles.Any(r => r.RoleId == roleId)) throw new ApplicationException($"{roleId}角色不存在");
         }
 
-        var user = mapper.Map<User>(request);
-        user.Id = entity.Id;
-        var affrows = await userRepo.UpdateAsync(user, cancellationToken);
+        var updateUser = mapper.Map<User>(request);
+        updateUser.Id = user.Id;
+        updateUser.LastLoginTime = user.LastLoginTime;
+        var affrows = await userRepo.UpdateAsync(updateUser, cancellationToken);
         if (affrows <= 0) throw new ApplicationException("更新用户失败");
 
         #region 用户关联角色管理
 
         var addUserRoles = new List<UserRole>();
-        var currentUserRoles = await userRoleRepo.Select.Where(ur => ur.UserId == user.UserId).ToListAsync(cancellationToken);
+        var currentUserRoles = await userRoleRepo.Select.Where(ur => ur.UserId == updateUser.UserId).ToListAsync(cancellationToken);
         foreach (var role in roles)
         {
             if (!currentUserRoles.Any(rp => rp.RoleId == role.RoleId))
@@ -49,6 +49,6 @@ public class UpdateUserCommandHandler(
 
         #endregion
 
-        return Result.Success(user.UserId);
+        return Result.Success(updateUser.UserId);
     }
 }

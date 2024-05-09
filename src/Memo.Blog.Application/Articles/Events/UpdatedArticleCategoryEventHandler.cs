@@ -6,7 +6,6 @@ namespace Memo.Blog.Application.Articles.Events;
 
 public class UpdatedArticleCategoryEventHandler(
     IMapper mapper,
-    IBaseDefaultRepository<Category> categoryRepo,
     IBaseDefaultRepository<Article> articleRepo,
     IBaseMongoRepository<ArticleCollection> articleMongoRepo
     ) : INotificationHandler<UpdatedArticleCategoryEvent>

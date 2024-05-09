@@ -3,7 +3,7 @@
 namespace Memo.Blog.Application.Friends.Commands.Create;
 
 public class CreateFriendCommandHandler(
-    ILogger<CreateFriendCommandHandler> logger,
+    // ILogger<CreateFriendCommandHandler> logger,
     IMapper mapper,
     IBaseDefaultRepository<Friend> friendRepo) : IRequestHandler<CreateFriendCommand, Result>
 {

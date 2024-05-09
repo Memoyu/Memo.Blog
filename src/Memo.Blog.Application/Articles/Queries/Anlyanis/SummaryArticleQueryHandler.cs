@@ -8,7 +8,6 @@ using MongoDB.Driver;
 namespace Memo.Blog.Application.Articles.Queries.Anlyanis;
 
 public class SummaryArticleQueryHandler(
-    IMapper mapper,
     IBaseDefaultRepository<Article> articleRepo,
     IBaseDefaultRepository<Comment> commentRepo,
     IBaseMongoRepository<LoggerVisitCollection> loggerVisitRepo
@@ -73,7 +72,6 @@ public class SummaryArticleQueryHandler(
 }
 
 public class SummaryArticleClientQueryHandler(
-    IMapper mapper,
     IBaseDefaultRepository<Article> articleRepo,
     IBaseDefaultRepository<Moment> memontRepo,
     IBaseDefaultRepository<Comment> commentRepo

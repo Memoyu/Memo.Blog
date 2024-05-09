@@ -7,16 +7,16 @@ public class UpdateAboutCommandHandler(
 {
     public async Task<Result> Handle(UpdateAboutCommand request, CancellationToken cancellationToken)
     {
-        var about = mapper.Map<About>(request);
-        var entity = await aboutRepo.Select.FirstAsync(cancellationToken);
-        if (entity is null)
+        var update = mapper.Map<About>(request);
+        var about = await aboutRepo.Select.FirstAsync(cancellationToken);
+        if (about is null)
         {
-            about = await aboutRepo.InsertAsync(about, cancellationToken);
-            return about.Id == 0 ? Result.Failure("新增关于信息失败") : Result.Success(about.Id);
+            update = await aboutRepo.InsertAsync(update, cancellationToken);
+            return update.Id == 0 ? Result.Failure("新增关于信息失败") : Result.Success(update.Id);
         }
 
-        about.Id = entity.Id;
-        var affrows = await aboutRepo.UpdateAsync(about, cancellationToken);
+        update.Id = about.Id;
+        var affrows = await aboutRepo.UpdateAsync(update, cancellationToken);
         return affrows > 0 ? Result.Success() : Result.Failure("更新关于信息失败");
     }
 }

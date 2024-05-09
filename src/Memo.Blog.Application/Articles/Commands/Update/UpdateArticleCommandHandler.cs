@@ -14,23 +14,27 @@ public class UpdateArticleCommandHandler(
 {
     public async Task<Result> Handle(UpdateArticleCommand request, CancellationToken cancellationToken)
     {
-        var entity = await articleRepo.Select.Where(a => a.ArticleId == request.ArticleId).FirstAsync(cancellationToken) ?? throw new ApplicationException("文章不存在");
+        var article = await articleRepo.Select.Where(a => a.ArticleId == request.ArticleId).FirstAsync(cancellationToken) ?? throw new ApplicationException("文章不存在");
         var category = await categoryRepo.Select.Where(c => c.CategoryId == request.CategoryId).FirstAsync(cancellationToken) ?? throw new ApplicationException("文章分类不存在");
-        var tags = await tagRepo.Select.Where(t => request.Tags.Contains(t.TagId)).ToListAsync();
+        var tags = await tagRepo.Select.Where(t => request.Tags.Contains(t.TagId)).ToListAsync(cancellationToken);
         foreach (var tagId in request.Tags)
         {
             if (!tags.Any(t => t.TagId == tagId)) throw new ApplicationException($"{tagId}文章标签不存在");
         }
    
-        var article = mapper.Map<Article>(request);
-        article.Id = entity.Id;
-        var row = await articleRepo.UpdateAsync(article, cancellationToken);
+        var updateArticle = mapper.Map<Article>(request);
+        updateArticle.Id = article.Id;
+        // 不需要更新的字段
+        updateArticle.Views = article.Views;
+        updateArticle.Likes = article.Likes;
+
+        var row = await articleRepo.UpdateAsync(updateArticle, cancellationToken);
         if (row <= 0) throw new ApplicationException("更新文章失败");
 
         #region 文章关联标签管理
 
         var addArticleTags = new List<ArticleTag>();
-        var currentArticleTags = await articleTagRepo.Select.Where(at => at.ArticleId == article.ArticleId).ToListAsync(cancellationToken);
+        var currentArticleTags = await articleTagRepo.Select.Where(at => at.ArticleId == updateArticle.ArticleId).ToListAsync(cancellationToken);
         foreach (var tag in tags)
         {
             if (!currentArticleTags.Any(t => t.TagId == tag.TagId))
@@ -49,7 +53,7 @@ public class UpdateArticleCommandHandler(
 
         #region 更新MongoDB
 
-        var articleCollection = mapper.Map<ArticleCollection>(article);
+        var articleCollection = mapper.Map<ArticleCollection>(updateArticle);
         var update = Builders<ArticleCollection>.Update
                  .Set(nameof(ArticleCollection.Category), mapper.Map<ArticleCategoryBson>(category))
                  .Set(nameof(ArticleCollection.Title), articleCollection.Title)
@@ -73,6 +77,6 @@ public class UpdateArticleCommandHandler(
 
         #endregion
 
-        return Result.Success(article.ArticleId);
+        return Result.Success(updateArticle.ArticleId);
     }
 }

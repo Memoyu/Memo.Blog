@@ -1,7 +1,6 @@
 ﻿namespace Memo.Blog.Application.Users.Commands.Delete;
 
 public class DeleteUserCommandHandler(
-    IMapper mapper,
     IBaseDefaultRepository<User> userRepo,
     IBaseDefaultRepository<UserIdentity> userIdentityRepo,
     IBaseDefaultRepository<UserRole> userRoleRepo

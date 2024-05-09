@@ -1,11 +1,9 @@
-﻿using System.Text;
-using Memo.Blog.Application.Common.Interfaces.Services.GitHubs;
+﻿using Memo.Blog.Application.Common.Interfaces.Services.GitHubs;
 using Memo.Blog.Application.Common.Models.GitHub;
 using Memo.Blog.Domain.Entities.Mongo;
 using Memo.Blog.Domain.Events.OpenSources;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Memo.Blog.Application.OpenSources.Events;
 

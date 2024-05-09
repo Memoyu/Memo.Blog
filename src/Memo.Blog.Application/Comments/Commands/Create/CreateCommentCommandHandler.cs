@@ -3,12 +3,11 @@ using Memo.Blog.Application.Common.Interfaces.Region;
 using Memo.Blog.Application.Security;
 using Memo.Blog.Domain.Events.Articles;
 using Microsoft.Extensions.Logging;
-using Serilog;
 
 namespace Memo.Blog.Application.Comments.Commands.Create;
 
 public class CreateCommentClientCommandHandler(
-     ILogger<CreateCommentClientCommandHandler> logger,
+     // ILogger<CreateCommentClientCommandHandler> logger,
      IMapper mapper,
      ICurrentUserProvider currentUserProvider,
      IRegionSearcher searcher,
