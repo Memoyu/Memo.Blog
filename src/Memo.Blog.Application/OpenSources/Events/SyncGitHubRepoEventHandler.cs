@@ -4,6 +4,7 @@ using Memo.Blog.Domain.Entities.Mongo;
 using Memo.Blog.Domain.Events.OpenSources;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
+using SharpCompress.Common;
 
 namespace Memo.Blog.Application.OpenSources.Events;
 
@@ -11,7 +12,8 @@ public class SyncGitHubRepoEventHandler(
     IMapper mapper,
     ILogger<SyncGitHubRepoEventHandler> logger,
     IGitHubRestApiService githubRestApiService,
-    IBaseMongoRepository<GitHubRepoCollection> githubRepo
+    IBaseMongoRepository<GitHubRepoCollection> githubRepo,
+    IBaseDefaultRepository<OpenSource> openSourceRepo
     ) : INotificationHandler<SyncGitHubRepoEvent>
 {
     public async Task Handle(SyncGitHubRepoEvent notification, CancellationToken cancellationToken)
@@ -62,8 +64,13 @@ public class SyncGitHubRepoEventHandler(
                 var updateFilter = Builders<GitHubRepoCollection>.Filter.Eq(b => b.Id, update.Id);
                 await githubRepo.ReplaceOneAsync(update, updateFilter, null, cancellationToken);
 
-                // TODO: 更新已添加到开源列表的项目数据
-
+                // 更新已添加到开源列表的项目数据
+                var project = await openSourceRepo.Select.Where(o => o.RepoId == update.Id).FirstAsync(cancellationToken);
+                if (project is null) continue;
+                project.ReadmeUrl = $"https://raw.githubusercontent.com/{update.FullName}/{update.DefaultBranch}/README.md";
+                project.HtmlUrl = update.HtmlUrl;
+                project.Star = update.StargazersCount;
+                project.Fork = update.ForksCount;
             }
         }
 
