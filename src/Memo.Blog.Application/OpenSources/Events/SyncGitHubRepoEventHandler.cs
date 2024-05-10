@@ -67,7 +67,8 @@ public class SyncGitHubRepoEventHandler(
                 // 更新已添加到开源列表的项目数据
                 var project = await openSourceRepo.Select.Where(o => o.RepoId == update.Id).FirstAsync(cancellationToken);
                 if (project is null) continue;
-                project.ReadmeUrl = $"https://raw.githubusercontent.com/{update.FullName}/{update.DefaultBranch}/README.md";
+                // 前端可调整，则不进行自动更新
+                // project.ReadmeUrl = $"https://raw.githubusercontent.com/{update.FullName}/{update.DefaultBranch}/README.md";
                 project.HtmlUrl = update.HtmlUrl;
                 project.Star = update.StargazersCount;
                 project.Fork = update.ForksCount;
