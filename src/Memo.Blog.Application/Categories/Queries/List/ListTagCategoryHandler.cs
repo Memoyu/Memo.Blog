@@ -14,13 +14,13 @@ public class ListCategoryQueryHandler(
             .OrderByDescending(c => c.CreateTime)
             .ToListAsync(cancellationToken) ?? [];
 
-        //// 获取初始化的分类
-        //var initCategory = categories.FirstOrDefault(c => c.CategoryId == 1);
-        //if (initCategory != null)
-        //{
-        //    categories.Remove(initCategory);
-        //    categories.Insert(0, initCategory);
-        //}
+        // [未分类]排在最后一位
+        var initCategory = categories.FirstOrDefault(c => c.CategoryId == 1);
+        if (initCategory != null)
+        {
+            categories.Remove(initCategory);
+            categories.Add(initCategory);
+        }
 
         return Result.Success(mapper.Map<List<CategoryResult>>(categories));
     }
@@ -39,12 +39,12 @@ public class ListCategoryClientQueryHandler(
             .OrderByDescending(c => c.CreateTime)
             .ToListAsync(cancellationToken) ?? [];
 
-        // 未分类排在第一位
+        // [未分类]排在最后一位
         var initCategory = categories.FirstOrDefault(c => c.CategoryId == 1);
         if (initCategory != null)
         {
             categories.Remove(initCategory);
-            categories.Insert(0, initCategory);
+            categories.Add(initCategory);
         }
 
         var articles = await articleRepo.Select.ToListAsync(a => new { a.ArticleId, a.CategoryId }, cancellationToken);
