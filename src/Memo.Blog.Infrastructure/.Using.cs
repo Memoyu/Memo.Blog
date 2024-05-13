@@ -5,8 +5,6 @@ global using System.Text;
 
 global using Microsoft.Extensions.Configuration;
 
-global using Throw;
-
 global using Memo.Blog.Domain.Entities;
 global using Memo.Blog.Application.Common.Interfaces.Security;
 global using Memo.Blog.Application.Common.Models;
