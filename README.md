@@ -16,7 +16,7 @@
 
 | [管理端](http://blog.admin.memoyu.com/)| [客户端](http://blog.memoyu.com/)|
 | :------------------------------: | :-------------------------------: |
-| ![预览](https://raw.githubusercontent.com/Memoyu/Memo.Blog.Admin/main/docs/images/article-list.png) | ![预览](https://raw.githubusercontent.com/Memoyu/Memo.Blog.Admin/main/docs/images/article-list.png) |
+| ![预览](https://raw.githubusercontent.com/Memoyu/Memo.Blog/main/docs/images/admin.png) | ![预览](https://raw.githubusercontent.com/Memoyu/Memo.Blog/main/docs/images/client.png) |
 > Tips：小霸王，稍微等一下，轻点！
 
 
