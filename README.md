@@ -14,10 +14,12 @@
 ## 简介
 本项目为自用Blog系统的后端接口服务，基于.NET 8实现，遵循[CleanArchitecture](https://github.com/amantinband/clean-architecture)设计理念(Ctrl C + V)
 
-| 管理端                           | 客户端                            |
-| -------------------------------- | --------------------------------- |
-| [![预览](https://raw.githubusercontent.com/Memoyu/Memo.Blog.Admin/main/docs/images/article-list.png)](http://blog.admin.memoyu.com/) | [![预览](https://raw.githubusercontent.com/Memoyu/Memo.Blog.Admin/main/docs/images/article-list.png)](http://blog.memoyu.com/) |
+| [管理端](http://blog.admin.memoyu.com/)| [客户端](http://blog.memoyu.com/)|
+| :------------------------------: | :-------------------------------: |
+| ![预览](https://raw.githubusercontent.com/Memoyu/Memo.Blog.Admin/main/docs/images/article-list.png) | ![预览](https://raw.githubusercontent.com/Memoyu/Memo.Blog.Admin/main/docs/images/article-list.png) |
 > Tips：小霸王，稍微等一下，轻点！
+
+
 
 ## 功能实现
 
@@ -29,63 +31,56 @@
 - 用户、访客管理；
 - 角色、权限管理；
 
+
+
 ## 分层结构
 ```powershell
 src
-├─Memo.Blog.Application -- 应用服务
-│  ├─Articles -- 服务名称
-│  │  ├─Commands -- 增删改命令（对数据造成变更的处理）
-│  │  ├─Common 
-│  │  ├─Events
-│  │  └─Queries
-│  │      ├─Anlyanis
-│  │      ├─Get
-│  │      ├─Page
-│  │      └─Ranking
-│  └─Common
-│     ├─Behaviours
-│     ├─Exceptions
-│     ├─Extensions
-│     ├─Interfaces
-│     │  ├─Persistence
-│     │  │  └─Repositories
-│     │  ├─Region
-│     │  ├─Security
-│     │  └─Services
-│     │      └─GitHubs
-│     ├─Mappings
-│     ├─Models
-│     │  ├─GitHub
-│     │  └─Settings
-│     ├─Request
-│     ├─Security
-│     ├─Services
-│     │  ├─Background
-│     │  └─GitHubs
-│     └─Utils
-├─Memo.Blog.Domain
-│  ├─Common
-│  ├─Constants
-│  ├─Entities
-│  │  └─Mongo
-│  ├─Enums
-│  ├─Events
-│  └─ValueObjects
-├─Memo.Blog.Infrastructure
-│  ├─Logger
-│  ├─Persistence
-│  │  └─Repositories
-│  ├─Region
-│  ├─Security
-│  └─Services
-└─Memo.Blog.WebApi
-    ├─Controllers
-    │  └─Admin
-    └─wwwroot
-        └─Assets
+├─Memo.Blog.Application -- 应用服务模块
+│  ├─Articles -- 服务名称（具体服务实现，例如：文章管理、权限管理等）
+│  │  ├─Commands -- 增删改命令操作（对数据造成变更的处理）
+│  │  ├─Common -- 当前服务公有实体，例如：响应、请求
+│  │  ├─Events -- 事件触发EventHandler
+│  │  └─Queries -- 查询操作（对数据进行读取）
+│  │      ├─Anlyanis -- 统计分析数据
+│  │      ├─Get -- 获取详情
+│  │      ├─Page -- 获取分页
+│  │      └─Ranking -- 获取排名
+│  └─Common -- 服务公有模块
+│     ├─Behaviours -- MediatR管道切面行为（AOP）
+│     ├─Exceptions -- 自定义异常
+│     ├─Extensions -- 扩展方法
+│     ├─Interfaces -- 接口定义
+│     │  ├─Persistence -- 数据相关定义
+│     │  │  └─Repositories -- 仓储定义（基础仓储定义）等
+│     │  ├─Region -- ip2region进一步封装接口定义
+│     │  ├─Security -- 安全相关接口定义
+│     │  └─Services -- 服务接口定义
+│     ├─Mappings -- Mapster实体映射IRegister
+│     ├─Models -- 公共模型定义，例如：配置、响应、请求等基础实体
+│     ├─Request -- 进程内通信基础定义
+│     ├─Security -- 安全相关的实体定义
+│     ├─Services -- 服务实现，例如后台任务服务
+│     └─Utils -- 工具类
+├─Memo.Blog.Domain -- 服务领域模块
+│  ├─Common -- 公共实体定义
+│  ├─Constants -- 常量定义
+│  ├─Entities -- 数据库实体定义
+│  │  └─Mongo -- MongoDB实体定义
+│  ├─Enums -- 枚举定义
+│  ├─Events -- 事件定义
+│  └─ValueObjects -- 值对象定义
+├─Memo.Blog.Infrastructure -- 基础设施模块
+│  ├─Persistence -- 数据持久化实现
+│  │  └─Repositories -- 数据库仓储实现
+│  ├─Region -- ip2region进一步封装实现
+│  └─Security -- 安全相关实现，例如JWT、当前用户、权限验证
+└─Memo.Blog.WebApi -- 外放接口模块
+    ├─Controllers -- 客户端接口定义
+    │  └─Admin -- 管理端接口定于
+    └─wwwroot -- 静态文件
+        └─Assets -- 资源文件
 ```
-
-
 
 
 
@@ -109,6 +104,8 @@ src
 |整体设计参考| [CleanArchitecture](https://github.com/amantinband/clean-architecture) |
 |容器| [Docker](https://www.docker.com/) |
 |DevOps|[Azure](https://dev.azure.com/)|
+
+
 
 ## 开源协议
 
