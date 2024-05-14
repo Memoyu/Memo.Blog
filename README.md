@@ -122,6 +122,14 @@ src
 
 
 
+## 参考项目
+
+- [amantinband/clean-architecture](https://github.com/amantinband/clean-architecture)
+- [luoyunchong/lin-cms-dotnetcore](https://github.com/luoyunchong/lin-cms-dotnetcore)
+**在此，感谢各位大佬的开源**
+
+
+
 ## 开源协议
 
 MIT License. See [License here](./LICENSE) for details.
