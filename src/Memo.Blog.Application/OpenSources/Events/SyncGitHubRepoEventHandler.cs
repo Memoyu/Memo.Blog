@@ -4,7 +4,6 @@ using Memo.Blog.Domain.Entities.Mongo;
 using Memo.Blog.Domain.Events.OpenSources;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
-using SharpCompress.Common;
 
 namespace Memo.Blog.Application.OpenSources.Events;
 
@@ -72,6 +71,8 @@ public class SyncGitHubRepoEventHandler(
                 project.HtmlUrl = update.HtmlUrl;
                 project.Star = update.StargazersCount;
                 project.Fork = update.ForksCount;
+
+                await openSourceRepo.UpdateAsync(project, cancellationToken);
             }
         }
 
