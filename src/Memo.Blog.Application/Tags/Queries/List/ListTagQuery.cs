@@ -10,4 +10,13 @@ public class ListTagQueryValidator : AbstractValidator<ListTagQuery>
     }
 }
 
+public record ListTagClientQuery(string Name) : IRequest<Result>;
+
+public class ListTagClientQueryValidator : AbstractValidator<ListTagClientQuery>
+{
+    public ListTagClientQueryValidator()
+    {
+    }
+}
+
 

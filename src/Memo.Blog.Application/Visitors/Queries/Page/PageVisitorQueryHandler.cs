@@ -11,6 +11,7 @@ public class PageVisitorQueryHandler(
     public async Task<Result> Handle(PageVisitorQuery request, CancellationToken cancellationToken)
     {
         var comments = await visitorRepo.Select
+            .WhereIf(request.VisitorId.HasValue, c => c.VisitorId == request.VisitorId)
             .WhereIf(!string.IsNullOrWhiteSpace(request.Nickname), c => c.Nickname.Contains(request.Nickname!))
             .WhereIf(!string.IsNullOrWhiteSpace(request.Region), c => c.Region.Contains(request.Region!))
             .WhereIf(request.DateBegin.HasValue && request.DateEnd.HasValue, c => c.CreateTime <= request.DateEnd && c.CreateTime >= request.DateBegin)

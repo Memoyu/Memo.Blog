@@ -13,4 +13,3 @@ public class GetTagQueryValidator : AbstractValidator<GetTagQuery>
     }
 }
 
-

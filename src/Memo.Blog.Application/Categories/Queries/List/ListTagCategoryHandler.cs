@@ -4,7 +4,8 @@ namespace Memo.Blog.Application.Categories.Queries.List;
 
 public class ListCategoryQueryHandler(
     IMapper mapper,
-    IBaseDefaultRepository<Category> categoryRepo
+    IBaseDefaultRepository<Category> categoryRepo,
+    IBaseDefaultRepository<Article> articleRepo
     ) : IRequestHandler<ListCategoryQuery, Result>
 {
     public async Task<Result> Handle(ListCategoryQuery request, CancellationToken cancellationToken)
@@ -22,7 +23,15 @@ public class ListCategoryQueryHandler(
             categories.Add(initCategory);
         }
 
-        return Result.Success(mapper.Map<List<CategoryResult>>(categories));
+        var articles = await articleRepo.Select.ToListAsync(a => new { a.ArticleId, a.CategoryId }, cancellationToken);
+        var dtos = mapper.Map<List<CategoryWithArticleCountResult>>(categories);
+        foreach (var category in dtos)
+        {
+            var total = articles.Where(a => a.CategoryId == category.CategoryId).Count();
+            category.Articles = total;
+        }
+
+        return Result.Success(dtos);
     }
 }
 

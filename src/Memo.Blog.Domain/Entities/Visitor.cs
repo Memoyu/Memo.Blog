@@ -12,7 +12,7 @@ public class Visitor : BaseAuditEntity
     /// 访问者标识Id
     /// </summary>
     [Snowflake]
-    [Description("当日UV总数")]
+    [Description("访问者标识Id")]
     [Column(IsNullable = false)]
     public long VisitorId { get; set; }
 
