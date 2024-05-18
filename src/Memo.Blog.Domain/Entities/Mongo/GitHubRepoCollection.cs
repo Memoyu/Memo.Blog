@@ -298,59 +298,58 @@ public class GitHubRepoCollection
 public class Owner
 {
     [JsonPropertyName("login")]
-    public string Login { get; set; }
+    public string Login { get; set; } = string.Empty;
 
     [JsonPropertyName("id")]
     public int Id { get; set; }
 
     [JsonPropertyName("node_id")]
-    public string NodeId { get; set; }
+    public string NodeId { get; set; } = string.Empty;
 
     [JsonPropertyName("avatar_url")]
-    public string AvatarUrl { get; set; }
+    public string AvatarUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("gravatar_id")]
-    public string GravatarId { get; set; }
+    public string GravatarId { get; set; } = string.Empty;
 
     [JsonPropertyName("url")]
-    public string Url { get; set; }
+    public string Url { get; set; } = string.Empty;
 
     [JsonPropertyName("html_url")]
-    public string HtmlUrl { get; set; }
+    public string HtmlUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("followers_url")]
-    public string FollowersUrl { get; set; }
+    public string FollowersUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("following_url")]
-    public string FollowingUrl { get; set; }
+    public string FollowingUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("gists_url")]
-    public string GistsUrl { get; set; }
+    public string GistsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("starred_url")]
-    public string StarredUrl { get; set; }
+    public string StarredUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("subscriptions_url")]
-    public string SubscriptionsUrl { get; set; }
+    public string SubscriptionsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("organizations_url")]
-    public string OrganizationsUrl { get; set; }
+    public string OrganizationsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("repos_url")]
-    public string ReposUrl { get; set; }
+    public string ReposUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("events_url")]
-    public string EventsUrl { get; set; }
+    public string EventsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("received_events_url")]
-    public string ReceivedEventsUrl { get; set; }
+    public string ReceivedEventsUrl { get; set; } = string.Empty;
 
     [JsonPropertyName("type")]
-    public string Type { get; set; }
+    public string Type { get; set; } = string.Empty;
 
     [JsonPropertyName("site_admin")]
     public bool SiteAdmin { get; set; }
-
 }
 
 public class Permissions
@@ -369,69 +368,63 @@ public class Permissions
 
     [JsonPropertyName("pull")]
     public bool Pull { get; set; }
-
 }
 
 public class SecurityAndAnalysis
 {
     [JsonPropertyName("secret_scanning")]
-    public SecretScanning SecretScanning { get; set; }
+    public SecretScanning SecretScanning { get; set; } = new();
 
     [JsonPropertyName("secret_scanning_push_protection")]
-    public SecretScanningPushProtection SecretScanningPushProtection { get; set; }
+    public SecretScanningPushProtection SecretScanningPushProtection { get; set; } = new();
 
     [JsonPropertyName("dependabot_security_updates")]
-    public DependabotSecurityUpdates DependabotSecurityUpdates { get; set; }
+    public DependabotSecurityUpdates DependabotSecurityUpdates { get; set; } = new();
 
     [JsonPropertyName("secret_scanning_validity_checks")]
-    public SecretScanningValidityChecks SecretScanningValidityChecks { get; set; }
-
+    public SecretScanningValidityChecks SecretScanningValidityChecks { get; set; } = new();
 }
 
 public class SecretScanning
 {
     [JsonPropertyName("status")]
-    public string Status { get; set; }
-
+    public string Status { get; set; } = string.Empty;
 }
 
 public class SecretScanningPushProtection
 {
     [JsonPropertyName("status")]
-    public string Status { get; set; }
-
+    public string Status { get; set; } = string.Empty;
 }
 
 public class DependabotSecurityUpdates
 {
     [JsonPropertyName("status")]
-    public string Status { get; set; }
+    public string Status { get; set; } = string.Empty;
 
 }
 
 public class SecretScanningValidityChecks
 {
     [JsonPropertyName("status")]
-    public string Status { get; set; }
-
+    public string Status { get; set; } = string.Empty;
 }
 
 public class RepoLicense
 {
     [JsonPropertyName("key")]
-    public string Key { get; set; }
+    public string Key { get; set; } = string.Empty;
 
     [JsonPropertyName("name")]
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
 
     [JsonPropertyName("spdx_id")]
-    public string SpdxId { get; set; }
+    public string SpdxId { get; set; } = string.Empty;
 
     [JsonPropertyName("url")]
-    public string Url { get; set; }
+    public string Url { get; set; } = string.Empty;
 
     [JsonPropertyName("node_id")]
-    public string NodeId { get; set; }
- 
+    public string NodeId { get; set; } = string.Empty;
 }
 
