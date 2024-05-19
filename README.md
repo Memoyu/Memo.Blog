@@ -9,7 +9,7 @@
  <a href="https://dotnet.microsoft.com/zh-cn/download"><img src="https://img.shields.io/badge/.net8.0.0-3963bc.svg"/></a>
  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-3963bc.svg"/></a>
  <a href="https://github.com/Memoyu"><img src="https://img.shields.io/badge/developer-memoyu-blue"/></a>
- <img style="margin-top: 20px" src="https://raw.githubusercontent.com/Memoyu/Memo.Blog/main/docs/images/client-ld.png"/>
+
 </div>
 
 
@@ -19,7 +19,7 @@
 
 | 管理端 | 客户端 |
 | :------------------------------: | :-------------------------------: |
-| ![预览](https://raw.githubusercontent.com/Memoyu/Memo.Blog/main/docs/images/admin.png) | ![预览](https://raw.githubusercontent.com/Memoyu/Memo.Blog/main/docs/images/client.png) |
+| ![预览](https://raw.githubusercontent.com/Memoyu/Memo.Blog/main/docs/images/admin-ld.png) | ![预览](https://raw.githubusercontent.com/Memoyu/Memo.Blog/main/docs/images/client-ld.png) |
 
 **线上地址：**
 
