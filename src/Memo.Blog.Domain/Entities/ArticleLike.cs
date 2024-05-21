@@ -1,12 +1,12 @@
 ﻿namespace Memo.Blog.Domain.Entities;
 
 /// <summary>
-/// 文章标签
+/// 文章点赞
 /// </summary>
-[Table(Name = "article_tag")]
-[Index("index_on_tag_id", nameof(TagId), false)]
+[Table(Name = "article_like")]
+[Index("index_on_visitor_id", nameof(VisitorId), false)]
 [Index("index_on_article_id", nameof(ArticleId), false)]
-public class ArticleTag : BaseAuditEntity
+public class ArticleLike : BaseAuditEntity
 {
     /// <summary>
     /// 文章Id
@@ -16,17 +16,17 @@ public class ArticleTag : BaseAuditEntity
     public long ArticleId { get; set; }
 
     /// <summary>
-    /// 标签Id
+    /// 访客Id
     /// </summary>
-    [Description("标签Id")]
+    [Description("访客Id")]
     [Column(IsNullable = false)]
-    public long TagId { get; set; }
+    public long VisitorId { get; set; }
 
     /// <summary>
-    /// 标签
+    /// 访客
     /// </summary>
-    [Navigate(nameof(Tag.TagId), TempPrimary = nameof(TagId))]
-    public virtual Tag Tag { get; set; } = new();
+    [Navigate(nameof(Visitor.VisitorId), TempPrimary = nameof(VisitorId))]
+    public virtual Visitor Visitor { get; set; } = new();
 
     /// <summary>
     /// 文章
