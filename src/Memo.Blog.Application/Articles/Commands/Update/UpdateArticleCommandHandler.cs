@@ -26,7 +26,6 @@ public class UpdateArticleCommandHandler(
         updateArticle.Id = article.Id;
         // 不需要更新的字段
         updateArticle.Views = article.Views;
-        updateArticle.Likes = article.Likes;
 
         var row = await articleRepo.UpdateAsync(updateArticle, cancellationToken);
         if (row <= 0) throw new ApplicationException("更新文章失败");

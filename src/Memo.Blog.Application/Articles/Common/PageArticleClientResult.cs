@@ -69,6 +69,11 @@ public record PageArticleClientResult
     public int Likes { get; set; }
 
     /// <summary>
+    /// 评论条数
+    /// </summary>
+    public int Comments { get; set; }
+
+    /// <summary>
     /// 是否置顶
     /// </summary>
     public bool IsTop { get; set; }
@@ -87,11 +92,6 @@ public record PageArticleClientResult
     /// 关联标签
     /// </summary>
     public List<TagResult> Tags { get; set; } = [];
-
-    /// <summary>
-    /// 评论
-    /// </summary>
-    public List<CommentResult> Comments { get; set; } = [];
 
     /// <summary>
     /// 作者

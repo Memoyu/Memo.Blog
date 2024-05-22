@@ -1,6 +1,7 @@
 ﻿using Memo.Blog.Application.Articles.Queries.Get;
 using Memo.Blog.Application.Articles.Queries.Page;
 using Memo.Blog.Application.Articles.Queries.Anlyanis;
+using Memo.Blog.Application.Articles.Commands.Update;
 
 namespace Memo.Blog.WebApi.Controllers;
 
@@ -35,6 +36,16 @@ public class ArticleController(ISender mediator) : ApiController
     /// <returns></returns>
     [HttpGet("summary")]
     public async Task<Result> GetPageSummaryAsync([FromQuery] SummaryArticleClientQuery request)
+    {
+        return await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 点赞文章
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("like")]
+    public async Task<Result>LikeAsync(LikeArticleCommand request)
     {
         return await mediator.Send(request);
     }

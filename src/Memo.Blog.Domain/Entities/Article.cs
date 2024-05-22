@@ -88,13 +88,6 @@ public class Article : BaseAuditEntity
     public int Views { get; set; }
 
     /// <summary>
-    /// 点赞次数
-    /// </summary>
-    [Description("点赞次数")]
-    [Column(IsNullable = false)]
-    public int Likes { get; set; }
-
-    /// <summary>
     /// 是否置顶
     /// </summary>
     [Description("是否置顶")]
@@ -128,14 +121,21 @@ public class Article : BaseAuditEntity
     public virtual List<ArticleTag> ArticleTags { get; set; } = [];
 
     /// <summary>
+    /// 文章评论
+    /// </summary>
+    [Navigate(nameof(Comment.BelongId), TempPrimary = nameof(ArticleId))]
+    public virtual List<Comment> ArticleComments { get; set; } = [];
+
+    /// <summary>
+    /// 文章点赞
+    /// </summary>
+    [Navigate(nameof(ArticleLike.ArticleId), TempPrimary = nameof(ArticleId))]
+    public virtual List<ArticleLike>  ArticleLikes { get; set; } = [];
+
+    /// <summary>
     /// 文章作者
     /// </summary>
     [Navigate(nameof(User.UserId), TempPrimary = nameof(CreateUserId))]
     public virtual User Author { get; set; } = new();
 
-    /// <summary>
-    /// 文章评论
-    /// </summary>
-    [Navigate(nameof(Comment.BelongId), TempPrimary = nameof(ArticleId))]
-    public virtual List<Comment> Comments { get; set; } = [];
 }

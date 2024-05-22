@@ -7,7 +7,8 @@ namespace Memo.Blog.Application.Articles.Queries.Page;
 public class PageArticleQueryHandler(
     IMapper mapper,
     IBaseDefaultRepository<Article> articleRepo,
-     IBaseDefaultRepository<Comment> commentRepo
+    IBaseDefaultRepository<ArticleLike> articleLikeRepo,
+    IBaseDefaultRepository<Comment> commentRepo
     ) : IRequestHandler<PageArticleQuery, Result>
 {
     public async Task<Result> Handle(PageArticleQuery request, CancellationToken cancellationToken)
@@ -24,13 +25,19 @@ public class PageArticleQueryHandler(
 
         var results = mapper.Map<List<PageArticleResult>>(articles);
         var articleIds = articles.Select(a => a.ArticleId).ToList();
+
         var comments = await commentRepo.Select
             .Where(c => articleIds.Contains(c.BelongId))
             .ToListAsync(c => new { c.BelongId, c.CommentId }, cancellationToken);
 
+        var likes = await articleLikeRepo.Select
+            .Where(c => articleIds.Contains(c.ArticleId))
+            .ToListAsync(c => new { c.ArticleId }, cancellationToken);
+
         foreach (var result in results)
         {
             result.Comments = comments.Where(c => c.BelongId == result.ArticleId).Count();
+            result.Likes = likes.Where(c => c.ArticleId == result.ArticleId).Count();
         }
 
         return Result.Success(new PaginationResult<PageArticleResult>(results, total));
@@ -39,7 +46,9 @@ public class PageArticleQueryHandler(
 
 public class PageArticleClientQueryHandler(
     IMapper mapper,
-    IBaseDefaultRepository<Article> articleRepo
+    IBaseDefaultRepository<Article> articleRepo,
+    IBaseDefaultRepository<ArticleLike> articleLikeRepo,
+    IBaseDefaultRepository<Comment> commentRepo
     ) : IRequestHandler<PageArticleClientQuery, Result>
 {
     public async Task<Result> Handle(PageArticleClientQuery request, CancellationToken cancellationToken)
@@ -53,6 +62,21 @@ public class PageArticleClientQueryHandler(
             .ToPageListAsync(request, out var total, cancellationToken);
 
         var results = mapper.Map<List<PageArticleClientResult>>(articles);
+        var articleIds = articles.Select(a => a.ArticleId).ToList();
+
+        var comments = await commentRepo.Select
+          .Where(c => articleIds.Contains(c.BelongId))
+          .ToListAsync(c => new { c.BelongId, c.CommentId }, cancellationToken);
+
+        var likes = await articleLikeRepo.Select
+            .Where(c => articleIds.Contains(c.ArticleId))
+            .ToListAsync(c => new { c.ArticleId }, cancellationToken);
+
+        foreach (var result in results)
+        {
+            result.Comments = comments.Where(c => c.BelongId == result.ArticleId).Count();
+            result.Likes = likes.Where(c => c.ArticleId == result.ArticleId).Count();
+        }
 
         return Result.Success(new PaginationResult<PageArticleClientResult>(results, total));
     }

@@ -4,7 +4,7 @@ using Memo.Blog.Domain.Enums;
 
 namespace Memo.Blog.Application.Articles.Common;
 
-public record ArticleResult
+public record ArticleDetailClientResult
 {
     /// <summary>
     /// 文章Id
@@ -52,11 +52,6 @@ public record ArticleResult
     public int ReadingTime { get; set; }
 
     /// <summary>
-    /// 文章状态
-    /// </summary>
-    public ArticleStatus Status { get; set; }
-
-    /// <summary>
     /// 浏览次数
     /// </summary>
     public int Views { get; set; }
@@ -65,6 +60,11 @@ public record ArticleResult
     /// 点赞次数
     /// </summary>
     public int Likes { get; set; }
+
+    /// <summary>
+    /// 评论条数
+    /// </summary>
+    public int Comments { get; set; }
 
     /// <summary>
     /// 是否置顶
@@ -77,14 +77,19 @@ public record ArticleResult
     public bool Commentable { get; set; }
 
     /// <summary>
-    /// 是否公开
+    /// 是否点赞
     /// </summary>
-    public bool Publicable { get; set; }
+    public bool IsLike { get; set; }
 
     /// <summary>
     /// 关联标签
     /// </summary>
     public List<TagResult> Tags { get; set; } = [];
+
+    /// <summary>
+    /// 作者
+    /// </summary>
+    public required ArticleAuthorResult Author { get; set; }
 
     /// <summary>
     /// 创建时间
