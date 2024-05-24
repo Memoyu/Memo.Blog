@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using Memo.Blog.Domain.Events.Permissions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,9 @@ if (app.Environment.IsDevelopment())
     app.UseOpenApi();
     app.UseSwaggerUi();
 }
+
+// ÏÞÁ÷
+app.UseIpRateLimiting();
 
 app.UseCors(AppConst.CorsPolicyName);
 

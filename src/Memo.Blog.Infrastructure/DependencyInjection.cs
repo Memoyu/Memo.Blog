@@ -15,11 +15,10 @@ using IP2Region.Net.XDB;
 using Microsoft.AspNetCore.Hosting;
 using Memo.Blog.Application.Common.Interfaces.Region;
 using Memo.Blog.Infrastructure.Region;
-using Microsoft.Extensions.Configuration;
 using EasyCaching.FreeRedis;
-using FreeRedis;
-using System.Configuration.Provider;
 using EasyCaching.Serialization.SystemTextJson.Configurations;
+using Microsoft.Extensions.Caching.Distributed;
+using Memo.Blog.Infrastructure.Persistence.Cache;
 
 namespace Memo.Blog.Infrastructure;
 
@@ -171,6 +170,9 @@ public static class DependencyInjection
             };
             frops.SerializerName = "system-text-json";
         }).WithSystemTextJson("system-text-json"));
+
+        // 注册EasyCaching分布式缓存
+        services.AddSingleton<IDistributedCache, EasyCachingRedisDistributedCache>();
 
         return services;
     }

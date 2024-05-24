@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Logger\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

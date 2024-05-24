@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using System.Configuration;
+using AspNetCoreRateLimit;
+using AspNetCoreRateLimit.Redis;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using NSwag;
 using NSwag.Generation.Processors.Security;
+using StackExchange.Redis;
 
 namespace Memo.Blog.WebApi;
 
@@ -21,6 +25,9 @@ public static class DependencyInjection
 
         // 跨域配置
         services.AddCorsPolicy(configuration);
+
+        // 限流
+        services.AddRateLimit(configuration);
 
         services.AddControllers(options =>
            {
@@ -74,6 +81,20 @@ public static class DependencyInjection
                     .AllowCredentials();
             });
         });
+
+        return services;
+    }
+
+    private static IServiceCollection AddRateLimit(this IServiceCollection services, IConfiguration configuration)
+    {
+        // 注入配置
+        services.Configure<IpRateLimitOptions>(configuration.GetSection("IpRateLimiting"));
+        services.Configure<IpRateLimitPolicies>(configuration.GetSection("IpRateLimitPolicies"));
+
+        services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+
+        // 存入到redis
+        services.AddDistributedRateLimiting();
 
         return services;
     }
