@@ -2,5 +2,5 @@
 
 public class HubConst
 {
-    public const string ManagementHubEndpointRoute = "/management/notification";
+    public const string ManagementHubEndpointRoute = "hubs/management/notification";
 }

@@ -6,8 +6,8 @@ namespace Memo.Blog.Application.Notifications.Events;
 
 public class CreateNotificationEventHandler(IHubContext<NotificationHub, IManagementHubClient> notificationHub) : INotificationHandler<CreateNotificationEvent>
 {
-    public Task Handle(CreateNotificationEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(CreateNotificationEvent notification, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await notificationHub.Clients.All.NewNotification(notification.Title, notification.Content);
     }
 }

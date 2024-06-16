@@ -75,10 +75,10 @@ public static class DependencyInjection
             options.AddPolicy(AppConst.CorsPolicyName, builder =>
             {
                 builder
-                    .WithOrigins(policyOrigins.Split(",", StringSplitOptions.RemoveEmptyEntries).ToArray())
-                    .AllowAnyHeader()
                     .AllowAnyMethod()
-                    .AllowCredentials();
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .WithOrigins(policyOrigins.Split(",", StringSplitOptions.RemoveEmptyEntries).ToArray());
             });
         });
 
