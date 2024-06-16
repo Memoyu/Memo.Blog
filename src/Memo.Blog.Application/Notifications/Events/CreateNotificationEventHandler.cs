@@ -8,6 +8,6 @@ public class CreateNotificationEventHandler(IHubContext<NotificationHub, IManage
 {
     public async Task Handle(CreateNotificationEvent notification, CancellationToken cancellationToken)
     {
-        await notificationHub.Clients.All.NewNotification(notification.Title, notification.Content);
+        await notificationHub.Clients.All.ReceivedNotification(notification.Title, notification.Content);
     }
 }
