@@ -61,6 +61,7 @@ BenchmarkDotNet.Artifacts/
 project.lock.json
 project.fragment.lock.json
 artifacts/
+src/Memo.Blog.WebApi/appsettings.Development.json
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
@@ -420,4 +421,3 @@ FodyWeavers.xsd
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/src/Memo.Blog.WebApi/appsettings.Development.json

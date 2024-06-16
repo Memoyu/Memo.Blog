@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src\Memo.Blog.Application\Memo.Blog.Application.csproj" />
+    <Project Path="src\Memo.Blog.Domain\Memo.Blog.Domain.csproj" />
+    <Project Path="src\Memo.Blog.Infrastructure\Memo.Blog.Infrastructure.csproj" />
+    <Project Path="src\Memo.Blog.WebApi\Memo.Blog.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests\Memo.Blog.Application.Test\Memo.Blog.Application.Test.csproj" />
+  </Folder>
+  <Properties Name="Visual Studio">
+    <Property Name="OpenWith" Value="17" />
+  </Properties>
+</Solution>
