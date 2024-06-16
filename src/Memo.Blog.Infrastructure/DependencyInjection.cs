@@ -35,8 +35,8 @@ public static class DependencyInjection
             .AddPersistenceForMyql(configuration) // 注册MySql数据持久化组件（FreeSql）
             .AddPersistenceForMongo(configuration) // 注册MongoDb持久化组件（MongoDB.Driver）
             .AddAddEasyCaching(configuration) // 注册缓存组件
-            .AddIp2Region(); // 注册IP地址定位
-        
+            .AddIp2Region() // 注册IP地址定位
+            // .AddSignalR(); // 注册 SignalR 服务
 
         return services;
     }
@@ -129,6 +129,20 @@ public static class DependencyInjection
                         context.Response.ContentType = "application/json";
                         context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                         await context.Response.WriteAsync(Result.Failure(message, code).ToString()!);
+                    },
+
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+
+                        // If the request is for our hub...
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments(HubConst.ManagementHubEndpointRoute))
+                        {
+                            // Read the token out of the query string
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
                     }
                 };
             });

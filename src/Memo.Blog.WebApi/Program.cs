@@ -1,5 +1,6 @@
 using AspNetCoreRateLimit;
 using Memo.Blog.Domain.Events.Permissions;
+using Memo.Blog.Infrastructure.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,5 +37,8 @@ app.UseCors(AppConst.CorsPolicyName);
 app.UseAuthorization();
 
 app.MapControllers();
+
+// SignalR÷’Ω·µ„≈‰÷√
+app.MapHubs();
 
 app.Run();
