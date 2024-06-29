@@ -3,10 +3,11 @@
 namespace Memo.Blog.Domain.Entities;
 
 /// <summary>
-/// 消息表
+/// 消息内容表
 /// </summary>
 [Table(Name = "message")]
 [Index("index_on_message_id", nameof(MessageId), false)]
+[Index("index_on_message_user_id", nameof(UserId), false)]
 public class Message : BaseAuditEntity
 {
     /// <summary>
@@ -18,18 +19,11 @@ public class Message : BaseAuditEntity
     public long MessageId { get; set; }
 
     /// <summary>
-    /// 发送Id
+    /// 发送方Id
     /// </summary>
-    [Description("发送Id")]
-    [Column(IsNullable = false)]
-    public long FromId { get; set; }
-
-    /// <summary>
-    /// 接收Id
-    /// </summary>
-    [Description("接收Id")]
-    [Column(IsNullable = false)]
-    public long ToId { get; set; }
+    [Description("发送方Id")]
+    [Column(IsNullable = true)]
+    public long? UserId { get; set; }
 
     /// <summary>
     /// 消息类型
@@ -44,11 +38,4 @@ public class Message : BaseAuditEntity
     [Description("消息内容")]
     [Column(StringLength = -2, IsNullable = false)]
     public string Content { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 是否已读
-    /// </summary>
-    [Description("是否已读")]
-    [Column(IsNullable = false)]
-    public bool IsRead { get; set; }
 }

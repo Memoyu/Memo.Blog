@@ -13,7 +13,7 @@ public class DeleteCommentCommandHandler(
         if (comment == null) throw new ApplicationException("评论不存在");
 
         // 如果是文章评论，则需要更新mongodb数据
-        if (comment.CommentType == Domain.Enums.CommentType.Article)
+        if (comment.CommentType == Domain.Enums.BelongType.Article)
         {
             comment.AddDomainEvent(new DeletedArticleCommentEvent(comment.BelongId, comment.CommentId));
         }

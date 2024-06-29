@@ -18,7 +18,7 @@ public record PageCommentResult
     /// <summary>
     /// 评论类型
     /// </summary>
-    public CommentType CommentType { get; set; }
+    public BelongType CommentType { get; set; }
 
     /// <summary>
     /// 评论内容

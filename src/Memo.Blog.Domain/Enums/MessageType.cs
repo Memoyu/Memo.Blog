@@ -13,7 +13,4 @@ public enum MessageType
 
     [Description("点赞")]
     Like = 2,
-
-    [Description("通知")]
-    Notify = 3,
 }

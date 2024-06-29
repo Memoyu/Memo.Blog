@@ -37,18 +37,18 @@ public class Comment : BaseAuditEntity
     public long BelongId { get; set; }
 
     /// <summary>
+    /// 评论所属类型
+    /// </summary>
+    [Description("评论所属类型")]
+    [Column(IsNullable = false)]
+    public BelongType CommentType { get; set; }
+
+    /// <summary>
     /// 访客Id
     /// </summary>
     [Description("访客Id")]
     [Column(IsNullable = false)]
     public long VisitorId { get; set; }
-
-    /// <summary>
-    /// 评论类型
-    /// </summary>
-    [Description("评论类型")]
-    [Column(IsNullable = false)]
-    public CommentType CommentType { get; set; }
 
     /// <summary>
     /// 评论内容

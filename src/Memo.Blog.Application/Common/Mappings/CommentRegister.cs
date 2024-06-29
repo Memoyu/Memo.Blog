@@ -41,15 +41,15 @@ public class CommentRegister : IRegister
         var belong = new CommentBelongResult();
         switch (s.CommentType)
         {
-            case Domain.Enums.CommentType.Article:
+            case Domain.Enums.BelongType.Article:
                 belong = MapContext.Current.GetService<IBaseDefaultRepository<Article>>().Select
                     .Where(c => c.ArticleId == s.BelongId)
                     .First(a => new CommentBelongResult { BelongId = s.BelongId, Title = a.Title, Link = "" });
                 break;
-            case Domain.Enums.CommentType.Moment:
+            case Domain.Enums.BelongType.Moment:
                 belong = new CommentBelongResult { BelongId = s.BelongId, Title = "动态", Link = "" };
                 break;
-            case Domain.Enums.CommentType.About:
+            case Domain.Enums.BelongType.About:
                 belong = new CommentBelongResult { BelongId = s.BelongId, Title = "关于", Link = "" };
                 break;
         }

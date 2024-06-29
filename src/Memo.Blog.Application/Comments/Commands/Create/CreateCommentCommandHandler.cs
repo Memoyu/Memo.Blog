@@ -19,7 +19,7 @@ public class CreateCommentClientCommandHandler(
     public async Task<Result> Handle(CreateCommentClientCommand request, CancellationToken cancellationToken)
     {
         var isArticleComment = false;
-        if (request.CommentType == Domain.Enums.CommentType.Article)
+        if (request.CommentType == Domain.Enums.BelongType.Article)
         {
             var article = await articleRepo.Select.Where(a => a.ArticleId == request.BelongId).FirstAsync(cancellationToken)
                 ?? throw new ApplicationException("评论文章不存在");

@@ -30,7 +30,6 @@
   <ItemGroup>
     <Folder Include="FileStorages\Command\" />
     <Folder Include="Messages\Common\" />
-    <Folder Include="Messages\Events\" />
     <Folder Include="Permissions\Commands\" />
   </ItemGroup>
 

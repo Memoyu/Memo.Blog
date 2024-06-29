@@ -58,7 +58,7 @@ public class PageMomentClientQueryHandler(
         {
             var comments = await commentRepo.Select
                .Where(m => m.Showable)
-               .Where(c => c.CommentType == Domain.Enums.CommentType.Moment)
+               .Where(c => c.CommentType == Domain.Enums.BelongType.Moment)
                .Where(c => c.BelongId == moment.MomentId)
                .CountAsync(cancellationToken);
 

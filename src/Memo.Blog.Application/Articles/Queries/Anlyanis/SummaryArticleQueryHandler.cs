@@ -30,7 +30,7 @@ public class SummaryArticleQueryHandler(
         var visits = await loggerVisitRepo.CountAsync(f, cancellationToken: cancellationToken);
 
         var comments = await commentRepo.Select
-            .Where(c => c.CommentType == CommentType.Article)
+            .Where(c => c.CommentType == BelongType.Article)
             .ToListAsync(c => new { c.CommentId, c.CreateTime }, cancellationToken);
 
         #region 周数据分析构造
@@ -88,7 +88,7 @@ public class SummaryArticleClientQueryHandler(
                    .CountAsync(cancellationToken);
 
         var comments = await commentRepo.Select
-            .Where(c => c.CommentType == CommentType.Article)
+            .Where(c => c.CommentType == BelongType.Article)
             .CountAsync(cancellationToken);
 
 

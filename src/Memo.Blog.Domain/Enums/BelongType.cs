@@ -3,7 +3,7 @@
 /// <summary>
 /// 评论类型
 /// </summary>
-public enum CommentType
+public enum BelongType
 {
     [Description("文章")]
     Article = 0,
