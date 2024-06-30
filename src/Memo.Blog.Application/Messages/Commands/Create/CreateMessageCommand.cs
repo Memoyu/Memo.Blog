@@ -1,10 +1,9 @@
-﻿using Memo.Blog.Domain.Enums;
-
-namespace Memo.Blog.Application.Messages.Commands.Create;
+﻿namespace Memo.Blog.Application.Messages.Commands.Create;
 
 [Authorize(Permissions = ApiPermission.Message.Create)]
 public record CreateMessageCommand(
-    long ToId,
+    List<long> ToUsers,
+    List<long> ToRoles,
     string Content
     ) : IAuthorizeableRequest<Result>;
 

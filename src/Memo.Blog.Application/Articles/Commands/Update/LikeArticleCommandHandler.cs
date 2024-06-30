@@ -1,4 +1,6 @@
-﻿using Memo.Blog.Application.Security;
+﻿using Memo.Blog.Application.Messages.Common;
+using Memo.Blog.Application.Security;
+using Memo.Blog.Domain.Events.Messages;
 
 namespace Memo.Blog.Application.Articles.Commands.Update;
 
@@ -20,10 +22,26 @@ public class LikeArticleCommandHandler(
         var hasLike = await articleLickeRepo.Select.AnyAsync(al => al.VisitorId == visitorId && al.ArticleId == article.ArticleId, cancellationToken);
         if (hasLike) return Result.Success();
 
-        var entity = await articleLickeRepo.InsertAsync(new ArticleLike { ArticleId = article.ArticleId, VisitorId = visitorId }, cancellationToken)
+        var articleLike = new ArticleLike { ArticleId = article.ArticleId, VisitorId = visitorId };
+
+        // 文章点赞事件
+        articleLike.AddDomainEvent(new CreateMessageEvent
+        {
+            UserId = visitorId,
+            ToUsers = [article.CreateUserId],
+            ToRoles = [InitConst.InitAdminRoleId, InitConst.InitVisitorRoleId], // 按理说，只应该给管理员发以及作者，此处加上游客，演示用
+            MessageType = MessageType.Like,
+            Content = new LikeMessageContent
+            {
+                LikeType = BelongType.Article,
+                BelongId = article.ArticleId,
+            }.ToJson()
+        });
+
+        articleLike = await articleLickeRepo.InsertAsync(articleLike, cancellationToken)
             ?? throw new ApplicationException("点赞文章失败");
 
-        return entity.Id > 0 ? Result.Success() : throw new ApplicationException("点赞文章失败");
+        return articleLike.Id > 0 ? Result.Success() : throw new ApplicationException("点赞文章失败");
     }
 }
 

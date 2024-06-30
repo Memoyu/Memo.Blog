@@ -1,6 +1,4 @@
-﻿
-using System.ComponentModel;
-using Memo.Blog.Application.Articles.Common;
+﻿using Memo.Blog.Application.Articles.Common;
 using Memo.Blog.Application.Categories.Common;
 using Memo.Blog.Application.Security;
 using Memo.Blog.Application.Tags.Common;

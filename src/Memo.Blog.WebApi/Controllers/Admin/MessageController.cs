@@ -1,5 +1,6 @@
 ﻿using Memo.Blog.Application.Messages.Commands.Create;
 using Memo.Blog.Application.Messages.Commands.Update;
+using Memo.Blog.Application.Messages.Queries.Get;
 using Memo.Blog.Application.Messages.Queries.Page;
 
 namespace Memo.Blog.WebApi.Controllers.Admin
@@ -25,6 +26,16 @@ namespace Memo.Blog.WebApi.Controllers.Admin
         /// <returns></returns>
         [HttpPut("read")]
         public async Task<Result> ReadAsync(ReadMessageCommand request)
+        {
+            return await mediator.Send(request);
+        }
+
+        /// <summary>
+        /// 获取未读消息数量
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("unread/number")]
+        public async Task<Result> UnreadNumberAsync([FromQuery] GetUnreadMessageNumberQuery request)
         {
             return await mediator.Send(request);
         }

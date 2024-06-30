@@ -11,6 +11,12 @@ public static partial class Permissions
         [Description("标为已读消息")]
         public const string Read = "update:read:message";
 
+        [Description("获取消息详情")]
+        public const string Get = "get:message";
+
+        [Description("获取未读消息数量")]
+        public const string UnreadNumber = "get:unread:number:message";
+
         [Description("获取消息分页列表")]
         public const string Page = "page:message";
     }

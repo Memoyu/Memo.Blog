@@ -23,7 +23,7 @@ public class NotificationHub(
         if (form <= 0) return;
 
         var formUser = await userRepo.Select.Where(u => u.UserId == form).FirstAsync();
-        await Clients.All.ReceivedNotification($"{formUser.Nickname} 发来消息", $"内容为：{message}");
+        //await Clients.All.ReceivedNotification($"{formUser.Nickname} 发来消息", $"内容为：{message}");
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public class NotificationHub(
 
         var toUser = await userRepo.Select.Where(u => u.UserId == to).FirstAsync();
         var formUser = await userRepo.Select.Where(u => u.UserId == form).FirstAsync();
-        await Clients.All.ReceivedNotification($"{formUser.Nickname} 发来消息", $"接收方：{toUser.Nickname}，内容为：{message}");
+        //await Clients.All.ReceivedNotification($"{formUser.Nickname} 发来消息", $"接收方：{toUser.Nickname}，内容为：{message}");
     }
 
     public override Task OnConnectedAsync()

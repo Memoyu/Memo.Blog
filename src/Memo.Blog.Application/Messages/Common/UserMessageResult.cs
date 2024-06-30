@@ -1,14 +1,14 @@
 ﻿namespace Memo.Blog.Application.Messages.Common;
 
-public record UserMessageResult
+public record UserMessageResult : UserMessageContent
 {
     /// <summary>
-    /// 消息标题
+    /// 用户昵称
     /// </summary>
-    public string Title { get; set; } = string.Empty;
+    public string UserNickname { get; set; } = string.Empty;
 
     /// <summary>
-    /// 消息内容
+    /// 用户头像
     /// </summary>
-    public string Content { get; set; } = string.Empty;
+    public string UserAvatar { get; set; } = string.Empty;
 }

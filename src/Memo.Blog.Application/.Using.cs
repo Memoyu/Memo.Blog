@@ -14,5 +14,7 @@ global using Memo.Blog.Application.Tokens.Common;
 global using Memo.Blog.Domain.Entities;
 global using Memo.Blog.Application.Common.Request;
 global using Memo.Blog.Application.Common.Utils;
+global using Memo.Blog.Domain.Enums;
+global using Memo.Blog.Application.Common.Extensions;
 
 global using ApiPermission = Memo.Blog.Domain.Constants.Security.Permissions.Permissions;

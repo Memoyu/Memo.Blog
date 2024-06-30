@@ -1,16 +1,19 @@
-﻿using Memo.Blog.Domain.Enums;
+﻿namespace Memo.Blog.Application.Messages.Common;
 
-namespace Memo.Blog.Application.Messages.Common;
-
-public record LikeMessageResult
+public record LikeMessageResult : LikeMessageContent
 {
     /// <summary>
-    /// 所属Id（文章Id、动态Id等）
+    /// 访客昵称
     /// </summary>
-    public long BelongId { get; set; }
+    public string VisitorNickname { get; set; } = string.Empty;
 
     /// <summary>
-    /// 所属类型
+    /// 访客头像
     /// </summary>
-    public BelongType LikeType { get; set; }
+    public string VisitorAvatar { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 内容标题
+    /// </summary>
+    public string Title { get; set; } = string.Empty;
 }

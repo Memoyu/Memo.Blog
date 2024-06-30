@@ -23,7 +23,7 @@ public class Message : BaseAuditEntity
     /// </summary>
     [Description("发送方Id")]
     [Column(IsNullable = true)]
-    public long? UserId { get; set; }
+    public long UserId { get; set; }
 
     /// <summary>
     /// 消息类型

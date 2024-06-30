@@ -2,17 +2,22 @@
 
 namespace Memo.Blog.Domain.Events.Messages;
 
-public class CreateMessageEvent : IDomainEvent
+public record CreateMessageEvent : IDomainEvent
 {
     /// <summary>
-    /// 发送方Id
+    /// 发送方Id（用户Id或访客Id）
     /// </summary>
-    public long FromId { get; set; }
+    public long UserId { get; set; }
 
     /// <summary>
     /// 接收方Id
     /// </summary>
-    public long ToId { get; set; }
+    public List<long>? ToUsers { get; set; }
+
+    /// <summary>
+    /// 接收方角色
+    /// </summary>
+    public List<long>? ToRoles { get; set; }
 
     /// <summary>
     /// 消息类型

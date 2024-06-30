@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using AspNetCoreRateLimit;
 using AspNetCoreRateLimit.Redis;
+using Memo.Blog.Application.Common.Extensions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using NSwag;
 using NSwag.Generation.Processors.Security;
@@ -36,7 +37,12 @@ public static class DependencyInjection
                // 处理数组接收带括号时不识别问题，主要用于get 数组传入
                options.ValueProviderFactories.Add(new JQueryQueryStringValueProviderFactory());
            }
-        );
+        ).AddJsonOptions(opts => {
+            opts.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+            opts.JsonSerializerOptions.Converters.Insert(0, new AutoLongToStringConverter());
+        });
+
+
         services.AddEndpointsApiExplorer();
 
         // Swagger 接口文档

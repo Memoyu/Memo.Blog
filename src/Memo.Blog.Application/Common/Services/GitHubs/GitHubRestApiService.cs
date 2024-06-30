@@ -40,7 +40,7 @@ public class GitHubRestApiService : IGitHubRestApiService
             resp.EnsureSuccessStatusCode();
 
             var json = await resp.Content.ReadAsStringAsync();
-            var pages = JsonSerializer.Deserialize<List<GitHubRepoResponse>>(json) ?? [];
+            var pages = json.ToDesJson<List<GitHubRepoResponse>>() ?? [];
             repos.AddRange(pages);
 
             var hasLink = resp.Headers.TryGetValues("Link", out var linkHeaders);
@@ -68,6 +68,6 @@ public class GitHubRestApiService : IGitHubRestApiService
         if (resp.Content == null) return new();
         var json = await resp.Content.ReadAsStringAsync();
 
-        return JsonSerializer.Deserialize<GitHubRepoReadmeResponse>(json) ?? new();
+        return json.ToDesJson<GitHubRepoReadmeResponse>() ?? new();
     }
 }

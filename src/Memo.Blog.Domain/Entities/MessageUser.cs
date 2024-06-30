@@ -1,4 +1,6 @@
-﻿namespace Memo.Blog.Domain.Entities;
+﻿using Memo.Blog.Domain.Enums;
+
+namespace Memo.Blog.Domain.Entities;
 
 /// <summary>
 /// 消息接收方表
@@ -23,9 +25,22 @@ public class MessageUser : BaseAuditEntity
     public long UserId { get; set; }
 
     /// <summary>
+    /// 消息类型(主要做数量统计)
+    /// </summary>
+    [Description("消息类型(主要做数量统计)")]
+    [Column(IsNullable = false)]
+    public MessageType MessageType { get; set; }
+
+    /// <summary>
     /// 是否已读
     /// </summary>
     [Description("是否已读")]
     [Column(IsNullable = false)]
     public bool IsRead { get; set; }
+
+    /// <summary>
+    /// 消息内容
+    /// </summary>
+    [Navigate(nameof(Message.MessageId), TempPrimary = nameof(MessageId))]
+    public virtual Message Message { get; set; } = new();
 }

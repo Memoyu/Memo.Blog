@@ -1,10 +1,12 @@
-﻿namespace Memo.Blog.Domain.Events.Messages;
+﻿using Memo.Blog.Domain.Enums;
+
+namespace Memo.Blog.Domain.Events.Messages;
 
 public record MessageNotificationEvent : IDomainEvent
 {
-    public long? ToId { get; set; }
+    public List<long> ToUsers { get; set; }
 
-    public string Title { get; set; } = string.Empty;
+    public MessageType Type { get; set; }
 
     public string Content { get; set; } = string.Empty;
 }

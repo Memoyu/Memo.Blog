@@ -48,8 +48,8 @@ public class LoggerRegister : IRegister
     private static string GetJsonLogRequest(LoggerSystemCollection s)
     {
         if (s.Properties == null || !s.Properties.Names.Any(n => n.Equals("Request")) || s.Properties["Request"] == null) return string.Empty;
-        var json = BsonSerializer.Deserialize<object>(s.Properties["Request"].AsBsonDocument);
-        return JsonSerializer.Serialize(json);
+        var bsonDoc = BsonSerializer.Deserialize<object>(s.Properties["Request"].AsBsonDocument);
+        return bsonDoc.ToJson();
     }
 
     private static string GetStringLogProperties(LoggerSystemCollection s, string field)

@@ -1,3 +1,4 @@
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using Memo.Blog.Domain.Enums;
 
@@ -43,10 +44,11 @@ public class Result
 
     public override string ToString()
     {
-        return JsonSerializer.Serialize(this, new JsonSerializerOptions
+        return this.ToJson(new JsonSerializerOptions
         {
             WriteIndented = true,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         });
     }
 }

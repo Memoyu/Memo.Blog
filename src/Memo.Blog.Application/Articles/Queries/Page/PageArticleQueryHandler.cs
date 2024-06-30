@@ -1,6 +1,4 @@
-﻿
-using Memo.Blog.Application.Articles.Common;
-using Memo.Blog.Application.Common.Extensions;
+﻿using Memo.Blog.Application.Articles.Common;
 
 namespace Memo.Blog.Application.Articles.Queries.Page;
 
