@@ -20,7 +20,13 @@ public class PageMessageQueryHandler(
             .OrderByDescending(a => a.CreateTime)
             .ToPageListAsync(request, out var total, cancellationToken);
 
-        var dtos = mapper.Map<List<MessageResult>>(userMessages.Select(um => um.Message).ToList());
+        var dtos = new List<MessageResult>();
+        foreach (var userMessage in userMessages)
+        {
+            var dto = mapper.Map<MessageResult>(userMessage.Message);
+            dto.IsRead = userMessage.IsRead;
+            dtos.Add(dto);
+        }
 
         return Result.Success(new PaginationResult<MessageResult>(dtos, total));
 

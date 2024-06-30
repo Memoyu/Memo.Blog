@@ -18,6 +18,7 @@ public class MessageRegister : IRegister
              .Map(d => d.Content, s => GetMessageContentFormat(s.UserId, s.MessageType, s.Content));
 
         config.ForType<Message, MessageResult>()
+             .Map(d => d.MessageId, s => s.MessageId)
              .Map(d => d.MessageType, s => s.MessageType)
              .Map(d => d.Content, s => GetMessageContentFormat(s.UserId, s.MessageType, s.Content))
              .Map(d => d.CreateTime, s => s.CreateTime);
