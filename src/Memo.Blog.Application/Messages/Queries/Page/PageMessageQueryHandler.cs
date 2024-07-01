@@ -6,7 +6,6 @@ namespace Memo.Blog.Application.Messages.Queries.Page;
 public class PageMessageQueryHandler(
     IMapper mapper,
     ICurrentUserProvider currentUserProvider,
-    IBaseDefaultRepository<Message> messageRepo,
     IBaseDefaultRepository<MessageUser> messageUserRepo
     ) : IRequestHandler<PageMessageQuery, Result>
 {
@@ -20,15 +19,25 @@ public class PageMessageQueryHandler(
             .OrderByDescending(a => a.CreateTime)
             .ToPageListAsync(request, out var total, cancellationToken);
 
-        var dtos = new List<MessageResult>();
+        var unreads = await messageUserRepo.Select
+            .Where(m => m.UserId == userId && m.MessageType == request.Type && !m.IsRead)
+            .CountAsync(cancellationToken);
+
+        var messages = new List<MessageResult>();
         foreach (var userMessage in userMessages)
         {
-            var dto = mapper.Map<MessageResult>(userMessage.Message);
-            dto.IsRead = userMessage.IsRead;
-            dtos.Add(dto);
+            var message = mapper.Map<MessageResult>(userMessage.Message);
+            message.IsRead = userMessage.IsRead;
+            messages.Add(message);
         }
 
-        return Result.Success(new PaginationResult<MessageResult>(dtos, total));
+        var page = new MessagePageResult(messages)
+        {
+            Total = total,
+            UnReads = (int)unreads
+        };
+
+        return Result.Success(page);
 
     }
 }

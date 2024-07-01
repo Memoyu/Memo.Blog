@@ -14,7 +14,7 @@ public class ReadMessageCommandHandler(
 
         var messageIds = request.MessageIds ?? [];
         var userMessages = await messageUserRepo.Select
-            .Where(m => m.UserId == userId)
+            .Where(m => m.UserId == userId && !m.IsRead)
             .WhereIf(request.Type.HasValue, m => m.MessageType == request.Type!.Value)
             .WhereIf(messageIds.Count != 0, m => messageIds.Contains(m.MessageId))
             .ToListAsync(cancellationToken);

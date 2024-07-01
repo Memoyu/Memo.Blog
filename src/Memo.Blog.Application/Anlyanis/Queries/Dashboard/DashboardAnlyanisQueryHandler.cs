@@ -2,6 +2,7 @@
 using Memo.Blog.Application.Common.Extensions;
 using Memo.Blog.Domain.Entities.Mongo;
 using MongoDB.Driver;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using static Memo.Blog.Application.Common.Extensions.DateTimeExtension;
 
 namespace Memo.Blog.Application.Anlyanis.Queries.Dashboard;
@@ -79,16 +80,22 @@ public class DashboardAnlyanisQueryHandler(
         {
             Comments = await commentRepo.Select.CountAsync(cancellationToken)
         };
+
         var weekComments = new List<int>();
-        foreach (var date in weekRanges)
+        var tempWeekRanges = weekRanges.ToList();
+        tempWeekRanges.Add(now.Date);
+        foreach (var date in tempWeekRanges)
         {
             var count = await commentRepo.Select
                     .Where(c => c.CreateTime >= date && c.CreateTime <= date.AddDays(1).AddSeconds(-1))
                     .CountAsync(cancellationToken);
             if (date == now.Date)
+            {
                 commentAnlyanis.TodayComments = count;
+                continue;
+            }
 
-            commentAnlyanis.WeekComments.Add(new MetricItemResult (date.ToString("yyyy-MM-dd"), count));
+            commentAnlyanis.WeekComments.Add(new MetricItemResult(date.ToString("yyyy-MM-dd"), count));
         }
 
         #endregion
