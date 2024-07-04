@@ -25,7 +25,8 @@ public class ReadMessageCommandHandler(
             return m;
         }).ToList();
 
-        await messageUserRepo.UpdateAsync(updates, cancellationToken);
+        if (updates.Count != 0)
+            await messageUserRepo.UpdateAsync(updates, cancellationToken);
 
         return Result.Success("消息标为已读成功");
     }

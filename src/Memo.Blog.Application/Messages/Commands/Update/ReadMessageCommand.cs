@@ -11,7 +11,7 @@ public class ReadMessageCommandValidator : AbstractValidator<ReadMessageCommand>
     public ReadMessageCommandValidator()
     {
         RuleFor(x => x)
-         .Must(x => x.Type.HasValue || x.MessageIds != null)
+         .Must(x => x.Type.HasValue || (x.MessageIds ?? []).Count > 0)
          .WithMessage("消息类型或消息Id集合必须传一个");
     }
 }
