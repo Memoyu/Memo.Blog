@@ -5,5 +5,5 @@
 /// </summary>
 public interface IManagementHubClient
 {
-    Task ReceivedNotification(MessageType type, string content);
+    Task ReceivedNotification(MessageType type, string messageId,  string content);
 }

@@ -28,6 +28,7 @@ public class CreateMessageEventHandler(
         var toUserEntities = new List<MessageUser>();
         var @event = mapper.Map<MessageNotificationEvent>(notification);
         @event.ToUsers = toUsers;
+        @event.MessageId = message.MessageId;
         message.AddDomainEvent(@event);
         toUserEntities = toUsers.Select(t => new MessageUser { MessageId = message.MessageId, UserId = t, MessageType = message.MessageType }).ToList();
 

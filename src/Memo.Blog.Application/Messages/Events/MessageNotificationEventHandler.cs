@@ -16,6 +16,8 @@ internal class MessageNotificationEventHandler(ILogger<MessageNotificationEventH
         }
 
         // 指定用户发送
-        await hubContext.Clients.Users(notification.ToUsers.Select(i => i.ToString())).ReceivedNotification(notification.Type, notification.Content);
+        await hubContext.Clients
+            .Users(notification.ToUsers.Select(i => i.ToString()))
+            .ReceivedNotification(notification.Type, notification.MessageId.ToString(), notification.Content); // 源于前端number最大值问题，所以，简单点,MessageId直接字符串
     }
 }
