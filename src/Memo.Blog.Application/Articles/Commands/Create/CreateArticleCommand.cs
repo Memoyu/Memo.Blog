@@ -1,6 +1,4 @@
-﻿using Memo.Blog.Domain.Enums;
-
-namespace Memo.Blog.Application.Articles.Commands.Create;
+﻿namespace Memo.Blog.Application.Articles.Commands.Create;
 
 [Authorize(Permissions = ApiPermission.Article.Create)]
 [Transactional]

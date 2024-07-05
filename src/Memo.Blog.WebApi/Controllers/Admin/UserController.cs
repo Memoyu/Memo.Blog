@@ -2,6 +2,7 @@
 using Memo.Blog.Application.Users.Commands.Delete;
 using Memo.Blog.Application.Users.Commands.Update;
 using Memo.Blog.Application.Users.Queries.Get;
+using Memo.Blog.Application.Users.Queries.List;
 using Memo.Blog.Application.Users.Queries.Page;
 
 namespace Memo.Blog.WebApi.Controllers.Admin;
@@ -67,6 +68,16 @@ public class UserController(ISender mediator) : ApiAdminController
     /// <returns></returns>
     [HttpGet("page")]
     public async Task<Result> PageAsync([FromQuery] PageUserQuery request)
+    {
+        return await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 获取用户选项列表
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("list/select")]
+    public async Task<Result> ListSelectAsync([FromQuery] SelectUserQuery request)
     {
         return await mediator.Send(request);
     }

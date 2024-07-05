@@ -22,5 +22,8 @@ public static partial class Permissions
 
         [Description("获取用户分页")]
         public const string Page = "page:user";
+
+        [Description("获取用户选项列表")]
+        public const string ListSelect = "list:select:user";
     }
 }
