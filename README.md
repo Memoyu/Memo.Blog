@@ -118,6 +118,7 @@ src
 |对象映射| [MapsterMapper/Mapster](https://github.com/MapsterMapper/Mapster) |
 | Json序列化/反序列化 | [System.Text.Json(内置)](https://learn.microsoft.com/zh-cn/dotnet/api/system.text.json) |
 |后台任务调度| [BackgroundService(内置)](https://learn.microsoft.com/zh-cn/dotnet/architecture/microservices/multi-container-microservice-net-applications/background-tasks-with-ihostedservice) |
+|实时通信|[SignalR/SignalR](https://github.com/SignalR/SignalR)|
 |整体设计参考| [CleanArchitecture](https://github.com/amantinband/clean-architecture) |
 |容器| [Docker](https://www.docker.com/) |
 |DevOps|[Azure](https://dev.azure.com/)|
