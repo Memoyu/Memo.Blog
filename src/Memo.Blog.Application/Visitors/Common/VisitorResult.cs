@@ -1,6 +1,4 @@
-﻿using Memo.Blog.Domain.Enums;
-
-namespace Memo.Blog.Application.Visitors.Common;
+﻿namespace Memo.Blog.Application.Visitors.Common;
 
 public class VisitorResult : VisitorClientResult
 {

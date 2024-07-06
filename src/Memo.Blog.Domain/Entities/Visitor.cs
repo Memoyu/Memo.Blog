@@ -31,6 +31,13 @@ public class Visitor : BaseAuditEntity
     public string Avatar { get; set; } = string.Empty;
 
     /// <summary>
+    /// 电子邮箱
+    /// </summary>
+    [Description("电子邮箱")]
+    [Column(StringLength = 100, IsNullable = false)]
+    public string Email { get; set; } = string.Empty;
+
+    /// <summary>
     /// 头像来源类型
     /// </summary>
     [Description("头像来源类型")]

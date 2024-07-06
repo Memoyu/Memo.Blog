@@ -12,8 +12,16 @@ public class UpdateVisitorCommandHandler(
 {
     public async Task<Result> Handle(UpdateVisitorCommand request, CancellationToken cancellationToken)
     {
-        var entity = await visitorRepo.Select.Where(c => c.VisitorId == request.VisitorId).FirstAsync(cancellationToken);
+        // 不传访客id, 就从请求头拿
+        long? visitorId = null;
+        if (!request.VisitorId.HasValue)
+            visitorId = currentUserProvider.GetCurrentVisitor();
 
+        // 有访客id, 就去获取数据
+        Visitor? entity = null;
+        if (visitorId.HasValue)
+            entity = await visitorRepo.Select.Where(c => c.VisitorId == visitorId.Value).FirstAsync(cancellationToken);
+        
         var affrows = 0;
         var visitor = mapper.Map<Visitor>(request);
         var ip = currentUserProvider.GetClientIp();
@@ -23,7 +31,7 @@ public class UpdateVisitorCommandHandler(
 
         // 不存在时，则新建一个访客
         if (entity == null)
-        {     
+        {
             visitor = await visitorRepo.InsertAsync(visitor, cancellationToken);
             if (visitor.Id > 0) affrows = 1;
         }
