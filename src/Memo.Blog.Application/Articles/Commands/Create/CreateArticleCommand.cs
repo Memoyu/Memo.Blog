@@ -9,10 +9,10 @@ public record CreateArticleCommand(
     string Description,
     string Content,
     string Banner,
-    ArticleStatus Status,
     bool IsTop,
     bool Commentable,
-    bool Publicable
+    bool Publicable,
+    ArticleStatus? Status
     ) : IAuthorizeableRequest<Result>;
 
 public class CreateArticleCommandValidator : AbstractValidator<CreateArticleCommand>

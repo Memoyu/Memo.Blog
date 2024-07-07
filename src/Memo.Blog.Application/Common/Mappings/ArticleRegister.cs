@@ -13,6 +13,7 @@ public class ArticleRegister : IRegister
         Expression<Func<CreateArticleCommand, User>> userMap = s => MapContext.Current.GetService<IBaseDefaultRepository<User>>().Select.Where(u => u.UserId == MapContext.Current.GetService<ICurrentUserProvider>().GetCurrentUser().Id).ToOne();
 
         config.ForType<CreateArticleCommand, Article>()
+            .Map(d => d.Status, s => s.Status ?? ArticleStatus.Draft) // 默认为保存到草稿
             .Map(d => d.WordNumber, s => s.Content.Length)
             .Map(d => d.ReadingTime, s => GetReadingTime(s.Content))
             .Map(d => d.Category, s => MapContext.Current.GetService<IBaseDefaultRepository<Category>>().Select.Where(c => c.CategoryId == s.CategoryId).ToOne())

@@ -14,9 +14,6 @@ public static partial class Permissions
         [Description("删除文章")]
         public const string Delete = "delete:article";
 
-        [Description("发布文章")]
-        public const string Publish = "publish:article";
-
         [Description("获取文章")]
         public const string Get = "get:article";
 

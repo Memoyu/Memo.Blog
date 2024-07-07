@@ -23,6 +23,7 @@ public class CreateArticleCommandHandler(
         }
 
         var article = mapper.Map<Article>(request);
+
         article = await articleRepo.InsertAsync(article, cancellationToken);
         if (article.Id == 0) throw new ApplicationException("保存文章失败");
 

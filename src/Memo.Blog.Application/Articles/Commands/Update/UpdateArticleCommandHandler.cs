@@ -26,6 +26,8 @@ public class UpdateArticleCommandHandler(
         updateArticle.Id = article.Id;
         // 不需要更新的字段
         updateArticle.Views = article.Views;
+        // 判断是否需要更新状态
+        updateArticle.Status = request.Status ?? article.Status;
 
         var row = await articleRepo.UpdateAsync(updateArticle, cancellationToken);
         if (row <= 0) throw new ApplicationException("更新文章失败");

@@ -82,14 +82,4 @@ public class ArticleController(ISender mediator) : ApiAdminController
     {
         return await mediator.Send(request);
     }
-
-    /// <summary>
-    /// 发布文章
-    /// </summary>
-    /// <returns></returns>
-    [HttpPut("publish")]
-    public async Task<Result> PublishAsync(PublishArticleCommand request)
-    {
-        return await mediator.Send(request);
-    }
 }

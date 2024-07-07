@@ -12,10 +12,10 @@ public record UpdateArticleCommand(
     string Description,
     string Content,
     string Banner,
-    ArticleStatus Status,
     bool IsTop,
     bool Commentable,
-    bool Publicable
+    bool Publicable,
+    ArticleStatus? Status
     ) : IAuthorizeableRequest<Result>;
 
 public class UpdateArticleCommandValidator : AbstractValidator<UpdateArticleCommand>
