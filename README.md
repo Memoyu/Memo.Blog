@@ -1,9 +1,7 @@
-<h1 align="center">
-  <img src="https://raw.githubusercontent.com/Memoyu/Memoyu/main/logo.png" alt="memoyu" width="128" />
-  <br>
-  Memoyu's Blog
-  <br>
-</h1>
+<div align="center"  style="margin-bottom: 40px">
+ <img src="https://raw.githubusercontent.com/Memoyu/Memoyu/main/logo.png" alt="memoyu" width="128" />
+</div>
+<h1 align="center">Memoyu's Blog</h1>
 <div align="center">
  <h3>基于.NET8开发的Blog系统接口服务</h3>
  <a href="https://dotnet.microsoft.com/zh-cn/download"><img src="https://img.shields.io/badge/.net8.0.0-3963bc.svg"/></a>
