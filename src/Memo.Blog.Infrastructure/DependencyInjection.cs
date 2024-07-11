@@ -13,12 +13,12 @@ using Memo.Blog.Application.Security;
 using IP2Region.Net.Abstractions;
 using IP2Region.Net.XDB;
 using Microsoft.AspNetCore.Hosting;
-using Memo.Blog.Application.Common.Interfaces.Region;
 using Memo.Blog.Infrastructure.Region;
 using EasyCaching.FreeRedis;
 using EasyCaching.Serialization.SystemTextJson.Configurations;
 using Microsoft.Extensions.Caching.Distributed;
 using Memo.Blog.Infrastructure.Persistence.Cache;
+using Memo.Blog.Application.Common.Interfaces.Services.Region;
 
 namespace Memo.Blog.Infrastructure;
 
@@ -162,7 +162,7 @@ public static class DependencyInjection
         string xdbPath = Path.Combine(env.WebRootPath, "Assets", "ip2region.xdb");
 
         services.AddSingleton<ISearcher>(new Searcher(CachePolicy.Content, xdbPath));
-        services.AddSingleton<IRegionSearcher, RegionSearcher>();
+        services.AddSingleton<IRegionSearchService, RegionSearchService>();
 
         return services;
     }

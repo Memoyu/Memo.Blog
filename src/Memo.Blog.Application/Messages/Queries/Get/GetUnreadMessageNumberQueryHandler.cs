@@ -4,7 +4,6 @@ using Memo.Blog.Application.Security;
 namespace Memo.Blog.Application.Messages.Queries.Get;
 
 public class GetUnreadMessageNumberQueryHandler(
-    IMapper mapper,
     ICurrentUserProvider currentUserProvider,
     IBaseDefaultRepository<MessageUser> messageUserRepo
     ) : IRequestHandler<GetUnreadMessageNumberQuery, Result>

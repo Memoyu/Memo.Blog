@@ -1,4 +1,4 @@
-﻿using Memo.Blog.Application.Common.Interfaces.Region;
+﻿using Memo.Blog.Application.Common.Interfaces.Services.Region;
 using Memo.Blog.Application.Security;
 using Memo.Blog.Domain.Entities.Mongo;
 using Memo.Blog.Domain.Events.Articles;
@@ -11,7 +11,7 @@ public class CreateLoggerVisitCommandHadler(
      ILogger<CreateLoggerVisitCommandHadler> logger,
      IPublisher publisher,
      ICurrentUserProvider currentUserProvider,
-     IRegionSearcher searcher,
+     IRegionSearchService searcher,
      IBaseMongoRepository<LoggerVisitCollection> visitlogMongoRepo
     ) : IRequestHandler<CreateLoggerVisitCommand, Result>
 {

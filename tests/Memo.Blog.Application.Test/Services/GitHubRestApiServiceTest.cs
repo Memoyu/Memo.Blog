@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Threading.Tasks;
 using Memo.Blog.Application.Common.Interfaces.Services.GitHubs;
 using Memo.Blog.Application.Common.Models.Settings;
 using Memo.Blog.Application.Common.Services.GitHubs;
@@ -35,7 +36,7 @@ public class GitHubRestApiServiceTest
     }
 
     [Fact]
-    public async void GetReposAsync_Should_Success()
+    public async Task GetReposAsync_Should_Success()
     {
         var repos = await _gitHubRestApiService.GetAllReposAsync();
         Assert.NotNull(repos);
@@ -43,7 +44,7 @@ public class GitHubRestApiServiceTest
     }
 
     [Fact]
-    public async void GetRepoReadmeAsync_Should_Success()
+    public async Task GetRepoReadmeAsync_Should_Success()
     {
         var readme = await _gitHubRestApiService.GetRepoReadmeAsync("mbill_wechat_app");
         Assert.NotNull(readme);

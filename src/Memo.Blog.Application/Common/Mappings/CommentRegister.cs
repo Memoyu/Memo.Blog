@@ -1,5 +1,5 @@
 ﻿using Memo.Blog.Application.Comments.Common;
-using Memo.Blog.Application.Common.Interfaces.Region;
+using Memo.Blog.Application.Common.Interfaces.Services.Region;
 
 namespace Memo.Blog.Application.Common.Mappings;
 
@@ -31,7 +31,7 @@ public class CommentRegister : IRegister
 
     private string GetRegionFormat(string region)
     {
-        var searcher = MapContext.Current.GetService<IRegionSearcher>() ?? throw new Exception("未注册IRegionSearcher服务");
+        var searcher = MapContext.Current.GetService<IRegionSearchService>() ?? throw new Exception("未注册IRegionSearcher服务");
         var regionIfon = searcher.ToRegionInfo(region);
         return regionIfon.GetRegion() ?? string.Empty;
     }

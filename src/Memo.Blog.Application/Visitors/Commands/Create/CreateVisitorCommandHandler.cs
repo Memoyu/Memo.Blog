@@ -1,11 +1,11 @@
-﻿using Memo.Blog.Application.Common.Interfaces.Region;
+﻿using Memo.Blog.Application.Common.Interfaces.Services.Region;
 using Memo.Blog.Application.Security;
 
 namespace Memo.Blog.Application.Visitors.Commands.Generate;
 
 public class CreateVisitorCommandHandler(
     IMapper mapper,
-    IRegionSearcher searcher,
+    IRegionSearchService searcher,
     ICurrentUserProvider currentUserProvider,
     IBaseDefaultRepository<Visitor> visitorRepo
     ) : IRequestHandler<CreateVisitorCommand, Result>

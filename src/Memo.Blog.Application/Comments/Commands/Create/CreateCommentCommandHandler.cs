@@ -1,5 +1,5 @@
 ﻿using Memo.Blog.Application.Comments.Common;
-using Memo.Blog.Application.Common.Interfaces.Region;
+using Memo.Blog.Application.Common.Interfaces.Services.Region;
 using Memo.Blog.Application.Messages.Common;
 using Memo.Blog.Application.Security;
 using Memo.Blog.Domain.Events.Articles;
@@ -11,7 +11,7 @@ public class CreateCommentClientCommandHandler(
      // ILogger<CreateCommentClientCommandHandler> logger,
      IMapper mapper,
      ICurrentUserProvider currentUserProvider,
-     IRegionSearcher searcher,
+     IRegionSearchService searcher,
      IBaseDefaultRepository<Comment> commentRepo,
      IBaseDefaultRepository<Article> articleRepo,
      IBaseDefaultRepository<Visitor> visitorRepo

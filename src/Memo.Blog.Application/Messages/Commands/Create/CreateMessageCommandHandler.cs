@@ -6,11 +6,9 @@ using Microsoft.Extensions.Logging;
 namespace Memo.Blog.Application.Messages.Commands.Create;
 
 public class CreateMessageCommandHandler(
-    IMapper mapper,
     ILogger<CreateMessageCommandHandler> logger,
     ICurrentUserProvider currentUserProvider,
-    IPublisher publisher,
-    IBaseDefaultRepository<Message> messageRepo
+    IPublisher publisher
     ) : IRequestHandler<CreateMessageCommand, Result>
 {
     public async Task<Result> Handle(CreateMessageCommand request, CancellationToken cancellationToken)

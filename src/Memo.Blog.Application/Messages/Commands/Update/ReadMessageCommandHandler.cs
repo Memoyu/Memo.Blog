@@ -3,7 +3,6 @@
 namespace Memo.Blog.Application.Messages.Commands.Update;
 
 public class ReadMessageCommandHandler(
-    IMapper mapper,
     ICurrentUserProvider currentUserProvider,
     IBaseDefaultRepository<MessageUser> messageUserRepo
     ) : IRequestHandler<ReadMessageCommand, Result>

@@ -1,4 +1,4 @@
-﻿using Memo.Blog.Application.Common.Interfaces.Region;
+﻿using Memo.Blog.Application.Common.Interfaces.Services.Region;
 using Memo.Blog.Application.Visitors.Common;
 
 namespace Memo.Blog.Application.Common.Mappings;
@@ -21,7 +21,7 @@ public class VisitorRegister : IRegister
 
     private string GetRegionFormat(string region)
     {
-        var searcher = MapContext.Current.GetService<IRegionSearcher>() ?? throw new Exception("未注册IRegionSearcher服务");
+        var searcher = MapContext.Current.GetService<IRegionSearchService>() ?? throw new Exception("未注册IRegionSearcher服务");
         var regionIfon = searcher.ToRegionInfo(region);
         return regionIfon.GetRegion() ?? string.Empty;
     }

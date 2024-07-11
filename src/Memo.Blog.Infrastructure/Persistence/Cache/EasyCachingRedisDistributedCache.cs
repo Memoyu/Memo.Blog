@@ -29,14 +29,14 @@ public class EasyCachingRedisDistributedCache : IDistributedCache
         _provider = provider;
     }
 
-    public byte[] Get(string key)
+    public byte[]? Get(string key)
     {
         ArgumentCheck.NotNull(key, nameof(key));
 
         return GetAndRefresh(key, getData: true);
     }
 
-    public async Task<byte[]> GetAsync(string key, CancellationToken token = default)
+    public async Task<byte[]?> GetAsync(string key, CancellationToken token = default)
     {
         ArgumentCheck.NotNull(key, nameof(key));
 
@@ -121,12 +121,12 @@ public class EasyCachingRedisDistributedCache : IDistributedCache
         var result = await _provider.EvalAsync(SetScript, key, list);
     }
 
-    private byte[] GetAndRefresh(string key, bool getData)
+    private byte[]? GetAndRefresh(string key, bool getData)
     {
         ArgumentCheck.NotNull(key, nameof(key));
 
-        object[] results;
-        byte[] value = null;
+        object?[] results;
+        byte[]? value = null;
 
         if (getData)
         {
@@ -136,7 +136,7 @@ public class EasyCachingRedisDistributedCache : IDistributedCache
             var second = dict[SlidingExpirationKey]?.ToString();
             value = System.Text.Encoding.UTF8.GetBytes(dict[DataKey]);
 
-            results = new object[] { first, second, value };
+            results = [first, second, value];
         }
         else
         {
@@ -145,7 +145,7 @@ public class EasyCachingRedisDistributedCache : IDistributedCache
             var first = dict[AbsoluteExpirationKey]?.ToString();
             var second = dict[SlidingExpirationKey]?.ToString();
 
-            results = new object[] { first, second };
+            results = [first, second];
         }
 
         if (results.Length >= 2)
@@ -162,13 +162,13 @@ public class EasyCachingRedisDistributedCache : IDistributedCache
         return null;
     }
 
-    private async Task<byte[]> GetAndRefreshAsync(string key, bool getData, CancellationToken token = default(CancellationToken))
+    private async Task<byte[]?> GetAndRefreshAsync(string key, bool getData, CancellationToken token = default(CancellationToken))
     {
         ArgumentCheck.NotNull(key, nameof(key));
 
         token.ThrowIfCancellationRequested();
 
-        object[] results;
+        object?[] results;
         byte[]? value = null;
         if (getData)
         {
@@ -179,7 +179,7 @@ public class EasyCachingRedisDistributedCache : IDistributedCache
             if (dict[DataKey] != null)
                 value = System.Text.Encoding.UTF8.GetBytes(dict[DataKey]);
 
-            results = new object[] { first, second, value };
+            results = [first, second, value];
         }
         else
         {
@@ -188,7 +188,7 @@ public class EasyCachingRedisDistributedCache : IDistributedCache
             var first = dict[AbsoluteExpirationKey]?.ToString();
             var second = dict[SlidingExpirationKey]?.ToString();
 
-            results = new object[] { first, second };
+            results = [first, second];
         }
 
         if (results.Length >= 2)
@@ -205,15 +205,15 @@ public class EasyCachingRedisDistributedCache : IDistributedCache
         return null;
     }
 
-    private void MapMetadata(object[] results, out DateTimeOffset? absoluteExpiration, out TimeSpan? slidingExpiration)
+    private void MapMetadata(object?[] results, out DateTimeOffset? absoluteExpiration, out TimeSpan? slidingExpiration)
     {
         absoluteExpiration = null;
         slidingExpiration = null;
-        if (long.TryParse(results[0]?.ToString(), out var absoluteExpirationTicks) && absoluteExpirationTicks != NotPresent)
+        if (long.TryParse(results?[0]?.ToString(), out var absoluteExpirationTicks) && absoluteExpirationTicks != NotPresent)
         {
             absoluteExpiration = new DateTimeOffset(absoluteExpirationTicks, TimeSpan.Zero);
         }
-        if (long.TryParse(results[1]?.ToString(), out var slidingExpirationTicks) && slidingExpirationTicks != NotPresent)
+        if (long.TryParse(results?[1]?.ToString(), out var slidingExpirationTicks) && slidingExpirationTicks != NotPresent)
         {
             slidingExpiration = new TimeSpan(slidingExpirationTicks);
         }

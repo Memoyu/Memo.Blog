@@ -90,7 +90,7 @@ src
 │  │  └─Repositories -- 数据库仓储实现
 │  ├─Region -- ip2region进一步封装实现
 │  └─Security -- 安全相关实现，例如JWT、当前用户、权限验证
-└─Memo.Blog.WebApi -- 外放接口模块
+└─Memo.Blog.Api -- 外放接口模块
     ├─Controllers -- 客户端接口定义
     │  └─Admin -- 管理端接口定于
     └─wwwroot -- 静态文件
