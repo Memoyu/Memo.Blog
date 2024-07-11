@@ -47,6 +47,10 @@ public class LoggerRegister : IRegister
 
     private static string GetJsonLogRequest(LoggerSystemCollection s)
     {
+        // 如果是登录，则不展示请求参数
+        var path = GetStringLogProperties(s, "RequestPath")?.ToLower() ?? string.Empty;
+        if (path.Contains("tokens")) return string.Empty;
+
         if (s.Properties == null || !s.Properties.Names.Any(n => n.Equals("Request")) || s.Properties["Request"] == null) return string.Empty;
         var bsonDoc = BsonSerializer.Deserialize<object>(s.Properties["Request"].AsBsonDocument);
         return bsonDoc.ToJson();

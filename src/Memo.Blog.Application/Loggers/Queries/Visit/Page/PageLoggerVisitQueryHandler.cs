@@ -14,7 +14,7 @@ public class PageLoggerVisitQueryHandler(
     {
         var f = Builders<LoggerVisitCollection>.Filter.Empty;
         if (request.VisitId.HasValue)
-            f &= Builders<LoggerVisitCollection>.Filter.Eq(nameof(LoggerVisitCollection.VisitId), ObjectId.Parse(request.VisitId.Value.ToString()));
+            f &= Builders<LoggerVisitCollection>.Filter.Eq(nameof(LoggerVisitCollection.VisitId), request.VisitId.Value);
 
         if (request.VisitorId.HasValue)
             f &= Builders<LoggerVisitCollection>.Filter.Eq(nameof(LoggerVisitCollection.VisitorId), request.VisitorId.Value);
