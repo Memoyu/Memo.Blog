@@ -31,6 +31,16 @@ public class ArticleController(ISender mediator) : ApiController
     }
 
     /// <summary>
+    /// 检索文章分页列表
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("page/search")]
+    public async Task<Result> SearchPageAsync([FromQuery] SearchArticleQuery request)
+    {
+        return await mediator.Send(request);
+    }
+
+    /// <summary>
     /// 获取文章汇总
     /// </summary>
     /// <returns></returns>
