@@ -16,7 +16,7 @@ using Serilog;
 
 namespace Memo.Blog.Infrastructure.Persistence;
 
-public static class FreeSqlPersistenceExtension
+public static class PersistenceExtension
 {
     /// <summary>
     /// 注册MySql数据持久化组件

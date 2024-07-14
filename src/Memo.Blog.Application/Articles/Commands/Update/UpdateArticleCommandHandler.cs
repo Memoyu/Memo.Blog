@@ -54,27 +54,28 @@ public class UpdateArticleCommandHandler(
 
         #region 更新MongoDB
 
-        var articleCollection = mapper.Map<ArticleCollection>(updateArticle);
-        var update = Builders<ArticleCollection>.Update
-                 .Set(nameof(ArticleCollection.Category), mapper.Map<ArticleCategoryBson>(category))
-                 .Set(nameof(ArticleCollection.Title), articleCollection.Title)
-                 .Set(nameof(ArticleCollection.Description), articleCollection.Description)
-                 .Set(nameof(ArticleCollection.Content), articleCollection.Content)
-                 .Set(nameof(ArticleCollection.Banner), articleCollection.Banner)
-                 .Set(nameof(ArticleCollection.Thumbnail), articleCollection.Thumbnail)
-                 .Set(nameof(ArticleCollection.WordNumber), articleCollection.WordNumber)
-                 .Set(nameof(ArticleCollection.ReadingTime), articleCollection.ReadingTime)
-                 .Set(nameof(ArticleCollection.Status), articleCollection.Status)
-                 .Set(nameof(ArticleCollection.Views), articleCollection.Views)
-                 .Set(nameof(ArticleCollection.Likes), articleCollection.Likes)
-                 .Set(nameof(ArticleCollection.IsTop), articleCollection.IsTop)
-                 .Set(nameof(ArticleCollection.Commentable), articleCollection.Commentable)
-                 .Set(nameof(ArticleCollection.Publicable), articleCollection.Publicable)
-                 .Set(nameof(ArticleCollection.Tags), mapper.Map<List<ArticleTagBson>>(tags));
+        // TODO: 更新文章内容、标签、分类等
+        //var articleCollection = mapper.Map<ArticleCollection>(updateArticle);
+        //var update = Builders<ArticleCollection>.Update
+        //         .Set(nameof(ArticleCollection.Category), mapper.Map<ArticleCategoryBson>(category))
+        //         .Set(nameof(ArticleCollection.Title), articleCollection.Title)
+        //         .Set(nameof(ArticleCollection.Description), articleCollection.Description)
+        //         .Set(nameof(ArticleCollection.Content), articleCollection.Content)
+        //         .Set(nameof(ArticleCollection.Banner), articleCollection.Banner)
+        //         .Set(nameof(ArticleCollection.Thumbnail), articleCollection.Thumbnail)
+        //         .Set(nameof(ArticleCollection.WordNumber), articleCollection.WordNumber)
+        //         .Set(nameof(ArticleCollection.ReadingTime), articleCollection.ReadingTime)
+        //         .Set(nameof(ArticleCollection.Status), articleCollection.Status)
+        //         .Set(nameof(ArticleCollection.Views), articleCollection.Views)
+        //         .Set(nameof(ArticleCollection.Likes), articleCollection.Likes)
+        //         .Set(nameof(ArticleCollection.IsTop), articleCollection.IsTop)
+        //         .Set(nameof(ArticleCollection.Commentable), articleCollection.Commentable)
+        //         .Set(nameof(ArticleCollection.Publicable), articleCollection.Publicable)
+        //         .Set(nameof(ArticleCollection.Tags), mapper.Map<List<ArticleTagBson>>(tags));
 
-        var filter = Builders<ArticleCollection>.Filter.Eq(b => b.ArticleId, request.ArticleId);
-        var mongoUpdate = await articleMongoRepo.UpdateOneAsync(update, filter, null, cancellationToken);
-        if (!mongoUpdate.IsAcknowledged) throw new Exception("更新mongodb失败"); 
+        //var filter = Builders<ArticleCollection>.Filter.Eq(b => b.ArticleId, request.ArticleId);
+        //var mongoUpdate = await articleMongoRepo.UpdateOneAsync(update, filter, null, cancellationToken);
+        //if (!mongoUpdate.IsAcknowledged) throw new Exception("更新mongodb失败"); 
 
         #endregion
 

@@ -5,7 +5,6 @@ using MongoDB.Driver;
 namespace Memo.Blog.Application.Articles.Events;
 
 public class UpdatedArticleCategoryEventHandler(
-    IMapper mapper,
     IBaseDefaultRepository<Article> articleRepo,
     IBaseMongoRepository<ArticleCollection> articleMongoRepo
     ) : INotificationHandler<UpdatedArticleCategoryEvent>
@@ -19,7 +18,7 @@ public class UpdatedArticleCategoryEventHandler(
         foreach (var article in articles)
         {
             var update = Builders<ArticleCollection>.Update
-                .Set(nameof(ArticleCollection.Category), mapper.Map<ArticleCategoryBson>(notification.Category));
+                .Set(nameof(ArticleCollection.Category), notification.Category.Name);
 
             var filter = Builders<ArticleCollection>.Filter.Eq(b => b.ArticleId, article.ArticleId);
             var mongoUpdate = await articleMongoRepo.UpdateOneAsync(update, filter, null, cancellationToken);

@@ -19,6 +19,9 @@ using EasyCaching.Serialization.SystemTextJson.Configurations;
 using Microsoft.Extensions.Caching.Distributed;
 using Memo.Blog.Infrastructure.Persistence.Cache;
 using Memo.Blog.Application.Common.Interfaces.Services.Region;
+using JiebaNet.Segmenter;
+using Memo.Blog.Application.Common.Text;
+using Memo.Blog.Infrastructure.Text;
 
 namespace Memo.Blog.Infrastructure;
 
@@ -36,8 +39,9 @@ public static class DependencyInjection
             .AddPersistenceForMongo(configuration) // 注册MongoDb持久化组件（MongoDB.Driver）
             .AddAddEasyCaching(configuration) // 注册缓存组件
             .AddIp2Region() // 注册IP地址定位
+            .AddTextService() // 注册文本处理服务
             .AddSignalR(); // 注册 SignalR 服务
-
+            
         return services;
     }
 
@@ -187,6 +191,23 @@ public static class DependencyInjection
 
         // 注册EasyCaching分布式缓存
         services.AddSingleton<IDistributedCache, EasyCachingRedisDistributedCache>();
+
+        return services;
+    }
+
+    /// <summary>
+    /// 注册文本处理服务
+    /// </summary>
+    /// <param name="services"></param>
+    /// <returns></returns>
+    private static IServiceCollection AddTextService(this IServiceCollection services)
+    {
+        // 注册结巴分词处理
+        services.AddSingleton(new JiebaSegmenter());
+        services.AddScoped<ISegmenterService, SegmenterService>();
+
+        // 注册Markdown文档处理
+        services.AddScoped<IMarkdownService, MarkdownService>();
 
         return services;
     }

@@ -1,10 +1,11 @@
-﻿using Memo.Blog.Domain.Entities.Mongo;
+﻿using Memo.Blog.Application.Common.Text;
+using Memo.Blog.Domain.Entities.Mongo;
 using Memo.Blog.Domain.Events.Articles;
 
 namespace Memo.Blog.Application.Articles.Events;
 
 public class UpdatedArticleTagEventHandler(
-    IMapper mapper,
+    ISegmenterService segmenterService,
     IBaseMongoRepository<ArticleCollection> articleMongoRepo,
     IBaseDefaultRepository<ArticleTag> articleTagRepo,
     IBaseDefaultRepository<Tag> tagRepo
@@ -24,10 +25,11 @@ public class UpdatedArticleTagEventHandler(
                 .ToListAsync(at => at.TagId, cancellationToken);
 
             // 不能使用Include, 会存在update的数据脏读问题
-            var tags = await tagRepo.Select.Where(t => tagIds.Contains(t.TagId)).ToListAsync(cancellationToken);
-
+            var tags = await tagRepo.Select.Where(t => tagIds.Contains(t.TagId)).ToListAsync(t => t.Name, cancellationToken);
+            // 所有标签组合，然后分词
+            var tagSeg = segmenterService.CutWithSplitForSearch(string.Join(" ", tags));
             var update = MongoDB.Driver.Builders<ArticleCollection>.Update
-                 .Set(nameof(ArticleCollection.Tags), mapper.Map<List<ArticleTagBson>>(tags));
+                 .Set(nameof(ArticleCollection.Tags), tagSeg);
             var filter = MongoDB.Driver.Builders<ArticleCollection>.Filter.Eq(b => b.ArticleId, articleId);
             var mongoUpdate = await articleMongoRepo.UpdateOneAsync(update, filter, null, cancellationToken);
         }
