@@ -1,4 +1,5 @@
-﻿using Memo.Blog.Application.Common.Text;
+﻿using Memo.Blog.Application.Articles.Common;
+using Memo.Blog.Application.Common.Text;
 using Memo.Blog.Domain.Entities.Mongo;
 using MongoDB.Driver;
 
@@ -7,6 +8,7 @@ namespace Memo.Blog.Application.Articles.Queries.Get;
 public class SearchArticleQueryHandler(
     IMapper mapper,
     ISegmenterService segmenterService,
+    IBaseDefaultRepository<Article> articleRepo,
     IBaseMongoRepository<ArticleCollection> articleMongoRepo
     ) : IRequestHandler<SearchArticleQuery, Result>
 {
@@ -15,13 +17,37 @@ public class SearchArticleQueryHandler(
         if (string.IsNullOrWhiteSpace(request.KeyWord)) return Result.Success();
 
         // 搜索的关键词进行分词
-        var searchKeyWord = segmenterService.CutWithSplitForSearch(request.KeyWord);
+        var keyWordSegs = segmenterService.CutForSearch(request.KeyWord);
 
-        var f = Builders<ArticleCollection>.Filter.Empty;
-        f &= Builders<ArticleCollection>.Filter.Text(searchKeyWord);
+        var f = Builders<ArticleCollection>.Filter.Text(string.Join(" ", keyWordSegs));
+        f &= Builders<ArticleCollection>.Filter.Eq(u => u.Status, ArticleStatus.Published);
+        var sort = Builders<ArticleCollection>.Sort.Descending(x => x.CreateTime);
 
-        var searchs = await articleMongoRepo.FindListByPageAsync(f, request.Page, request.Size, sort: null, cancellationToken: cancellationToken);
+        var total = await articleMongoRepo.CountAsync(f, cancellationToken: cancellationToken);
+        var searchResults = await articleMongoRepo.FindListByPageAsync(f, request.Page, request.Size, sort: sort, cancellationToken: cancellationToken);
+      
 
-        return Result.Success(searchs);
+
+var dtos = new List<SearchArticleResult>();
+        if (searchResults.Count != 0)
+        {
+            var articleIds = searchResults.Select(a => a.ArticleId).ToList();
+            var articles = await articleRepo.Select.Where(a => articleIds.Contains(a.ArticleId)).ToListAsync(a => new { a.ArticleId, a.Title, a.Description }, cancellationToken);
+
+            // TODO: 完善响应数据
+            foreach (var result in searchResults)
+            {
+                // var index = result.Content.IndexOf(keyWordSegs);
+
+                dtos.Add(new SearchArticleResult
+                {
+                    ArticleId = result.ArticleId,
+                    Content = result.Content,
+                    keyWordSegs = keyWordSegs.ToList(),
+                });
+            }
+        }
+
+        return Result.Success(new PaginationResult<SearchArticleResult>(dtos, total));
     }
 }

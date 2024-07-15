@@ -1,9 +1,12 @@
-﻿using Memo.Blog.Domain.Entities.Mongo;
+﻿using Memo.Blog.Application.Common.Text;
+using Memo.Blog.Domain.Entities.Mongo;
 
 namespace Memo.Blog.Application.Articles.Commands.Create;
 
 public class CreateArticleCommandHandler(
     IMapper mapper,
+    IMarkdownService markdownService,
+    ISegmenterService segmenterService,
     IBaseDefaultRepository<Article> articleRepo,
     IBaseDefaultRepository<ArticleTag> articleTagRepo,
     IBaseMongoRepository<ArticleCollection> articleMongoRepo,
@@ -30,7 +33,24 @@ public class CreateArticleCommandHandler(
         var tagArticles = request.Tags.Select(t => new ArticleTag { ArticleId = article.ArticleId, TagId = t }).ToList();
         await articleTagRepo.InsertAsync(tagArticles, cancellationToken);
 
-        var articleCollection = mapper.Map<ArticleCollection>(article);
+        // 文章内容处理
+        var text = markdownService.RemoveTag(request.Content);
+        var contentSegs = segmenterService.CutWithSplitForSearch(string.Join(" ", text));
+
+        // 所有标签组合，然后分词
+        var tagNames = tags.Select(t => t.Name).ToList();
+        var tagSegs = segmenterService.CutWithSplitForSearch(string.Join(" ", tagNames));
+        var articleCollection = new ArticleCollection
+        {
+            ArticleId = article.ArticleId,
+            Category = category.Name,
+            Tags = tagSegs,
+            Title = segmenterService.CutWithSplitForSearch(string.Join(" ", article.Title)),
+            Description = segmenterService.CutWithSplitForSearch(string.Join(" ", article.Description)),
+            Content = contentSegs,
+            Status = article.Status,
+            CreateTime = article.CreateTime,
+        };
         var mongoInsert = await articleMongoRepo.InsertOneAsync(articleCollection, null, cancellationToken);
         if (!mongoInsert) throw new Exception("写入mongodb失败");
 

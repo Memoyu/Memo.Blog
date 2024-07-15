@@ -1,18 +1,9 @@
-﻿using Memo.Blog.Domain.Enums;
-using MongoDB.Bson.Serialization.Attributes;
-
-namespace Memo.Blog.Domain.Entities.Mongo;
-
-/// <summary>
-/// 文章
-/// </summary>
-[MongoCollection("article")]
-public class ArticleCollection
+﻿namespace Memo.Blog.Application.Articles.Common;
+public class SearchArticleResult
 {
     /// <summary>
     /// 文章Id
     /// </summary>
-    [BsonId]
     public long ArticleId { get; set; }
 
     /// <summary>
@@ -45,7 +36,10 @@ public class ArticleCollection
     /// </summary>
     public string Comments { get; set; } = string.Empty;
 
-    public ArticleStatus Status { get; set; }
+    /// <summary>
+    /// 搜索关键字分词
+    /// </summary>
+    public List<string> keyWordSegs { get; set; } = [];
 
     public DateTime CreateTime { get; set; }
 }

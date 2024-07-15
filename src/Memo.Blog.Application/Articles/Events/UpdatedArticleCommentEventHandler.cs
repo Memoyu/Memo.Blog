@@ -18,6 +18,7 @@ public class UpdatedArticleCommentEventHandler(
 
         if (articleCommentContents == null) return;
 
+        // 移除markdown标签
         var removeTags = articleCommentContents.Select(markdownService.RemoveTag).ToList();
         var segs = segmenterService.CutWithSplitForSearch(string.Join(" ", removeTags));
 
