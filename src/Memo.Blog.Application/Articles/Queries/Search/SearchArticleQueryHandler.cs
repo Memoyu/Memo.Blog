@@ -25,10 +25,10 @@ public class SearchArticleQueryHandler(
 
         var total = await articleMongoRepo.CountAsync(f, cancellationToken: cancellationToken);
         var searchResults = await articleMongoRepo.FindListByPageAsync(f, request.Page, request.Size, sort: sort, cancellationToken: cancellationToken);
-      
 
 
-var dtos = new List<SearchArticleResult>();
+
+        var dtos = new List<SearchArticleResult>();
         if (searchResults.Count != 0)
         {
             var articleIds = searchResults.Select(a => a.ArticleId).ToList();
@@ -38,16 +38,22 @@ var dtos = new List<SearchArticleResult>();
             foreach (var result in searchResults)
             {
                 // var index = result.Content.IndexOf(keyWordSegs);
-
+                var article = articles.FirstOrDefault(a => a.ArticleId == result.ArticleId);
                 dtos.Add(new SearchArticleResult
                 {
                     ArticleId = result.ArticleId,
+                    Title = article?.Title ?? result.Title,
+                    Description = article?.Description ?? result.Description,
+                    Category = result.Category,
                     Content = result.Content,
-                    keyWordSegs = keyWordSegs.ToList(),
                 });
             }
         }
 
-        return Result.Success(new PaginationResult<SearchArticleResult>(dtos, total));
+        var page = new SearchArticlePageResult(dtos, total)
+        {
+            KeyWordSegs = keyWordSegs.ToList()
+        };
+        return Result.Success(page);
     }
 }

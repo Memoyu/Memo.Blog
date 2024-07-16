@@ -1,4 +1,16 @@
-﻿namespace Memo.Blog.Application.Articles.Common;
+﻿
+namespace Memo.Blog.Application.Articles.Common;
+
+public class SearchArticlePageResult : PaginationResult<SearchArticleResult>
+{
+    public SearchArticlePageResult(IReadOnlyList<SearchArticleResult> items, long total) : base(items, total)
+    {
+    }
+
+    public List<string> KeyWordSegs { get; set; }
+}
+
+
 public class SearchArticleResult
 {
     /// <summary>
@@ -35,11 +47,6 @@ public class SearchArticleResult
     /// 评论原文，追加，空格分割
     /// </summary>
     public string Comments { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 搜索关键字分词
-    /// </summary>
-    public List<string> keyWordSegs { get; set; } = [];
 
     public DateTime CreateTime { get; set; }
 }
