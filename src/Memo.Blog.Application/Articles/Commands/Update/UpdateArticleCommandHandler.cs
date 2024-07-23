@@ -1,4 +1,5 @@
-﻿using Memo.Blog.Application.Common.Text;
+﻿using System.Text;
+using Memo.Blog.Application.Common.Text;
 using Memo.Blog.Domain.Entities.Mongo;
 using MongoDB.Driver;
 
@@ -60,14 +61,21 @@ public class UpdateArticleCommandHandler(
 
         #region 更新MongoDB
 
+        var Utf8Encoder = Encoding.GetEncoding(
+                "UTF-8",
+                new EncoderReplacementFallback(string.Empty),
+                new DecoderExceptionFallback()
+            );
 
         var articleCol = await articleMongoRepo.FindOneAsync(article.ArticleId, false);
         if (articleCol == null)
-        {  
+        {
             // 文章内容处理
             var text = markdownService.RemoveTag(request.Content);
+           
+         
             var contentSegs = segmenterService.CutWithSplitForSearch(string.Join(" ", text));
-
+            var utf8Text = Utf8Encoder.GetString(Utf8Encoder.GetBytes(contentSegs));
             // 所有标签组合，然后分词
             var tagNames = tags.Select(t => t.Name).ToList();
             var tagSegs = segmenterService.CutWithSplitForSearch(string.Join(" ", tagNames));
@@ -79,7 +87,7 @@ public class UpdateArticleCommandHandler(
                 Tags = tagSegs,
                 Title = segmenterService.CutWithSplitForSearch(string.Join(" ", article.Title)),
                 Description = segmenterService.CutWithSplitForSearch(string.Join(" ", article.Description)),
-                Content = contentSegs,
+                Content = utf8Text,
                 Status = article.Status,
                 CreateTime = article.CreateTime,
             };
@@ -103,7 +111,8 @@ public class UpdateArticleCommandHandler(
             {
                 var text = markdownService.RemoveTag(request.Content);
                 var contentSegs = segmenterService.CutWithSplitForSearch(string.Join(" ", text));
-                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Content), contentSegs));
+                var utf8Text = Utf8Encoder.GetString(Utf8Encoder.GetBytes(contentSegs));
+                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Content), utf8Text));
             }
 
             if (tagsChange)
@@ -115,8 +124,8 @@ public class UpdateArticleCommandHandler(
             }
 
             if (article.Status != request.Status)
-            { 
-                 updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Status), request.Status));
+            {
+                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Status), article.Status));
             }
 
             if (updateProps.Count != 0)
