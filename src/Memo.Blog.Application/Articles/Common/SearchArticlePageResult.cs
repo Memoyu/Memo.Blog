@@ -7,7 +7,7 @@ public class SearchArticlePageResult : PaginationResult<SearchArticleResult>
     {
     }
 
-    public List<string> KeyWordSegs { get; set; }
+    public List<string> KeyWordSegs { get; set; } = [];
 }
 
 
