@@ -14,7 +14,7 @@ variables:
   tag: '$(Build.BuildId)'
   containerName: blogapi
   imageName: memoyu/memo-blog
-  appsettings: src/Memo.Blog.WebApi/appsettings.Production.json
+  appsettings: src/Memo.Blog.Api/appsettings.Production.json
 
 stages:
 - stage: Build
