@@ -1,6 +1,6 @@
 ﻿namespace Memo.Blog.Application.Friends.Common;
 
-public record PageFriendResult
+public record ListFriendResult
 {
     /// <summary>
     /// 友链Id
@@ -26,14 +26,4 @@ public record PageFriendResult
     ///  头像url
     /// </summary>
     public string Avatar { get; set; } = string.Empty;
-
-    /// <summary>
-    /// 是否展示
-    /// </summary>
-    public bool Showable { get; set; }
-
-    /// <summary>
-    /// 创建时间
-    /// </summary>
-    public DateTime CreateTime { get; set; }
 }

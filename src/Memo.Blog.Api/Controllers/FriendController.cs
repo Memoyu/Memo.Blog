@@ -1,5 +1,5 @@
 ﻿using Memo.Blog.Application.Friends.Queries.Get;
-using Memo.Blog.Application.Friends.Queries.Page;
+using Memo.Blog.Application.Friends.Queries.List;
 
 namespace Memo.Blog.Api.Controllers;
 
@@ -22,8 +22,8 @@ public class FriendController(ISender mediator) : ApiController
     /// 获取友链列表
     /// </summary>
     /// <returns></returns>
-    [HttpGet("page")]
-    public async Task<Result> PageAsync([FromQuery] PageFriendQuery request)
+    [HttpGet("list")]
+    public async Task<Result> PageAsync([FromQuery] ListFriendQuery request)
     {
         return await mediator.Send(request);
     }
