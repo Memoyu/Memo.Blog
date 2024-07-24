@@ -61,33 +61,30 @@ public class UpdateArticleCommandHandler(
 
         #region 更新MongoDB
 
-        var Utf8Encoder = Encoding.GetEncoding(
-                "UTF-8",
-                new EncoderReplacementFallback(string.Empty),
-                new DecoderExceptionFallback()
-            );
-
         var articleCol = await articleMongoRepo.FindOneAsync(article.ArticleId, false);
         if (articleCol == null)
         {
             // 文章内容处理
             var text = markdownService.RemoveTag(request.Content);
-           
-         
-            var contentSegs = segmenterService.CutWithSplitForSearch(string.Join(" ", text));
-            var utf8Text = Utf8Encoder.GetString(Utf8Encoder.GetBytes(contentSegs));
+            var contentSegs = segmenterService.CutWithSplitForSearch(text);
             // 所有标签组合，然后分词
             var tagNames = tags.Select(t => t.Name).ToList();
             var tagSegs = segmenterService.CutWithSplitForSearch(string.Join(" ", tagNames));
 
+            var categorySegs = segmenterService.CutWithSplitForSearch(category.Name);
+
+            var titleSegs = segmenterService.CutWithSplitForSearch(article.Title);
+
+            var descriptionSegs = segmenterService.CutWithSplitForSearch(article.Description);
+
             var articleCollection = new ArticleCollection
             {
                 ArticleId = article.ArticleId,
-                Category = category.Name,
-                Tags = tagSegs,
-                Title = segmenterService.CutWithSplitForSearch(string.Join(" ", article.Title)),
-                Description = segmenterService.CutWithSplitForSearch(string.Join(" ", article.Description)),
-                Content = utf8Text,
+                Category = categorySegs.ToUtf8(),
+                Tags = tagSegs.ToUtf8(),
+                Title = titleSegs.ToUtf8(),
+                Description = descriptionSegs.ToUtf8(),
+                Content = contentSegs.ToUtf8(),
                 Status = article.Status,
                 CreateTime = article.CreateTime,
             };
@@ -99,20 +96,19 @@ public class UpdateArticleCommandHandler(
             // 更新文章内容、标签、分类等
             var updateProps = new List<UpdateDefinition<ArticleCollection>>();
             if (article.CategoryId != request.CategoryId)
-                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Category), category.Name));
+                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Category), segmenterService.CutWithSplitForSearch(category.Name).ToUtf8()));
 
             if (!article.Title.Equals(request.Title))
-                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Title), segmenterService.CutWithSplitForSearch(string.Join(" ", request.Title))));
+                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Title), segmenterService.CutWithSplitForSearch(request.Title).ToUtf8()));
 
             if (!article.Description.Equals(request.Description))
-                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Description), segmenterService.CutWithSplitForSearch(string.Join(" ", request.Description))));
+                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Description), segmenterService.CutWithSplitForSearch(request.Description).ToUtf8()));
 
             if (!article.Content.Equals(request.Content))
             {
                 var text = markdownService.RemoveTag(request.Content);
-                var contentSegs = segmenterService.CutWithSplitForSearch(string.Join(" ", text));
-                var utf8Text = Utf8Encoder.GetString(Utf8Encoder.GetBytes(contentSegs));
-                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Content), utf8Text));
+                var contentSegs = segmenterService.CutWithSplitForSearch(text);
+                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Content), contentSegs.ToUtf8()));
             }
 
             if (tagsChange)

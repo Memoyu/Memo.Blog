@@ -45,7 +45,7 @@ public class SearchArticleQueryHandler(
                     Title = article?.Title ?? result.Title,
                     Description = article?.Description ?? result.Description,
                     Category = result.Category,
-                    Content = result.Content,
+                    Content = result.Content.Replace(" ", ""),
                 });
             }
         }
