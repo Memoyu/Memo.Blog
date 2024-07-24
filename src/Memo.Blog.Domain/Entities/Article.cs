@@ -35,7 +35,7 @@ public class Article : BaseAuditEntity
     /// 描述
     /// </summary>
     [Description("描述")]
-    [Column(StringLength = 200, IsNullable = false)]
+    [Column(StringLength = 1000, IsNullable = false)]
     public string Description { get; set; } = string.Empty;
 
     /// <summary>

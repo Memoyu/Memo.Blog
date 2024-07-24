@@ -23,7 +23,7 @@ public class UpdatedArticleCommentEventHandler(
         var segs = segmenterService.CutWithSplitForSearch(string.Join(" ", removeTags));
 
         var update = Builders<ArticleCollection>.Update
-                 .Set(nameof(ArticleCollection.Comments), segs);
+                 .Set(nameof(ArticleCollection.Comments), segs.ToUtf8());
 
         var filter = Builders<ArticleCollection>.Filter.Eq(b => b.ArticleId, notification.ArticleId);
         var mongoUpdate = await articleMongoRepo.UpdateOneAsync(update, filter, null, cancellationToken);

@@ -35,6 +35,11 @@ public class UpdateArticleCommandValidator : AbstractValidator<UpdateArticleComm
            .MaximumLength(100)
            .WithMessage("文章标题长度在1-100个字符之间");
 
+        RuleFor(x => x.Description)
+           .MinimumLength(1)
+           .MaximumLength(500)
+           .WithMessage("文章描述长度在1-500个字符之间");
+
         RuleFor(x => x.Content)
             .NotEmpty()
             .WithMessage("文章内容不能为空");

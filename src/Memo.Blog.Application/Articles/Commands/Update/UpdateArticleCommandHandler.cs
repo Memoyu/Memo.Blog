@@ -73,9 +73,9 @@ public class UpdateArticleCommandHandler(
 
             var categorySegs = segmenterService.CutWithSplitForSearch(category.Name);
 
-            var titleSegs = segmenterService.CutWithSplitForSearch(article.Title);
+            var titleSegs = segmenterService.CutWithSplitForSearch(updateArticle.Title);
 
-            var descriptionSegs = segmenterService.CutWithSplitForSearch(article.Description);
+            var descriptionSegs = segmenterService.CutWithSplitForSearch(updateArticle.Description);
 
             var articleCollection = new ArticleCollection
             {
