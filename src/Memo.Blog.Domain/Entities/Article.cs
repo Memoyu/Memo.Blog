@@ -109,6 +109,12 @@ public class Article : BaseAuditEntity
     public bool Publicable { get; set; }
 
     /// <summary>
+    /// 发布时间(可为空)
+    /// </summary>
+    [Description("发布时间")]
+    public DateTime? PublishTime { get; set; }
+
+    /// <summary>
     /// 文章分类
     /// </summary>
     [Navigate(nameof(Category.CategoryId), TempPrimary = nameof(CategoryId))]
@@ -130,7 +136,7 @@ public class Article : BaseAuditEntity
     /// 文章点赞
     /// </summary>
     [Navigate(nameof(ArticleLike.ArticleId), TempPrimary = nameof(ArticleId))]
-    public virtual List<ArticleLike>  ArticleLikes { get; set; } = [];
+    public virtual List<ArticleLike> ArticleLikes { get; set; } = [];
 
     /// <summary>
     /// 文章作者

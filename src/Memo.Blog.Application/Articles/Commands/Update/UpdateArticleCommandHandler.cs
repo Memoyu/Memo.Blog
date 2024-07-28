@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Memo.Blog.Application.Common.Text;
+﻿using Memo.Blog.Application.Common.Text;
 using Memo.Blog.Domain.Entities.Mongo;
 using MongoDB.Driver;
 
@@ -32,8 +31,12 @@ public class UpdateArticleCommandHandler(
         updateArticle.Views = article.Views;
         // 判断是否需要更新状态
         updateArticle.Status = request.Status ?? article.Status;
+        if (updateArticle.Status == ArticleStatus.Published)
+            updateArticle.PublishTime = DateTime.Now;
+        else
+            updateArticle.PublishTime = null;
 
-        var row = await articleRepo.UpdateAsync(updateArticle, cancellationToken);
+       var row = await articleRepo.UpdateAsync(updateArticle, cancellationToken);
         if (row <= 0) throw new ApplicationException("更新文章失败");
 
         #region 文章关联标签管理

@@ -1,8 +1,6 @@
 ﻿using Memo.Blog.Application.Categories.Common;
-using Memo.Blog.Application.Comments.Common;
 using Memo.Blog.Application.Tags.Common;
 using Memo.Blog.Application.Users.Common;
-using Memo.Blog.Domain.Enums;
 
 namespace Memo.Blog.Application.Articles.Common;
 
@@ -99,7 +97,7 @@ public record PageArticleClientResult
     public required UserResult Author { get; set; }
 
     /// <summary>
-    /// 创建时间
+    /// 发布时间
     /// </summary>
-    public DateTime CreateTime { get; set; }
+    public DateTime? PublishTime { get; set; }
 }

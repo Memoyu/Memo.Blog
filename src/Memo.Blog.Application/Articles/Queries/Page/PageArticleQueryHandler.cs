@@ -56,7 +56,7 @@ public class PageArticleClientQueryHandler(
             .IncludeMany(a => a.ArticleTags, then => then.Include(t => t.Tag))
             .Where(a => a.Status == Domain.Enums.ArticleStatus.Published)
             .WhereIf(request.CategoryId > 0, a => a.CategoryId == request.CategoryId)
-            .OrderByDescending(a => new { a.IsTop, a.CreateTime })
+            .OrderByDescending(a => new { a.IsTop, a.PublishTime })
             .ToPageListAsync(request, out var total, cancellationToken);
 
         var results = mapper.Map<List<PageArticleClientResult>>(articles);
