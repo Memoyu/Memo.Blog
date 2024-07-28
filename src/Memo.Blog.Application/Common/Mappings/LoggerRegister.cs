@@ -1,9 +1,6 @@
-﻿using System.Text.Json;
-using Memo.Blog.Application.Common.Extensions;
-using Memo.Blog.Application.Loggers.Commands.Visit.Create;
+﻿using Memo.Blog.Application.Loggers.Commands.Visit.Create;
 using Memo.Blog.Application.Loggers.Common;
 using Memo.Blog.Domain.Entities.Mongo;
-using Memo.Blog.Domain.Enums;
 using MongoDB.Bson.Serialization;
 
 namespace Memo.Blog.Application.Common.Mappings;

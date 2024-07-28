@@ -36,7 +36,6 @@ public class ListCategoryQueryHandler(
 }
 
 public class ListCategoryClientQueryHandler(
-    IMapper mapper,
     IBaseDefaultRepository<Category> categoryRepo,
     IBaseDefaultRepository<Article> articleRepo
     ) : IRequestHandler<ListCategoryClientQuery, Result>
@@ -56,12 +55,15 @@ public class ListCategoryClientQueryHandler(
             categories.Add(initCategory);
         }
 
-        var articles = await articleRepo.Select.ToListAsync(a => new { a.ArticleId, a.CategoryId }, cancellationToken);
-        var dtos = mapper.Map<List<CategoryWithArticleCountResult>>(categories);
-        foreach (var category in dtos)
+        var articles = await articleRepo.Select
+            .Where(a => a.Status == ArticleStatus.Published)
+            .ToListAsync(a => new { a.ArticleId, a.CategoryId }, cancellationToken);
+        var dtos = new List<CategoryWithArticleCountResult>();
+        foreach (var category in categories)
         {
             var total = articles.Where(a => a.CategoryId == category.CategoryId).Count();
-            category.Articles = total;
+            if (total <= 0) continue;
+            dtos.Add(new CategoryWithArticleCountResult { CategoryId = category.CategoryId, Name = category.Name, Articles = total });
         }
 
         return Result.Success(dtos);

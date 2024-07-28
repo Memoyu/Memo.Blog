@@ -74,4 +74,9 @@ public class PageArticleResult
     /// 更新时间
     /// </summary>
     public DateTime? UpdateTime { get; set; }
+
+    /// <summary>
+    /// 发布时间
+    /// </summary>
+    public DateTime? PublishTime { get; set; }
 }

@@ -1,6 +1,5 @@
 ﻿using Memo.Blog.Application.Categories.Common;
 using Memo.Blog.Application.Tags.Common;
-using Memo.Blog.Domain.Enums;
 
 namespace Memo.Blog.Application.Articles.Common;
 
@@ -100,4 +99,9 @@ public record ArticleDetailClientResult
     /// 更新时间
     /// </summary>
     public DateTime? UpdateTime { get; set; }
+
+    /// <summary>
+    /// 发布时间
+    /// </summary>
+    public DateTime? PublishTime { get; set; }
 }

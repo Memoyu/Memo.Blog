@@ -29,7 +29,7 @@ public class UpdatedArticleTagEventHandler(
             // 所有标签组合，然后分词
             var tagSegs = segmenterService.CutWithSplitForSearch(string.Join(" ", tags));
             var update = MongoDB.Driver.Builders<ArticleCollection>.Update
-                 .Set(nameof(ArticleCollection.Tags), tagSegs);
+                 .Set(nameof(ArticleCollection.Tags), tagSegs.ToUtf8());
             var filter = MongoDB.Driver.Builders<ArticleCollection>.Filter.Eq(b => b.ArticleId, articleId);
             var mongoUpdate = await articleMongoRepo.UpdateOneAsync(update, filter, null, cancellationToken);
         }

@@ -6,7 +6,6 @@ using MongoDB.Driver;
 namespace Memo.Blog.Application.Articles.Queries.Get;
 
 public class SearchArticleQueryHandler(
-    IMapper mapper,
     ISegmenterService segmenterService,
     IBaseDefaultRepository<Article> articleRepo,
     IBaseMongoRepository<ArticleCollection> articleMongoRepo
