@@ -49,11 +49,4 @@ public class Friend : BaseAuditEntity
     [Description("是否展示")]
     [Column(IsNullable = false)]
     public bool Showable { get; set; }
-
-    /// <summary>
-    /// 点击访问次数
-    /// </summary>
-    [Description("点击访问次数")]
-    [Column(IsNullable = false)]
-    public int Views { get; set; }
 }

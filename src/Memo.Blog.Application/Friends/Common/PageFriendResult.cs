@@ -33,6 +33,11 @@ public record PageFriendResult
     public bool Showable { get; set; }
 
     /// <summary>
+    /// 点击访问次数
+    /// </summary>
+    public int Views { get; set; }
+
+    /// <summary>
     /// 创建时间
     /// </summary>
     public DateTime CreateTime { get; set; }

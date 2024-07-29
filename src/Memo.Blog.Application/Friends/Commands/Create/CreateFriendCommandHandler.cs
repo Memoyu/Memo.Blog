@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace Memo.Blog.Application.Friends.Commands.Create;
+﻿namespace Memo.Blog.Application.Friends.Commands.Create;
 
 public class CreateFriendCommandHandler(
     // ILogger<CreateFriendCommandHandler> logger,
