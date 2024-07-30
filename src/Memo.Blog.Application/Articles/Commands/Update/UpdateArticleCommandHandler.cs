@@ -31,12 +31,9 @@ public class UpdateArticleCommandHandler(
         updateArticle.Views = article.Views;
         // 判断是否需要更新状态
         updateArticle.Status = request.Status ?? article.Status;
-        if (updateArticle.Status == ArticleStatus.Published)
-            updateArticle.PublishTime = DateTime.Now;
-        else
-            updateArticle.PublishTime = null;
+        updateArticle.PublishTime = updateArticle.Status == ArticleStatus.Published ? DateTime.Now : null;
 
-       var row = await articleRepo.UpdateAsync(updateArticle, cancellationToken);
+        var row = await articleRepo.UpdateAsync(updateArticle, cancellationToken);
         if (row <= 0) throw new ApplicationException("更新文章失败");
 
         #region 文章关联标签管理
@@ -67,8 +64,11 @@ public class UpdateArticleCommandHandler(
         var articleCol = await articleMongoRepo.FindOneAsync(article.ArticleId, false);
         if (articleCol == null)
         {
+            // 获取最新的文章数据
+            article = await articleRepo.Select.Where(a => a.ArticleId == request.ArticleId).FirstAsync(cancellationToken);
+
             // 文章内容处理
-            var text = markdownService.RemoveTag(request.Content);
+            var text = markdownService.RemoveTag(article.Content);
             var contentSegs = segmenterService.CutWithSplitForSearch(text);
             // 所有标签组合，然后分词
             var tagNames = tags.Select(t => t.Name).ToList();
@@ -76,9 +76,9 @@ public class UpdateArticleCommandHandler(
 
             var categorySegs = segmenterService.CutWithSplitForSearch(category.Name);
 
-            var titleSegs = segmenterService.CutWithSplitForSearch(updateArticle.Title);
+            var titleSegs = segmenterService.CutWithSplitForSearch(article.Title);
 
-            var descriptionSegs = segmenterService.CutWithSplitForSearch(updateArticle.Description);
+            var descriptionSegs = segmenterService.CutWithSplitForSearch(article.Description);
 
             var articleCollection = new ArticleCollection
             {
@@ -90,6 +90,7 @@ public class UpdateArticleCommandHandler(
                 Content = contentSegs.ToUtf8(),
                 Status = article.Status,
                 CreateTime = article.CreateTime,
+                PublishTime = article.PublishTime,
             };
             var mongoInsert = await articleMongoRepo.InsertOneAsync(articleCollection, null, cancellationToken);
             if (!mongoInsert) throw new Exception("写入mongodb失败");
@@ -125,6 +126,11 @@ public class UpdateArticleCommandHandler(
             if (article.Status != request.Status)
             {
                 updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Status), article.Status));
+            }
+
+            if (article.PublishTime != updateArticle.PublishTime)
+            {
+                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.PublishTime), article.PublishTime));
             }
 
             if (updateProps.Count != 0)

@@ -45,7 +45,18 @@ public class ArticleCollection
     /// </summary>
     public string Comments { get; set; } = string.Empty;
 
+    /// <summary>
+    /// 文章状态
+    /// </summary>
     public ArticleStatus Status { get; set; }
 
+    /// <summary>
+    /// 创建时间
+    /// </summary>
     public DateTime CreateTime { get; set; }
+
+    /// <summary>
+    /// 发布时间
+    /// </summary>
+    public DateTime? PublishTime { get; set; }
 }
