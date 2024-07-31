@@ -1,4 +1,5 @@
-﻿using Memo.Blog.Application.Moments.Queries.Page;
+﻿using Memo.Blog.Application.Moments.Commands.Update;
+using Memo.Blog.Application.Moments.Queries.Page;
 
 namespace Memo.Blog.Api.Controllers;
 
@@ -13,6 +14,16 @@ public class MomentController(ISender mediator) : ApiController
     /// <returns></returns>
     [HttpGet("page")]
     public async Task<Result> PageAsync([FromQuery] PageMomentClientQuery request)
+    {
+        return await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 点赞动态
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("like")]
+    public async Task<Result> LikeAsync(LikeMomentCommand request)
     {
         return await mediator.Send(request);
     }

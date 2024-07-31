@@ -1,4 +1,5 @@
 ﻿using Memo.Blog.Application.Articles.Common;
+using Memo.Blog.Application.Security;
 
 namespace Memo.Blog.Application.Articles.Queries.Page;
 
@@ -44,6 +45,7 @@ public class PageArticleQueryHandler(
 
 public class PageArticleClientQueryHandler(
     IMapper mapper,
+    ICurrentUserProvider currentUserProvider,
     IBaseDefaultRepository<Article> articleRepo,
     IBaseDefaultRepository<ArticleLike> articleLikeRepo,
     IBaseDefaultRepository<Comment> commentRepo
@@ -51,6 +53,8 @@ public class PageArticleClientQueryHandler(
 {
     public async Task<Result> Handle(PageArticleClientQuery request, CancellationToken cancellationToken)
     {
+        var visitorId = currentUserProvider.GetCurrentVisitor();
+
         var articles = await articleRepo.Select
             .Include(a => a.Category)
             .IncludeMany(a => a.ArticleTags, then => then.Include(t => t.Tag))
@@ -68,12 +72,15 @@ public class PageArticleClientQueryHandler(
 
         var likes = await articleLikeRepo.Select
             .Where(c => articleIds.Contains(c.ArticleId))
-            .ToListAsync(c => new { c.ArticleId }, cancellationToken);
+            .ToListAsync(cancellationToken);
 
         foreach (var result in results)
         {
             result.Comments = comments.Where(c => c.BelongId == result.ArticleId).Count();
-            result.Likes = likes.Where(c => c.ArticleId == result.ArticleId).Count();
+
+            var articleLikes = likes.Where(c => c.ArticleId == result.ArticleId).ToList();
+            result.Likes = articleLikes.Count;
+            result.IsLike = articleLikes.Any(vl => vl.VisitorId == visitorId); // 访客是否已点过赞
         }
 
         return Result.Success(new PaginationResult<PageArticleClientResult>(results, total));

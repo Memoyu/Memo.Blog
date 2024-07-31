@@ -2,7 +2,6 @@
 using Memo.Blog.Application.Articles.Queries.Page;
 using Memo.Blog.Application.Articles.Queries.Anlyanis;
 using Memo.Blog.Application.Articles.Commands.Update;
-using Memo.Blog.Application.Articles.Queries.List;
 
 namespace Memo.Blog.Api.Controllers;
 

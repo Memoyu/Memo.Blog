@@ -7,7 +7,7 @@ namespace Memo.Blog.Application.Articles.Commands.Update;
 public class LikeArticleCommandHandler(
     ICurrentUserProvider currentUserProvider,
     IBaseDefaultRepository<Article> articleRepo,
-    IBaseDefaultRepository<ArticleLike> articleLickeRepo
+    IBaseDefaultRepository<ArticleLike> articleLikeRepo
     ) : IRequestHandler<LikeArticleCommand, Result>
 {
     public async Task<Result> Handle(LikeArticleCommand request, CancellationToken cancellationToken)
@@ -19,7 +19,7 @@ public class LikeArticleCommandHandler(
             ?? throw new ApplicationException("文章不存在");
 
         // 已经点过赞
-        var hasLike = await articleLickeRepo.Select.AnyAsync(al => al.VisitorId == visitorId && al.ArticleId == article.ArticleId, cancellationToken);
+        var hasLike = await articleLikeRepo.Select.AnyAsync(al => al.VisitorId == visitorId && al.ArticleId == article.ArticleId, cancellationToken);
         if (hasLike) return Result.Success();
 
         var articleLike = new ArticleLike { ArticleId = article.ArticleId, VisitorId = visitorId };
@@ -38,7 +38,7 @@ public class LikeArticleCommandHandler(
             }.ToJson()
         });
 
-        articleLike = await articleLickeRepo.InsertAsync(articleLike, cancellationToken)
+        articleLike = await articleLikeRepo.InsertAsync(articleLike, cancellationToken)
             ?? throw new ApplicationException("点赞文章失败");
 
         return articleLike.Id > 0 ? Result.Success() : throw new ApplicationException("点赞文章失败");

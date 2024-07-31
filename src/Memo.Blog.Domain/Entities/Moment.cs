@@ -49,4 +49,10 @@ public class Moment : BaseAuditEntity
     [Description("是否开启评论")]
     [Column(IsNullable = false)]
     public bool Commentable { get; set; }
+
+    /// <summary>
+    /// 动态发布者
+    /// </summary>
+    [Navigate(nameof(CreateUserId), TempPrimary = nameof(User.UserId))]
+    public virtual User Announcer { get; set; } = new();
 }

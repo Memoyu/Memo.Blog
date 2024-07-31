@@ -87,6 +87,11 @@ public record PageArticleClientResult
     public bool Publicable { get; set; }
 
     /// <summary>
+    /// 是否已点过赞
+    /// </summary>
+    public bool IsLike { get; set; }
+
+    /// <summary>
     /// 关联标签
     /// </summary>
     public List<TagResult> Tags { get; set; } = [];

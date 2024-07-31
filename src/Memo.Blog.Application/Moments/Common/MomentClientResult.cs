@@ -25,11 +25,6 @@ internal record MomentClientResult
     public int Comments { get; set; }
 
     /// <summary>
-    /// 是否展示
-    /// </summary>
-    public bool Showable { get; set; }
-
-    /// <summary>
     /// 是否开启评论
     /// </summary>
     public bool Commentable { get; set; }
@@ -38,6 +33,11 @@ internal record MomentClientResult
     /// 创建时间
     /// </summary>
     public DateTime CreateTime { get; set; }
+
+    /// <summary>
+    /// 是否已点过赞
+    /// </summary>
+    public bool IsLike { get; set; }
 
     /// <summary>
     /// 动态发布者

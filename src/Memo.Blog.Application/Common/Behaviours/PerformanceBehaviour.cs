@@ -28,11 +28,11 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
 
         var elapsedMilliseconds = _timer.ElapsedMilliseconds;
 
-        if (elapsedMilliseconds > 500)
+        if (elapsedMilliseconds > 1000)
         {
             var requestName = typeof(TRequest).Name;
 
-            _logger.LogWarning("Request: 请求耗时超500ms 请求：{Name}；耗时：{ElapsedMilliseconds}ms；参数：{@Request}",
+            _logger.LogWarning("Request: 请求耗时超1000ms 请求：{Name}；耗时：{ElapsedMilliseconds}ms；参数：{@Request}",
                 requestName, elapsedMilliseconds, request);
         }
 

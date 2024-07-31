@@ -117,7 +117,7 @@ public class Article : BaseAuditEntity
     /// <summary>
     /// 文章分类
     /// </summary>
-    [Navigate(nameof(Category.CategoryId), TempPrimary = nameof(CategoryId))]
+    [Navigate(nameof(CategoryId), TempPrimary = nameof(Category.CategoryId))]
     public virtual Category Category { get; set; } = new();
 
     /// <summary>
@@ -135,13 +135,13 @@ public class Article : BaseAuditEntity
     /// <summary>
     /// 文章点赞
     /// </summary>
-    [Navigate(nameof(ArticleLike.ArticleId), TempPrimary = nameof(ArticleId))]
+    [Navigate(nameof(ArticleId), TempPrimary = nameof(ArticleLike.ArticleId))]
     public virtual List<ArticleLike> ArticleLikes { get; set; } = [];
 
     /// <summary>
     /// 文章作者
     /// </summary>
-    [Navigate(nameof(User.UserId), TempPrimary = nameof(CreateUserId))]
+    [Navigate(nameof(CreateUserId), TempPrimary = nameof(User.UserId))]
     public virtual User Author { get; set; } = new();
 
 }

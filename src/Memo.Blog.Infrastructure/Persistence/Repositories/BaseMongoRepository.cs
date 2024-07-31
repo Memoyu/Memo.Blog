@@ -1,6 +1,4 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using System.Threading;
-using Memo.Blog.Application.Common.Interfaces.Persistence.Repositories;
+﻿using Memo.Blog.Application.Common.Interfaces.Persistence.Repositories;
 using Memo.Blog.Domain.Common;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
