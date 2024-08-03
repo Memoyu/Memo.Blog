@@ -53,7 +53,7 @@ public class CategoryController(ISender mediator) : ApiAdminController
     }
 
     /// <summary>
-    /// 分类列表
+    /// 获取分类列表
     /// </summary>
     /// <returns></returns>
     [HttpGet("list")]

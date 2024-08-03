@@ -53,7 +53,7 @@ public class TagController(ISender mediator) : ApiAdminController
     }
 
     /// <summary>
-    /// 标签列表
+    /// 获取标签列表
     /// </summary>
     /// <returns></returns>
     [HttpGet("list")]

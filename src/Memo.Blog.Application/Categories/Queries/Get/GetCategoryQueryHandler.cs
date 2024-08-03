@@ -9,7 +9,7 @@ public class GetCategoryQueryHandler(
 {
     public async Task<Result> Handle(GetCategoryQuery request, CancellationToken cancellationToken)
     {
-        var tag = await categoryRepo.Select.Where(t => t.CategoryId == request.CategoryId).FirstAsync(cancellationToken);
-        return tag is null ? throw new ApplicationException("分类不存在") : (Result)Result.Success(mapper.Map<CategoryResult>(tag));
+        var category = await categoryRepo.Select.Where(t => t.CategoryId == request.CategoryId).FirstAsync(cancellationToken);
+        return category is null ? throw new ApplicationException("分类不存在") : (Result)Result.Success(mapper.Map<CategoryResult>(category));
     }
 }
