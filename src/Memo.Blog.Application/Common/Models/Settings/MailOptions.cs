@@ -8,9 +8,14 @@ public class MailOptions
     public bool Enable { get; set; }
 
     /// <summary>
-    /// 发件人用户名
+    /// 发件人邮箱
     /// </summary>
     public string Email { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 发件人用户名
+    /// </summary>
+    public string DisplayName { get; set; } = string.Empty;
 
     /// <summary>
     /// 发件人邮箱密码

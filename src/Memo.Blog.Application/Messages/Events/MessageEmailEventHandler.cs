@@ -45,8 +45,8 @@ internal class MessageEmailEventHandler(
             case MessageType.User:
                 var userMsg = notification.Content.ToDesJson<UserMessageContent>() ?? throw new ApplicationException("邮件推送中消息内容为空");
                 var fromUser = await userRepo.Select.Where(u => u.UserId == notification.FromUser).FirstAsync(cancellationToken);
-                subject = "用户" + (fromUser == null ? string.Empty : $"{fromUser.Nickname} ") + "发来的消息";
-                body = $"收到了{subject}，消息内容如下：<br/>{userMsg.Content}";
+                subject = "用户" + (fromUser == null ? string.Empty : $" {fromUser.Nickname} ") + "发来的消息";
+                body = $"收到了{subject}<br/><br/>消息内容如下：<br/>{userMsg.Content}";
                 break;
             case MessageType.Comment:
                 var commentMsg = notification.Content.ToDesJson<CommentMessageContent>() ?? throw new ApplicationException("邮件推送中消息内容为空");
@@ -56,21 +56,21 @@ internal class MessageEmailEventHandler(
                 {
                     case BelongType.Article:
                         var article = await articleRepo.Select.Where(a => a.ArticleId == commentMsg.BelongId).FirstAsync(cancellationToken);
-                        commentTitle = $"评论了 文章：{article.Title}";
+                        commentTitle = $"评论了文章：{article.Title}";
                         commentLink = clientDomain + AppConst.ClientArticleDetail + article.ArticleId;
                         break;
                     case BelongType.Moment:
-                        commentTitle = "评论了 动态";
+                        commentTitle = "评论了动态";
                         commentLink = clientDomain + AppConst.ClientMomentList;
                         break;
                     case BelongType.About:
-                        commentTitle = "评论了 关于我";
+                        commentTitle = "评论了关于我";
                         break;
                 }
 
                 var commentVisitor = await visitorRepo.Select.Where(u => u.VisitorId == notification.FromUser).FirstAsync(cancellationToken);
-                subject = commentVisitor == null ? string.Empty : $"{commentVisitor.Nickname} " + commentTitle;
-                body = $"{commentTitle}<br/>访问链接：{commentLink}<br/>消息内容如下：<br/>{commentMsg.Content}";
+                subject = commentVisitor == null ? string.Empty : $" {commentVisitor.Nickname} " + commentTitle;
+                body = $"{subject}<br/><br/>访问链接：{commentLink}<br/><br/>评论内容如下：<br/>{commentMsg.Content}";
                 break;
             case MessageType.Like:
                 var likeMsg = notification.Content.ToDesJson<LikeMessageContent>() ?? throw new ApplicationException("邮件推送中消息内容为空");
@@ -80,21 +80,21 @@ internal class MessageEmailEventHandler(
                 {
                     case BelongType.Article:
                         var article = await articleRepo.Select.Where(a => a.ArticleId == likeMsg.BelongId).FirstAsync(cancellationToken);
-                        likeTitle = $"点赞了 文章：{article.Title}";
+                        likeTitle = $"点赞了文章：{article.Title}";
                         likeLink = clientDomain + AppConst.ClientArticleDetail + article.ArticleId;
                         break;
                     case BelongType.Moment:
-                        likeTitle = "点赞了 动态";
+                        likeTitle = "点赞了动态";
                         likeLink = clientDomain + AppConst.ClientMomentList;
                         break;
                     case BelongType.About:
-                        likeTitle = "点赞了 关于我";
+                        likeTitle = "点赞了关于我";
                         break;
                 }
 
                 var likeVisitor = await visitorRepo.Select.Where(u => u.VisitorId == notification.FromUser).FirstAsync(cancellationToken);
-                subject = likeVisitor == null ? string.Empty : $"{likeVisitor.Nickname} " + likeTitle;
-                body = $"{likeTitle}<br/>访问链接：{likeLink}";
+                subject = likeVisitor == null ? string.Empty : $" {likeVisitor.Nickname} " + likeTitle;
+                body = $"{subject}<br/><br/>访问链接：{likeLink}";
                 break;
             default:
                 throw new NotImplementedException("未实现该类型消息的邮件通知");

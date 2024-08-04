@@ -36,7 +36,7 @@ public class MailService(
             {
                 mail.To.Add(to);
             }
-            mail.From = new MailAddress(senderEmail, "Blog通知");
+            mail.From = new MailAddress(senderEmail, _mailOptions.DisplayName);
             mail.Subject = msg.Subject;
             mail.Body = msg.Body;
             mail.IsBodyHtml = true;
