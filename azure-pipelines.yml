@@ -35,6 +35,8 @@ stages:
         sed -i 's/{qiniu-ak}/$(qiniu-ak)/g' $(appsettings)
         sed -i 's/{qiniu-sk}/$(qiniu-sk)/g' $(appsettings)
         sed -i 's/{github-token}/$(github-token)/g' $(appsettings)
+        sed -i 's/{mail-email}/$(mail-email)/g' $(appsettings)
+        sed -i 's/{mail-password}/$(mail-password)/g' $(appsettings)
         echo "================= print file $(appsettings) start ===================="
         cat $(appsettings) | while read line; do echo $line ; done
         echo "================= print file $(appsettings) end ===================="
