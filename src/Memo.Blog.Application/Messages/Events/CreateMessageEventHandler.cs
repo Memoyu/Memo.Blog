@@ -24,12 +24,22 @@ public class CreateMessageEventHandler(
 
         if (toUsers.Count < 1) throw new ApplicationException("消息接收人不能为空");
 
-        // 构建消息通知模型，并推送事件
-        var toUserEntities = new List<MessageUser>();
+        // 构建SignalR消息通知模型，并推送消息
         var @event = mapper.Map<MessageNotificationEvent>(notification);
         @event.ToUsers = toUsers;
         @event.MessageId = message.MessageId;
         message.AddDomainEvent(@event);
+
+        // 构建邮箱消息通知模型，并推送邮件
+        message.AddDomainEvent(new MessageEmailEvent
+        {
+            FromUser = notification.UserId,
+            ToUsers = toUsers,
+            Type = notification.MessageType,
+            Content = notification.Content
+        });
+
+        var toUserEntities = new List<MessageUser>();
         toUserEntities = toUsers.Select(t => new MessageUser { MessageId = message.MessageId, UserId = t, MessageType = message.MessageType }).ToList();
 
         // 写入消息数据

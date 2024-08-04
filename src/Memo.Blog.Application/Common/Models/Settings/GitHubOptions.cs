@@ -1,4 +1,5 @@
 ﻿namespace Memo.Blog.Application.Common.Models.Settings;
+
 public class GitHubOptions
 {
     public string Owner { get; set; } = string.Empty;

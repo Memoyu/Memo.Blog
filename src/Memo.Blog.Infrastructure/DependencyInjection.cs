@@ -22,6 +22,8 @@ using Memo.Blog.Application.Common.Interfaces.Services.Region;
 using JiebaNet.Segmenter;
 using Memo.Blog.Application.Common.Text;
 using Memo.Blog.Infrastructure.Text;
+using Memo.Blog.Application.Common.Interfaces.Services.Mail;
+using Memo.Blog.Infrastructure.Mail;
 
 namespace Memo.Blog.Infrastructure;
 
@@ -39,6 +41,7 @@ public static class DependencyInjection
             .AddPersistenceForMongo(configuration) // 注册MongoDb持久化组件（MongoDB.Driver）
             .AddAddEasyCaching(configuration) // 注册缓存组件
             .AddIp2Region() // 注册IP地址定位
+            .AddMail() // 注册邮箱服务
             .AddTextService() // 注册文本处理服务
             .AddSignalR(); // 注册 SignalR 服务
             
@@ -172,11 +175,23 @@ public static class DependencyInjection
     }
 
     /// <summary>
-    /// 注册缓存组件
+    /// 注册邮箱服务
     /// </summary>
     /// <param name="services"></param>
-    /// <param name="configuration"></param>
     /// <returns></returns>
+    public static IServiceCollection AddMail(this IServiceCollection services)
+    {
+        services.AddSingleton<IMailService, MailService>();
+
+        return services;
+    }
+    
+    /// <summary>
+     /// 注册缓存组件
+     /// </summary>
+     /// <param name="services"></param>
+     /// <param name="configuration"></param>
+     /// <returns></returns>
     private static IServiceCollection AddAddEasyCaching(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("Redis") ?? string.Empty;

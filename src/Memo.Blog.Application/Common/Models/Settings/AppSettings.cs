@@ -2,4 +2,5 @@
 
 public class AppSettings
 {
+    public string ClientDomain { get; set; } = string.Empty;
 }

@@ -7,4 +7,6 @@ public class AuthorizationSettings
     public QiniuOptions Qiniu { get; set; } = new();
 
     public GitHubOptions GitHub { get; set; } = new();
+
+    public MailOptions Mail { get; set; } = new();
 }
