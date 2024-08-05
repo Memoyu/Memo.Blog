@@ -47,9 +47,5 @@ public class UpdateArticleCommandValidator : AbstractValidator<UpdateArticleComm
         //RuleFor(x => x.Banner)
         //    .NotEmpty()
         //    .WithMessage("文章横幅图不能为空");
-
-        RuleFor(x => x.Status)
-            .IsInEnum()
-            .WithMessage("文章状态错误");
     }
 }

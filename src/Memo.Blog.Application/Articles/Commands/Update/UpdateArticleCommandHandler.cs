@@ -31,7 +31,17 @@ public class UpdateArticleCommandHandler(
         updateArticle.Views = article.Views;
         // 判断是否需要更新状态
         updateArticle.Status = request.Status ?? article.Status;
-        updateArticle.PublishTime = updateArticle.Status == ArticleStatus.Published ? DateTime.Now : null;
+
+        // 如果传入了状态，则做赋值，否则状态不变
+        if (request.Status.HasValue)
+        {
+            updateArticle.PublishTime = request.Status == ArticleStatus.Published ? DateTime.Now : null;
+        }
+        else
+        {
+            updateArticle.Status = article.Status;
+            updateArticle.PublishTime = article.PublishTime;
+        }
 
         var row = await articleRepo.UpdateAsync(updateArticle, cancellationToken);
         if (row <= 0) throw new ApplicationException("更新文章失败");
@@ -88,9 +98,9 @@ public class UpdateArticleCommandHandler(
                 Title = titleSegs.ToUtf8(),
                 Description = descriptionSegs.ToUtf8(),
                 Content = contentSegs.ToUtf8(),
-                Status = article.Status,
+                Status = updateArticle.Status,
                 CreateTime = article.CreateTime,
-                PublishTime = article.PublishTime,
+                PublishTime = updateArticle.PublishTime,
             };
             var mongoInsert = await articleMongoRepo.InsertOneAsync(articleCollection, null, cancellationToken);
             if (!mongoInsert) throw new Exception("写入mongodb失败");
@@ -123,14 +133,14 @@ public class UpdateArticleCommandHandler(
                 updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Category), tagSegs));
             }
 
-            if (article.Status != request.Status)
+            if (article.Status != updateArticle.Status)
             {
-                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Status), article.Status));
+                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.Status), updateArticle.Status));
             }
 
             if (article.PublishTime != updateArticle.PublishTime)
             {
-                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.PublishTime), article.PublishTime));
+                updateProps.Add(Builders<ArticleCollection>.Update.Set(nameof(ArticleCollection.PublishTime), updateArticle.PublishTime));
             }
 
             if (updateProps.Count != 0)
@@ -144,6 +154,6 @@ public class UpdateArticleCommandHandler(
 
         #endregion
 
-        return Result.Success(updateArticle.ArticleId);
+        return Result.Success(article.ArticleId);
     }
 }
