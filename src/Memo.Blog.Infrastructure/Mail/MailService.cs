@@ -42,7 +42,7 @@ public class MailService(
             mail.IsBodyHtml = true;
             mail.BodyEncoding = Encoding.UTF8;
             mail.SubjectEncoding = Encoding.UTF8;
-            mail.Priority = MailPriority.High;
+            // mail.Priority = MailPriority.High; // 优先级
 
             // 创建SMTP客户端
             SmtpClient smtpClient = new(_mailOptions.Host)
