@@ -5,11 +5,13 @@ using Memo.Blog.Application.Messages.Common;
 using Memo.Blog.Domain.Events.Messages;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Qiniu.Util;
 
 namespace Memo.Blog.Application.Messages.Events;
 
 internal class MessageEmailEventHandler(
     IOptionsMonitor<AppSettings> appSettings,
+    IOptionsMonitor<AuthorizationSettings> authOptions,
     ILogger<MessageEmailEventHandler> logger,
     IBaseDefaultRepository<User> userRepo,
     IBaseDefaultRepository<Visitor> visitorRepo,
@@ -18,6 +20,10 @@ internal class MessageEmailEventHandler(
 {
     public async Task Handle(MessageEmailEvent notification, CancellationToken cancellationToken)
     {
+        // 未启用邮件推送提醒，则直接退出
+        var mailOptions = authOptions.CurrentValue?.Mail ?? new();
+        if (!mailOptions.Enable) return;
+
         if (notification.ToUsers == null || notification.ToUsers.Count < 1)
         {
             logger.LogError("邮件推送时，接收方Ids为空，取消推送");
@@ -69,8 +75,8 @@ internal class MessageEmailEventHandler(
                 }
 
                 var commentVisitor = await visitorRepo.Select.Where(u => u.VisitorId == notification.FromUser).FirstAsync(cancellationToken);
-                subject = commentVisitor == null ? string.Empty : $" {commentVisitor.Nickname} " + commentTitle;
-                body = $"{subject}<br/><br/>访问链接：{commentLink}<br/><br/>评论内容如下：<br/>{commentMsg.Content}";
+                subject = "访客" + (commentVisitor == null ? string.Empty : $" {commentVisitor.Nickname} ") + commentTitle;
+                body = $"{subject}<br/><br/>访问链接：<a href='{commentLink}'>{commentLink}</a><br/><br/>评论内容如下：<br/>{commentMsg.Content}";
                 break;
             case MessageType.Like:
                 var likeMsg = notification.Content.ToDesJson<LikeMessageContent>() ?? throw new ApplicationException("邮件推送中消息内容为空");
@@ -93,8 +99,8 @@ internal class MessageEmailEventHandler(
                 }
 
                 var likeVisitor = await visitorRepo.Select.Where(u => u.VisitorId == notification.FromUser).FirstAsync(cancellationToken);
-                subject = likeVisitor == null ? string.Empty : $" {likeVisitor.Nickname} " + likeTitle;
-                body = $"{subject}<br/><br/>访问链接：{likeLink}";
+                subject = "访客" + (likeVisitor == null ? string.Empty : $" {likeVisitor.Nickname} ") + likeTitle;
+                body = $"{subject}<br/><br/>访问链接：<a href='{likeLink}'>{likeLink}</a>";
                 break;
             default:
                 throw new NotImplementedException("未实现该类型消息的邮件通知");
