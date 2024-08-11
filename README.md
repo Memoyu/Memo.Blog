@@ -22,6 +22,8 @@
 
 管理端：<a href="http://blog.admin.memoyu.com/" target="_blank">管理端（使用游客登录即可）</a>
 
+移动管理端：Coming soon
+
 客户端：<a href="http://blog.memoyu.com/" target="_blank">管理端</a>
 
 > Tips：小霸王，稍微等一下，轻点！
@@ -31,6 +33,8 @@
 **相关项目：**
 
 管理端：[Memo.Blog.Admin: 管理端 ](https://github.com/Memoyu/Memo.Blog.Admin)
+
+移动管理端：[Memo.Blog.App: 移动管理端](https://github.com/Memoyu/Memo.Blog.App)
 
 客户端：[Memo.Blog.Client: 客户端](https://github.com/Memoyu/Memo.Blog.Client)
 
