@@ -1,5 +1,4 @@
-﻿
-using Memo.Blog.Application.Configs.Common;
+﻿using Memo.Blog.Application.Configs.Common;
 
 namespace Memo.Blog.Application.Configs.Queries.Get;
 
@@ -10,9 +9,9 @@ public class GetConfigQueryHandler(
 {
     public async Task<Result> Handle(GetConfigQuery request, CancellationToken cancellationToken)
     {
-        var about = await configRepo.Select.FirstAsync(cancellationToken) ?? new();
+        var config = await configRepo.Select.FirstAsync(cancellationToken) ?? new();
 
-        return Result.Success(mapper.Map<ConfigResult>(about));
+        return Result.Success(mapper.Map<ConfigResult>(config));
     }
 }
 
@@ -23,8 +22,8 @@ public class GetConfigClientQueryHandler(
 {
     public async Task<Result> Handle(GetConfigClientQuery request, CancellationToken cancellationToken)
     {
-        var about = await configRepo.Select.FirstAsync(cancellationToken) ?? new();
+        var config = await configRepo.Select.FirstAsync(cancellationToken) ?? new();
 
-        return Result.Success(mapper.Map<ConfigResult>(about));
+        return Result.Success(mapper.Map<ConfigClientResult>(config));
     }
 }

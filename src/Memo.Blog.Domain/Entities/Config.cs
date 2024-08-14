@@ -14,9 +14,9 @@ public class Config : BaseAuditEntity
     public string Banner { get; set; } = string.Empty;
 
     /// <summary>
-    /// 样式配置
+    /// 颜色配置
     /// </summary>
-    [Description("样式配置")]
+    [Description("颜色配置")]
     [Column(StringLength = -2, IsNullable = false)]
-    public string Style { get; set; } = string.Empty;
+    public string Color { get; set; } = string.Empty;
 }
