@@ -33,7 +33,7 @@ public class PageMessageQueryHandler(
 
         var page = new MessagePageResult(messages)
         {
-            Total = total,
+            Total = (int)total,
             UnReads = (int)unreads
         };
 

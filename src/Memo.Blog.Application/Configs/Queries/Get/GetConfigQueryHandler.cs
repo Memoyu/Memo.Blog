@@ -9,7 +9,7 @@ public class GetConfigQueryHandler(
 {
     public async Task<Result> Handle(GetConfigQuery request, CancellationToken cancellationToken)
     {
-        var config = await configRepo.Select.FirstAsync(cancellationToken) ?? new();
+        var config = await configRepo.Select.FirstAsync(cancellationToken);
 
         return Result.Success(mapper.Map<ConfigResult>(config));
     }

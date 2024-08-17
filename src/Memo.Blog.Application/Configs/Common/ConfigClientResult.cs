@@ -2,8 +2,8 @@
 {
     public record ConfigClientResult
     {
-        public BannerConfigResult Banner { get; set; } = new();
+        public BannerConfig Banner { get; set; } = new();
 
-        public ColorConfigResult Color { get; set; } = new();
+        public ColorConfig Color { get; set; } = new();
     }
 }
