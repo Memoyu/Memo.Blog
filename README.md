@@ -1,13 +1,14 @@
 <div align="center"  style="margin-bottom: 40px">
- <img src="https://raw.githubusercontent.com/Memoyu/Memoyu/main/logo.png" alt="memoyu" width="128" />
+ <img src="https://raw.githubusercontent.com/Memoyu/Memo.Blog/main/docs/images/logo.png" alt="memoyu" />
 </div>
-<h1 align="center">Memoyu's Blog</h1>
+<h1 align="center">Memo Blog</h1>
 <div align="center">
  <h3>基于.NET8开发的Blog系统接口服务</h3>
  <a href="https://dotnet.microsoft.com/zh-cn/download"><img src="https://img.shields.io/badge/.net8.0.0-3963bc.svg"/></a>
  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-3963bc.svg"/></a>
  <a href="https://github.com/Memoyu"><img src="https://img.shields.io/badge/developer-memoyu-blue"/></a>
 </div>
+
 
 
 ## 简介
@@ -133,6 +134,11 @@ src
 - [luoyunchong/lin-cms-dotnetcore](https://github.com/luoyunchong/lin-cms-dotnetcore)
 
 **在此，感谢各位大佬的开源**
+
+
+
+## 感谢授权
+🙏🏻 感谢JetBrains对本项目授予的开发工具开源许可 [JetBrains Open Source  Support](https://www.jetbrains.com/community/opensource/#support)
 
 
 
