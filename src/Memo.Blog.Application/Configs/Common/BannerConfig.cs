@@ -2,13 +2,22 @@
 
 public record BannerConfig
 {
-    public string Home { get; set; } = string.Empty;
+    public BannerInfo Home { get; set; } = new();
 
-    public string Article { get; set; } = string.Empty;
+    public BannerInfo Article { get; set; } = new();
 
-    public string Lab { get; set; } = string.Empty;
+    public BannerInfo Lab { get; set; } = new();
 
-    public string Moment { get; set; } = string.Empty;
+    public BannerInfo Moment { get; set; } = new();
 
-    public string About { get; set; } = string.Empty;
+    public BannerInfo About { get; set; } = new();
+}
+
+public record BannerInfo 
+{
+    public string Url { get; set; } = string.Empty;
+
+    public string Title { get; set; } = string.Empty;
+
+    public string OriginUrl { get; set; } = string.Empty;
 }
