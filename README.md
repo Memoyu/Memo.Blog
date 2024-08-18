@@ -1,13 +1,13 @@
 <div align="center"  style="margin-bottom: 40px">
  <img src="https://raw.githubusercontent.com/Memoyu/Memo.Blog/main/docs/images/logo.png" alt="memoyu" />
 </div>
-<h1 align="center">Memo Blog</h1>
 <div align="center">
  <h3>基于.NET8开发的Blog系统接口服务</h3>
  <a href="https://dotnet.microsoft.com/zh-cn/download"><img src="https://img.shields.io/badge/.net8.0.0-3963bc.svg"/></a>
  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-3963bc.svg"/></a>
  <a href="https://github.com/Memoyu"><img src="https://img.shields.io/badge/developer-memoyu-blue"/></a>
 </div>
+
 
 
 
