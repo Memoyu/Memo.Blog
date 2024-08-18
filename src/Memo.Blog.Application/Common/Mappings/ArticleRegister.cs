@@ -14,6 +14,7 @@ public class ArticleRegister : IRegister
 
         config.ForType<CreateArticleCommand, Article>()
             .Map(d => d.Status, s => s.Status ?? ArticleStatus.Draft) // 默认为保存到草稿
+            .Map(d => d.PublishTime, s => GetPublishTime(s.Status))
             .Map(d => d.WordNumber, s => s.Content.Length)
             .Map(d => d.ReadingTime, s => GetReadingTime(s.Content))
             .Map(d => d.Category, s => MapContext.Current.GetService<IBaseDefaultRepository<Category>>().Select.Where(c => c.CategoryId == s.CategoryId).ToOne())
@@ -41,5 +42,7 @@ public class ArticleRegister : IRegister
     }
 
     private int GetReadingTime(string content) => (int)Math.Ceiling((decimal)content.Length / 800);
+
+    private DateTime? GetPublishTime(ArticleStatus? status) => status == ArticleStatus.Published ? DateTime.Now : null;
 
 }
