@@ -1,5 +1,5 @@
 <div align="center"  style="margin-bottom: 40px">
- <img src="https://raw.githubusercontent.com/Memoyu/Memo.Blog/main/docs/images/logo.png" alt="memoyu" />
+ <img src="https://raw.githubusercontent.com/Memoyu/Memo.Blog/main/docs/images/logo.png" alt="memo blog" />
 </div>
 <div align="center">
  <h3>基于.NET8开发的Blog系统接口服务</h3>
@@ -12,7 +12,6 @@
 
 
 ## 简介
-
 本项目为自用Blog系统的后端接口服务，基于.NET 8实现，遵循[CleanArchitecture](https://github.com/amantinband/clean-architecture)设计理念(Ctrl C + V)
 
 | 管理端 | 客户端 |
@@ -42,7 +41,6 @@
 
 
 ## 功能实现
-
 - Blog系统数据统计；
 - 文章、分类、标签、评论管理；
 - 开源项目同步/管理；
@@ -129,7 +127,6 @@ src
 
 
 ## 参考项目
-
 - [amantinband/clean-architecture](https://github.com/amantinband/clean-architecture)
 - [luoyunchong/lin-cms-dotnetcore](https://github.com/luoyunchong/lin-cms-dotnetcore)
 
@@ -143,5 +140,4 @@ src
 
 
 ## 开源协议
-
 MIT License. See [License here](./LICENSE) for details.
