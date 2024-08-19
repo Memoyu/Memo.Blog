@@ -1,9 +1,57 @@
-﻿using Memo.Blog.Domain.Enums;
+﻿using Memo.Blog.Application.Comments.Common;
 
 namespace Memo.Blog.Application.Comments.Commands.Create;
 
+[Authorize(Permissions = ApiPermission.Comment.Create)]
 [Transactional]
-public class CreateCommentClientCommand : IRequest<Result>
+public record CreateCommentCommand : BaseCreateCommentCommand, IAuthorizeableRequest<Result>
+{
+    /// <summary>
+    /// 回复使用的访客Id
+    /// </summary>
+    public long VisitorId { get; set; }
+}
+
+public class CreateCommentCommandValidator : AbstractValidator<CreateCommentCommand>
+{
+    public CreateCommentCommandValidator()
+    {
+        RuleFor(x => x.VisitorId)
+            .NotEmpty()
+            .WithMessage("回复使用的访客Id不能为空");
+
+        RuleFor(x => x.CommentType)
+         .IsInEnum()
+         .WithMessage("评论类型错误");
+    }
+}
+
+[Transactional]
+public record CreateCommentClientCommand : BaseCreateCommentCommand, IRequest<Result>
+{
+}
+
+public class CreateCommentClientCommandValidator : AbstractValidator<CreateCommentClientCommand>
+{
+    public CreateCommentClientCommandValidator()
+    {
+        RuleFor(x => x.CommentType)
+            .IsInEnum()
+            .WithMessage("评论类型错误");
+    }
+}
+
+[Transactional]
+public record CommonCreateCommentCommand : BaseCreateCommentCommand, IRequest<CommentClientResult>
+{
+    /// <summary>
+    /// 回复使用的访客Id
+    /// </summary>
+    public long VisitorId { get; set; }
+}
+
+
+public record BaseCreateCommentCommand
 {
     /// <summary>
     /// 父评论Id
@@ -29,16 +77,6 @@ public class CreateCommentClientCommand : IRequest<Result>
     /// 评论内容
     /// </summary>
     public string Content { get; set; } = string.Empty;
-}
-
-public class CreateCommentCommandValidator : AbstractValidator<CreateCommentClientCommand>
-{
-    public CreateCommentCommandValidator()
-    {
-        RuleFor(x => x.CommentType)
-            .IsInEnum()
-            .WithMessage("评论类型错误");
-    }
 }
 
 

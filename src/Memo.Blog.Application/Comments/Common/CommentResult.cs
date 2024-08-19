@@ -13,7 +13,7 @@ public record CommentResult
     /// <summary>
     /// 父评论Id
     /// </summary>
-    public long ParentId { get; set; }
+    public long? ParentId { get; set; }
 
     /// <summary>
     /// 所属Id（文章Id、动态Id等）

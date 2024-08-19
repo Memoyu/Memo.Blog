@@ -7,17 +7,47 @@ using Memo.Blog.Domain.Events.Messages;
 
 namespace Memo.Blog.Application.Comments.Commands.Create;
 
+public class CreateCommentCommandHandler( IMapper mapper, IMediator mediator ) : IRequestHandler<CreateCommentCommand, Result>
+{
+    public async Task<Result> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
+    {
+        // 管理端请求时传入访客Id
+        var command = mapper.Map<CommonCreateCommentCommand>(request);
+        var result = await mediator.Send(command, cancellationToken);
+        return Result.Success(result.CommentId);
+    }
+}
+
 public class CreateCommentClientCommandHandler(
-     // ILogger<CreateCommentClientCommandHandler> logger,
+    IMapper mapper,
+    IMediator mediator,
+    ICurrentUserProvider currentUserProvider
+    ) : IRequestHandler<CreateCommentClientCommand, Result>
+{
+    public async Task<Result> Handle(CreateCommentClientCommand request, CancellationToken cancellationToken)
+    {
+        var command = mapper.Map<CommonCreateCommentCommand>(request);
+
+        // 客户端从header获取访客Id
+        var visitorId = currentUserProvider.GetCurrentVisitor();
+        if (visitorId <= 0) throw new ApplicationException("访客不存在");
+        command.VisitorId = visitorId;
+
+        var result = await mediator.Send(command, cancellationToken);
+        return Result.Success(result);
+    }
+}
+
+public class CommonCreateCommentCommandHandler(
      IMapper mapper,
      ICurrentUserProvider currentUserProvider,
      IRegionSearchService searcher,
      IBaseDefaultRepository<Comment> commentRepo,
      IBaseDefaultRepository<Article> articleRepo,
      IBaseDefaultRepository<Visitor> visitorRepo
-    ) : IRequestHandler<CreateCommentClientCommand, Result>
+    ) : IRequestHandler<CommonCreateCommentCommand, CommentClientResult>
 {
-    public async Task<Result> Handle(CreateCommentClientCommand request, CancellationToken cancellationToken)
+    public async Task<CommentClientResult> Handle(CommonCreateCommentCommand request, CancellationToken cancellationToken)
     {
         var isArticleComment = false;
         long? articleAuthor = null;
@@ -31,9 +61,6 @@ public class CreateCommentClientCommandHandler(
 
         var comment = mapper.Map<Comment>(request);
 
-        var visitorId = currentUserProvider.GetCurrentVisitor();
-        if (visitorId <= 0) throw new ApplicationException("访客不存在");
-        comment.VisitorId = visitorId;
 
         // 确认楼层
         // 如果是主楼
@@ -74,7 +101,7 @@ public class CreateCommentClientCommandHandler(
         // 增加消息通知领域事件
         comment.AddDomainEvent(new CreateMessageEvent
         {
-            UserId = visitorId,
+            UserId = comment.VisitorId,
             ToUsers = articleAuthor.HasValue ? [articleAuthor.Value] : [],
             ToRoles = [InitConst.InitAdminRoleId, InitConst.InitVisitorRoleId], // 按理说，只应该给管理员发以及作者，此处加上游客，演示用
             MessageType = MessageType.Comment,
@@ -103,6 +130,7 @@ public class CreateCommentClientCommandHandler(
         }
 
 
-        return comment.Id == 0 ? throw new ApplicationException("保存评论失败") : (Result)Result.Success(dto);
+        return comment.Id == 0 ? throw new ApplicationException("保存评论失败") : dto;
     }
 }
+

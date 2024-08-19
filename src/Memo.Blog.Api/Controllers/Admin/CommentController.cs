@@ -12,6 +12,16 @@ namespace Memo.Blog.Api.Controllers.Admin;
 public class CommentController(ISender mediator) : ApiAdminController
 {
     /// <summary>
+    /// 创建评论
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost("create")]
+    public async Task<Result> CreateAsync(CreateCommentCommand request)
+    {
+        return await mediator.Send(request);
+    }
+
+    /// <summary>
     /// 更新评论
     /// </summary>
     /// <returns></returns>
