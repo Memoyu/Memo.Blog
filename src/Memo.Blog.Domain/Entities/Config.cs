@@ -7,6 +7,13 @@
 public class Config : BaseAuditEntity
 {
     /// <summary>
+    /// 管理配置
+    /// </summary>
+    [Description("管理配置")]
+    [Column(StringLength = -2, IsNullable = false)]
+    public string Admin { get; set; } = string.Empty;
+
+    /// <summary>
     /// 头图配置
     /// </summary>
     [Description("头图配置")]

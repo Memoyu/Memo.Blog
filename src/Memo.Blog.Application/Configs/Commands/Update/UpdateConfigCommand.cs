@@ -3,7 +3,7 @@
 namespace Memo.Blog.Application.Configs.Commands.Update;
 
 [Authorize(Permissions = ApiPermission.Config.Update)]
-public record UpdateConfigCommand(BannerConfig Banner, ColorConfig Color) : IAuthorizeableRequest<Result>;
+public record UpdateConfigCommand(AdminConfig Admin, BannerConfig Banner, ColorConfig Color) : IAuthorizeableRequest<Result>;
 
 public class UpdateConfigCommandValidator : AbstractValidator<UpdateConfigCommand>
 {
