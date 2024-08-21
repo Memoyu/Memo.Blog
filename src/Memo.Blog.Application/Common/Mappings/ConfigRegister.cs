@@ -13,7 +13,7 @@ public class ConfigRegister : IRegister
            .Map(d => d.Color, s => ToJson(s.Color));
 
         config.ForType<Config, ConfigAdminResult>()
-            .Map(d => d.Admin, s => ToJson(s.Admin));
+            .Map(d => d.Admin, s => GetAdminConfig(s.Admin));
 
         config.ForType<Config, ConfigClientResult>()
             .Map(d => d.Banner, s => GetBannerConfig(s.Banner))
