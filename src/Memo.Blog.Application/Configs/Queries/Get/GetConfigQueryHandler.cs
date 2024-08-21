@@ -15,6 +15,19 @@ public class GetConfigQueryHandler(
     }
 }
 
+public class GetConfigAdminQueryHandler(
+    IMapper mapper,
+    IBaseDefaultRepository<Config> configRepo
+    ) : IRequestHandler<GetConfigAdminQuery, Result>
+{
+    public async Task<Result> Handle(GetConfigAdminQuery request, CancellationToken cancellationToken)
+    {
+        var config = await configRepo.Select.FirstAsync(cancellationToken) ?? new();
+
+        return Result.Success(mapper.Map<ConfigAdminResult>(config));
+    }
+}
+
 public class GetConfigClientQueryHandler(
     IMapper mapper,
     IBaseDefaultRepository<Config> configRepo

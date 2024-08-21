@@ -10,6 +10,9 @@ public static partial class Permissions
 
         [Description("获取系统配置")]
         public const string Get = "get:config";
+
+        [Description("获取系统管理端配置")]
+        public const string GetAdmin = "get:admin:config";
     }
 }
 

@@ -9,11 +9,13 @@ public class ConfigRegister : IRegister
     {
         config.ForType<UpdateConfigCommand, Config>()
            .Map(d => d.Admin, s => ToJson(s.Admin))
-           .Map(d => d.Banner, s =>  ToJson(s.Banner))
+           .Map(d => d.Banner, s => ToJson(s.Banner))
            .Map(d => d.Color, s => ToJson(s.Color));
 
+        config.ForType<Config, ConfigAdminResult>()
+            .Map(d => d.Admin, s => ToJson(s.Admin));
+
         config.ForType<Config, ConfigClientResult>()
-            .Map(d => d.Admin, s => ToJson(s.Admin))
             .Map(d => d.Banner, s => GetBannerConfig(s.Banner))
             .Map(d => d.Color, s => GetStyleConfig(s.Color));
 
