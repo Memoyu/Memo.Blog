@@ -1,6 +1,4 @@
-﻿using Memo.Blog.Domain.Enums;
-
-namespace Memo.Blog.Application.Messages.Common;
+﻿namespace Memo.Blog.Application.Messages.Common;
 
 public record CommentMessageContent
 {

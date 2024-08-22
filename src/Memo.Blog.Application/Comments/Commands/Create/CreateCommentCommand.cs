@@ -77,6 +77,11 @@ public record BaseCreateCommentCommand
     /// 评论内容
     /// </summary>
     public string Content { get; set; } = string.Empty;
+
+    /// <summary>
+    /// 排除的接收用户Id
+    /// </summary>
+    public List<long>? ExcludeUsers { get; set; }
 }
 
 

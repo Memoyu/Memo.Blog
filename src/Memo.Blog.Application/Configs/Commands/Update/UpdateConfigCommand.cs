@@ -3,7 +3,7 @@
 namespace Memo.Blog.Application.Configs.Commands.Update;
 
 [Authorize(Permissions = ApiPermission.Config.Update)]
-public record UpdateConfigCommand(AdminConfig Admin, BannerConfig Banner, ColorConfig Color) : IAuthorizeableRequest<Result>;
+public record UpdateConfigCommand( BannerConfig Banner, ColorConfig Color) : IAuthorizeableRequest<Result>;
 
 public class UpdateConfigCommandValidator : AbstractValidator<UpdateConfigCommand>
 {
@@ -27,3 +27,16 @@ public class UpdateConfigCommandValidator : AbstractValidator<UpdateConfigComman
     }
 }
 
+
+[Authorize(Permissions = ApiPermission.Config.UpdateVisitor)]
+public record UpdateVisitorConfigCommand(long VisitorId) : IAuthorizeableRequest<Result>;
+
+public class UpdateVisitorConfigCommandValidator : AbstractValidator<UpdateVisitorConfigCommand>
+{
+    public UpdateVisitorConfigCommandValidator()
+    {
+        RuleFor(x => x.VisitorId)
+          .GreaterThan(0)
+          .WithMessage("访客Id不能为空");
+    }
+}

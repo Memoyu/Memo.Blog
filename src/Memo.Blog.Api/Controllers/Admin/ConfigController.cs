@@ -19,6 +19,15 @@ public class ConfigController(ISender mediator) : ApiAdminController
         return await mediator.Send(request);
     }
 
+    /// <summary>
+    /// 更新回复访客配置
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut("update/visitor")]
+    public async Task<Result> UpdateVisitorAsync(UpdateVisitorConfigCommand request)
+    {
+        return await mediator.Send(request);
+    }
 
     /// <summary>
     /// 获取系统配置
@@ -31,22 +40,13 @@ public class ConfigController(ISender mediator) : ApiAdminController
     }
 
     /// <summary>
-    /// 获取客户端配置
+    /// 获取管理员访客配置
     /// </summary>
     /// <returns></returns>
-    [HttpGet("client/get")]
-    public async Task<Result> GetClientAsync([FromQuery] GetConfigClientQuery request)
+    [HttpGet("get/visitor")]
+    public async Task<Result> GetVisitorAsync([FromQuery] GetConfigVisitorQuery request)
     {
         return await mediator.Send(request);
     }
 
-    /// <summary>
-    /// 获取管理端配置
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet("admin/get")]
-    public async Task<Result> GetAdminAsync([FromQuery] GetConfigAdminQuery request)
-    {
-        return await mediator.Send(request);
-    }
 }

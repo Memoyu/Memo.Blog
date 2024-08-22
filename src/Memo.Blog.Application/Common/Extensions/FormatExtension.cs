@@ -67,7 +67,6 @@ public class AutoLongToStringConverter : JsonConverter<object>
 
     public override void Write(Utf8JsonWriter writer, object value, JsonSerializerOptions options)
     {
-        var target = value.ToString();
-        writer.WriteStringValue( target == "0" ? string.Empty : target );
+        writer.WriteStringValue(value.ToString());
     }
 }

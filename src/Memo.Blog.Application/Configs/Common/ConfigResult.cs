@@ -2,8 +2,6 @@
 
 public record ConfigResult
 {
-    public AdminConfig Admin { get; set; } = new();
-
     public BannerConfig Banner { get; set; } = new();
 
     public ColorConfig Color { get; set; } = new();

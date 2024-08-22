@@ -71,6 +71,7 @@ public static class PersistenceExtension
 
         // 批量注册复合主键的 Repository
         services.TryAddScoped(typeof(IBaseDefaultRepository<>), typeof(BaseDefaultRepository<>));
+        services.AddScoped<IConfigRepository, ConfigRepository>();
 
         //在运行时直接生成表结构
         try

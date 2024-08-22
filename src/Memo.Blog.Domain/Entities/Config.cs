@@ -7,11 +7,11 @@
 public class Config : BaseAuditEntity
 {
     /// <summary>
-    /// 管理配置
+    /// 管理员访客身份配置
     /// </summary>
-    [Description("管理配置")]
+    [Description("管理员访客身份配置")]
     [Column(StringLength = -2, IsNullable = false)]
-    public string Admin { get; set; } = string.Empty;
+    public string Visitors { get; set; } = string.Empty;
 
     /// <summary>
     /// 头图配置

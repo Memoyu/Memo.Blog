@@ -20,7 +20,7 @@ public class CreateMessageEventHandler(
             var userIds = await userRoleRepo.Select.Where(ur => notification.ToRoles.Contains(ur.RoleId)).ToListAsync(ur => ur.UserId, cancellationToken);
             toUsers.AddRange(userIds);
         }
-        toUsers = toUsers.Distinct().ToList();
+        toUsers = toUsers.Except(notification.ExcludeUsers ?? []).Distinct().ToList();
 
         if (toUsers.Count < 1) throw new ApplicationException("消息接收人不能为空");
 

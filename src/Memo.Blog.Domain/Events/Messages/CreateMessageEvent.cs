@@ -20,6 +20,11 @@ public record CreateMessageEvent : IDomainEvent
     public List<long>? ToRoles { get; set; }
 
     /// <summary>
+    /// 排除的用户Id
+    /// </summary>
+    public List<long>? ExcludeUsers { get; set; }
+
+    /// <summary>
     /// 消息类型
     /// </summary>
     public MessageType MessageType { get; set; }

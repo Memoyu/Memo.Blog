@@ -7,12 +7,17 @@ using Memo.Blog.Domain.Events.Messages;
 
 namespace Memo.Blog.Application.Comments.Commands.Create;
 
-public class CreateCommentCommandHandler( IMapper mapper, IMediator mediator ) : IRequestHandler<CreateCommentCommand, Result>
+public class CreateCommentCommandHandler( 
+    IMapper mapper,
+    IMediator mediator,
+    ICurrentUserProvider currentUserProvider) : IRequestHandler<CreateCommentCommand, Result>
 {
     public async Task<Result> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
     {
         // 管理端请求时传入访客Id
+        var userId = currentUserProvider.GetCurrentUser().Id;
         var command = mapper.Map<CommonCreateCommentCommand>(request);
+        command.ExcludeUsers = new List<long> { userId };
         var result = await mediator.Send(command, cancellationToken);
         return Result.Success(result.CommentId);
     }
@@ -104,6 +109,7 @@ public class CommonCreateCommentCommandHandler(
             UserId = comment.VisitorId,
             ToUsers = articleAuthor.HasValue ? [articleAuthor.Value] : [],
             ToRoles = [InitConst.InitAdminRoleId, InitConst.InitVisitorRoleId], // 按理说，只应该给管理员发以及作者，此处加上游客，演示用
+            ExcludeUsers = request.ExcludeUsers,
             MessageType = MessageType.Comment,
             Content = commentMessage.ToJson()
         });

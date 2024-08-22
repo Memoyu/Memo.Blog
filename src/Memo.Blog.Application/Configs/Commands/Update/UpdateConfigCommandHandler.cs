@@ -1,22 +1,56 @@
-﻿namespace Memo.Blog.Application.Configs.Commands.Update;
+﻿using Memo.Blog.Application.Configs.Common;
+using Memo.Blog.Application.Security;
+
+namespace Memo.Blog.Application.Configs.Commands.Update;
 
 public class UpdateConfigCommandHandler(
     IMapper mapper,
-    IBaseDefaultRepository<Config> configRepo
+    IConfigRepository configRepo
     ) : IRequestHandler<UpdateConfigCommand, Result>
 {
     public async Task<Result> Handle(UpdateConfigCommand request, CancellationToken cancellationToken)
     {
         var update = mapper.Map<Config>(request);
-        var config = await configRepo.Select.FirstAsync(cancellationToken);
-        if (config is null)
+        var config = await configRepo.GetWithInitAsync(cancellationToken);
+        update.Id = config.Id;
+        update.Visitors = config.Visitors; // 不更新回复访客配置
+        var affrows = await configRepo.UpdateAsync(update, cancellationToken);
+        return affrows > 0 ? Result.Success(update.Id) : Result.Failure("更新系统配置失败");
+    }
+}
+
+public class UpdateVisitorConfigCommandHandler(
+    ICurrentUserProvider currentUserProvider,
+    IBaseDefaultRepository<Visitor> visitorRepo,
+    IConfigRepository configRepo
+    ) : IRequestHandler<UpdateVisitorConfigCommand, Result>
+{
+    public async Task<Result> Handle(UpdateVisitorConfigCommand request, CancellationToken cancellationToken)
+    {
+        var userId = currentUserProvider.GetCurrentUser().Id;
+        if (userId == 0) throw new ApplicationException("获取当前用户信息失败");
+
+        var visitor = await visitorRepo.Select.Where(v => v.VisitorId == request.VisitorId).FirstAsync(cancellationToken)
+            ?? throw new ApplicationException("访客信息不存在");
+
+        var config = await configRepo.GetWithInitAsync(cancellationToken);
+
+        var userVisitors = config.Visitors.ToDesJson<List<VisitorConfigResult>>() ?? [];
+        var userVisitor = userVisitors.FirstOrDefault(v => v.UserId == userId);
+        if (userVisitor == null)
         {
-            update = await configRepo.InsertAsync(update, cancellationToken);
-            return update.Id == 0 ? Result.Failure("新增系统配置失败") : Result.Success(update.Id);
+            userVisitor = new VisitorConfigResult { UserId = userId, VisitorId = visitor.VisitorId, Avatar = visitor.Avatar, Nickname = visitor.Nickname };
+            userVisitors.Add(userVisitor);
+        }
+        else
+        {
+            userVisitor.VisitorId = visitor.VisitorId;
+            userVisitor.Avatar = visitor.Avatar;
+            userVisitor.Nickname = visitor.Nickname;
         }
 
-        update.Id = config.Id;
-        var affrows = await configRepo.UpdateAsync(update, cancellationToken);
-        return affrows > 0 ? Result.Success() : Result.Failure("更新系统配置失败");
+        config.Visitors = userVisitors.ToJson();
+        var affrows = await configRepo.UpdateAsync(config, cancellationToken);
+        return affrows > 0 ? Result.Success(userVisitor) : Result.Failure("更新管理员回复访客配置失败");
     }
 }
