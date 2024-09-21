@@ -5,7 +5,8 @@ namespace Memo.Blog.Application.Moments.Queries.Page;
 
 public class PageMomentQueryHandler(
     IMapper mapper,
-    IBaseDefaultRepository<Moment> momentRepo
+    IBaseDefaultRepository<Moment> momentRepo,
+    IBaseDefaultRepository<MomentLike> momentLikeRepo
     ) : IRequestHandler<PageMomentQuery, Result>
 {
     public async Task<Result> Handle(PageMomentQuery request, CancellationToken cancellationToken)
@@ -27,7 +28,18 @@ public class PageMomentQueryHandler(
             .OrderByDescending(m => m.CreateTime)
             .ToPageListAsync(request, out var total, cancellationToken);
 
+        var momentIdIds = moments.Select(m => m.MomentId).Distinct().ToList();
+        var likes = await momentLikeRepo.Select
+            .Where(ml => momentIdIds.Contains(ml.MomentId))
+            .ToListAsync(cancellationToken);
+
         var results = mapper.Map<List<MomentResult>>(moments);
+
+        foreach (var moment in results)
+        {
+            var momentLikes = likes.Where(l => l.MomentId == moment.MomentId).ToList();
+            moment.Likes = momentLikes.Count;
+        }
 
         return Result.Success(new PaginationResult<MomentResult>(results, total));
     }
