@@ -22,17 +22,18 @@ public class JwtTokenGenerator(IOptionsMonitor<AuthorizationSettings> authOption
             new(JwtRegisteredClaimNames.Email, user.Email),
         };
 
+        var expiredAt = DateTime.Now.AddMinutes(Convert.ToDouble(_jwtOptions.ExpiryInMin));
         var securityToken = new JwtSecurityToken(
             issuer: _jwtOptions.Issuer,
             audience: _jwtOptions.Audience,
             claims: claims,
-            expires: DateTime.Now.AddMinutes(Convert.ToDouble(_jwtOptions.ExpiryInMin)),
+            expires: expiredAt,
             signingCredentials: signingCredentials);
 
         var accessToken = new JwtSecurityTokenHandler().WriteToken(securityToken);
         string refreshToken = GenerateRefreshToken();
 
-        return new JwtTokenDto { AccessToken = accessToken, RefreshToken = refreshToken };
+        return new JwtTokenDto ( accessToken, refreshToken, expiredAt);
     }
 
     public JwtTokenDto RefreshToken(User user)

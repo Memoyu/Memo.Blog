@@ -21,6 +21,6 @@ public class GenerateTokenHandler(
         user.LastLoginTime = DateTime.Now;
         await userRepo.UpdateAsync(user, cancellationToken);
 
-        return Result.Success(new GenerateTokenResult(user.UserId, user.Username, token.AccessToken, token.RefreshToken));
+        return Result.Success(new GenerateTokenResult(user.UserId, user.Username, token.AccessToken, token.RefreshToken, token.ExpiredAt));
     }
 }

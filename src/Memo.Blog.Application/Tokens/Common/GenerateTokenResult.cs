@@ -4,5 +4,6 @@ public record GenerateTokenResult(
     long UserId,
     string Username,
     string AccessToken,
-    string RefreshToken
+    string RefreshToken,
+    DateTime ExpiredAt
 );
