@@ -89,7 +89,7 @@ public class ArticleController(ISender mediator) : ApiAdminController
     /// </summary>
     /// <returns></returns>
     [HttpGet("list/related")]
-    public async Task<Result> GetPageAsync([FromQuery] RelatedListArticleQuery request)
+    public async Task<Result> GetRelatedListAsync([FromQuery] RelatedListArticleQuery request)
     {
         return await mediator.Send(request);
     }
