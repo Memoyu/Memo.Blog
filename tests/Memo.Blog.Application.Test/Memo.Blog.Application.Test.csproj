@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Memo.Blog.Application\Memo.Blog.Application.csproj" />
+    <ProjectReference Include="..\..\src\Memo.Blog.Infrastructure\Memo.Blog.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
