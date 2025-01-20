@@ -1,4 +1,5 @@
-﻿using Memo.Blog.Application.Comments.Common;
+﻿using MediatR;
+using Memo.Blog.Application.Comments.Common;
 using Memo.Blog.Application.Common.Interfaces.Services.Region;
 using Memo.Blog.Application.Messages.Common;
 using Memo.Blog.Application.Security;
@@ -7,7 +8,7 @@ using Memo.Blog.Domain.Events.Messages;
 
 namespace Memo.Blog.Application.Comments.Commands.Create;
 
-public class CreateCommentCommandHandler( 
+public class CreateCommentCommandHandler(
     IMapper mapper,
     IMediator mediator,
     ICurrentUserProvider currentUserProvider) : IRequestHandler<CreateCommentCommand, Result>
@@ -114,6 +115,27 @@ public class CommonCreateCommentCommandHandler(
             Content = commentMessage.ToJson()
         });
 
+        // 给回复人发送一个邮件通知
+        Comment? reply = null;
+        if (comment.ReplyId.HasValue)
+        {
+            reply = await commentRepo.Select
+                .Include(c => c.Visitor)
+                .Where(c => c.CommentId == comment.ReplyId).FirstAsync(cancellationToken);
+
+            if (reply.Visitor != null)
+            {
+                // 构建邮箱消息通知模型，并推送邮件
+                comment.AddDomainEvent(new MessageReplyEmailEvent
+                {
+                    VisitorId = comment.VisitorId,
+                    Reply = reply.Visitor,
+                    Content = commentMessage.ToJson()
+                });
+            }
+
+        }
+
         var ip = currentUserProvider.GetClientIp();
         comment.Ip = ip;
         var region = searcher.Search(ip);
@@ -126,15 +148,8 @@ public class CommonCreateCommentCommandHandler(
             .FirstAsync(cancellationToken);
 
         var dto = mapper.Map<CommentClientResult>(comment);
-        if (comment.ReplyId.HasValue)
-        {
-            var reply = await commentRepo.Select
-                .Include(c => c.Visitor)
-                .Where(c => c.CommentId == comment.ReplyId).FirstAsync(cancellationToken);
-            if (reply != null)
-                dto.Reply = mapper.Map<CommentReplyResult>(reply);
-        }
-
+        if (reply != null)
+            dto.Reply = mapper.Map<CommentReplyResult>(reply);
 
         return comment.Id == 0 ? throw new ApplicationException("保存评论失败") : dto;
     }

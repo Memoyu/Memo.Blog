@@ -22,7 +22,7 @@ public class JwtTokenGenerator(IOptionsMonitor<AuthorizationSettings> authOption
             new(JwtRegisteredClaimNames.Email, user.Email),
         };
 
-        var expiredAt = DateTime.Now.AddMinutes(Convert.ToDouble(_jwtOptions.ExpiryInMin));
+        var expiredAt = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_jwtOptions.ExpiryInMin));
         var securityToken = new JwtSecurityToken(
             issuer: _jwtOptions.Issuer,
             audience: _jwtOptions.Audience,
@@ -33,7 +33,9 @@ public class JwtTokenGenerator(IOptionsMonitor<AuthorizationSettings> authOption
         var accessToken = new JwtSecurityTokenHandler().WriteToken(securityToken);
         string refreshToken = GenerateRefreshToken();
 
-        return new JwtTokenDto ( accessToken, refreshToken, expiredAt);
+        var expiredAtTs = expiredAt - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+
+        return new JwtTokenDto ( accessToken, refreshToken, Convert.ToInt64(expiredAtTs.TotalMilliseconds));
     }
 
     public JwtTokenDto RefreshToken(User user)

@@ -5,5 +5,5 @@ public record GenerateTokenResult(
     string Username,
     string AccessToken,
     string RefreshToken,
-    DateTime ExpiredAt
+    long ExpiredAt
 );

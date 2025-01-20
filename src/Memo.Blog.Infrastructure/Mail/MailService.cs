@@ -45,14 +45,13 @@ public class MailService(
             // mail.Priority = MailPriority.High; // 优先级
 
             // 创建SMTP客户端
-            SmtpClient smtpClient = new(_mailOptions.Host)
+            SmtpClient smtpClient = new(_mailOptions.Host, _mailOptions.Port)
             {
-                Port = _mailOptions.Port,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(senderEmail, senderPassword),
                 EnableSsl = _mailOptions.EnableSsl
             };
+            smtpClient.Credentials = new NetworkCredential(senderEmail, senderPassword);
 
             // 发送邮件
             _sendCompletedCallback = callback;

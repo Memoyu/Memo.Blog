@@ -1,6 +1,4 @@
-﻿using Memo.Blog.Domain.Enums;
-
-namespace Memo.Blog.Application.Visitors.Commands.Update;
+﻿namespace Memo.Blog.Application.Visitors.Commands.Update;
 
 public record UpdateVisitorCommand : IRequest<Result>
 {

@@ -31,7 +31,7 @@ public class CreateMessageEventHandler(
         message.AddDomainEvent(@event);
 
         // 构建邮箱消息通知模型，并推送邮件
-        message.AddDomainEvent(new MessageEmailEvent
+        message.AddDomainEvent(new MessageUserEmailEvent
         {
             FromUser = notification.UserId,
             ToUsers = toUsers,

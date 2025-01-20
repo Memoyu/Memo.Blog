@@ -2,7 +2,7 @@
 
 namespace Memo.Blog.Domain.Events.Messages;
 
-public record MessageEmailEvent : IDomainEvent
+public record MessageUserEmailEvent : IDomainEvent
 {
     public long FromUser { get; set; }
 

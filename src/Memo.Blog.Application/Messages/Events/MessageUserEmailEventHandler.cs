@@ -5,20 +5,19 @@ using Memo.Blog.Application.Messages.Common;
 using Memo.Blog.Domain.Events.Messages;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Qiniu.Util;
 
 namespace Memo.Blog.Application.Messages.Events;
 
-internal class MessageEmailEventHandler(
+internal class MessageUserEmailEventHandler(
     IOptionsMonitor<AppSettings> appSettings,
     IOptionsMonitor<AuthorizationSettings> authOptions,
-    ILogger<MessageEmailEventHandler> logger,
+    ILogger<MessageUserEmailEventHandler> logger,
     IBaseDefaultRepository<User> userRepo,
     IBaseDefaultRepository<Visitor> visitorRepo,
     IBaseDefaultRepository<Article> articleRepo,
-    IMailService mailService) : INotificationHandler<MessageEmailEvent>
+    IMailService mailService) : INotificationHandler<MessageUserEmailEvent>
 {
-    public async Task Handle(MessageEmailEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(MessageUserEmailEvent notification, CancellationToken cancellationToken)
     {
         // 未启用邮件推送提醒，则直接退出
         var mailOptions = authOptions.CurrentValue?.Mail ?? new();
