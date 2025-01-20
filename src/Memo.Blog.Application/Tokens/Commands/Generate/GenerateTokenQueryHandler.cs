@@ -1,4 +1,4 @@
-﻿namespace Memo.Blog.Application.Tokens.Queries.Generate;
+﻿namespace Memo.Blog.Application.Tokens.Commands.Generate;
 
 public class GenerateTokenHandler(
     IBaseDefaultRepository<User> userRepo,

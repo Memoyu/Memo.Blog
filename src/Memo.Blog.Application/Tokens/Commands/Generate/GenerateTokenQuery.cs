@@ -1,4 +1,4 @@
-﻿namespace Memo.Blog.Application.Tokens.Queries.Generate;
+﻿namespace Memo.Blog.Application.Tokens.Commands.Generate;
 
 public record GenerateTokenQuery(string Username, string Password) : IRequest<Result>;
 
