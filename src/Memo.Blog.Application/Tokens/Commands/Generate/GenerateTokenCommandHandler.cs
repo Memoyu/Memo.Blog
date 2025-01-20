@@ -1,12 +1,12 @@
 ﻿namespace Memo.Blog.Application.Tokens.Commands.Generate;
 
-public class GenerateTokenHandler(
+public class GenerateTokenCommandHandler(
     IBaseDefaultRepository<User> userRepo,
     IBaseDefaultRepository<UserIdentity> userIdentityRepo,
     IJwtTokenGenerator jwtTokenGenerator
-    ) : IRequestHandler<GenerateTokenQuery, Result>
+    ) : IRequestHandler<GenerateTokenCommand, Result>
 {
-    public async Task<Result> Handle(GenerateTokenQuery request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(GenerateTokenCommand request, CancellationToken cancellationToken)
     {
         var user = await userRepo.Where(u => u.Username.Equals(request.Username)).FirstAsync(cancellationToken) ??
             throw new ApplicationException("用户名或密码错误");

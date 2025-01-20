@@ -13,7 +13,7 @@ public class TokensController(ISender mediator) : ApiAdminController
     /// <param name="request">用户账户、密码</param>
     /// <returns></returns>
     [HttpPost("generate")]
-    public async Task<Result> GenerateAsync(GenerateTokenQuery request)
+    public async Task<Result> GenerateAsync(GenerateTokenCommand request)
     {
         return await mediator.Send(request);
     }

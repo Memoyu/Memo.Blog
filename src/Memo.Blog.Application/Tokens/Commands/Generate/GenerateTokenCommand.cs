@@ -1,8 +1,8 @@
 ﻿namespace Memo.Blog.Application.Tokens.Commands.Generate;
 
-public record GenerateTokenQuery(string Username, string Password) : IRequest<Result>;
+public record GenerateTokenCommand(string Username, string Password) : IRequest<Result>;
 
-public class GenerateTokenQueryValidator : AbstractValidator<GenerateTokenQuery>
+public class GenerateTokenQueryValidator : AbstractValidator<GenerateTokenCommand>
 {
     public GenerateTokenQueryValidator()
     {
