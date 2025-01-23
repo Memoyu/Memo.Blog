@@ -9,5 +9,5 @@ public interface IMailService
     /// </summary>
     /// <param name="msg"></param>
     /// <param name="callback"></param>
-    void Send(MailMsg msg, Action<MailCompleted>? callback = null);
+    Task SendAsync(MailMsg msg, Action<MailCompleted>? callback = null);
 }

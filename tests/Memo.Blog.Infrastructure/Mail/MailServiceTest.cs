@@ -17,11 +17,11 @@ public class MailServiceTest
         {
             ["Authorization:Mail:Enable"] = "true",
             ["Authorization:Mail:DisplayName"] = "Memo博客系统通知",
-            ["Authorization:Mail:Email"] = "memo.blog@aliyun.com",
-            ["Authorization:Mail:Password"] = "memo.blog.6076",
-            ["Authorization:Mail:Host"] = "smtp.mxhichina.com",
+            ["Authorization:Mail:Email"] = "memoblog@163.com",
+            ["Authorization:Mail:Password"] = "QXbd239vvjhkqPm3",
+            ["Authorization:Mail:Host"] = "smtp.163.com",
             ["Authorization:Mail:Port"] = "465",
-            ["Authorization:Mail:EnableSsl"] = "true",
+            ["Authorization:Mail:EnableSsl"] = "false",
         };
 
         var services = new ServiceCollection();
@@ -40,6 +40,6 @@ public class MailServiceTest
     [Fact]
     public async Task Send_Should_Success()
     {
-        _mailService.Send(new MailMsg { Tos = ["mmy6076@outlook.com"], Subject = "测试邮件", Body="dddddd" });
+       await _mailService.SendAsync(new MailMsg { Tos = ["mmy6076@outlook.com"], Subject = "测试邮件", Body="dddddd" });
     }
 }

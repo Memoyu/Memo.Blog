@@ -1,10 +1,12 @@
-﻿using Memo.Blog.Application.Common.Interfaces.Services.Mail;
+﻿using System.Threading;
+using Memo.Blog.Application.Common.Interfaces.Services.Mail;
 using Memo.Blog.Application.Common.Models.Mail;
 using Memo.Blog.Application.Common.Models.Settings;
 using Memo.Blog.Application.Messages.Common;
 using Memo.Blog.Domain.Events.Messages;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace Memo.Blog.Application.Messages.Events;
 
@@ -29,7 +31,7 @@ internal class MessageUserEmailEventHandler(
             return;
         }
 
-        var clientDomain = appSettings.CurrentValue?.ClientDomain;
+
 
         // 通过邮件发送给指定用户
 
@@ -50,69 +52,78 @@ internal class MessageUserEmailEventHandler(
             case MessageType.User:
                 var userMsg = notification.Content.ToDesJson<UserMessageContent>() ?? throw new ApplicationException("邮件推送中消息内容为空");
                 var fromUser = await userRepo.Select.Where(u => u.UserId == notification.FromUser).FirstAsync(cancellationToken);
-                subject = "用户" + (fromUser == null ? string.Empty : $" {fromUser.Nickname} ") + "发来的消息";
-                body = $"收到了{subject}<br/><br/>消息内容如下：<br/>{userMsg.Content}";
+                var username = fromUser == null ? string.Empty : $" {fromUser.Nickname} ";
+                subject = "嗒嗒！用户" + username + "发来的消息";
+                body = @$"
+访客：{username} 发来的消息：
+<br/>{userMsg.Content}
+<br/>
+<br/>------------------------------------------
+<br/>这是系统自动通知邮件，不需要回复哈。";
                 break;
             case MessageType.Comment:
                 var commentMsg = notification.Content.ToDesJson<CommentMessageContent>() ?? throw new ApplicationException("邮件推送中消息内容为空");
-                var commentTitle = string.Empty;
-                var commentLink = string.Empty;
-                switch (commentMsg.CommentType)
-                {
-                    case BelongType.Article:
-                        var article = await articleRepo.Select.Where(a => a.ArticleId == commentMsg.BelongId).FirstAsync(cancellationToken);
-                        commentTitle = $"评论了文章：{article.Title}";
-                        commentLink = clientDomain + AppConst.ClientArticleDetail + article.ArticleId;
-                        break;
-                    case BelongType.Moment:
-                        commentTitle = "评论了动态";
-                        commentLink = clientDomain + AppConst.ClientMomentList;
-                        break;
-                    case BelongType.About:
-                        commentTitle = "评论了关于我";
-                        break;
-                }
+                var (cKey, cLink) = await GetContentKeyAsync(commentMsg.CommentType, commentMsg.BelongId, cancellationToken);
 
                 var commentVisitor = await visitorRepo.Select.Where(u => u.VisitorId == notification.FromUser).FirstAsync(cancellationToken);
-                subject = "访客" + (commentVisitor == null ? string.Empty : $" {commentVisitor.Nickname} ") + commentTitle;
-                body = $"{subject}<br/><br/>访问链接：<a href='{commentLink}'>{commentLink}</a><br/><br/>评论内容如下：<br/>{commentMsg.Content}";
+                subject = "嘀嘀！" + cKey + "有新评论啦！";
+                body = @$"
+访客：{(commentVisitor == null ? string.Empty : $" {commentVisitor.Nickname} ")} 发来评论：
+<br/>{commentMsg.Content}
+<br/>
+<br/>------------------------------------------
+<br/>访问链接：<a href='{cLink}'>{cLink}</a>
+<br/>这是系统自动通知邮件，不需要回复哈。";
                 break;
             case MessageType.Like:
                 var likeMsg = notification.Content.ToDesJson<LikeMessageContent>() ?? throw new ApplicationException("邮件推送中消息内容为空");
-                var likeTitle = string.Empty;
-                var likeLink = string.Empty;
-                switch (likeMsg.LikeType)
-                {
-                    case BelongType.Article:
-                        var article = await articleRepo.Select.Where(a => a.ArticleId == likeMsg.BelongId).FirstAsync(cancellationToken);
-                        likeTitle = $"点赞了文章：{article.Title}";
-                        likeLink = clientDomain + AppConst.ClientArticleDetail + article.ArticleId;
-                        break;
-                    case BelongType.Moment:
-                        likeTitle = "点赞了动态";
-                        likeLink = clientDomain + AppConst.ClientMomentList;
-                        break;
-                    case BelongType.About:
-                        likeTitle = "点赞了关于我";
-                        break;
-                }
+                var (lKey, lLink) = await GetContentKeyAsync(likeMsg.LikeType, likeMsg.BelongId, cancellationToken);
 
                 var likeVisitor = await visitorRepo.Select.Where(u => u.VisitorId == notification.FromUser).FirstAsync(cancellationToken);
-                subject = "访客" + (likeVisitor == null ? string.Empty : $" {likeVisitor.Nickname} ") + likeTitle;
-                body = $"{subject}<br/><br/>访问链接：<a href='{likeLink}'>{likeLink}</a>";
+                subject = "嘻嘻！" + lKey + "收到点赞咯！";
+                body = @$"
+访客：{(likeVisitor == null ? string.Empty : $" {likeVisitor.Nickname} ")} 点了个赞！
+<br/>
+<br/>------------------------------------------
+<br/>访问链接：<a href='{lLink}'>{lLink}</a>
+<br/>这是系统自动通知邮件，不需要回复哈。";
                 break;
             default:
                 throw new NotImplementedException("未实现该类型消息的邮件通知");
         }
 
         // 异步发送邮件，不需要等待
-        _ = Task.Run(() =>
-            mailService.Send(new MailMsg
-            {
-                Subject = subject,
-                Body = body,
-                Tos = toEmails,
-            }), cancellationToken);
+        _ = mailService.SendAsync(new MailMsg
+        {
+            Subject = subject,
+            Body = body,
+            Tos = toEmails,
+        });
 
+    }
+
+    private async Task<(string key, string link)> GetContentKeyAsync(BelongType type, long belongId, CancellationToken cancellationToken)
+    {
+        var key = string.Empty;
+        var link = string.Empty;
+        var clientDomain = appSettings.CurrentValue?.ClientDomain;
+
+        switch (type)
+        {
+            case BelongType.Article:
+                var article = await articleRepo.Select.Where(a => a.ArticleId == belongId).FirstAsync(cancellationToken);
+                key = $"文章：[{article.Title}]";
+                link = clientDomain + AppConst.ClientArticleDetail + article.ArticleId;
+                break;
+            case BelongType.Moment:
+                key = "[动态]";
+                link = clientDomain + AppConst.ClientMomentList;
+                break;
+            case BelongType.About:
+                key = "[关于我]";
+                break;
+        }
+
+        return (key, link);
     }
 }

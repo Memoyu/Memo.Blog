@@ -104,6 +104,11 @@ public class CommonCreateCommentCommandHandler(
             commentMessage.BelongId = request.BelongId;
         }
 
+        // 补全访客信息
+        comment.Visitor = await visitorRepo.Select
+            .Where(c => c.VisitorId == comment.VisitorId)
+            .FirstAsync(cancellationToken);
+
         // 增加消息通知领域事件
         comment.AddDomainEvent(new CreateMessageEvent
         {
@@ -120,20 +125,18 @@ public class CommonCreateCommentCommandHandler(
         if (comment.ReplyId.HasValue)
         {
             reply = await commentRepo.Select
-                .Include(c => c.Visitor)
-                .Where(c => c.CommentId == comment.ReplyId).FirstAsync(cancellationToken);
+                    .Include(c => c.Visitor)
+                    .Where(c => c.CommentId == comment.ReplyId).FirstAsync(cancellationToken);
 
             if (reply.Visitor != null)
             {
                 // 构建邮箱消息通知模型，并推送邮件
                 comment.AddDomainEvent(new MessageReplyEmailEvent
                 {
-                    VisitorId = comment.VisitorId,
-                    Reply = reply.Visitor,
-                    Content = commentMessage.ToJson()
+                    Source = reply,
+                    Reply = comment
                 });
             }
-
         }
 
         var ip = currentUserProvider.GetClientIp();
@@ -142,10 +145,6 @@ public class CommonCreateCommentCommandHandler(
         comment.Region = region;
         comment.Showable = true;
         comment = await commentRepo.InsertAsync(comment, cancellationToken);
-
-        comment.Visitor = await visitorRepo.Select
-            .Where(c => c.VisitorId == comment.VisitorId)
-            .FirstAsync(cancellationToken);
 
         var dto = mapper.Map<CommentClientResult>(comment);
         if (reply != null)

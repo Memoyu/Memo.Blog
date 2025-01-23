@@ -5,14 +5,12 @@ namespace Memo.Blog.Domain.Events.Messages;
 public class MessageReplyEmailEvent : IDomainEvent
 {
     /// <summary>
-    /// 发出评论访客Id
+    /// 回复的评论
     /// </summary>
-    public long VisitorId { get; set; }
+    public Comment Reply { get; set; } = new();
 
     /// <summary>
-    /// 回复对应访客
+    /// 被回复的评论
     /// </summary>
-    public Visitor Reply { get; set; } = new();
-    
-    public string Content { get; set; } = string.Empty;
+    public Comment Source { get; set; } = new();
 }
