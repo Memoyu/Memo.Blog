@@ -18,7 +18,7 @@ public class MailServiceTest
             ["Authorization:Mail:Enable"] = "true",
             ["Authorization:Mail:DisplayName"] = "Memo博客系统通知",
             ["Authorization:Mail:Email"] = "memoblog@163.com",
-            ["Authorization:Mail:Password"] = "QXbd239vvjhkqPm3",
+            ["Authorization:Mail:Password"] = "xxx",
             ["Authorization:Mail:Host"] = "smtp.163.com",
             ["Authorization:Mail:Port"] = "465",
             ["Authorization:Mail:EnableSsl"] = "false",
