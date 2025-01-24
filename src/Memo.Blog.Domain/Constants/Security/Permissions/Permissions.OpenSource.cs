@@ -11,6 +11,9 @@ public static partial class Permissions
         [Description("更新开源项目")]
         public const string Update = "update:open-source";
 
+        [Description("同步开源项目")]
+        public const string Sync = "sync:open-source";
+
         [Description("删除开源项目")]
         public const string Delete = "delete:open-source";
 

@@ -11,10 +11,8 @@ namespace Memo.Blog.Application.Common.Services.Background;
 /// <param name="logger"></param>
 internal class GitHubRepoPullTaskService(
      IServiceScopeFactory serviceScopeFactory,
-     ILogger<GitHubRepoPullTaskService> logger
-     ) : BaseTaskService(logger)
+     ILogger<GitHubRepoPullTaskService> logger) : BaseTaskService(logger)
 {
-
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
@@ -30,12 +28,19 @@ internal class GitHubRepoPullTaskService(
 
     private async Task ExecuteJobAsync(CancellationToken cancellationToken)
     {
-        // 解决BackgroundService is Singleton Service
-        using IServiceScope scope = serviceScopeFactory.CreateScope();
+        try
+        {
+            // 解决BackgroundService is Singleton Service
+            using IServiceScope scope = serviceScopeFactory.CreateScope();
 
-        var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
+            var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
 
-        await publisher.Publish(new SyncGitHubRepoEvent(), cancellationToken);
+            await publisher.Publish(new SyncGitHubRepoEvent(), cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, $"自动同步github项目异常：{ex.Message}");
+        }
     }
 
 }

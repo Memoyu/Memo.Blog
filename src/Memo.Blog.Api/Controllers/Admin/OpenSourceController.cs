@@ -1,9 +1,11 @@
-﻿using Memo.Blog.Application.OpenSources.Commands.Create;
+﻿using Memo.Blog.Application.OpenSources.Command.Sync;
+using Memo.Blog.Application.OpenSources.Commands.Create;
 using Memo.Blog.Application.OpenSources.Commands.Delete;
 using Memo.Blog.Application.OpenSources.Commands.Update;
 using Memo.Blog.Application.OpenSources.Queries.Get;
 using Memo.Blog.Application.OpenSources.Queries.List;
 using Memo.Blog.Application.OpenSources.Queries.Page;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace Memo.Blog.Api.Controllers.Admin;
 
@@ -31,6 +33,16 @@ public class OpenSourceController(ISender mediator) : ApiAdminController
     public async Task<Result> UpdateAsync(UpdateProjectCommand request)
     {
         return await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 同步开源项目
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut("synchronous")]
+    public async Task<Result> SynchronousAsync()
+    {
+        return await mediator.Send(new SynchronousCommand());
     }
 
     /// <summary>

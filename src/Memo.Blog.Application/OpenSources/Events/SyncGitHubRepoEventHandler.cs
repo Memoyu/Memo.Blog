@@ -18,14 +18,7 @@ public class SyncGitHubRepoEventHandler(
     public async Task Handle(SyncGitHubRepoEvent notification, CancellationToken cancellationToken)
     {
         var githubRepos = new List<GitHubRepoResponse>();
-        try
-        {
-            githubRepos = await githubRestApiService.GetAllReposAsync();
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "同步GitHub仓库数据失败：获取仓库数据异常");
-        }
+        githubRepos = await githubRestApiService.GetAllReposAsync();
 
         if (githubRepos == null || githubRepos.Count <= 0) return;
 
