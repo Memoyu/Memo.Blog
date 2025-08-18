@@ -2,9 +2,9 @@
 
 public record GenerateTokenCommand(string Username, string Password) : IRequest<Result>;
 
-public class GenerateTokenQueryValidator : AbstractValidator<GenerateTokenCommand>
+public class GenerateTokenValidator : AbstractValidator<GenerateTokenCommand>
 {
-    public GenerateTokenQueryValidator()
+    public GenerateTokenValidator()
     {
         RuleFor(x => x.Username)
             .NotEmpty()

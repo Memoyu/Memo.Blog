@@ -1,16 +1,22 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using EasyCaching.Core;
+using Memo.Blog.Application.Common.Interfaces.Persistence.Repositories;
 using Memo.Blog.Application.Common.Models.Settings;
 using Memo.Blog.Application.Security;
+using Memo.Blog.Domain.Constants;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Memo.Blog.Infrastructure.Security.GenerateToken;
 
-public class JwtTokenGenerator(IOptionsMonitor<AuthorizationSettings> authOptions) : IJwtTokenGenerator
+public class JwtTokenGenerator(
+    IEasyCachingProvider ecProvider,
+    IBaseDefaultRepository<User> userRepo,
+    IOptionsMonitor<AuthorizationSettings> authOptions) : IJwtTokenGenerator
 {
     private readonly JwtOptions _jwtOptions = authOptions.CurrentValue?.Jwt ?? throw new Exception("未配置服务jwt授权信息");
 
-    public JwtTokenDto GenerateToken(User user)
+    public async Task<JwtTokenDto> GenerateTokenAsync(User user, CancellationToken cancellationToken)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Secret));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -22,7 +28,8 @@ public class JwtTokenGenerator(IOptionsMonitor<AuthorizationSettings> authOption
             new(JwtRegisteredClaimNames.Email, user.Email),
         };
 
-        var expiredAt = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_jwtOptions.ExpiryInMin));
+        var expiryInMin = Convert.ToDouble(_jwtOptions.ExpiryInMin);
+        var expiredAt = DateTime.UtcNow.AddMinutes(expiryInMin);
         var securityToken = new JwtSecurityToken(
             issuer: _jwtOptions.Issuer,
             audience: _jwtOptions.Audience,
@@ -32,22 +39,16 @@ public class JwtTokenGenerator(IOptionsMonitor<AuthorizationSettings> authOption
 
         var accessToken = new JwtSecurityTokenHandler().WriteToken(securityToken);
         string refreshToken = GenerateRefreshToken();
+        await ecProvider.SetAsync(CacheKeyConst.UserRefreshToken(refreshToken), user.UserId, TimeSpan.FromMinutes(expiryInMin).Add(TimeSpan.FromDays(5)), cancellationToken);
 
         var expiredAtTs = expiredAt - new DateTime(1970, 1, 1, 0, 0, 0, 0);
 
         return new JwtTokenDto ( accessToken, refreshToken, Convert.ToInt64(expiredAtTs.TotalMilliseconds));
     }
 
-    public JwtTokenDto RefreshToken(User user)
+    public async Task<JwtTokenDto> RefreshTokenAsync(User user, CancellationToken cancellationToken)
     {
-        if (user is null)
-            throw new ArgumentException("用户信息不能为空");
-
-        if (DateTime.Compare(user.LastLoginTime, DateTime.Now) > new TimeSpan(5, 0, 0, 0).Ticks)
-            throw new InvalidOperationException("请重新登录");
-
-        var jwtToken = GenerateToken(user);
-
+        var jwtToken = await GenerateTokenAsync(user, cancellationToken);
         return jwtToken;
     }
 

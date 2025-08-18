@@ -15,7 +15,7 @@ public class GenerateTokenCommandHandler(
         if (identity is null || !identity.Credential.Equals(EncryptUtil.Encrypt(request.Password)))
             throw new ApplicationException("用户名或密码错误");
 
-        var token = jwtTokenGenerator.GenerateToken(user);
+        var token = await jwtTokenGenerator.GenerateTokenAsync(user, cancellationToken);
 
         // 更新最后一次登录时间
         user.LastLoginTime = DateTime.Now;

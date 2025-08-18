@@ -3,6 +3,13 @@
 public static class CacheKeyConst
 {
     /// <summary>
+    /// 用户授权刷新token
+    /// </summary>
+    /// <param name="refreshToken">刷新token</param>
+    /// <returns></returns>
+    public static string UserRefreshToken(string refreshToken) => $"memo-blog:user:refresh-token:{refreshToken}";
+
+    /// <summary>
     /// 文章浏览记录缓存key
     /// </summary>
     /// <param name="articleId"></param>
