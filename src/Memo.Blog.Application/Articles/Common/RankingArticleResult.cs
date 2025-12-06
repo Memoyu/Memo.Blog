@@ -13,6 +13,11 @@ public class RankingArticleResult
     public string Title { get; set; } = string.Empty;
 
     /// <summary>
+    /// 文章横幅图
+    /// </summary>
+    public string Banner { get; set; } = string.Empty;
+
+    /// <summary>
     /// 评论条数
     /// </summary>
     public int Comments { get; set; }

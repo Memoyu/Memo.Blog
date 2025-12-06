@@ -6,7 +6,8 @@ namespace Memo.Blog.Application.Moments.Queries.Page;
 public class PageMomentQueryHandler(
     IMapper mapper,
     IBaseDefaultRepository<Moment> momentRepo,
-    IBaseDefaultRepository<MomentLike> momentLikeRepo
+    IBaseDefaultRepository<MomentLike> momentLikeRepo,
+    IBaseDefaultRepository<Comment> commentRepo
     ) : IRequestHandler<PageMomentQuery, Result>
 {
     public async Task<Result> Handle(PageMomentQuery request, CancellationToken cancellationToken)
@@ -23,6 +24,7 @@ public class PageMomentQueryHandler(
         }
 
         var moments = await selectMoment
+            .Include(m => m.Announcer)
             .WhereIf(!string.IsNullOrWhiteSpace(request.Content), m => m.Content.Contains(request.Content!))
             .WhereIf(request.DateBegin.HasValue && request.DateEnd.HasValue, m => m.CreateTime <= request.DateEnd && m.CreateTime >= request.DateBegin)
             .OrderByDescending(m => m.CreateTime)
@@ -37,6 +39,14 @@ public class PageMomentQueryHandler(
 
         foreach (var moment in results)
         {
+            var comments = await commentRepo.Select
+               .Where(m => m.Showable)
+               .Where(c => c.CommentType == BelongType.Moment)
+               .Where(c => c.BelongId == moment.MomentId)
+               .CountAsync(cancellationToken);
+
+            moment.Announcer = mapper.Map<MomentAnnouncerResult>(moment.Announcer);
+            moment.Comments = (int)comments;
             var momentLikes = likes.Where(l => l.MomentId == moment.MomentId).ToList();
             moment.Likes = momentLikes.Count;
         }

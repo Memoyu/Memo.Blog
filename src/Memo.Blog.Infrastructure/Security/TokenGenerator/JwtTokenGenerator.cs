@@ -1,6 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using EasyCaching.Core;
-using Memo.Blog.Application.Common.Interfaces.Persistence.Repositories;
 using Memo.Blog.Application.Common.Models.Settings;
 using Memo.Blog.Application.Security;
 using Memo.Blog.Domain.Constants;
@@ -11,7 +10,6 @@ namespace Memo.Blog.Infrastructure.Security.GenerateToken;
 
 public class JwtTokenGenerator(
     IEasyCachingProvider ecProvider,
-    IBaseDefaultRepository<User> userRepo,
     IOptionsMonitor<AuthorizationSettings> authOptions) : IJwtTokenGenerator
 {
     private readonly JwtOptions _jwtOptions = authOptions.CurrentValue?.Jwt ?? throw new Exception("未配置服务jwt授权信息");
@@ -41,9 +39,9 @@ public class JwtTokenGenerator(
         string refreshToken = GenerateRefreshToken();
         await ecProvider.SetAsync(CacheKeyConst.UserRefreshToken(refreshToken), user.UserId, TimeSpan.FromMinutes(expiryInMin).Add(TimeSpan.FromDays(5)), cancellationToken);
 
-        var expiredAtTs = expiredAt - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+        var expiredAtSec = (expiredAt.ToUniversalTime().Ticks / TimeSpan.TicksPerSecond) - 62135596800;
 
-        return new JwtTokenDto ( accessToken, refreshToken, Convert.ToInt64(expiredAtTs.TotalMilliseconds));
+        return new JwtTokenDto(accessToken, refreshToken, expiredAtSec);
     }
 
     public async Task<JwtTokenDto> RefreshTokenAsync(User user, CancellationToken cancellationToken)

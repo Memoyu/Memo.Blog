@@ -38,4 +38,9 @@ internal record MomentResult
     /// 创建时间
     /// </summary>
     public DateTime CreateTime { get; set; }
+
+    /// <summary>
+    /// 动态发布者
+    /// </summary>
+    public MomentAnnouncerResult Announcer { get; set; } = new();
 }

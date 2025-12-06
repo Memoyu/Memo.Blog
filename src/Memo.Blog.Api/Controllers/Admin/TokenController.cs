@@ -24,7 +24,7 @@ public class TokenController(ISender mediator) : ApiAdminController
     /// 刷新用户Token
     /// </summary>
     /// <returns></returns>
-    [HttpPost("refresh")]
+    [HttpGet("refresh")]
     public async Task<Result> RefreshAsync()
     {
         Request.Headers.TryGetValue("refresh-token", out var refreshToken);

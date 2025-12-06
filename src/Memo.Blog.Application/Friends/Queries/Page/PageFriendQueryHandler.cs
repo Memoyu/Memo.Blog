@@ -11,9 +11,8 @@ public class PageFriendQueryHandler(
     public async Task<Result> Handle(PageFriendQuery request, CancellationToken cancellationToken)
     {
         var friends = await friendRepo.Select
-            .WhereIf(!string.IsNullOrWhiteSpace(request.Nickname), c => c.Nickname.Contains(request.Nickname!))
-            .WhereIf(!string.IsNullOrWhiteSpace(request.Description), c => c.Description.Contains(request.Description!))
-            .WhereIf(!string.IsNullOrWhiteSpace(request.Site), c => c.Site.Contains(request.Site!))
+            .WhereIf(!string.IsNullOrWhiteSpace(request.Nickname) || !string.IsNullOrWhiteSpace(request.Description) || !string.IsNullOrWhiteSpace(request.Site),
+                c => c.Nickname.Contains(request.Nickname!) || c.Description.Contains(request.Description!) || c.Site.Contains(request.Site!))
             .OrderByDescending(a => a.CreateTime)
             .ToPageListAsync(request, out var total, cancellationToken);
 
