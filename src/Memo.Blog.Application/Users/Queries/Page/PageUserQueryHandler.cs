@@ -16,8 +16,8 @@ public class PageUserQueryHandler(
         var users = await userRepo.Select
             .IncludeMany(u => u.UserRoles)
             .WhereIf(request.UserId.HasValue, u => u.UserId == request.UserId)
-            .WhereIf(!string.IsNullOrWhiteSpace(request.Username), u => u.Username.Contains(request.Username!))
-            .WhereIf(!string.IsNullOrWhiteSpace(request.Nickname), u => u.Nickname.Contains(request.Nickname!))
+            .WhereIf(!string.IsNullOrWhiteSpace(request.Username) || !string.IsNullOrWhiteSpace(request.Nickname),
+                                u => u.Username.Contains(request.Username!) || u.Nickname.Contains(request.Nickname!))
             .WhereIf(!string.IsNullOrWhiteSpace(request.Email), u => u.Email.Contains(request.Email!))
             .WhereIf(!string.IsNullOrWhiteSpace(request.PhoneNumber), u => u.PhoneNumber.Contains(request.PhoneNumber!))
             .WhereIf(request.Roles != null && request.Roles.Count > 0, u => u.UserRoles.Any(ur => request.Roles!.Contains(ur.RoleId)))

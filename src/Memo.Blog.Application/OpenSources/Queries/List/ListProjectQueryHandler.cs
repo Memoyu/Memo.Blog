@@ -10,8 +10,8 @@ public class ListProjectQueryHandler(
     public async Task<Result> Handle(ListProjectQuery request, CancellationToken cancellationToken)
     {
         var projects = await openSourceRepo.Select
-            .WhereIf(!string.IsNullOrWhiteSpace(request.Title), p => p.Title.Contains(request.Title!))
-            .WhereIf(!string.IsNullOrWhiteSpace(request.Description), p => p.Title.Contains(request.Description!))
+            .WhereIf(!string.IsNullOrWhiteSpace(request.Title) || !string.IsNullOrWhiteSpace(request.Description), 
+                                p => p.Title.Contains(request.Title!) || p.Description.Contains(request.Description!))
             .WhereIf(request.DateBegin.HasValue && request.DateEnd.HasValue, p => p.CreateTime <= request.DateEnd && p.CreateTime >= request.DateBegin)
             .OrderByDescending(c => c.CreateTime)
             .ToListAsync(cancellationToken) ?? [];
