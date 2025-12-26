@@ -20,6 +20,17 @@ public class ConfigController(ISender mediator) : ApiAdminController
     }
 
     /// <summary>
+    /// 更新系统配置-头图
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut("update/banner")]
+    public async Task<Result> UpdateBannerAsync(UpdateConfigCommand request)
+    {
+        return await mediator.Send(request);
+    }
+
+
+    /// <summary>
     /// 更新回复访客配置
     /// </summary>
     /// <returns></returns>

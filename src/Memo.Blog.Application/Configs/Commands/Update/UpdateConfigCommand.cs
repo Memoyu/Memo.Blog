@@ -27,6 +27,20 @@ public class UpdateConfigCommandValidator : AbstractValidator<UpdateConfigComman
     }
 }
 
+[Authorize(Permissions = ApiPermission.Config.Update)]
+public record UpdateConfigBannerCommand(BannerConfig Banner) : IAuthorizeableRequest<Result>;
+
+public class UpdateConfigBannerCommandValidator : AbstractValidator<UpdateConfigBannerCommand>
+{
+    public UpdateConfigBannerCommandValidator()
+    {
+        RuleFor(x => x.Banner)
+          .NotEmpty()
+          .WithMessage("头图配置不能为空");
+    }
+}
+
+
 
 [Authorize(Permissions = ApiPermission.Config.UpdateVisitor)]
 public record UpdateVisitorConfigCommand(long VisitorId) : IAuthorizeableRequest<Result>;

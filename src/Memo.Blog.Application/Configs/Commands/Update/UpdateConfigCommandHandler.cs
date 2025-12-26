@@ -19,6 +19,19 @@ public class UpdateConfigCommandHandler(
     }
 }
 
+public class UpdateConfigBannerCommandHandler(
+    IConfigRepository configRepo
+    ) : IRequestHandler<UpdateConfigBannerCommand, Result>
+{
+    public async Task<Result> Handle(UpdateConfigBannerCommand request, CancellationToken cancellationToken)
+    {
+        var config = await configRepo.GetWithInitAsync(cancellationToken);
+        config.Banner = request.Banner.ToJson();
+        var affrows = await configRepo.UpdateAsync(config, cancellationToken);
+        return affrows > 0 ? Result.Success(config.Id) : Result.Failure("更新系统配置失败");
+    }
+}
+
 public class UpdateVisitorConfigCommandHandler(
     ICurrentUserProvider currentUserProvider,
     IBaseDefaultRepository<Visitor> visitorRepo,
