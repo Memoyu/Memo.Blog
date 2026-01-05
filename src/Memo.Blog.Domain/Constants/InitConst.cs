@@ -5,11 +5,25 @@ public class InitConst
     #region 文章分类
 
     /// <summary>
-    /// 未分类CategoryId
+    /// 默认分类
     /// </summary>
     public const long InitCategoryId = 1;
 
     public const string InitCategoryName = "未分类";
+
+    #endregion
+
+    #region 笔记目录
+
+    /// <summary>
+    /// 默认目录Id
+    /// </summary>
+    public const long InitNoteCatalogId = 1;
+
+    /// <summary>
+    /// 默认目录
+    /// </summary>
+    public const string InitNoteCatalogTitle = "未分类";
 
     #endregion
 

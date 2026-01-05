@@ -9,8 +9,12 @@ public class DeleteCategoryCommandValidator : AbstractValidator<DeleteCategoryCo
     public DeleteCategoryCommandValidator()
     {
         RuleFor(x => x.CategoryId)
-            .Must(x => x > 0)
+            .NotEmpty()
             .WithMessage("分类Id必须大于0");
+
+        RuleFor(x => x.CategoryId)
+            .Equal(InitConst.InitCategoryId)
+            .WithMessage("默认分类，无法删除");
 
         RuleFor(x => x.CategoryId)
             .Must(x => x != InitConst.InitCategoryId)

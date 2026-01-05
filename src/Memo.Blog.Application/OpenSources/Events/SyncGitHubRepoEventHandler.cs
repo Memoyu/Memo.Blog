@@ -9,7 +9,7 @@ namespace Memo.Blog.Application.OpenSources.Events;
 
 public class SyncGitHubRepoEventHandler(
     IMapper mapper,
-    ILogger<SyncGitHubRepoEventHandler> logger,
+    // ILogger<SyncGitHubRepoEventHandler> logger,
     IGitHubRestApiService githubRestApiService,
     IBaseMongoRepository<GitHubRepoCollection> githubRepo,
     IBaseDefaultRepository<OpenSource> openSourceRepo

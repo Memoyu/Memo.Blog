@@ -18,3 +18,6 @@ INSERT INTO blog.user_role (user_id, role_id, create_user_id, create_time, updat
 
 -- 初始化分类
 INSERT INTO blog.category (category_id, name, create_user_id, create_time, update_user_id, update_time, is_deleted, delete_user_id, delete_time) VALUES( 1, '未分类', 1, '2024-02-01 19:01:00', 1, '2024-02-01 19:01:00', 0, 1, '2024-02-01 19:01:00');
+
+-- 初始化笔记目录
+INSERT INTO blog.note_catalog (catalog_id, title, create_user_id, create_time, update_user_id, update_time, is_deleted, delete_user_id, delete_time) VALUES( 1, '未分类', 1, '2024-02-01 19:01:00', 1, '2024-02-01 19:01:00', 0, 1, '2024-02-01 19:01:00');

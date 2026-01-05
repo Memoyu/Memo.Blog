@@ -30,6 +30,8 @@
 
   <ItemGroup>
     <Folder Include="FileStorages\Command\" />
+    <Folder Include="Notes\Queries\Get\" />
+    <Folder Include="Notes\Queries\Tree\" />
     <Folder Include="Permissions\Commands\" />
   </ItemGroup>
 

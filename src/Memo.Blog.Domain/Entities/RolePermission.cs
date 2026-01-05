@@ -1,6 +1,4 @@
-﻿using static Memo.Blog.Domain.Constants.Security.Permissions.Permissions;
-
-namespace Memo.Blog.Domain.Entities;
+﻿namespace Memo.Blog.Domain.Entities;
 
 /// <summary>
 /// 用户角色与权限关联表
