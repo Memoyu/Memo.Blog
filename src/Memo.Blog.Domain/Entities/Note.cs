@@ -37,6 +37,12 @@ public class Note : BaseAuditEntity
     public string Content { get; set; } = string.Empty;
 
     /// <summary>
+    /// 笔记所属目录
+    /// </summary>
+    [Navigate(nameof(CatalogId), TempPrimary = nameof(NoteCatalog.CatalogId))]
+    public virtual NoteCatalog Catalog { get; set; } = new();
+
+    /// <summary>
     /// 笔记作者
     /// </summary>
     [Navigate(nameof(CreateUserId), TempPrimary = nameof(User.UserId))]

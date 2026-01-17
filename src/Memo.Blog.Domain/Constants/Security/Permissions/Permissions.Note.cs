@@ -23,6 +23,9 @@ public static partial class Permissions
         [Description("删除笔记目录")]
         public const string DeleteCatalog = "delete:note:catalog";
 
+        [Description("获取笔记目录列表")]
+        public const string List = "list:catalog";
+
         [Description("获取笔记")]
         public const string Get = "get:note";
     }

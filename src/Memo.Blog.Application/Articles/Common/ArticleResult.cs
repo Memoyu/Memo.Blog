@@ -1,6 +1,5 @@
 ﻿using Memo.Blog.Application.Categories.Common;
 using Memo.Blog.Application.Tags.Common;
-using Memo.Blog.Domain.Enums;
 
 namespace Memo.Blog.Application.Articles.Common;
 
