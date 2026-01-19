@@ -1,24 +1,24 @@
 ﻿namespace Memo.Blog.Domain.Entities;
 
 /// <summary>
-/// 笔记目录表
+/// 笔记分组表
 /// </summary>
-[Table(Name = "note_catalog")]
-[Index("index_on_catalog_id", nameof(CatalogId), false)]
-public class NoteCatalog : BaseAuditEntity
+[Table(Name = "note_group")]
+[Index("index_on_group_id", nameof(GroupId), false)]
+public class NoteGroup : BaseAuditEntity
 {
     /// <summary>
-    /// 目录Id
+    /// 分组Id
     /// </summary>
     [Snowflake]
-    [Description("目录Id")]
+    [Description("分组Id")]
     [Column(IsNullable = false)]
-    public long CatalogId { get; set; }
+    public long GroupId { get; set; }
 
     /// <summary>
-    /// 父目录Id
+    /// 父分组Id
     /// </summary>
-    [Description("父目录Id")]
+    [Description("父分组Id")]
     public long? ParentId { get; set; }
 
     /// <summary>

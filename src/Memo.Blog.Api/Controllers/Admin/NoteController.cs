@@ -52,31 +52,41 @@ public class NoteController(ISender mediator) : ApiAdminController
     }
 
     /// <summary>
-    /// 创建笔记目录
+    /// 创建笔记分组
     /// </summary>
     /// <returns></returns>
-    [HttpPost("create/catalog")]
-    public async Task<Result> CreateCatalogAsync(CreateCatalogCommand request)
+    [HttpPost("create/group")]
+    public async Task<Result> CreateGroupAsync(CreateGroupCommand request)
     {
         return await mediator.Send(request);
     }
 
     /// <summary>
-    /// 更新笔记目录
+    /// 更新笔记分组
     /// </summary>
     /// <returns></returns>
-    [HttpPut("update/catalog")]
-    public async Task<Result> UpdateCatalogAsync(UpdateCatalogCommand request)
+    [HttpPut("update/group")]
+    public async Task<Result> UpdateGroupAsync(UpdateGroupCommand request)
     {
         return await mediator.Send(request);
     }
 
     /// <summary>
-    /// 删除笔记目录
+    /// 更新笔记/分组标题
     /// </summary>
     /// <returns></returns>
-    [HttpDelete("delete/catalog")]
-    public async Task<Result> DeleteCatalogAsync([FromQuery] DeleteCatalogCommand request)
+    [HttpPut("update/title")]
+    public async Task<Result> UpdateTitleAsync(UpdateTitleCommand request)
+    {
+        return await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// 删除笔记分组
+    /// </summary>
+    /// <returns></returns>
+    [HttpDelete("delete/group")]
+    public async Task<Result> DeleteGroupAsync([FromQuery] DeleteGroupCommand request)
     {
         return await mediator.Send(request);
     }
@@ -86,7 +96,7 @@ public class NoteController(ISender mediator) : ApiAdminController
     /// </summary>
     /// <returns></returns>
     [HttpGet("list/catalog")]
-    public async Task<Result> ListCatalogAsync([FromQuery] ListCatalogQuery request)
+    public async Task<Result> ListCatalogpAsync([FromQuery] ListCatalogQuery request)
     {
         return await mediator.Send(request);
     }

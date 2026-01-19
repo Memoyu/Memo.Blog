@@ -1,11 +1,11 @@
 ﻿namespace Memo.Blog.Application.Notes.Common;
 
-public record NoteCatalogResult
+public record NoteGroupResult
 {
     /// <summary>
-    /// 目录Id
+    /// 分组Id
     /// </summary>
-    public long CatalogId { get; set; }
+    public long GroupId { get; set; }
 
     /// <summary>
     /// 标题

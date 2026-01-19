@@ -1,11 +1,11 @@
 ﻿
 namespace Memo.Blog.Application.Notes.Commands.Update;
 
-public class UpdateNoteCommandHandler(
+public class UpdateNoteGroupCommandHandler(
     IBaseDefaultRepository<Note> noteRepo,
-    IBaseDefaultRepository<NoteGroup> noteGroupRepo) : IRequestHandler<UpdateNoteCommand, Result>
+    IBaseDefaultRepository<NoteGroup> noteGroupRepo) : IRequestHandler<UpdateNoteGroupCommand, Result>
 {
-    public async Task<Result> Handle(UpdateNoteCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdateNoteGroupCommand request, CancellationToken cancellationToken)
     {
         if (request.GroupId.HasValue)
         {
@@ -17,10 +17,8 @@ public class UpdateNoteCommandHandler(
            throw new ApplicationException("笔记不存在或已删除");
 
         note.GroupId = request.GroupId;
-        note.Title = request.Title;
-        note.Content = request.Content;
         var affrows = await noteRepo.UpdateAsync(note, cancellationToken);
 
-        return affrows > 0 ? Result.Success() : throw new ApplicationException("更新笔记失败");
+        return affrows > 0 ? Result.Success() : throw new ApplicationException("更新笔记分组失败");
     }
 }

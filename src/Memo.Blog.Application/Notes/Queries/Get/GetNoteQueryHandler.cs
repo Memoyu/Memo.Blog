@@ -7,7 +7,7 @@ public class GetNoteQueryHandler(IMapper mapper, IBaseDefaultRepository<Note> no
     public async Task<Result> Handle(GetNoteQuery request, CancellationToken cancellationToken)
     {
         var friend = await noteRepo.Select
-            .Include(n => n.Catalog)
+            .Include(n => n.Group)
             .Include(n => n.Author)
             .Where(f => f.NoteId == request.NoteId).FirstAsync(cancellationToken);
         if (friend is null) throw new ApplicationException("笔记不存在");

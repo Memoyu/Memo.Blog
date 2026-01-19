@@ -16,11 +16,11 @@ public class Note : BaseAuditEntity
     public long NoteId { get; set; }
 
     /// <summary>
-    /// 所属目录Id
+    /// 所属分组Id
     /// </summary>
-    [Description("所属目录Id")]
-    [Column(IsNullable = false)]
-    public long CatalogId { get; set; }
+    [Description("所属分组Id")]
+    [Column(IsNullable = true)]
+    public long? GroupId { get; set; }
 
     /// <summary>
     /// 标题
@@ -37,10 +37,10 @@ public class Note : BaseAuditEntity
     public string Content { get; set; } = string.Empty;
 
     /// <summary>
-    /// 笔记所属目录
+    /// 笔记所属分组
     /// </summary>
-    [Navigate(nameof(CatalogId), TempPrimary = nameof(NoteCatalog.CatalogId))]
-    public virtual NoteCatalog Catalog { get; set; } = new();
+    [Navigate(nameof(GroupId), TempPrimary = nameof(NoteGroup.GroupId))]
+    public virtual NoteGroup Group { get; set; } = new();
 
     /// <summary>
     /// 笔记作者

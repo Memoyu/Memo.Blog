@@ -1,40 +1,39 @@
-﻿using Amazon.Runtime.Internal.Transform;
-using Memo.Blog.Application.Notes.Common;
+﻿using Memo.Blog.Application.Notes.Common;
 
 namespace Memo.Blog.Application.Notes.Queries.List;
 
 public class ListCatalogQueryHandler(
       IBaseDefaultRepository<Note> noteRepo,
-      IBaseDefaultRepository<NoteCatalog> noteCatalogRepo
+      IBaseDefaultRepository<NoteGroup> noteGroupRepo
     ) : IRequestHandler<ListCatalogQuery, Result>
 {
     public async Task<Result> Handle(ListCatalogQuery request, CancellationToken cancellationToken)
     {
-        // 获取全部目录，笔记
-        var catalogs = await noteCatalogRepo.Select.ToListAsync(cancellationToken);
-        var notes = await noteRepo.Select.ToListAsync(n => new { n.NoteId, n.CatalogId, n.Title }, cancellationToken);
+        // 获取全部分组，笔记
+        var groups = await noteGroupRepo.Select.ToListAsync(cancellationToken);
+        var notes = await noteRepo.Select.ToListAsync(n => new { n.NoteId, n.GroupId, n.Title }, cancellationToken);
 
-        var groupCatalogs = catalogs.GroupBy(c => c.ParentId).ToList();
-        var groupNotes = notes.GroupBy(c => c.CatalogId).ToList();
+        var groupGroups = groups.GroupBy(c => c.ParentId).ToList();
+        var groupNotes = notes.GroupBy(c => c.GroupId).ToList();
 
-        var dict = new Dictionary<string, List<ListCatalogResultItem>>
+        var dict = new Dictionary<string, List<ListGroupResultItem>>
         {
-            // 初始化根目录
+            // 初始化根分组
             {
                 string.Empty,
-                catalogs.Where(c => !c.ParentId.HasValue).Select(c => new ListCatalogResultItem
+                groups.Where(c => !c.ParentId.HasValue).Select(c => new ListGroupResultItem
                 {
-                    Id = c.CatalogId,
+                    Id = c.GroupId,
                     Type = 0,
                     Title = c.Title,
-                    Count = GetCatalogCount(c.CatalogId)
+                    Count = GetGroupCount(c.GroupId)
                 }).ToList()
             }
         };
 
-        foreach (var catalog in catalogs)
+        foreach (var group in groups)
         {
-            var key = catalog.CatalogId.ToString();
+            var key = group.GroupId.ToString();
             var has = dict.TryGetValue(key, out var list);
             if (!has)
             {
@@ -42,20 +41,20 @@ public class ListCatalogQueryHandler(
                 dict.Add(key, list);
             }
 
-            var childs = groupCatalogs.FirstOrDefault(g => g.Key == catalog.CatalogId)?.ToList() ?? [];
-            var childNotes = groupNotes.FirstOrDefault(g => g.Key == catalog.CatalogId)?.ToList() ?? [];
+            var childs = groupGroups.FirstOrDefault(g => g.Key == group.GroupId)?.ToList() ?? [];
+            var childNotes = groupNotes.FirstOrDefault(g => g.Key == group.GroupId)?.ToList() ?? [];
 
-            // 插入目录
-            list!.AddRange(childs.Select(c => new ListCatalogResultItem
+            // 插入分组
+            list!.AddRange(childs.Select(c => new ListGroupResultItem
             {
-                Id = c.CatalogId,
+                Id = c.GroupId,
                 Type = 0,
                 Title = c.Title,
-                Count = GetCatalogCount(c.CatalogId)
+                Count = GetGroupCount(c.GroupId)
             }));
 
             // 再插入笔记
-            list!.AddRange(childNotes.Select(n => new ListCatalogResultItem
+            list!.AddRange(childNotes.Select(n => new ListGroupResultItem
             {
                 Id = n.NoteId,
                 Type = 1,
@@ -65,11 +64,11 @@ public class ListCatalogQueryHandler(
 
         return Result.Success(dict);
 
-        int GetCatalogCount(long catalogId)
+        int GetGroupCount(long groupId)
         {
-            var catalogCount = groupCatalogs.FirstOrDefault(g => g.Key == catalogId)?.Count() ?? 0;
-            var noteCount = groupNotes.FirstOrDefault(g => g.Key == catalogId)?.Count() ?? 0;
-            return catalogCount + noteCount;
+            var groupCount = groupGroups.FirstOrDefault(g => g.Key == groupId)?.Count() ?? 0;
+            var noteCount = groupNotes.FirstOrDefault(g => g.Key == groupId)?.Count() ?? 0;
+            return groupCount + noteCount;
         }
     }
 }

@@ -13,20 +13,6 @@ public class InitConst
 
     #endregion
 
-    #region 笔记目录
-
-    /// <summary>
-    /// 默认目录Id
-    /// </summary>
-    public const long InitNoteCatalogId = 1;
-
-    /// <summary>
-    /// 默认目录
-    /// </summary>
-    public const string InitNoteCatalogTitle = "未分类";
-
-    #endregion
-
     #region 用户
 
     /// <summary>

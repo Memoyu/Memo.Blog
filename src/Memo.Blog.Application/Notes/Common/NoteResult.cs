@@ -15,9 +15,9 @@ public record NoteResult
     public string Content { get; set; } = string.Empty;
 
     /// <summary>
-    /// 笔记所属目录
+    /// 笔记所属分组
     /// </summary>
-    public NoteCatalogResult Catalog { get; set; } = new();
+    public NoteGroupResult Group { get; set; } = new();
 
     /// <summary>
     /// 笔记作者
