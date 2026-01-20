@@ -14,8 +14,8 @@ public static partial class Permissions
         [Description("更新笔记")]
         public const string Update = "update:note";
 
-        [Description("更新笔记分组")]
-        public const string UpdateGroup = "update:note:group";
+        [Description("更新笔记/分组所属分组")]
+        public const string UpdateGroup = "update:note/group:group";
 
         [Description("更新笔记/分组标题")]
         public const string UpdateTitle = "update:note/group:title";

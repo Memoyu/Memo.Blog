@@ -1,5 +1,4 @@
-﻿
-namespace Memo.Blog.Application.Notes.Commands.Update;
+﻿namespace Memo.Blog.Application.Notes.Commands.Update;
 
 public class UpdateTitleCommandHandler(
     IBaseDefaultRepository<Note> noteRepo,
@@ -23,6 +22,6 @@ public class UpdateTitleCommandHandler(
             affrows = await noteRepo.UpdateAsync(note, cancellationToken);
         }
 
-        return affrows > 0 ? Result.Success(request.Id) : throw new ApplicationException("更新标题失败");
+        return affrows > 0 ? Result.Success() : throw new ApplicationException("更新标题失败");
     }
 }

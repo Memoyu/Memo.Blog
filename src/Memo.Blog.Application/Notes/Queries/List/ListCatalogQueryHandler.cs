@@ -11,7 +11,7 @@ public class ListCatalogQueryHandler(
     {
         // 获取全部分组，笔记
         var groups = await noteGroupRepo.Select.ToListAsync(cancellationToken);
-        var notes = await noteRepo.Select.ToListAsync(n => new { n.NoteId, n.GroupId, n.Title }, cancellationToken);
+        var notes = await noteRepo.Select.ToListAsync(n => new SimpleNoteDto { NoteId = n.NoteId, GroupId = n.GroupId, Title = n.Title }, cancellationToken);
 
         var groupGroups = groups.GroupBy(c => c.ParentId).ToList();
         var groupNotes = notes.GroupBy(c => c.GroupId).ToList();
@@ -21,13 +21,9 @@ public class ListCatalogQueryHandler(
             // 初始化根分组
             {
                 string.Empty,
-                groups.Where(c => !c.ParentId.HasValue).Select(c => new ListGroupResultItem
-                {
-                    Id = c.GroupId,
-                    Type = 0,
-                    Title = c.Title,
-                    Count = GetGroupCount(c.GroupId)
-                }).ToList()
+                GroupsToItems( groups.Where(c => !c.ParentId.HasValue))// 分组
+                .Concat(request.OnlyGroup == true ? [] : NotesToItems(notes.Where(n => !n.GroupId.HasValue)))// 笔记
+                .ToList()
             }
         };
 
@@ -45,29 +41,45 @@ public class ListCatalogQueryHandler(
             var childNotes = groupNotes.FirstOrDefault(g => g.Key == group.GroupId)?.ToList() ?? [];
 
             // 插入分组
-            list!.AddRange(childs.Select(c => new ListGroupResultItem
+            list!.AddRange(GroupsToItems(childs));
+
+            // 只加载分组
+            if (request.OnlyGroup == true) continue;
+
+            // 再插入笔记
+            list!.AddRange(NotesToItems(childNotes));
+        }
+
+        return Result.Success(dict);
+
+        List<ListGroupResultItem> GroupsToItems(IEnumerable<NoteGroup> groups)
+        {
+            return groups.Select(c => new ListGroupResultItem
             {
                 Id = c.GroupId,
                 Type = 0,
                 Title = c.Title,
                 Count = GetGroupCount(c.GroupId)
-            }));
+            }).ToList();
+        }
 
-            // 再插入笔记
-            list!.AddRange(childNotes.Select(n => new ListGroupResultItem
+        List<ListGroupResultItem> NotesToItems(IEnumerable<SimpleNoteDto> notes)
+        {
+            return notes.Select(n => new ListGroupResultItem
             {
                 Id = n.NoteId,
                 Type = 1,
                 Title = n.Title,
-            }));
+            }).ToList();
         }
-
-        return Result.Success(dict);
 
         int GetGroupCount(long groupId)
         {
             var groupCount = groupGroups.FirstOrDefault(g => g.Key == groupId)?.Count() ?? 0;
-            var noteCount = groupNotes.FirstOrDefault(g => g.Key == groupId)?.Count() ?? 0;
+            var noteCount = 0;
+            if (request.OnlyGroup != true)
+                noteCount = groupNotes.FirstOrDefault(g => g.Key == groupId)?.Count() ?? 0;
+            
             return groupCount + noteCount;
         }
     }

@@ -1,5 +1,11 @@
 ﻿namespace Memo.Blog.Application.Notes.Commands.Update;
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="Id"></param>
+/// <param name="Type">类型：group： 0， note： 1</param>
+/// <param name="Title"></param>
 [Authorize(Permissions = ApiPermission.Note.UpdateTitle)]
 public record UpdateTitleCommand(long Id, int Type, string Title) : IAuthorizeableRequest<Result>;
 
@@ -7,7 +13,6 @@ public class UpdateTitleCommandValidator : AbstractValidator<UpdateTitleCommand>
 {
     public UpdateTitleCommandValidator()
     {
-        // 类型：group： 0， note： 1
         RuleFor(x => x.Id)
             .NotEmpty()
             .WithMessage("Id不能为空");

@@ -62,7 +62,7 @@ public class NoteController(ISender mediator) : ApiAdminController
     }
 
     /// <summary>
-    /// 更新笔记分组
+    /// 更新笔记/分组所属分组
     /// </summary>
     /// <returns></returns>
     [HttpPut("update/group")]

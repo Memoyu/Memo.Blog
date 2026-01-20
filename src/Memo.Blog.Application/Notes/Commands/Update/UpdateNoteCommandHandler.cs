@@ -1,5 +1,4 @@
-﻿
-namespace Memo.Blog.Application.Notes.Commands.Update;
+﻿namespace Memo.Blog.Application.Notes.Commands.Update;
 
 public class UpdateNoteCommandHandler(
     IBaseDefaultRepository<Note> noteRepo,
