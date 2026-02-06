@@ -18,6 +18,13 @@ public class SubmissionRecord : BaseAuditEntity
     public long RecordId { get; set; }
 
     /// <summary>
+    /// 提交目标Id
+    /// </summary>
+    [Description("提交目标Id")]
+    [Column(IsNullable = false)]
+    public long TargetId { get; set; }
+
+    /// <summary>
     /// 提交类型
     /// </summary>
     [Description("提交类型")]
@@ -30,11 +37,4 @@ public class SubmissionRecord : BaseAuditEntity
     [Description("操作类型")]
     [Column(IsNullable = false)]
     public SubmissionRecordOperate Operate { get; set; }
-
-    /// <summary>
-    /// 提交目标Id
-    /// </summary>
-    [Description("提交目标Id")]
-    [Column(IsNullable = false)]
-    public long TargetId { get; set; }
 }

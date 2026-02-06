@@ -1,4 +1,6 @@
-﻿namespace Memo.Blog.Application.Moments.Commands.Update;
+﻿using Memo.Blog.Domain.Events.SubmissionRecord;
+
+namespace Memo.Blog.Application.Moments.Commands.Update;
 
 public class UpdateMomentCommandHandler(
     IMapper mapper,
@@ -13,6 +15,7 @@ public class UpdateMomentCommandHandler(
         var update = mapper.Map<Moment>(request);
         update.Id = moment.Id;
         update.Likes = moment.Likes;
+        update.AddDomainEvent(new CreateSubmissionRecordEvent(moment.MomentId, SubmissionRecordType.Moment, SubmissionRecordOperate.Update));
         var affrows = await momentRepo.UpdateAsync(update, cancellationToken);
 
         return affrows > 0 ? Result.Success() : throw new ApplicationException("更新动态失败");

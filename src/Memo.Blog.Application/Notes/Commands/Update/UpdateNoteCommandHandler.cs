@@ -1,4 +1,6 @@
-﻿namespace Memo.Blog.Application.Notes.Commands.Update;
+﻿using Memo.Blog.Domain.Events.SubmissionRecord;
+
+namespace Memo.Blog.Application.Notes.Commands.Update;
 
 public class UpdateNoteCommandHandler(
     IBaseDefaultRepository<Note> noteRepo,
@@ -18,6 +20,7 @@ public class UpdateNoteCommandHandler(
         note.GroupId = request.GroupId;
         note.Title = request.Title;
         note.Content = request.Content;
+        note.AddDomainEvent(new CreateSubmissionRecordEvent(note.NoteId, SubmissionRecordType.Note, SubmissionRecordOperate.Update));
         var affrows = await noteRepo.UpdateAsync(note, cancellationToken);
 
         return affrows > 0 ? Result.Success() : throw new ApplicationException("更新笔记失败");

@@ -1,4 +1,6 @@
-﻿namespace Memo.Blog.Application.Notes.Commands.Create;
+﻿using Memo.Blog.Domain.Events.SubmissionRecord;
+
+namespace Memo.Blog.Application.Notes.Commands.Create;
 
 public class CreateNoteCommandHandler(
     IMapper mapper,
@@ -14,6 +16,9 @@ public class CreateNoteCommandHandler(
         }
 
         var note = mapper.Map<Note>(request);
+        note.Content = note.Content ?? string.Empty;
+        note.NoteId = SnowFlakeUtil.NextId();
+        note.AddDomainEvent(new CreateSubmissionRecordEvent(note.NoteId, SubmissionRecordType.Note, SubmissionRecordOperate.Create));
         note = await noteRepo.InsertAsync(note, cancellationToken);
 
         return note == null || note.Id == 0 ? throw new ApplicationException("保存笔记失败") : Result.Success(note.NoteId);

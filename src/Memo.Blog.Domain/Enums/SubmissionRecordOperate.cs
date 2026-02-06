@@ -2,7 +2,7 @@
 
 public enum SubmissionRecordOperate
 {
-    Add,
+    Create,
     Update,
     Delete
 }
