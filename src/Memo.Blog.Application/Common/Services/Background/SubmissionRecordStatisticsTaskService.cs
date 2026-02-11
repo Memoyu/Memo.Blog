@@ -1,29 +1,29 @@
-﻿using Memo.Blog.Domain.Events.Visitors;
+﻿using Memo.Blog.Domain.Events.SubmissionRecord;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Memo.Blog.Application.Common.Services.Background;
 
 /// <summary>
-/// 定时统计访客数据
+/// 定时统计提交记录数据
 /// </summary>
 /// <param name="serviceScopeFactory"></param>
 /// <param name="logger"></param>
-internal class VisitStatisticsTaskService(
+internal class SubmissionRecordStatisticsTaskService(
      IServiceScopeFactory serviceScopeFactory,
-     ILogger<VisitStatisticsTaskService> logger
-     ) : BaseTaskService(logger)
+     ILogger<SubmissionRecordStatisticsTaskService> logger
+    ) : BaseTaskService(logger)
 {
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         await ExecuteScheduledTaskAsync(
-         cancellationToken,
-         ScheduledTaskTimeType.Day,
-         new TimeSpan(0, 1, 0), // 每天0点1分执行     
-        async () =>
-        {
-            await ExecuteJobAsync(cancellationToken);
-        });
+        cancellationToken,
+        ScheduledTaskTimeType.Day,
+        new TimeSpan(0, 10, 0), // 每天0点1分执行     
+       async () =>
+       {
+           await ExecuteJobAsync(cancellationToken);
+       });
     }
 
     private async Task ExecuteJobAsync(CancellationToken cancellationToken)
@@ -32,6 +32,6 @@ internal class VisitStatisticsTaskService(
 
         var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
 
-        await publisher.Publish(new VisitStatisticsForDayEvent(), cancellationToken);
+        await publisher.Publish(new SubmissionRecordStatisticsForDayEvent(), cancellationToken);
     }
 }

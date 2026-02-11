@@ -14,12 +14,15 @@ public class VisitStatistics : BaseAuditEntity
     public DateTime Date { get; set; }
 
     /// <summary>
-    /// 当日UV总量
+    /// 当日UV总数
     /// </summary>
     [Description("当日UV总数")]
     [Column(IsNullable = false)]
     public long UniqueVisitors { get; set; }
 
+    /// <summary>
+    /// 当日PV总数
+    /// </summary>
     [Description("当日PV总数")]
     [Column(IsNullable = false)]
     public long PageVisitors { get; set; }
