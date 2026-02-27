@@ -31,7 +31,6 @@
   <ItemGroup>
     <Folder Include="FileStorages\Command\" />
     <Folder Include="Permissions\Commands\" />
-    <Folder Include="SubmissionRecords\Queries\List\" />
   </ItemGroup>
 
 </Project>

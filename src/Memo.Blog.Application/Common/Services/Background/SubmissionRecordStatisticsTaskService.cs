@@ -20,10 +20,7 @@ internal class SubmissionRecordStatisticsTaskService(
         cancellationToken,
         ScheduledTaskTimeType.Day,
         new TimeSpan(0, 10, 0), // 每天0点1分执行     
-       async () =>
-       {
-           await ExecuteJobAsync(cancellationToken);
-       });
+        async () => await ExecuteJobAsync(cancellationToken));
     }
 
     private async Task ExecuteJobAsync(CancellationToken cancellationToken)

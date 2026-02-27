@@ -84,6 +84,9 @@ public static class DependencyInjection
         // 添加访客数据统计 定时任务
         services.AddHostedService<VisitStatisticsTaskService>();
 
+        // 添加提交记录统计 定时任务
+        services.AddHostedService<SubmissionRecordStatisticsTaskService>();
+
         return services;
     }
 }
